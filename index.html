@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Immortal Nexus - Where Souls Converge</title>
+    
+    <!-- CSS Loading Order -->
+    <link rel="stylesheet" href="css/styles.css?v=1.0">
+    <link rel="stylesheet" href="css/unified-modals.css?v=1.0">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>Immortal Nexus</h1>
+            </div>
+            <div class="nav-buttons">
+                <button id="loginButton" class="btn btn-primary">Login</button>
+                <button id="signupButton" class="btn btn-secondary">Sign Up</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Welcome to Immortal Nexus</h1>
+            <p>Where immortal souls converge and stories unfold</p>
+            <div class="hero-buttons">
+                <button id="heroLoginButton" class="btn btn-primary">Enter the Nexus</button>
+                <button id="heroSignupButton" class="btn btn-secondary">Join the Community</button>
+            </div>
+        </section>
+
+        <section class="content">
+            <h2>Test Content</h2>
+            <p>This is test content to demonstrate the modal layering fix.</p>
+            <div class="test-content" style="height: 200px; background: linear-gradient(45deg, #ff5e78, #ff8f00); margin: 20px 0; padding: 20px; border-radius: 10px;">
+                <h3>High z-index test content</h3>
+                <p>This content should appear behind modals with our z-index fix.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Login/Signup Modal -->
+    <div id="soulModal" class="modal soul-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Enter the Nexus</h2>
+                <button class="close-modal" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="authForm">
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                        <button type="button" class="btn btn-secondary close-modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/modal.js"></script>
+</body>
+</html>
