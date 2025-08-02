@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="View profile of an eternal soul on Manifest Liberation, Naturally Free.">
+    <meta name="description" content="View profile of an eternal soul on Immortal Nexus.">
     <meta name="theme-color" content="#0d0d1a">
-    <title>Soul Profile - Manifest Liberation, Naturally Free</title>
+    <title>Soul Profile - Immortal Nexus</title>
     <!-- Immortal-themed favicon -->
     <link rel="icon" type="image/svg+xml" href="../favicon.svg">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
@@ -576,7 +576,7 @@
                         <span class="title-line-one">Manifest Liberation</span>
                         <span class="title-line-two">Naturally Free</span>
                     </span>
-                    <span class="short-title">MLNF</span>
+                    <span class="short-title">Immortal Nexus</span>
                 </div>
             </a>
         </div>
@@ -721,7 +721,7 @@
     </div>
 
     <footer>
-        <p>&copy; 2023 Manifest Liberation, Naturally Free. All eternal rights reserved.</p>
+        <p>&copy; 2023 Immortal Nexus. All eternal rights reserved.</p>
         <p>Embrace your infinite potential and connect across eternity.</p>
     </footer>
 
@@ -731,7 +731,7 @@
     <!-- Theme Manager - Load early for immediate theme application -->
     <script src="../components/shared/themeManager.js?v=1.3"></script>
     
-    <!-- Core MLNF Components -->
+    <!-- Core Immortal Nexus Components -->
     <script src="../components/shared/mlnf-core.js?v=1.2"></script>
     <script src="../components/shared/authManager.js?v=1.2"></script>
     <script src="../components/shared/apiClient.js?v=1.2"></script>
@@ -746,15 +746,15 @@
     <!-- Comments System -->
     <script src="../components/shared/comments.js?v=1.0"></script>
     
-    <!-- Initialize MLNF -->
+    <!-- Initialize Immortal Nexus -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // mlnf-core.js handles component initialization automatically
             
-            // Initialize MLNF Avatar System
-            if (!window.MLNFAvatars && window.MLNFAvatarSystem) {
-                window.MLNFAvatars = new window.MLNFAvatarSystem();
-                console.log('[Profile] MLNF Avatar System initialized');
+            // Initialize Immortal Nexus Avatar System
+            if (!window.Immortal NexusAvatars && window.Immortal NexusAvatarSystem) {
+                window.Immortal NexusAvatars = new window.Immortal NexusAvatarSystem();
+                console.log('[Profile] Immortal Nexus Avatar System initialized');
             }
             
             loadProfile();
@@ -799,10 +799,10 @@
                 loadUserBlogs(username);
                 
                 // Initialize profile comments
-                if (window.MLNF && window.MLNF.CommentsSystem) {
+                if (window.Immortal Nexus && window.Immortal Nexus.CommentsSystem) {
                     console.log('[Profile] Initializing comments for profile:', username);
                     try {
-                        const commentsInstance = new window.MLNF.CommentsSystem('profile', username, 'profileComments');
+                        const commentsInstance = new window.Immortal Nexus.CommentsSystem('profile', username, 'profileComments');
                         console.log('[Profile] Comments system initialized successfully');
                     } catch (error) {
                         console.error('[Profile] Failed to initialize comments:', error);
@@ -845,9 +845,9 @@
             const username = profileHeader.querySelector('.profile-username');
             const status = profileHeader.querySelector('.profile-status');
 
-            // Use MLNF Avatar System for consistent avatar handling
-            if (avatar && window.MLNFAvatars) {
-                const avatarUrl = window.MLNFAvatars.generateAvatarUrl(
+            // Use Immortal Nexus Avatar System for consistent avatar handling
+            if (avatar && window.Immortal NexusAvatars) {
+                const avatarUrl = window.Immortal NexusAvatars.generateAvatarUrl(
                     userData.username,
                     150, // Large size for profile
                     userData.avatar

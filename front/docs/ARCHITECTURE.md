@@ -712,7 +712,7 @@ class RealTimeStatusUpdater {
 ```
 
 #### **Domain & SSL**
-- Custom domain: mlnf.net
+- Custom domain: immortal.nexus
 - Automatic SSL certificate renewal
 - CDN edge caching globally
 

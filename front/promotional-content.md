@@ -60,9 +60,9 @@ Will you remain trapped in the digital prison of mainstream platforms, where you
 
 ### **Your Choice Defines Eternity:**
 
-🔗 **[EMBRACE IMMORTALITY](https://mlnf.net)** - Join the Sanctuary  
-🌟 **[ENTER THE NEXUS](https://mlnf.net/souls)** - Find Your Tribe  
-⚡ **[MANIFEST TRUTH](https://mlnf.net/pages/blog.html)** - Share Your Voice  
+🔗 **[EMBRACE IMMORTALITY](https://immortal.nexus)** - Join the Sanctuary  
+🌟 **[ENTER THE NEXUS](https://immortal.nexus/souls)** - Find Your Tribe  
+⚡ **[MANIFEST TRUTH](https://immortal.nexus/pages/blog.html)** - Share Your Voice  
 
 ---
 

@@ -19,7 +19,7 @@
 **Manifest Liberation, Naturally Free (MLNF)** is a community platform for free thinkers built with vanilla JavaScript frontend and Express.js/MongoDB backend.
 
 ### **Current Production URLs**
-- **Frontend**: https://mlnf.net (Netlify)
+- **Frontend**: https://immortal.nexus (Netlify)
 - **Backend API**: https://mlnf-auth.onrender.com/api (Render)
 
 ### **Local Development Structure**

@@ -1988,7 +1988,7 @@
     
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 
-    <!-- Shared MLNF Scripts -->
+    <!-- Shared Immortal Nexus Scripts -->
     <!-- Config MUST be loaded first -->
     <script src="components/shared/config.js?v=2.0"></script>
     <script src="components/shared/mlnf-core.js?v=1.3"></script>
@@ -1997,7 +1997,7 @@
     <script src="components/shared/authModal.js?v=2.1"></script>
     <script src="components/shared/messageModal.js?v=2.5"></script>
     <script src="components/shared/activeUsers.js?v=1.6"></script>
-    <!-- End Shared MLNF Scripts -->
+    <!-- End Shared Immortal Nexus Scripts -->
 
     <!-- <script src="js/scripts.js?v=1.0"></script> --> <!-- Legacy script - functionality moved to components -->
     <script src="js/main.js?v=2.3"></script>
@@ -2039,7 +2039,7 @@
             
             const token = localStorage.getItem('sessionToken');
             if (!token) {
-                window.MLNF.openSoulModal('login');
+                window.Immortal Nexus.openSoulModal('login');
                 return;
             }
             
@@ -2056,7 +2056,7 @@
                 let response;
                 if (selectedDraftId) {
                     // Update existing draft to published
-                    response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/blogs/${selectedDraftId}`, {
+                    response = await fetch(`${window.Immortal Nexus_CONFIG.API_BASE_URL}/blogs/${selectedDraftId}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
@@ -2070,7 +2070,7 @@
                     });
                 } else {
                     // Create new post
-                    response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/blogs`, {
+                    response = await fetch(`${window.Immortal Nexus_CONFIG.API_BASE_URL}/blogs`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -2125,7 +2125,7 @@
             
             const token = localStorage.getItem('sessionToken');
             if (!token) {
-                window.MLNF.openSoulModal('login');
+                window.Immortal Nexus.openSoulModal('login');
                 return;
             }
             
@@ -2142,7 +2142,7 @@
                 let response;
                 if (selectedDraftId) {
                     // Update existing draft
-                    response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/blogs/${selectedDraftId}`, {
+                    response = await fetch(`${window.Immortal Nexus_CONFIG.API_BASE_URL}/blogs/${selectedDraftId}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
@@ -2156,7 +2156,7 @@
                     });
                 } else {
                     // Create new draft
-                    response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/blogs`, {
+                    response = await fetch(`${window.Immortal Nexus_CONFIG.API_BASE_URL}/blogs`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -2203,7 +2203,7 @@
             if (!token) return;
             
             try {
-                const response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/blogs/my/drafts`, {
+                const response = await fetch(`${window.Immortal Nexus_CONFIG.API_BASE_URL}/blogs/my/drafts`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -2243,7 +2243,7 @@
             if (!token) return;
             
             try {
-                const response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/blogs/${selectedDraftId}`, {
+                const response = await fetch(`${window.Immortal Nexus_CONFIG.API_BASE_URL}/blogs/${selectedDraftId}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -2469,7 +2469,7 @@
                 // Save to backend API
                 const token = localStorage.getItem('sessionToken');
                 if (token) {
-                    const apiBaseUrl = window.MLNF_CONFIG?.API_BASE_URL || 'https://mlnf-auth.onrender.com/api';
+                    const apiBaseUrl = window.Immortal Nexus_CONFIG?.API_BASE_URL || 'https://mlnf-auth.onrender.com/api';
                     const response = await fetch(`${apiBaseUrl}/users/me`, {
                         method: 'PATCH',
                         headers: {
@@ -2580,7 +2580,7 @@
                 // Save to backend API
                 const token = localStorage.getItem('sessionToken');
                 if (token) {
-                    const apiBaseUrl = window.MLNF_CONFIG?.API_BASE_URL || 'https://mlnf-auth.onrender.com/api';
+                    const apiBaseUrl = window.Immortal Nexus_CONFIG?.API_BASE_URL || 'https://mlnf-auth.onrender.com/api';
                     const response = await fetch(`${apiBaseUrl}/users/me`, {
                         method: 'PATCH',
                         headers: {
@@ -2632,9 +2632,9 @@
             if (avatar) {
                 if (userData.avatar) {
                     avatar.src = userData.avatar;
-                } else if (userData.username && window.MLNFAvatarSystem) {
-                    // Use MLNF Avatar System fallback if no custom avatar
-                    avatar.src = window.MLNFAvatarSystem.generateAvatarUrl(userData.username);
+                } else if (userData.username && window.Immortal NexusAvatarSystem) {
+                    // Use Immortal Nexus Avatar System fallback if no custom avatar
+                    avatar.src = window.Immortal NexusAvatarSystem.generateAvatarUrl(userData.username);
                 } else {
                     avatar.src = '/assets/images/default.jpg';
                 }
@@ -2948,7 +2948,7 @@
             }
             
             try {
-                const apiBaseUrl = window.MLNF_CONFIG?.API_BASE_URL || 'https://mlnf-auth.onrender.com/api';
+                const apiBaseUrl = window.Immortal Nexus_CONFIG?.API_BASE_URL || 'https://mlnf-auth.onrender.com/api';
                 // Fetching profile data
                 
                 const response = await fetch(`${apiBaseUrl}/users/me`, {
@@ -3120,7 +3120,7 @@
             };
             
             try {
-                const apiBaseUrl = window.MLNF_CONFIG?.API_BASE_URL || 'https://mlnf-auth.onrender.com/api';
+                const apiBaseUrl = window.Immortal Nexus_CONFIG?.API_BASE_URL || 'https://mlnf-auth.onrender.com/api';
                 const response = await fetch(`${apiBaseUrl}/users/me`, {
                     method: 'PUT',
                     headers: {
@@ -3177,7 +3177,7 @@
             saveBtn.disabled = true;
             
             try {
-                const apiBaseUrl = window.MLNF_CONFIG?.API_BASE_URL || 'https://mlnf-auth.onrender.com/api';
+                const apiBaseUrl = window.Immortal Nexus_CONFIG?.API_BASE_URL || 'https://mlnf-auth.onrender.com/api';
                 const response = await fetch(`${apiBaseUrl}/users/me`, {
                     method: 'PUT',
                     headers: {
@@ -3463,7 +3463,7 @@
                 installBanner.innerHTML = `
                     <div class="install-content">
                         <i class="fas fa-download"></i>
-                        <span>Install MLNF for a better experience</span>
+                        <span>Install Immortal Nexus for a better experience</span>
                         <button class="install-btn">Install</button>
                         <button class="dismiss-btn">×</button>
                     </div>
@@ -3494,7 +3494,7 @@
                     shareBtn.addEventListener('click', async () => {
                         try {
                             await navigator.share({
-                                title: 'MLNF - Manifest Liberation, Naturally Free',
+                                title: 'Immortal Nexus - Immortal Nexus',
                                 text: 'Join me in the eternal sanctuary for free-thinking immortal souls',
                                 url: window.location.href
                             });
@@ -3567,6 +3567,6 @@
     <!-- Avatar System -->
     <script src="js/mlnf-avatar-system.js?v=2.1"></script>
     
-    <!-- Initialize MLNF and Particles -->
+    <!-- Initialize Immortal Nexus and Particles -->
 </body>
 </html>

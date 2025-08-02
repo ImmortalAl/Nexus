@@ -116,7 +116,7 @@ function createParticle() {
 // Fetch current user data (Restored)
 async function fetchCurrentUser() {
     if (window.MOCK_LOGGED_IN_STATE === true) {
-        return { username: 'MockUser', displayName: 'Mock Immortal', email: 'mock@mlnf.net', avatar: 'https://i.pravatar.cc/40?u=mockuser' };
+        return { username: 'MockUser', displayName: 'Mock Immortal', email: 'mock@immortal.nexus', avatar: 'https://i.pravatar.cc/40?u=mockuser' };
     }
     const token = localStorage.getItem('sessionToken');
     if (!token) {

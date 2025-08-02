@@ -113,7 +113,7 @@ find /home/immortalal/sites/mlnf/front -name "*.html" | sort
 2. **Check for CORS Issues**
    ```bash
    # Verify API endpoints are accessible
-   curl -I https://api.mlnf.net/status
+   curl -I https://api.immortal.nexus/status
    ```
 
 ### 4. 📱 Mobile Responsiveness Issues
@@ -168,7 +168,7 @@ console.log('Auth manager:', window.MLNF?.authManager);
 2. **Check API Connectivity**
    ```bash
    # Test authentication endpoint
-   curl -X POST https://api.mlnf.net/auth/login \
+   curl -X POST https://api.immortal.nexus/auth/login \
      -H "Content-Type: application/json" \
      -d '{"username":"test","password":"test"}'
    ```
@@ -185,7 +185,7 @@ console.log('Auth manager:', window.MLNF?.authManager);
    git log --oneline -3
    
    # Check if files were actually deployed
-   curl -I https://mlnf.net/css/styles.css
+   curl -I https://immortal.nexus/css/styles.css
    ```
 
 2. **Force CDN Cache Clear**
@@ -205,7 +205,7 @@ ls -la /home/immortalal/sites/mlnf/front/pages/
 ls -la /home/immortalal/sites/mlnf/front/souls/
 
 # Check for API connectivity
-curl https://api.mlnf.net/news/latest
+curl https://api.immortal.nexus/news/latest
 ```
 
 ### 8. 🎯 Performance Issues
@@ -267,7 +267,7 @@ console.log('Connection state:', window.MLNF?.websocket?.ws?.readyState);
 1. **Check WebSocket URL**
    ```javascript
    // Verify correct WebSocket endpoint
-   const ws = new WebSocket('wss://api.mlnf.net/ws');
+   const ws = new WebSocket('wss://api.immortal.nexus/ws');
    ws.onopen = () => console.log('WebSocket connected');
    ws.onerror = (err) => console.log('WebSocket error:', err);
    ```
@@ -275,7 +275,7 @@ console.log('Connection state:', window.MLNF?.websocket?.ws?.readyState);
 2. **Test Network Connectivity**
    ```bash
    # Check if WebSocket endpoint is accessible
-   curl -I https://api.mlnf.net/
+   curl -I https://api.immortal.nexus/
    ```
 
 ### 10. 🖼️ Image Loading Issues
@@ -326,8 +326,8 @@ git log --oneline -10
 ls -la /home/immortalal/sites/mlnf/front/{pages,components,css,js}/
 
 # Test live site connectivity
-curl -I https://mlnf.net
-curl -I https://api.mlnf.net
+curl -I https://immortal.nexus
+curl -I https://api.immortal.nexus
 ```
 
 ### Force Deployment
@@ -367,7 +367,7 @@ console.log('User logged in:', !!localStorage.getItem('sessionToken'));
 console.log('User data:', JSON.parse(localStorage.getItem('user') || 'null'));
 
 // Test API connectivity
-fetch('https://api.mlnf.net/status')
+fetch('https://api.immortal.nexus/status')
   .then(r => r.json())
   .then(console.log)
   .catch(console.error);

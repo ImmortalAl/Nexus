@@ -549,7 +549,7 @@ const headers = {
 ## 🚀 Deployment
 
 ### **Frontend (Netlify)**
-- **URL**: https://mlnf.net
+- **URL**: https://immortal.nexus
 - **Deployment**: Auto-deploy via GitHub integration
 - **Configuration**: `_redirects` file handles routing
 - **Domain**: Custom domain with SSL

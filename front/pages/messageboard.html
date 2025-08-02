@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Echoes Unbound - MLNF Message Board</title>
+    <title>Echoes Unbound - Immortal Nexus Message Board</title>
     <!-- Immortal-themed favicon -->
     <link rel="icon" type="image/svg+xml" href="../favicon.svg">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
@@ -95,7 +95,7 @@
         <!-- Populated by navigation.js -->
         <div class="logo">
             <i class="fas fa-infinity"></i>
-            <h1>MLNF</h1>
+            <h1>Immortal Nexus</h1>
         </div>
         <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation">
             <i class="fas fa-bars"></i>
@@ -294,7 +294,7 @@
         </div>
     </div>
 
-    <!-- Core MLNF Components -->
+    <!-- Core Immortal Nexus Components -->
     <script src="../components/shared/config.js?v=1.4"></script>
     <script src="../components/shared/apiClient.js?v=1.2"></script>
     <script src="../components/shared/authManager.js?v=1.2"></script>
@@ -636,14 +636,14 @@
         
         // After creating the HTML, add unified user displays
         setTimeout(() => {
-            if (!window.MLNFAvatars) return;
+            if (!window.Immortal NexusAvatars) return;
 
             threads.forEach(thread => {
                 const threadElement = threadList.querySelector(`.thread[data-id='${thread._id}']`);
                 if (threadElement && thread.author) {
                     const authorContainer = threadElement.querySelector('.thread-author-info');
                     if (authorContainer && authorContainer.children.length === 0) {
-                        const authorDisplay = window.MLNFAvatars.createUserDisplay({
+                        const authorDisplay = window.Immortal NexusAvatars.createUserDisplay({
                             username: thread.author.username || 'Anonymous',
                             title: thread.author.title || 'Echo Author',
                             avatarSize: 'xs',
@@ -1075,14 +1075,14 @@
         });
 
         function enhanceReplies(replies) {
-            if (!window.MLNFAvatars) return;
+            if (!window.Immortal NexusAvatars) return;
 
             replies.forEach((reply) => {
                 const replyElement = document.querySelector(`.reply[data-id='${reply._id}']`);
                 if (replyElement && reply.author) {
                     const authorContainer = replyElement.querySelector('.reply-author-info');
                     if (authorContainer && authorContainer.children.length === 0) {
-                        const authorDisplay = window.MLNFAvatars.createUserDisplay({
+                        const authorDisplay = window.Immortal NexusAvatars.createUserDisplay({
                             username: reply.author.username || 'Anonymous',
                             title: 'Echo Responder',
                             avatarSize: 'xs',
@@ -1798,7 +1798,7 @@
     });
     </script>
     
-    <!-- Required Scripts for MLNF Avatar System -->
+    <!-- Required Scripts for Immortal Nexus Avatar System -->
     <script src="../js/mlnf-avatar-system.js?v=2.1"></script>
     
     <!-- Analytics Tracking System -->

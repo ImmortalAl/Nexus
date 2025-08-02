@@ -501,7 +501,7 @@ This file documents the complete development history and session logs for the ML
     *   **Error Handling:** Improved feedback for authentication failures with specific error messages
 
 **Technical Architecture Confirmed:**
-*   **Profile URL Flow:** `https://mlnf.net/souls/username` → Netlify redirects → `/souls/[username].html` → JavaScript extracts username → API call → Dynamic rendering
+*   **Profile URL Flow:** `https://immortal.nexus/souls/username` → Netlify redirects → `/souls/[username].html` → JavaScript extracts username → API call → Dynamic rendering
 *   **Authentication Flow:** Registration → Backend returns token + user data → Frontend stores both → Auto-login → UI refresh
 *   **API Endpoints:** All authentication and user management endpoints verified and functional
 
@@ -856,7 +856,7 @@ All notable changes to the MLNF project are documented here, organized by develo
 - Netlify frontend deployment setup
 - Render backend deployment configuration
 - MongoDB Atlas database hosting
-- Custom domain configuration (mlnf.net)
+- Custom domain configuration (immortal.nexus)
 
 ---
 

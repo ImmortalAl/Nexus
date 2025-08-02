@@ -71,7 +71,7 @@ EMAIL_HOST=smtp.gmail.com           # Or your preferred SMTP service
 EMAIL_PORT=465                      # 465 for SSL, 587 for TLS
 EMAIL_USER=your-email@domain.com    # SMTP username
 EMAIL_PASS=your-app-password        # SMTP password/API key
-EMAIL_FROM=Ancient Scrolls <noreply@mlnf.net>  # Optional sender address
+EMAIL_FROM=Ancient Scrolls <noreply@immortal.nexus>  # Optional sender address
 ```
 
 **Backend Status:** ✅ Ready - `back/routes/owls.js` already implements full email functionality
