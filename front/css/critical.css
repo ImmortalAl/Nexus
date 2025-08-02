@@ -27,11 +27,10 @@ html {
 
 body {
     /* Primary background with fallback */
-    background-color: var(--background, #0d0d1a) !important; /* Fallback solid color */
-    background: 
-        linear-gradient(180deg, rgba(13, 13, 26, 0.2), var(--primary)), 
-        url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&w=2070&q=80') center/cover fixed !important;
-    /* Ensure fixed attachment works properly */
+    background-color: #ff0000 !important; /* BRIGHT RED FOR TESTING */
+    background-image: url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&w=2070&q=80') !important;
+    background-position: center center !important;
+    background-size: cover !important;
     background-attachment: fixed !important;
     background-repeat: no-repeat !important;
     color: var(--text);
