@@ -26,9 +26,7 @@ Welcome to the **Immortal Nexus** documentation crypt. All project grimoires hav
 - **[VERSIONING-GUIDE.md](./VERSIONING-GUIDE.md)** - Cache-busting sorcery
 
 ### **🎨 Gothic Aesthetics**
-- **[CSS-GUIDE.md](./CSS-GUIDE.md)** - Styling the darkness
-- **[CSS-OPTIMIZATION-REPORT.md](./CSS-OPTIMIZATION-REPORT.md)** - Performance necromancy
-- **[FEATURES-CSS-ANALYSIS.md](./FEATURES-CSS-ANALYSIS.md)** - Deep style archaeology
+- **[CSS-HARMONY-GUIDE.md](./CSS-HARMONY-GUIDE.md)** - Complete unified styling guide
 - **[avatar-system.md](./avatar-system.md)** - Soul visualization system
 
 ### **📜 Chronicles of Change**
@@ -53,7 +51,7 @@ Welcome to the **Immortal Nexus** documentation crypt. All project grimoires hav
 → See [DEVELOPMENT.md](./DEVELOPMENT.md) 
 
 ### **Crafting gothic styles?**
-→ See [CSS-GUIDE.md](./CSS-GUIDE.md) 
+→ See [CSS-HARMONY-GUIDE.md](./CSS-HARMONY-GUIDE.md) 
 
 ### **Understanding the eternal architecture?**
 → See [ARCHITECTURE.md](./ARCHITECTURE.md) 
