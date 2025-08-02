@@ -1,6 +1,6 @@
 [build]
-  # Build from the front directory  
-  base = "./front"
+  # Build from the root directory
+  base = "."
   publish = "./front"
 
 # Production context (main branch)
@@ -11,31 +11,7 @@
 [build.environment]
   NODE_VERSION = "18"
 
-# Redirects (moved from front/_redirects for root-level config)
-[[redirects]]
-  from = "/profile"
-  to = "/profile/index.html"
-  status = 200
-
-[[redirects]]
-  from = "/souls"
-  to = "/souls/index.html"
-  status = 200
-
-[[redirects]]
-  from = "/souls/:username"
-  to = "/souls/profile.html?user=:username"
-  status = 200
-
-[[redirects]]
-  from = "/souls/*"
-  to = "/souls/index.html"
-  status = 200
-
-[[redirects]]
-  from = "/pages/souls/profile.html"
-  to = "/souls/"
-  status = 301
+# Redirects are handled by front/_redirects file
 
 # Headers for security and performance
 [[headers]]
