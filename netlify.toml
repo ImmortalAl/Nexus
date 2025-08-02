@@ -14,7 +14,7 @@
 # Redirects (moved from front/_redirects for root-level config)
 [[redirects]]
   from = "/profile"
-  to = "/pages/profile-setup.html"
+  to = "/profile/index.html"
   status = 200
 
 [[redirects]]
