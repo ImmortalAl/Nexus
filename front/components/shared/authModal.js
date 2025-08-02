@@ -1,7 +1,7 @@
 // authModal.js - Handles the Soul Modal for authentication
 
 // Constants are now in config.js and accessed via window.MLNF_CONFIG
-// const API_BASE_URL = 'https://mlnf-auth.onrender.com/api'; // REMOVED
+// const API_BASE_URL = 'https://nexus.onrender.com/api'; // REMOVED
 
 // Create and inject the Soul Modal
 function injectSoulModal() {

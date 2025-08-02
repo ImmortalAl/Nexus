@@ -2469,7 +2469,7 @@
                 // Save to backend API
                 const token = localStorage.getItem('sessionToken');
                 if (token) {
-                    const apiBaseUrl = window.Immortal Nexus_CONFIG?.API_BASE_URL || 'https://mlnf-auth.onrender.com/api';
+                    const apiBaseUrl = window.Immortal Nexus_CONFIG?.API_BASE_URL || 'https://nexus.onrender.com/api';
                     const response = await fetch(`${apiBaseUrl}/users/me`, {
                         method: 'PATCH',
                         headers: {
@@ -2580,7 +2580,7 @@
                 // Save to backend API
                 const token = localStorage.getItem('sessionToken');
                 if (token) {
-                    const apiBaseUrl = window.Immortal Nexus_CONFIG?.API_BASE_URL || 'https://mlnf-auth.onrender.com/api';
+                    const apiBaseUrl = window.Immortal Nexus_CONFIG?.API_BASE_URL || 'https://nexus.onrender.com/api';
                     const response = await fetch(`${apiBaseUrl}/users/me`, {
                         method: 'PATCH',
                         headers: {
@@ -2948,7 +2948,7 @@
             }
             
             try {
-                const apiBaseUrl = window.Immortal Nexus_CONFIG?.API_BASE_URL || 'https://mlnf-auth.onrender.com/api';
+                const apiBaseUrl = window.Immortal Nexus_CONFIG?.API_BASE_URL || 'https://nexus.onrender.com/api';
                 // Fetching profile data
                 
                 const response = await fetch(`${apiBaseUrl}/users/me`, {
@@ -3120,7 +3120,7 @@
             };
             
             try {
-                const apiBaseUrl = window.Immortal Nexus_CONFIG?.API_BASE_URL || 'https://mlnf-auth.onrender.com/api';
+                const apiBaseUrl = window.Immortal Nexus_CONFIG?.API_BASE_URL || 'https://nexus.onrender.com/api';
                 const response = await fetch(`${apiBaseUrl}/users/me`, {
                     method: 'PUT',
                     headers: {
@@ -3177,7 +3177,7 @@
             saveBtn.disabled = true;
             
             try {
-                const apiBaseUrl = window.Immortal Nexus_CONFIG?.API_BASE_URL || 'https://mlnf-auth.onrender.com/api';
+                const apiBaseUrl = window.Immortal Nexus_CONFIG?.API_BASE_URL || 'https://nexus.onrender.com/api';
                 const response = await fetch(`${apiBaseUrl}/users/me`, {
                     method: 'PUT',
                     headers: {

@@ -102,7 +102,7 @@ class MLNFProfilePreview {
     
     static async fetchUserData(username) {
         // Use existing API pattern from the site
-        const response = await fetch(`https://mlnf-auth.onrender.com/api/users/${username}`);
+        const response = await fetch(`https://nexus.onrender.com/api/users/${username}`);
         if (!response.ok) {
             throw new Error(`Profile not found: ${response.status}`);
         }

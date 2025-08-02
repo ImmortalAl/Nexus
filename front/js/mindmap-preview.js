@@ -53,7 +53,7 @@ class MindmapPreview {
     async loadPreviewData() {
         try {
             console.log('MindmapPreview: Loading preview data...');
-            const apiBaseUrl = window.MLNF_CONFIG?.API_BASE_URL || 'https://mlnf-auth.onrender.com/api';
+            const apiBaseUrl = window.MLNF_CONFIG?.API_BASE_URL || 'https://nexus.onrender.com/api';
             const response = await fetch(`${apiBaseUrl}/mindmap/preview`);
             
             if (!response.ok) {

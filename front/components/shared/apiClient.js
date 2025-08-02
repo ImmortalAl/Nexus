@@ -9,7 +9,7 @@ const apiClient = {
     /**
      * The base URL for all API requests.
      */
-    baseURL: window.MLNF_CONFIG?.API_BASE_URL || 'https://mlnf-auth.onrender.com/api',
+    baseURL: window.MLNF_CONFIG?.API_BASE_URL || 'https://nexus.onrender.com/api',
 
     /**
      * Performs a GET request.

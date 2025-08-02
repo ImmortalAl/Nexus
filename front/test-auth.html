@@ -35,7 +35,7 @@
             
             // Test whoami endpoint
             try {
-                const response = await fetch('https://mlnf-auth.onrender.com/api/debug/whoami', {
+                const response = await fetch('https://nexus.onrender.com/api/debug/whoami', {
                     headers: { 'Authorization': `Bearer ${testToken}` }
                 });
                 
@@ -50,7 +50,7 @@
                     
                     // Test feedback endpoint
                     try {
-                        const feedbackResponse = await fetch('https://mlnf-auth.onrender.com/api/messages/feedback', {
+                        const feedbackResponse = await fetch('https://nexus.onrender.com/api/messages/feedback', {
                             headers: { 'Authorization': `Bearer ${testToken}` }
                         });
                         

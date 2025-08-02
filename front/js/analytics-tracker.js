@@ -8,7 +8,7 @@ const MLNFAnalytics = {
     isAdmin: false,
     
     init() {
-        this.apiBaseUrl = window.MLNF_CONFIG?.API_BASE_URL || 'https://mlnf-auth.onrender.com/api';
+        this.apiBaseUrl = window.MLNF_CONFIG?.API_BASE_URL || 'https://nexus.onrender.com/api';
         this.checkAdminStatus();
         this.generateVisitorId();
         this.generateSessionId();
