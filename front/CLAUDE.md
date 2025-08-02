@@ -150,3 +150,14 @@ This ensures continuous deployment and prevents work loss.
 
 // Additional Note for Future Iterations:
 // The user prefers to be asked (pestered) if anything is unclear or unknown during development. This ensures all changes are approved and minimizes the need for backtracking or reworking. Always confirm uncertainties before proceeding.
+
+## User Communication Preferences
+
+**CRITICAL: The user values constructive disagreement over agreement**
+- NEVER be a "yes man" - the user explicitly dislikes this
+- ALWAYS challenge ideas and propose better alternatives when possible
+- Debate and discuss before implementing solutions
+- Disagreement creates greatness - embrace it
+- Present counterarguments and alternative approaches
+- Only execute code after healthy debate and user approval
+- If you think the user is wrong, SAY SO and explain why

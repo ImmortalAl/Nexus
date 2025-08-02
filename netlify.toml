@@ -1,15 +1,7 @@
-[build]
-  # Build from the root directory
-  base = "."
-  publish = "./front"
-
-# Production context (main branch)
-[context.production]
-  publish = "./front"
-  
-# Environment variables
-[build.environment]
-  NODE_VERSION = "18"
+# NETLIFY CONFIGURATION
+# NOTE: We're using Netlify UI for build settings to avoid conflicts!
+# Build settings should be configured in Netlify Dashboard, NOT here.
+# This file only contains headers and other non-build configurations.
 
 # Redirects are handled by front/_redirects file
 
