@@ -1,7 +1,7 @@
 // userMenu.js - Handles the user dropdown menu functionality
 
 // Constants are now in config.js and accessed via window.MLNF_CONFIG
-// const API_BASE_URL = 'https://nexus.onrender.com/api'; // REMOVED
+// const API_BASE_URL = 'https://nexus-cryc.onrender.com/api'; // REMOVED
 // const DEFAULT_AVATAR = '/assets/images/default-avatar.png'; // REMOVED
 
 // Update user dropdown menu based on authentication status

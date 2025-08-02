@@ -6,7 +6,7 @@ const AdminDashboard = {
     refreshInterval: null,
 
     init() {
-        this.apiBaseUrl = window.MLNF_CONFIG?.API_BASE_URL || 'https://nexus.onrender.com/api';
+        this.apiBaseUrl = window.MLNF_CONFIG?.API_BASE_URL || 'https://nexus-cryc.onrender.com/api';
         this.setupAdminNavigation();
         this.loadDashboardData();
         this.startAutoRefresh();
