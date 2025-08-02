@@ -1,73 +1,85 @@
-# MLNF Documentation Index
+# Immortal Nexus Documentation Sanctum
 
-Welcome to the **Manifest Liberation, Naturally Free** documentation center. All project documentation has been organized here for easy navigation and maintenance.
+Welcome to the **Immortal Nexus** documentation crypt. All project grimoires have been organized here for those brave enough to explore the eternal architecture.
 
 ## 📚 Documentation Structure
 
-### **🚀 Getting Started**
-- **[FEATURES.md](./FEATURES.md)** - Complete feature overview and development roadmap
-  - **Contains**: All completed features (messaging, blogging, feedback)
-  - **Contains**: Current development priorities and implementation status
-  - **Contains**: Owl messaging email setup instructions
+### **🦇 The Monorepo Tomb**
+- **[MONOREPO-GUIDE.md](./MONOREPO-GUIDE.md)** - Guide to our dual-chamber structure
+  - Frontend sanctum (`front/`) - Netlify deployment
+  - Backend crypt (`back/`) - Render deployment
+  - Deployment configurations and workflows
 
-### **🛠️ Development**
-- **[DEVELOPMENT.md](./DEVELOPMENT.md)** - Setup instructions, workflow, deployment
-- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Technical architecture and patterns
-- **[API.md](./API.md)** - ✅ **NEW** Backend API documentation with all endpoints
+### **🚀 Awakening the Nexus**
+- **[FEATURES.md](./FEATURES.md)** - Complete catalog of immortal features
+  - Eternal Souls directory system
+  - Soul Scrolls (blog) architecture
+  - Echoes Unbound (messageboard) 
+  - Boundless Chronicles (news)
+  - Clash of Immortals (debate)
+  - Infinite Nexus (mindmap)
 
-### **🎨 Design & Frontend**
-- **[CSS-GUIDE.md](./CSS-GUIDE.md)** - Combined CSS architecture and style guide
-- **[UI-COMPONENTS.md](./UI-COMPONENTS.md)** - Component documentation *(Coming Soon)*
+### **🛠️ Dark Arts Development**
+- **[DEVELOPMENT.md](./DEVELOPMENT.md)** - Rituals for local summoning
+- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - The eternal blueprint
+- **[API.md](./API.md)** - Backend incantations and endpoints
+- **[VERSIONING-GUIDE.md](./VERSIONING-GUIDE.md)** - Cache-busting sorcery
 
-### **📝 Project Management**
-- **[CHANGELOG.md](./CHANGELOG.md)** - Development history and session logs
-- **[AI-ASSISTANT-CONTEXT.md](./AI-ASSISTANT-CONTEXT.md)** - Context for AI development sessions
+### **🎨 Gothic Aesthetics**
+- **[CSS-GUIDE.md](./CSS-GUIDE.md)** - Styling the darkness
+- **[CSS-OPTIMIZATION-REPORT.md](./CSS-OPTIMIZATION-REPORT.md)** - Performance necromancy
+- **[FEATURES-CSS-ANALYSIS.md](./FEATURES-CSS-ANALYSIS.md)** - Deep style archaeology
+- **[avatar-system.md](./avatar-system.md)** - Soul visualization system
 
-## 🎯 Quick Reference
+### **📜 Chronicles of Change**
+- **[CHANGELOG.md](./CHANGELOG.md)** - The eternal record
+- **[DEVELOPMENT_LOG.md](./DEVELOPMENT_LOG.md)** - Session grimoires
+- **[AI-CONTEXT.md](./AI-CONTEXT.md)** - AI assistant summoning guide
 
-### **owl email functionality?**
-→ See [FEATURES.md - Owl Messaging System](./FEATURES.md#-owl-messaging-system)
+### **🌙 Conceptual Tomes**
+- **[SITE-CONCEPT.md](./SITE-CONCEPT.md)** - The immortal vision
+- **[ROADMAP.md](./ROADMAP.md)** - Future resurrections
+- **[DEMOCRACY-3.0-IMPLEMENTATION.md](./DEMOCRACY-3.0-IMPLEMENTATION.md)** - Governance of the eternal
 
-### **Setting up development environment?**
+### **🔮 Troubleshooting Séances**
+- **[SITE-TROUBLESHOOTING.md](./SITE-TROUBLESHOOTING.md)** - Exorcising bugs
+
+## 🎯 Quick Summoning Reference
+
+### **Need to understand the monorepo?**
+→ See [MONOREPO-GUIDE.md](./MONOREPO-GUIDE.md)
+
+### **Setting up your dark workshop?**
 → See [DEVELOPMENT.md](./DEVELOPMENT.md) 
 
-### **Working with CSS/styling?**
+### **Crafting gothic styles?**
 → See [CSS-GUIDE.md](./CSS-GUIDE.md) 
 
-### **Understanding the codebase?**
+### **Understanding the eternal architecture?**
 → See [ARCHITECTURE.md](./ARCHITECTURE.md) 
 
-## 📈 Documentation Migration Status
+### **Debugging the shadows?**
+→ See [SITE-TROUBLESHOOTING.md](./SITE-TROUBLESHOOTING.md)
 
-This documentation center is being created to consolidate and organize scattered documentation files across the project.
+## 🌑 The Immortal Transformation
 
-### ✅ **Completed**
-- [x] Created centralized docs folder
-- [x] **FEATURES.md** - Consolidated all TODOs and feature documentation
-- [x] Added owl email functionality implementation guide
-- [x] **API.md** - ✅ **NEW** Complete API documentation with all endpoints, auth, and data models
+This documentation sanctum chronicles our metamorphosis from "MLNF" to "Immortal Nexus" - a rebirth into eternal darkness and freedom.
 
+### ✅ **Recent Resurrections**
+- [x] Monorepo structure implemented
+- [x] Complete rebrand to Immortal Nexus
+- [x] Domain migration to immortal.nexus
+- [x] Frontend/backend separation
+- [x] Documentation consolidation
 
-### 📋 **Next Steps**
-1. Complete documentation migration
-3. Remove duplicate/outdated documentation files
-4. Set up documentation maintenance workflow
-
-## 🔗 Legacy Documentation
-
-During the migration period, some documentation may still exist in these locations:
-- `../README.md` - Main project README (being streamlined)
-- `../css/README.md` & `../css/STYLE-GUIDE.md` - CSS docs (being merged)
-- `../../DEV-SETUP.md` - Development setup (being incorporated)
-- `../NEXT-SESSION-PROMPT.md` - AI context (being updated)
-
-## 🚀 Project Overview
-
-**MLNF** is a community platform for free thinkers, built with:
-- **Frontend**: Vanilla JavaScript, modular CSS, responsive design
-- **Backend**: Express.js, MongoDB, JWT authentication
-- **Deployment**: Netlify (frontend) + Render (backend)
+### 🦇 **Upcoming Rituals**
+- [ ] Update all technical docs with new branding
+- [ ] Create comprehensive monorepo guide
+- [ ] Consolidate redundant documentation
+- [ ] Add deployment playbooks
 
 ---
 
-*This documentation center is actively maintained. Last updated: June 8, 2025* 
+*"In darkness, we find eternal truth. In documentation, we find eternal wisdom."*
+
+Last updated by the Gothic Scribe: ${new Date().toISOString()}

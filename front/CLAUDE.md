@@ -1,4 +1,4 @@
-# MLNF Development Instructions for Claude
+# Immortal Nexus Development Instructions for Claude
 
 ## Critical Git Workflow
 
@@ -59,7 +59,7 @@ sed -i 's/shared\/styles.css?v=[0-9.]*/shared\/styles.css?v=6.0/g' index.html
 ### Features.css Version Bump Commands:
 ```bash
 # Update ALL pages at once - CRITICAL for consistency
-find /home/immortalal/sites/mlnf/front -name "*.html" -exec sed -i 's/features\.css?v=[0-9.]*/features.css?v=5.0/g' {} \;
+find /home/immortalal/sites/Nexus/front -name "*.html" -exec sed -i 's/features\.css?v=[0-9.]*/features.css?v=5.0/g' {} \;
 
 # Or individual pages:
 sed -i 's/features\.css?v=[0-9.]*/features.css?v=5.0/g' index.html
@@ -147,6 +147,19 @@ After completing any task involving file changes, Claude must:
 3. Confirm successful deployment
 
 This ensures continuous deployment and prevents work loss.
+
+## Monorepo Structure
+
+**The Immortal Nexus now dwells in a monorepo tomb:**
+- `front/` - Frontend crypt (Netlify deployment)
+- `back/` - Backend sanctum (Render deployment)
+- Root `netlify.toml` - Configures frontend deployment from `front/` directory
+
+### Important Monorepo Notes:
+- All frontend work happens in `/home/immortalal/sites/Nexus/front/`
+- Backend API remains at `https://mlnf-auth.onrender.com/api`
+- Git operations should be run from the root `/home/immortalal/sites/Nexus/`
+- The `front/` folder contains its own `_redirects` for Netlify routing
 
 // Additional Note for Future Iterations:
 // The user prefers to be asked (pestered) if anything is unclear or unknown during development. This ensures all changes are approved and minimizes the need for backtracking or reworking. Always confirm uncertainties before proceeding.

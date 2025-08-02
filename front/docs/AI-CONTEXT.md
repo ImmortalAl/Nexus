@@ -1,4 +1,4 @@
-# MLNF AI Development Context & Handoff Guide
+# Immortal Nexus AI Development Context & Grimoire of Shadows
 
 ## Table of Contents
 
@@ -16,23 +16,35 @@
 
 ## 🎯 **Project Overview**
 
-**Manifest Liberation, Naturally Free (MLNF)** is a community platform for free thinkers built with vanilla JavaScript frontend and Express.js/MongoDB backend.
+**Immortal Nexus** is an eternal sanctuary for liberated spirits, crafted with vanilla JavaScript sorcery (frontend) and Express.js/MongoDB dark arts (backend).
 
-### **Current Production URLs**
-- **Frontend**: https://immortal.nexus (Netlify)
-- **Backend API**: https://mlnf-auth.onrender.com/api (Render)
+### **Current Production Portals**
+- **Frontend Sanctum**: https://immortal.nexus (Netlify)
+- **Backend Crypt**: https://mlnf-auth.onrender.com/api (Render)
+- **Repository Tomb**: https://github.com/ImmortalAl/Nexus
 
-### **Local Development Structure**
+### **Monorepo Necropolis Structure**
 ```
-C:\Users\coold\Documents\Sites\MLNF\
-├── front/                    # Git repository (Netlify deployment)
-│   ├── docs/                # Documentation center (THIS FOLDER)
-│   └── [frontend files]
-└── back/                     # Backend API (Render deployment)
-    └── [backend files]
+/home/immortalal/sites/Nexus/     # The eternal monorepo
+├── front/                        # Frontend sanctum (Netlify)
+│   ├── docs/                     # Documentation crypt (YOU ARE HERE)
+│   ├── pages/                    # Sacred scrolls
+│   ├── souls/                    # Spirit directory
+│   ├── components/               # Reusable relics
+│   └── _redirects                # Path channeling
+├── back/                         # Backend tomb (Render)
+│   ├── models/                   # Data spirits
+│   ├── routes/                   # API passages
+│   └── middleware/               # Guardian spells
+└── netlify.toml                  # Deployment grimoire
 ```
 
-## 📋 **Current Project Status (December 2024)**
+## 📋 **Current Immortal Status (August 2025)**
+
+### **🦇 The Great Transformation**
+- Successfully migrated from MLNF to Immortal Nexus
+- Implemented monorepo structure for unified deployment
+- Domain resurrection at immortal.nexus complete
 
 ### **✅ Recently Completed**
 - **Admin Panel**: Removed email field from user editing, streamlined for privacy
