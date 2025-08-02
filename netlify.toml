@@ -1,7 +1,9 @@
 # NETLIFY CONFIGURATION
-# NOTE: We're using Netlify UI for build settings to avoid conflicts!
-# Build settings should be configured in Netlify Dashboard, NOT here.
-# This file only contains headers and other non-build configurations.
+
+[build]
+  base = "front"
+  publish = "."
+  command = ""
 
 # Redirects are handled by front/_redirects file
 
