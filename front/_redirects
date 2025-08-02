@@ -3,7 +3,7 @@
 /souls       /souls/index.html           200
 
 # Vanity URL for individual soul profiles - route to dynamic template
-/souls/:username    /souls/[username].html   200
+/souls/:username    /souls/profile.html?user=:username   200
 
 # Fallback for any unmatched souls routes
 /souls/*     /souls/index.html           200

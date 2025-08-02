@@ -766,29 +766,15 @@
             const profileContent = document.getElementById('profileContent');
             
             try {
-                // Get username from URL path (Netlify redirects /souls/username to this template)
-                const pathParts = window.location.pathname.split('/');
-                let username = pathParts[pathParts.length - 1]; // Get last part of path
-                
-                // Remove .html extension if present
-                if (username && username.endsWith('.html')) {
-                    username = username.slice(0, -5); // Remove last 5 characters (.html)
-                }
+                // Get username from query parameter (passed by Netlify redirect)
+                const urlParams = new URLSearchParams(window.location.search);
+                let username = urlParams.get('user') || urlParams.get('username');
                 
                 console.log('[Profile] URL debug:', {
                     pathname: window.location.pathname,
-                    pathParts: pathParts,
-                    extractedUsername: username,
-                    search: window.location.search
+                    search: window.location.search,
+                    extractedUsername: username
                 });
-                
-                // Handle both direct access and Netlify rewrite scenarios
-                if (!username || username === '[username].html' || username === 'index.html' || username === '') {
-                    // Try to get from query parameters as fallback
-                    const urlParams = new URLSearchParams(window.location.search);
-                    username = urlParams.get('user');
-                    console.log('[Profile] Using fallback username from query:', username);
-                }
                 
                 if (!username) {
                     console.error('[Profile] No username found in URL or query parameters');

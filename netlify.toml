@@ -24,7 +24,7 @@
 
 [[redirects]]
   from = "/souls/:username"
-  to = "/souls/[username].html"
+  to = "/souls/profile.html?user=:username"
   status = 200
 
 [[redirects]]
