@@ -21,7 +21,7 @@
 
 ## 🏗️ System Overview
 
-MLNF is a full-stack web application built with a **vanilla JavaScript frontend** and **Express.js/MongoDB backend**, designed for scalability and maintainability.
+Immortal Nexus is a full-stack web application built with a **vanilla JavaScript frontend** and **Express.js/MongoDB backend**, designed for scalability and maintainability.
 
 ### **Architecture Diagram**
 ```
@@ -43,7 +43,7 @@ MLNF is a full-stack web application built with a **vanilla JavaScript frontend*
 - **Core**: Vanilla JavaScript (ES6+)
 - **Styling**: Modular CSS with CSS Variables
 - **Icons**: Font Awesome
-- **Avatar System**: Custom MLNF avatar generation
+- **Avatar System**: Custom Immortal Nexus avatar generation
 - **Deployment**: Netlify with custom domain
 - **CDN**: Netlify Edge Network
 
@@ -229,7 +229,7 @@ souls-listing.css           /* Souls directory only */
 #### **1. Core Avatar Generation**
 ```javascript
 // Located: /js/mlnf-avatar-system.js
-class MLNFAvatarSystem {
+class ImmortalNexusAvatarSystem {
     generateAvatarUrl(username, size, customUrl) {
         // Unique color generation based on username hash
         // UI-Avatars.com integration with fallbacks
@@ -329,7 +329,7 @@ async fetchOnlineUsers() {
 #### **3. Avatar System Integration**
 ```javascript
 // Avatar creation with online status
-const userDisplay = window.MLNFAvatars.createUserDisplay({
+const userDisplay = window.ImmortalNexusAvatars.createUserDisplay({
     username: user.username,
     title: user.title || 'Eternal Soul',
     online: user.online,  // Boolean: true/false/null
@@ -399,7 +399,7 @@ const ComponentName = {
     
     createHTML() {
         // Generate component HTML using avatar system
-        const userDisplay = window.MLNFAvatars.createUserDisplay({
+        const userDisplay = window.ImmortalNexusAvatars.createUserDisplay({
             username: this.username,
             online: this.isOnline,
             enableUnifiedNavigation: true
@@ -415,7 +415,7 @@ const ComponentName = {
     }
 };
 
-// Global MLNF object
+// Global Immortal Nexus object
 window.MLNF = {
     // Component instances and global methods
 };
