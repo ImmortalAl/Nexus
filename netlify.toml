@@ -1,8 +1,7 @@
 [build]
-  # Build from the front directory
+  # Build from the front directory  
   base = "./front"
   publish = "./front"
-  command = "echo 'Static site - no build required'"
 
 # Production context (main branch)
 [context.production]
