@@ -27,13 +27,13 @@ html {
 
 body {
     /* Primary background with fallback */
-    background-color: var(--background, #0d0d1a); /* Fallback solid color */
-    background-image: 
+    background-color: var(--background, #0d0d1a) !important; /* Fallback solid color */
+    background: 
         linear-gradient(180deg, rgba(13, 13, 26, 0.2), var(--primary)), 
-        url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&w=2070&q=80');
-    background-position: center;
-    background-size: cover;
-    background-attachment: fixed;
+        url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&w=2070&q=80') center/cover fixed !important;
+    /* Ensure fixed attachment works properly */
+    background-attachment: fixed !important;
+    background-repeat: no-repeat !important;
     color: var(--text);
     font-family: var(--font-primary, 'Montserrat', sans-serif);
     line-height: 1.6;
@@ -63,13 +63,13 @@ body.light-theme {
     --warning: #ff8f00;
     --danger: #c62828;
     /* Light theme background with fallback */
-    background-color: #ffffff; /* Fallback solid color */
-    background-image: 
+    background-color: #ffffff !important; /* Fallback solid color */
+    background: 
         linear-gradient(180deg, rgba(240, 240, 245, 0.2), #ffffff), 
-        url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2070&q=80');
-    background-position: center;
-    background-size: cover;
-    background-attachment: fixed;
+        url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2070&q=80') center/cover fixed !important;
+    /* Ensure fixed attachment works properly */
+    background-attachment: fixed !important;
+    background-repeat: no-repeat !important;
 }
 
 body.light-theme .feature-card,
@@ -396,6 +396,21 @@ nav.main-nav a.active span::after {
     }
     .header-controls {
         padding-right: 0.5rem; /* Minimal padding for mobile */
+    }
+}
+
+/* ==========================================
+   MOBILE PARALLAX FIX
+   ========================================== */
+
+/* Mobile devices often disable background-attachment: fixed for performance */
+@media (max-width: 768px) {
+    body {
+        background-attachment: scroll !important;
+    }
+    
+    body.light-theme {
+        background-attachment: scroll !important;
     }
 }
 
