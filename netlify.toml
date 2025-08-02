@@ -1,12 +1,12 @@
 [build]
-  # Build from the front/ directory
-  base = "front/"
-  publish = "front/"
+  # Build from the root directory
+  base = "./"
+  publish = "./"
   command = "echo 'Static site - no build required'"
 
 # Production context (main branch)
 [context.production]
-  publish = "front/"
+  publish = "./"
   
 # Environment variables
 [build.environment]
