@@ -1,0 +1,248 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Share timeless reflections in an eternal sanctuary.">
+    <meta name="theme-color" content="#0d0d1a">
+    <title>Soul Scrolls - Manifest Liberation, Naturally Free</title>
+    <!-- Immortal-themed favicon -->
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="apple-touch-icon" href="../favicon.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=MedievalSharp&display=swap" rel="stylesheet">
+    <!-- Quill.js Rich Text Editor -->
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.6/purify.min.js"></script>
+    <!-- Config MUST be loaded first -->
+    <script src="../components/shared/config.js?v=1.4"></script>
+    <!-- 1. THEME FOUNDATION (MUST BE FIRST) -->
+    <link rel="stylesheet" href="../css/base-theme.css">
+    
+    <!-- 2. CRITICAL CSS - Above-fold essentials loaded synchronously -->
+    <link rel="stylesheet" href="../css/critical.css?v=5.3">
+    <link rel="stylesheet" href="../css/blog-critical.css?v=5.3">
+    
+    <!-- 3. GLOBAL STYLES - Site-wide styles loaded synchronously -->
+    <link rel="stylesheet" href="../css/styles.css?v=10.0">
+    
+    <!-- 4. PROGRESSIVE LOADING - Non-critical CSS loaded asynchronously -->
+    <link rel="preload" href="../css/layout.css?v=8.2" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/layout.css?v=8.2"></noscript>
+    
+    <link rel="preload" href="../css/components.css?v=7.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/components.css?v=7.1"></noscript>
+    
+    <link rel="preload" href="../css/features.css?v=6.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/features.css?v=6.3"></noscript>
+    
+    <!-- 5. SHARED COMPONENTS (lazy loaded) -->
+    <link rel="preload" href="../components/shared/styles.css?v=10.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../components/shared/styles.css?v=10.0"></noscript>
+    
+    <link rel="preload" href="../components/shared/rich-text-editor.css?v=2.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../components/shared/rich-text-editor.css?v=2.0"></noscript>
+    
+    <!-- 6. PAGE-SPECIFIC (lazy loaded) -->
+    <link rel="preload" href="../css/active-users.css?v=7.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/active-users.css?v=7.0"></noscript>
+    
+    <!-- Blog-specific modules (lazy loaded) -->
+    <link rel="preload" href="../css/blog-cards.css?v=2.4" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/blog-cards.css?v=2.4"></noscript>
+    
+    <link rel="preload" href="../css/blog-modal.css?v=2.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/blog-modal.css?v=2.3"></noscript>
+    
+    <link rel="preload" href="../css/blog-forms.css?v=2.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/blog-forms.css?v=2.3"></noscript>
+    
+    <link rel="preload" href="../css/blog-comments.css?v=2.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/blog-comments.css?v=2.3"></noscript>
+    
+    <link rel="preload" href="../css/blog-responsive.css?v=2.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/blog-responsive.css?v=2.3"></noscript>
+    
+    <!-- 7. EXTERNAL RESOURCES (lazy loaded) -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer"></noscript>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="/">
+                <i class="fas fa-infinity"></i>
+                <div class="title-stack">
+                    <span class="full-title">
+                        <span class="title-line-one">Manifest Liberation</span>
+                        <span class="title-line-two">Naturally Free</span>
+                    </span>
+                    <span class="short-title">MLNF</span>
+                </div>
+            </a>
+        </div>
+        <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+        <nav class="main-nav">
+            <ul></ul>
+        </nav>
+        <div class="header-controls">
+            <div class="user-menu" id="userMenuContainer"></div> <!-- Populated by userMenu.js -->
+            <div class="header-auth-buttons" id="headerAuthButtonsContainer" style="display: none;">
+                <!-- Populated by userMenu.js when logged out -->
+            </div>
+        </div>
+        
+        <!-- Mobile Navigation -->
+        <div class="mobile-overlay" id="mobileOverlay"></div>
+        <nav class="mobile-nav" id="mobileNav">
+            <div class="sidebar-header">
+                <h2>Eternal Navigation</h2>
+                <button class="close-sidebar" id="closeMobileNav" aria-label="Close mobile navigation">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <ul class="mobile-nav-list">
+                <!-- Links will be dynamically populated -->
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Active Users Sidebar -->
+    <aside class="active-users" id="activeUsers" aria-label="Active users panel">
+        <div class="active-users-header">
+            <h3>Eternal Seekers</h3>
+            <button class="close-sidebar" id="closeUsers" aria-label="Close sidebar">×</button>
+        </div>
+        <div id="userList"></div> <!-- Populated by activeUsers.js -->
+    </aside>
+    <button class="show-users-btn" id="showUsersBtn" aria-label="Show active users"><i class="fas fa-users"></i></button>
+
+    <!-- Message Modal -->
+    <div id="messageModal" class="modal" aria-hidden="true">
+        <div class="message-modal-content" role="dialog" aria-labelledby="messageTitle">
+            <h3 id="messageTitle">Direct Message</h3>
+            <div class="message-history" id="messageHistory"></div>
+            <div>
+                <input type="text" id="messageInput" placeholder="Inscribe your eternal message..." required>
+                <div class="modal-actions">
+                    <button type="submit" id="sendMessageBtn">Send Whisper</button>
+                    <button type="button" id="closeMessageModal">Close Nexus</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="scroll-archive">
+            <h1 class="archive-title">📜 Soul Scrolls</h1>
+            
+            <div id="blogList" class="scroll-grid"></div>
+            
+            <div id="scroll-observer" class="ancient-loader" style="display:none;">
+                <div class="relic-spinner"></div>
+                <div class="loading-text">Unearthing more scrolls...</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Legacy sharing modal - hidden but kept for compatibility -->
+    <div id="sharing-modal" class="parchment-scroll" style="display: none !important;" onclick="if(event.target === this) closeOwlModal()">
+        <div class="incantation-box">
+            <h3>🔗 Share this Scroll</h3>
+            <div class="owl-messenger">
+                <p style="text-align: center; color: var(--ink); margin-bottom: 1rem;">This sharing method has been updated to a more modern approach.</p>
+                <input type="hidden" id="share-url">
+            </div>
+            <button onclick="closeOwlModal()" class="owl-button">Close</button>
+        </div>
+    </div>
+
+    <!-- Full Blog Post Modal -->
+    <div id="blogModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modal-title" aria-describedby="modal-content" style="display:none;">
+        <div class="blog-modal-content" role="document">
+            <!-- Simplified Modal Header -->
+            <div class="modal-header-controls">
+                <button class="close-modal" onclick="closeBlogModal()" aria-label="Close modal">×</button>
+            </div>
+
+            <!-- Loading State -->
+            <div class="modal-loading" id="modalLoading" style="display:none;">
+                <div class="modal-spinner">
+                    <div class="relic-spinner"></div>
+                </div>
+                <p>Unfurling ancient scroll...</p>
+            </div>
+
+            <!-- Modal Content -->
+            <div class="modal-body" id="modalBody">
+                <div class="blog-modal-header">
+                    <div class="modal-author-info">
+                        <!-- MLNF Avatar System will populate this -->
+                    </div>
+                    <!-- Fallback structure for compatibility -->
+                    <div class="scroll-author" style="display: none;">
+                        <a href="#" id="modal-author-link" class="author-avatar">
+                            <img id="modal-author-avatar" src="" alt="">
+                        </a>
+                        <div>
+                            <a href="#" id="modal-author-name-link" class="author-name"></a>
+                            <p id="modal-date" class="date"></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Title Section -->
+                <h2 id="modal-title" class="scroll-title"></h2>
+                
+                <!-- Content -->
+                <article id="modal-content" class="scroll-content" role="main"></article>
+                
+                <!-- Action Buttons -->
+                <div class="modal-actions">
+                    <button id="editPostBtn" class="edit-post-btn" onclick="editCurrentPost()" style="display: none;">
+                        <i class="fas fa-edit"></i> Edit this scroll
+                    </button>
+                    <button id="deletePostBtn" class="delete-post-btn" onclick="confirmDeleteCurrentPost()" style="display: none;">
+                        <i class="fas fa-trash"></i> Delete this scroll
+                    </button>
+                    <button class="whisper-link" onclick="shareCurrentPost()">
+                        <i class="fas fa-share"></i> Share this scroll
+                    </button>
+                    <button class="copy-link-btn" onclick="copyPostLink()">
+                        <i class="fas fa-chain"></i> Copy link
+                    </button>
+                </div>
+                
+                <!-- Comments Section -->
+                <div class="blog-comments">
+                    <div id="blogComments"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Eternal Year 1 - Manifest Liberation, Naturally Free. Eternity is ours.</p>
+    </footer>
+
+    <!-- Rich Text Editor Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+    <script src="../components/shared/rich-text-editor.js?v=1.0"></script>
+    
+    <!-- Core MLNF Components -->
+    <script src="../components/shared/mlnf-core.js?v=1.2"></script>
+    <script src="../js/mlnf-avatar-system.js?v=2.1"></script>
+    <script src="../components/shared/navigation.js?v=1.7"></script>
+    <script src="../components/shared/userMenu.js?v=1.8"></script>
+    <script src="../components/shared/activeUsers.js?v=1.6"></script>
+    <script src="../components/shared/messageModal.js?v=2.5"></script>
+    <script src="../components/shared/comments.js?v=1.2"></script>
+    <script src="../js/blog.js?v=3.0"></script>
+    <!-- <script src="../js/scripts.js?v=1.2"></script> --> <!-- Legacy script - functionality moved to components -->
+    
+    <!-- Analytics Tracking System -->
+    <script src="../js/analytics-tracker.js?v=1.2"></script>
+</body>
+</html>

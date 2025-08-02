@@ -1,0 +1,26 @@
+/* Import modular CSS files */
+@import 'base-theme.css';
+@import 'utilities.css';
+
+/* Layout */
+/* Body background is now handled in critical.css - removing duplicate definitions */
+
+/* Main Layout */
+main {
+    flex: 1;
+    position: relative;
+    z-index: 1;
+}
+
+/* Animations */
+@keyframes pulseBtn {
+    0%, 100% { box-shadow: 0 0 10px rgba(255, 94, 120, 0.3); }
+    50% { box-shadow: 0 0 15px rgba(255, 94, 120, 0.5); }
+}
+
+/* Print Styles */
+@media print {
+    .no-print { display: none !important; }
+    body { background: none !important; }
+    .btn { display: none !important; }
+}

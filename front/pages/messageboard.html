@@ -1,0 +1,1807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echoes Unbound - MLNF Message Board</title>
+    <!-- Immortal-themed favicon -->
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="apple-touch-icon" href="../favicon.svg">
+    
+    <!-- 1. THEME FOUNDATION (MUST BE FIRST) -->
+    <link rel="stylesheet" href="../css/base-theme.css">
+    
+    <!-- 2. CRITICAL CSS - Above-fold essentials loaded synchronously -->
+    <link rel="stylesheet" href="../css/critical.css?v=5.3">
+    
+    <!-- 3. GLOBAL STYLES - Site-wide styling -->
+    <link rel="stylesheet" href="../css/styles.css?v=10.0">
+    
+    <!-- 4. SHARED COMPONENTS -->
+    <link rel="stylesheet" href="../components/shared/styles.css?v=10.0">
+    
+    <!-- 4. PROGRESSIVE LOADING (NON-BLOCKING) -->
+    <link rel="preload" href="../css/layout.css?v=8.2" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="../css/components.css?v=7.1" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="../css/features.css?v=6.3" media="print" onload="this.media='all'">
+    
+    <!-- 5. FALLBACK FOR NON-JS -->
+    <noscript>
+        <link rel="stylesheet" href="../css/layout.css?v=8.2">
+        <link rel="stylesheet" href="../css/components.css?v=7.1">
+        <link rel="stylesheet" href="../css/features.css?v=6.3">
+    </noscript>
+    
+    <!-- 6. PAGE-SPECIFIC (lazy loaded) -->
+    <link rel="preload" href="../css/active-users.css?v=7.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/active-users.css?v=7.0"></noscript>
+    
+    <link rel="preload" href="../css/messageboard.css?v=1.8" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/messageboard.css?v=1.8"></noscript>
+    
+    <!-- Democracy 3.0 Styles -->
+    <link rel="preload" href="../css/democracy.css?v=1.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/democracy.css?v=1.1"></noscript>
+    
+    <!-- 6. EXTERNAL RESOURCES (lazy loaded) -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous"></noscript>
+    
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css"></noscript>
+    
+    <!-- External Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.6/purify.min.js"></script>
+</head>
+<body>
+    <!-- Shared Components -->
+    <aside class="active-users" id="activeUsers" aria-label="Active users panel">
+        <div class="sidebar-header">
+            <h2>Eternal Seekers</h2>
+            <button class="close-sidebar" id="closeUsers" aria-label="Close active users panel">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="userList" class="user-list">
+            <!-- Active users will be populated here -->
+        </div>
+    </aside>
+    <button class="show-users-btn" id="showUsersBtn" aria-label="Show active users"><i class="fas fa-users"></i></button>
+
+    <div id="auth-modal-container">
+        <!-- Populated by authModal.js -->
+    </div>
+    
+    <!-- Message Modal -->
+    <div id="messageModal" class="modal" aria-hidden="true">
+        <div class="modal-content message-modal-content" role="dialog" aria-labelledby="messageTitle">
+            <button class="modal-close" id="closeMessageModal" aria-label="Close message modal">&times;</button>
+            <h3 id="messageTitle">Direct Message</h3>
+            <p id="recipientName">To: Username</p>
+            <div class="message-history" id="messageHistory"></div>
+            <div class="message-input-section">
+                <input type="text" id="messageInput" placeholder="Inscribe your eternal message..." required>
+                <div class="modal-actions">
+                    <button type="submit" id="sendMessageBtn" class="btn btn-primary">Send Whisper</button>
+                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('closeMessageModal').click()">Close Nexus</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <header>
+        <!-- Populated by navigation.js -->
+        <div class="logo">
+            <i class="fas fa-infinity"></i>
+            <h1>MLNF</h1>
+        </div>
+        <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+        <nav class="main-nav">
+            <ul></ul>
+        </nav>
+        <div class="header-controls">
+            <div class="user-menu" id="userMenuContainer"></div>
+            <div class="header-auth-buttons" id="headerAuthButtonsContainer" style="display: none;"></div>
+        </div>
+        
+        <!-- Mobile Navigation -->
+        <div class="mobile-overlay" id="mobileOverlay"></div>
+        <nav class="mobile-nav" id="mobileNav">
+            <div class="sidebar-header">
+                <h2>Eternal Navigation</h2>
+                <button class="close-sidebar" id="closeMobileNav" aria-label="Close mobile navigation">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <ul class="mobile-nav-list"></ul>
+        </nav>
+    </header>
+
+    <main class="messageboard-container container">
+        <section class="lyceum-header">
+            <h2>Echoes Unbound</h2>
+            <p>Engage in eternal discourse</p>
+        </section>
+        <div class="lyceum-grid">
+            <aside class="lyceum-column categories-column" aria-label="Message categories">
+                <h3>Categories</h3>
+                <nav>
+                    <ul>
+                        <li><a href="#" data-category="all" class="active">All Echoes</a></li>
+                        <li><a href="#" data-category="Ideas">Ideas</a></li>
+                        <li><a href="#" data-category="Debates">Debates</a></li>
+                        <li><a href="#" data-category="Trades">Trades</a></li>
+                        <li><a href="#" data-category="Events">Events</a></li>
+                        <li><a href="#" data-category="Governance">Governance</a></li>
+                        <li><a href="#" data-category="Anonymous Whispers">Anonymous Whispers</a></li>
+                    </ul>
+                </nav>
+            </aside>
+            <section class="lyceum-column threads-column" aria-label="Threads">
+                <div class="thread-controls">
+                    <div class="search-bar">
+                        <input type="text" id="threadSearch" placeholder="Search echoes..." />
+                        <button class="btn btn-secondary" id="searchBtn"><i class="fas fa-search"></i></button>
+                        <button class="btn btn-secondary" id="clearSearchBtn" style="display: none;"><i class="fas fa-times"></i></button>
+                    </div>
+                </div>
+                <div id="threadList" class="thread-list">
+                    <!-- Threads will be loaded here -->
+                </div>
+            </section>
+            <section class="lyceum-column details-column" aria-label="Thread details">
+                <div class="active-thread-header">
+                    <button class="btn btn-secondary btn-sm close-thread-btn" id="closeActiveThread">
+                        <i class="fas fa-times"></i> Close
+                    </button>
+                </div>
+                <!-- Selected thread and replies will be loaded here -->
+            </section>
+        </div>
+    </main>
+
+    <!-- Hidden Composer Modal -->
+    <div id="threadComposerModal" class="modal" aria-hidden="true">
+        <div class="modal-content-lg" role="dialog" aria-labelledby="composerTitle">
+            <div class="modal-header">
+                <h3 id="composerTitle">Create a New Echo</h3>
+                <button id="closeComposer" class="close-modal" aria-label="Close composer">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+            <form id="threadForm">
+                <div class="form-group">
+                    <label for="threadTitle">Title</label>
+                    <input type="text" id="threadTitle" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="threadCategory">Category</label>
+                    <select id="threadCategory" name="category" required>
+                        <option value="Ideas">Ideas</option>
+                        <option value="Debates">Debates</option>
+                        <option value="Trades">Trades</option>
+                        <option value="Events">Events</option>
+                        <option value="Governance">Governance</option>
+                        <option value="Anonymous Whispers">Anonymous Whispers</option>
+                    </select>
+                </div>
+                
+                <!-- Governance Proposal Options (shown when Governance is selected) -->
+                <div id="governanceOptions" class="governance-options" style="display: none;">
+                    <div class="governance-type-selector">
+                        <label>
+                            <input type="radio" name="governanceType" value="discussion" checked>
+                            <span class="radio-custom"></span>
+                            <span class="option-label">
+                                <strong>Discussion Thread</strong>
+                                <small>Start a governance discussion without formal voting</small>
+                            </span>
+                        </label>
+                        <label>
+                            <input type="radio" name="governanceType" value="proposal">
+                            <span class="radio-custom"></span>
+                            <span class="option-label">
+                                <strong>Formal Proposal</strong>
+                                <small>Create a proposal that can be voted on by the community</small>
+                            </span>
+                        </label>
+                    </div>
+                    
+                    <div id="proposalDetails" class="proposal-details" style="display: none;">
+                        <div class="form-group">
+                            <label for="proposalType">Proposal Type</label>
+                            <select id="proposalType" name="proposalType">
+                                <option value="feature_request">Feature Request</option>
+                                <option value="policy_change">Policy Change</option>
+                                <option value="moderation_decision">Moderation Decision</option>
+                                <option value="content_guideline">Content Guideline</option>
+                                <option value="community_standard">Community Standard</option>
+                                <option value="resource_allocation">Resource Allocation</option>
+                                <option value="platform_improvement">Platform Improvement</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="proposalPriority">Priority</label>
+                                <select id="proposalPriority" name="proposalPriority">
+                                    <option value="low">Low</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="high">High</option>
+                                    <option value="critical">Critical</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="estimatedEffort">Estimated Effort</label>
+                                <select id="estimatedEffort" name="estimatedEffort">
+                                    <option value="minimal">Minimal</option>
+                                    <option value="low">Low</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="high">High</option>
+                                    <option value="extensive">Extensive</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="votingPeriod">Voting Period (days)</label>
+                            <select id="votingPeriod" name="votingPeriod">
+                                <option value="3">3 days</option>
+                                <option value="7" selected>7 days</option>
+                                <option value="14">14 days</option>
+                                <option value="30">30 days</option>
+                            </select>
+                        </div>
+                        
+                        <div class="governance-info">
+                            <p><i class="fas fa-info-circle"></i> <strong>Formal proposals</strong> will go through community discussion first, then enter a voting phase where all users can approve, reject, or abstain.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="threadTags">Tags (comma-separated)</label>
+                    <input type="text" id="threadTags" name="tags">
+                </div>
+                
+                <!-- Anonymous Toggle (will be shown/hidden by JavaScript) -->
+                <div id="threadComposerAnonymous" class="anonymous-toggle" style="display: none;">
+                    <label class="toggle-container">
+                        <input type="checkbox" id="anonymousToggle">
+                        <span class="toggle-slider"></span>
+                        <span class="toggle-label">
+                            <i class="fas fa-mask"></i> Submit Anonymously
+                        </span>
+                    </label>
+                    <div class="anonymous-info">
+                        <small>Your identity will be hidden from other users while maintaining accountability.</small>
+                    </div>
+                </div>
+                    <div class="form-group">
+                        <label>Content</label>
+                <div id="editor"></div>
+                    </div>
+                    <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Post Thread</button>
+                    </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core MLNF Components -->
+    <script src="../components/shared/config.js?v=1.4"></script>
+    <script src="../components/shared/apiClient.js?v=1.2"></script>
+    <script src="../components/shared/authManager.js?v=1.2"></script>
+    <script src="../components/shared/mlnf-core.js?v=1.2"></script>
+    <script src="../components/shared/navigation.js?v=1.7"></script>
+    <script src="../components/shared/userMenu.js?v=1.8"></script>
+    <script src="../components/shared/authModal.js?v=1.2"></script>
+    <script src="../components/shared/activeUsers.js?v=1.6"></script>
+    <script src="../components/shared/messageModal.js?v=2.5"></script>
+
+    <!-- Democracy 3.0 JavaScript -->
+    <script src="../js/democracy/anonymous-submissions.js?v=1.1"></script>
+    <script src="../js/democracy/community-moderation.js?v=1.4"></script>
+
+    <script>
+    // Global variables and functions for accessibility
+    let threadList, threadComposer, threadForm, currentCategory = '';
+    
+    // Global functions that need to be accessible to onclick handlers
+    window.fetchThreads = async function(searchTerm = '', category = '') {
+        // Authentication validation handled by authManager
+        
+        if (!threadList) threadList = document.getElementById('threadList');
+        threadList.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Summoning eternal echoes...</div>';
+        try {
+            let endpoint = '/threads';
+            const params = new URLSearchParams();
+            
+            if (searchTerm) {
+                params.append('q', searchTerm);
+            }
+            
+            if (category && category !== 'all' && category !== '') {
+                params.append('category', category);
+            }
+            
+            // Add pagination
+            params.append('limit', '20');
+            
+            if (params.toString()) {
+                endpoint += '?' + params.toString();
+            }
+            
+            
+            const response = await window.apiClient.get(endpoint);
+            
+            const threads = response.threads || response;
+            
+            window.renderThreads(threads);
+            
+            // Update category display
+            window.updateCategoryDisplay(category, threads.length);
+            
+        } catch (error) {
+            console.error('Failed to fetch threads:', error);
+            threadList.innerHTML = `<div class="error-state"><i class="fas fa-exclamation-triangle"></i> Failed to load threads. ${error.error || error.message || 'Please try again.'}</div>`;
+        }
+    };
+
+    window.openGovernanceModal = function() {
+        if (!window.authManager.isLoggedIn()) {
+            window.authManager.showLogin();
+            return;
+        }
+        
+        // Set the category to Governance and governance type to proposal
+        document.getElementById('newThreadBtn').click();
+        setTimeout(() => {
+            const categorySelect = document.getElementById('threadCategory');
+            const governanceOptions = document.getElementById('governanceOptions');
+            const proposalRadio = document.querySelector('input[name="governanceType"][value="proposal"]');
+            
+            if (categorySelect) categorySelect.value = 'Governance';
+            if (governanceOptions) governanceOptions.style.display = 'block';
+            if (proposalRadio) {
+                proposalRadio.checked = true;
+                proposalRadio.dispatchEvent(new Event('change'));
+            }
+        }, 100);
+    };
+
+    // Additional global governance functions
+    window.displayGovernanceInterface = async function() {
+        if (!threadList) threadList = document.getElementById('threadList');
+        threadList.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Loading governance proposals...</div>';
+        
+        try {
+            // Fetch proposals from the governance API
+            const response = await window.apiClient.get('/governance/proposals');
+            const proposals = response.proposals || [];
+            
+            // Update category display
+            window.updateCategoryDisplay('Governance', proposals.length);
+            
+            // Render governance-specific interface
+            window.renderGovernanceProposals(proposals);
+            
+        } catch (error) {
+            console.error('Error loading governance proposals:', error);
+            threadList.innerHTML = `
+                <div class="error-state">
+                    <i class="fas fa-exclamation-triangle"></i> 
+                    Failed to load governance proposals. ${error.error || 'Please try again.'}
+                </div>
+            `;
+        }
+    };
+
+    window.viewProposalDetails = function(proposalId) {
+        console.log('Viewing proposal details for:', proposalId);
+        fetchProposalThread(proposalId);
+    };
+
+    window.renderGovernanceProposals = function(proposals) {
+        if (!threadList) threadList = document.getElementById('threadList');
+        const isAuthenticated = window.authManager.isLoggedIn();
+        
+        if (!proposals || proposals.length === 0) {
+            threadList.innerHTML = `
+                <div class="governance-empty-state">
+                    <div class="governance-welcome">
+                        <i class="fas fa-vote-yea governance-icon"></i>
+                        <h3>Community Governance</h3>
+                        <p>Participate in platform decisions through democratic proposals and voting.</p>
+                    </div>
+                    
+                    <div class="governance-actions">
+                        ${isAuthenticated ? `
+                            <button class="btn btn-primary governance-create-btn" onclick="openGovernanceModal()">
+                                <i class="fas fa-plus"></i> Create Proposal
+                            </button>
+                            <button class="btn btn-secondary" onclick="fetchThreads('', 'Governance')">
+                                <i class="fas fa-comments"></i> View Discussions
+                            </button>
+                        ` : `
+                            <p class="login-prompt-text">
+                                <i class="fas fa-info-circle"></i> 
+                                Log in to create proposals and participate in governance
+                            </p>
+                            <button class="btn btn-primary" onclick="window.authManager.showLogin()">
+                                <i class="fas fa-sign-in-alt"></i> Log In
+                            </button>
+                        `}
+                    </div>
+                    
+                    <div class="governance-info-panel">
+                        <h4>How Democracy 3.0 Works</h4>
+                        <ul>
+                            <li><strong>Proposals:</strong> Suggest new features, policies, or changes</li>
+                            <li><strong>Discussion:</strong> Community discusses proposals before voting</li>
+                            <li><strong>Voting:</strong> Democratic decisions with transparent results</li>
+                            <li><strong>Implementation:</strong> Approved proposals are tracked to completion</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+            return;
+        }
+
+        // Render proposals
+        threadList.innerHTML = `
+            <div class="governance-header">
+                <div class="governance-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">${proposals.filter(p => p.status === 'voting').length}</span>
+                        <span class="stat-label">Active Votes</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">${proposals.filter(p => p.status === 'passed').length}</span>
+                        <span class="stat-label">Passed</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">${proposals.filter(p => p.status === 'implemented').length}</span>
+                        <span class="stat-label">Implemented</span>
+                    </div>
+                </div>
+                
+                ${isAuthenticated ? `
+                    <button class="btn btn-primary governance-create-btn" onclick="openGovernanceModal()">
+                        <i class="fas fa-plus"></i> Create Proposal
+                    </button>
+                ` : `
+                    <button class="btn btn-primary" onclick="window.authManager.showLogin()">
+                        <i class="fas fa-sign-in-alt"></i> Log In to Participate
+                    </button>
+                `}
+            </div>
+            
+            <div class="proposals-list">
+                ${proposals.map(proposal => window.renderProposalCard(proposal)).join('')}
+            </div>
+        `;
+    };
+
+    window.renderProposalCard = function(proposal) {
+        const totalVotes = proposal.votes.approve + proposal.votes.reject + proposal.votes.abstain;
+        const approvePercent = totalVotes > 0 ? Math.round((proposal.votes.approve / totalVotes) * 100) : 0;
+        const statusClass = proposal.status.toLowerCase();
+        const isVotingActive = proposal.status === 'voting' && proposal.isVotingActive;
+        
+        return `
+            <div class="proposal-card ${statusClass}" data-id="${proposal._id}" onclick="viewProposalDetails('${proposal._id}')">
+                <div class="proposal-card-header">
+                    <h4 class="proposal-title">
+                        <i class="fas fa-${getStatusIcon(proposal.status)}"></i>
+                        ${escapeHTML(proposal.title)}
+                    </h4>
+                    <div class="proposal-status ${statusClass}">
+                        ${proposal.status.charAt(0).toUpperCase() + proposal.status.slice(1)}
+                    </div>
+                </div>
+                
+                <div class="proposal-card-meta">
+                    <span class="proposal-type">${formatProposalType(proposal.type)}</span>
+                    <span class="proposal-priority">Priority: ${proposal.implementation?.priority || 'Medium'}</span>
+                    ${proposal.votingEndDate ? `
+                        <span class="proposal-deadline">
+                            ${isVotingActive ? 'Ends' : 'Ended'}: ${new Date(proposal.votingEndDate).toLocaleDateString()}
+                        </span>
+                    ` : ''}
+                </div>
+                
+                <div class="proposal-description">
+                    ${proposal.description.substring(0, 150)}${proposal.description.length > 150 ? '...' : ''}
+                </div>
+                
+                ${totalVotes > 0 ? `
+                    <div class="proposal-voting-preview">
+                        <div class="vote-progress-mini">
+                            <div class="vote-bar">
+                                <div class="vote-fill approve" style="width: ${approvePercent}%"></div>
+                            </div>
+                            <span class="vote-stats">${approvePercent}% approval (${totalVotes} votes)</span>
+                        </div>
+                    </div>
+                ` : ''}
+                
+                <div class="proposal-card-actions" onclick="event.stopPropagation();">
+                    ${isVotingActive && window.authManager.isLoggedIn() ? `
+                        <button class="btn btn-sm btn-success" onclick="castProposalVote('${proposal._id}', 'approve')">
+                            <i class="fas fa-thumbs-up"></i> Approve
+                        </button>
+                        <button class="btn btn-sm btn-danger" onclick="castProposalVote('${proposal._id}', 'reject')">
+                            <i class="fas fa-thumbs-down"></i> Reject
+                        </button>
+                    ` : ''}
+                    <button class="btn btn-sm btn-secondary" onclick="viewProposalDetails('${proposal._id}')">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+                </div>
+            </div>
+        `;
+    };
+
+    async function fetchProposalThread(proposalId) {
+        try {
+            const response = await window.apiClient.get(`/governance/proposals/${proposalId}`);
+            const proposal = response.proposal;
+            
+            if (proposal.discussionThreadId) {
+                // Find and open the discussion thread
+                const threadElement = document.querySelector(`[data-id="${proposal.discussionThreadId}"]`);
+                if (threadElement) {
+                    threadElement.click();
+                } else {
+                    // Load the thread directly if not in current view
+                    const activeThreadContainer = document.getElementById('lyceum-active-thread');
+                    activeThreadContainer.style.display = 'block';
+                    await loadAndDisplayActiveThread(proposal.discussionThreadId, activeThreadContainer);
+                }
+            }
+        } catch (error) {
+            console.error('Error fetching proposal thread:', error);
+            showNotification('Could not load proposal details', 'error');
+        }
+    }
+
+    // Global helper functions needed by fetchThreads
+    window.renderThreads = function(threads) {
+        if (!threadList) threadList = document.getElementById('threadList');
+        
+        if (!threads || threads.length === 0) {
+            threadList.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-comments"></i>
+                    <h4>No echoes found</h4>
+                    <p>Be the first to start a conversation in this category!</p>
+                    <button class="btn btn-primary" onclick="document.getElementById('newThreadBtn').click()">
+                        <i class="fas fa-plus"></i> Create First Echo
+                    </button>
+                </div>
+            `;
+            return;
+        }
+        
+        const isAuthenticated = window.authManager.isLoggedIn();
+        threadList.innerHTML = threads.map(thread => {
+            const isAuthor = isAuthenticated && window.authManager.getUser()?._id === thread.author?._id;
+            const createdDate = new Date(thread.createdAt).toLocaleDateString();
+            const lastActive = thread.updatedAt ? new Date(thread.updatedAt).toLocaleDateString() : createdDate;
+            
+            return `
+            <div class="thread ${thread.isAnonymous ? 'anonymous' : ''}" data-id="${thread._id}">
+                <div class="thread-voting">
+                    <button class="vote-btn ${!isAuthenticated ? 'disabled' : ''}" data-action="upvote-thread" aria-label="Upvote" ${!isAuthenticated ? 'disabled' : ''}>
+                        <i class="fas fa-arrow-up"></i>
+                    </button>
+                    <button class="vote-btn ${!isAuthenticated ? 'disabled' : ''}" data-action="downvote-thread" aria-label="Downvote" ${!isAuthenticated ? 'disabled' : ''}>
+                        <i class="fas fa-arrow-down"></i>
+                    </button>
+                </div>
+                <div class="thread-main">
+                    <h4 class="thread-title">
+                        ${escapeHTML(thread.title)}
+                        ${thread.isAnonymous ? '<span class="thread-anonymous-indicator"><i class="fas fa-mask"></i> Anonymous</span>' : ''}
+                    </h4>
+                    <div class="thread-preview">${getThreadPreview(thread.content)}</div>
+                    <div class="thread-author-info"></div>
+                    <div class="thread-meta">
+                        <span class="replies-count">
+                            <i class="fas fa-comment"></i> ${thread.replies ? thread.replies.length : 0} replies
+                        </span>
+                        <span class="category-tag">${thread.category || 'Ideas'}</span>
+                        <span class="date-info">
+                            <i class="fas fa-clock"></i> Last active: ${lastActive}
+                        </span>
+                    </div>
+                    <div class="thread-actions">
+                        ${isAuthor && !thread.isAnonymous ? '<button class="btn btn-secondary btn-sm edit-thread-btn" data-action="edit-thread"><i class="fas fa-edit"></i> Edit</button>' : ''}
+                        ${thread.tags && thread.tags.length > 0 ? `
+                            <div class="thread-tags">
+                                ${thread.tags.map(tag => `<span class="tag">${escapeHTML(tag)}</span>`).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            </div>
+        `}).join('');
+        
+        // After creating the HTML, add unified user displays
+        setTimeout(() => {
+            if (!window.MLNFAvatars) return;
+
+            threads.forEach(thread => {
+                const threadElement = threadList.querySelector(`.thread[data-id='${thread._id}']`);
+                if (threadElement && thread.author) {
+                    const authorContainer = threadElement.querySelector('.thread-author-info');
+                    if (authorContainer && authorContainer.children.length === 0) {
+                        const authorDisplay = window.MLNFAvatars.createUserDisplay({
+                            username: thread.author.username || 'Anonymous',
+                            title: thread.author.title || 'Echo Author',
+                            avatarSize: 'xs',
+                            displaySize: 'xs',
+                            compact: true,
+                            mystical: thread.author.isVIP || thread.author.role === 'admin',
+                            online: thread.author.online,
+                            customAvatar: thread.author.avatar,
+                            usernameStyle: 'immortal',
+                            enableUnifiedNavigation: true
+                        });
+
+                        if (thread.author._id) {
+                            authorDisplay.setAttribute('data-user-id', thread.author._id);
+                        }
+
+                        if (window.authManager.isLoggedIn() && window.authManager.getUser()?._id !== thread.author._id) {
+                            const flagBtn = document.createElement('button');
+                            flagBtn.className = 'flag-user-btn btn-ghost';
+                            flagBtn.setAttribute('data-user-id', thread.author._id);
+                            flagBtn.innerHTML = '<i class="fas fa-flag"></i>';
+                            flagBtn.title = 'Flag for community review';
+                            
+                            // Add click handler to prevent event bubbling and show flag modal
+                            flagBtn.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                if (window.moderationSystem) {
+                                    window.moderationSystem.showFlagModal(thread.author._id);
+                                }
+                            });
+                            
+                            authorDisplay.appendChild(flagBtn);
+                        }
+                        
+                        authorContainer.appendChild(authorDisplay);
+                    }
+                }
+            });
+        }, 0);
+    };
+
+    window.updateCategoryDisplay = function(category, threadCount) {
+        const threadsColumn = document.getElementById('lyceum-threads');
+        let existingHeader = threadsColumn.querySelector('.category-header');
+        
+        if (!existingHeader) {
+            existingHeader = document.createElement('div');
+            existingHeader.className = 'category-header';
+            threadsColumn.insertBefore(existingHeader, threadsColumn.querySelector('.thread-controls'));
+        }
+        
+        const categoryName = category === 'all' || category === '' ? 'All Echoes' : category;
+        existingHeader.innerHTML = `
+            <h3>${categoryName}</h3>
+            <span class="thread-count">${threadCount} echo${threadCount !== 1 ? 's' : ''}</span>
+        `;
+    };
+
+    function getThreadPreview(content) {
+        // Remove HTML tags and get first 100 characters
+        const textOnly = content.replace(/<[^>]*>/g, '').trim();
+        return textOnly.length > 100 ? textOnly.substring(0, 100) + '...' : textOnly;
+    }
+
+    window.escapeHTML = function(str) {
+        return str ? str.replace(/[&<>"']/g, match => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[match])) : '';
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        threadList = document.getElementById('threadList');
+        threadComposer = document.getElementById('threadComposer');
+        threadForm = document.getElementById('threadForm');
+        
+        const quill = new Quill('#editor', {
+            theme: 'snow',
+            placeholder: 'Compose your eternal echo here...',
+            modules: { toolbar: [['bold', 'italic', 'underline'], ['link', 'blockquote'],[{ 'list': 'ordered'}, { 'list': 'bullet' }]] }
+        });
+
+        // Democracy 3.0 governance is now integrated directly into the messageboard
+
+        // Initialize Anonymous Submissions system
+        if (window.AnonymousSubmissions) {
+            const anonymousSystem = new window.AnonymousSubmissions();
+            anonymousSystem.init();
+            
+            // Add category change handler to composer
+            const categorySelect = threadForm.elements.category;
+            categorySelect.addEventListener('change', () => {
+                anonymousSystem.updateAnonymousToggleVisibility();
+                // Also handle governance options visibility
+                handleCategoryChange();
+            });
+        }
+
+        // Handle governance options visibility and proposal type selection
+        function handleCategoryChange() {
+            const categorySelect = threadForm.elements.category;
+            const governanceOptions = document.getElementById('governanceOptions');
+            
+            if (categorySelect.value === 'Governance') {
+                governanceOptions.style.display = 'block';
+            } else {
+                governanceOptions.style.display = 'none';
+            }
+        }
+
+        // Handle governance type selection (discussion vs proposal)
+        document.querySelectorAll('input[name="governanceType"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                const proposalDetails = document.getElementById('proposalDetails');
+                if (e.target.value === 'proposal') {
+                    proposalDetails.style.display = 'block';
+                } else {
+                    proposalDetails.style.display = 'none';
+                }
+            });
+        });
+
+        // Initial category change handler
+        handleCategoryChange();
+
+        // Add click handlers for category navigation
+        document.querySelectorAll('[data-category]').forEach(categoryLink => {
+            categoryLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Remove active state from all category links
+                document.querySelectorAll('[data-category]').forEach(link => link.classList.remove('active'));
+                
+                // Add active state to clicked link
+                categoryLink.classList.add('active');
+                
+                // Get category name
+                const categoryName = categoryLink.dataset.category;
+                currentCategory = categoryName === 'all' ? '' : categoryName;
+                
+                
+                // Hide active thread column when switching categories
+                document.getElementById('lyceum-active-thread').style.display = 'none';
+                
+                // Special handling for Governance category
+                if (categoryName === 'Governance') {
+                    window.displayGovernanceInterface();
+                } else {
+                    // Fetch regular threads for other categories
+                    window.fetchThreads('', currentCategory);
+                }
+            });
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('threadSearch');
+        const searchBtn = document.getElementById('searchBtn');
+        const clearSearchBtn = document.getElementById('clearSearchBtn');
+        
+        searchBtn.addEventListener('click', () => performSearch());
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') performSearch();
+        });
+        
+        clearSearchBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            clearSearchBtn.style.display = 'none';
+            window.fetchThreads('', currentCategory);
+        });
+        
+        function performSearch() {
+            const searchTerm = searchInput.value.trim();
+            if (searchTerm) {
+                clearSearchBtn.style.display = 'inline-block';
+                window.fetchThreads(searchTerm, currentCategory);
+            }
+        }
+
+        // Close active thread functionality
+        document.getElementById('closeActiveThread').addEventListener('click', () => {
+            document.getElementById('lyceum-active-thread').style.display = 'none';
+            document.querySelectorAll('.thread.active').forEach(t => t.classList.remove('active'));
+        });
+
+        // Set first category as active by default and fetch threads
+        const firstCategoryLink = document.querySelector('[data-category="all"]');
+        if (firstCategoryLink) {
+            firstCategoryLink.classList.add('active');
+            currentCategory = '';
+        }
+
+        window.authManager.subscribe((isLoggedIn, user) => {
+            window.fetchThreads('', currentCategory);
+        });
+        
+        // Initial load of threads
+        setTimeout(() => {
+            window.fetchThreads('', currentCategory);
+        }, 500);
+
+        // Check for thread ID to auto-open (from front page Echoes Unbound highlights)
+        const urlParams = new URLSearchParams(window.location.search);
+        const openThreadId = urlParams.get('openThread');
+        if (openThreadId) {
+            // Clear URL parameter for cleaner experience
+            window.history.replaceState({}, document.title, window.location.pathname);
+            
+            // Wait for threads to load, then open the specific thread in column 3
+            const tryFindThread = () => {
+                const threadElement = document.querySelector(`[data-id="${openThreadId}"]`);
+                
+                if (threadElement) {
+                    
+                    // Scroll to the thread in the list
+                    threadElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Remove active class from all threads
+                    document.querySelectorAll('.thread.active').forEach(t => t.classList.remove('active'));
+                    
+                    // Add active class to the clicked thread
+                    threadElement.classList.add('active');
+                    
+                    // Show the third column
+                    const activeThreadContainer = document.getElementById('lyceum-active-thread');
+                    if (activeThreadContainer) {
+                        activeThreadContainer.style.display = 'block';
+                    }
+                    
+                    // Load and display the full thread content in column 3
+                    loadAndDisplayActiveThread(openThreadId, activeThreadContainer);
+                    
+                } else {
+                    setTimeout(tryFindThread, 1000);
+                }
+            };
+            
+            // Start looking for the thread after a delay to let it load
+            setTimeout(tryFindThread, 2000);
+        }
+
+        // Duplicate fetchThreads function removed - using global one
+        
+        threadList.addEventListener('click', async (e) => {
+            const toggleBtn = e.target.closest('[data-action="toggle-replies"]');
+            const threadElement = e.target.closest('.thread');
+            const editButton = e.target.closest('.edit-thread-btn');
+
+            if (editButton) {
+                e.stopPropagation(); // Prevent opening the thread view
+                const threadId = editButton.closest('.thread').dataset.id;
+                openComposerForEdit(threadId);
+                return;
+            }
+
+            if (threadElement) {
+                // Remove active class from all other threads
+                document.querySelectorAll('.thread.active').forEach(th => th.classList.remove('active'));
+                // Add active class to the clicked thread
+                threadElement.classList.add('active');
+                
+                // Show and load the active thread column
+                const activeThreadContainer = document.getElementById('lyceum-active-thread');
+                activeThreadContainer.style.display = 'block';
+                await loadAndDisplayActiveThread(threadElement.dataset.id, activeThreadContainer);
+            }
+            
+            // Note: The old reply toggling logic is now part of loadAndDisplayActiveThread
+        });
+
+        async function loadAndDisplayActiveThread(threadId, container) {
+            container.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading Echo...</div>';
+            
+            try {
+                if (!threadId) {
+                    throw new Error('Thread ID is undefined or null');
+                }
+                
+                const threadData = await window.apiClient.get(`/threads/${threadId}`);
+                
+                let proposalInterface = '';
+                if (threadData.isProposal) {
+                     try {
+                        const proposalData = await window.apiClient.get(`/governance/proposals?threadId=${threadId}`);
+                        if (proposalData.proposals && proposalData.proposals.length > 0) {
+                            const proposal = proposalData.proposals[0];
+                            proposalInterface = await renderProposalInterface(proposal);
+                        }
+                    } catch (error) {
+                        console.error('Could not load proposal data for thread.');
+                    }
+                }
+
+                container.innerHTML = `
+                    <h3>${window.escapeHTML(threadData.title)}</h3>
+                    <div class="thread-content-full">${DOMPurify.sanitize(threadData.content)}</div>
+                    ${threadData.author && threadData.author.status ? `<div class="user-status-signature"><i class="fas fa-comment-dots"></i> ${window.escapeHTML(threadData.author.status)}</div>` : ''}
+                    ${proposalInterface}
+                    <div class="replies-container">
+                        ${renderReplies(threadData.replies, threadId)}
+                    </div>
+                    <div class="reply-form-container" id="mainReplyFormContainer"></div>
+                `;
+                
+                if (threadData.replies && threadData.replies.length > 0) {
+                    enhanceReplies(threadData.replies);
+                }
+                
+                if (window.authManager.isLoggedIn()) {
+                    createReplyForm(container.querySelector('#mainReplyFormContainer'), threadId);
+                }
+
+            } catch (error) {
+                console.error('Error loading thread:', error);
+                let errorMessage = 'Failed to summon replies.';
+                if (error.error) {
+                    errorMessage += ` (${error.error})`;
+                } else if (error.message) {
+                    errorMessage += ` (${error.message})`;
+                }
+                container.innerHTML = `<p class="error">${errorMessage}</p>`;
+            }
+        }
+
+        function createReplyForm(container, threadId) {
+            container.innerHTML = `
+                <h4>Your Reply</h4>
+                <div id="replyEditor-${threadId}"></div>
+                <div class="reply-options">
+                    <label class="anonymous-reply-toggle">
+                        <input type="checkbox" id="anonymousReplyToggle-${threadId}">
+                        <span class="toggle-slider"></span>
+                        <span class="toggle-label">
+                            <i class="fas fa-mask"></i> Reply Anonymously
+                        </span>
+                    </label>
+                    <div class="anonymous-reply-preview" id="anonymousReplyPreview-${threadId}" style="display: none;">
+                        <small><i class="fas fa-mask"></i> You will appear as an anonymous user</small>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-sm" data-action="submit-reply" data-thread-id="${threadId}">Submit Reply</button>
+            `;
+            
+            new Quill(`#replyEditor-${threadId}`, {
+                theme: 'snow',
+                placeholder: 'Add your echo to the discourse...',
+                modules: { toolbar: [['bold', 'italic', 'underline'], ['link', 'blockquote']] }
+            });
+
+            // Handle anonymous reply toggle
+            const anonymousToggle = document.getElementById(`anonymousReplyToggle-${threadId}`);
+            const anonymousPreview = document.getElementById(`anonymousReplyPreview-${threadId}`);
+            
+            if (anonymousToggle && anonymousPreview) {
+                anonymousToggle.addEventListener('change', () => {
+                    anonymousPreview.style.display = anonymousToggle.checked ? 'block' : 'none';
+                });
+            }
+        }
+
+        document.getElementById('lyceum-active-thread').addEventListener('click', async (e) => {
+            if (e.target.matches('[data-action="submit-reply"]')) {
+                const threadId = e.target.dataset.threadId;
+                const editorContainer = document.getElementById(`replyEditor-${threadId}`);
+                const quill = Quill.find(editorContainer);
+                const content = quill.root.innerHTML;
+
+                if (!content || content === '<p><br></p>') {
+                    return alert('Reply content is required.');
+                }
+
+                // Check if replying anonymously
+                const anonymousToggle = document.getElementById(`anonymousReplyToggle-${threadId}`);
+                const isAnonymous = anonymousToggle && anonymousToggle.checked;
+
+                const replyData = {
+                    content,
+                    isAnonymous
+                };
+                
+                try {
+                    e.target.disabled = true;
+                    e.target.textContent = 'Posting...';
+                    
+                    await window.apiClient.post(`/threads/${threadId}/replies`, replyData);
+                    quill.setContents([]);
+                    
+                    // Reset anonymous toggle
+                    if (anonymousToggle) {
+                        anonymousToggle.checked = false;
+                        const anonymousPreview = document.getElementById(`anonymousReplyPreview-${threadId}`);
+                        if (anonymousPreview) {
+                            anonymousPreview.style.display = 'none';
+                        }
+                    }
+                    
+                    // Reload the active thread view to show the new reply
+                    await loadAndDisplayActiveThread(threadId, document.getElementById('lyceum-active-thread'));
+                } catch(error) {
+                    alert(`Error: ${error.error || 'Could not post reply.'}`);
+                } finally {
+                    e.target.disabled = false;
+                    e.target.textContent = 'Submit Reply';
+                }
+            }
+
+            // Handle edit reply button
+            if (e.target.matches('[data-action="edit-reply"]')) {
+                const replyId = e.target.dataset.replyId;
+                const threadId = e.target.dataset.threadId;
+                openReplyEditor(replyId, threadId);
+            }
+
+            // Handle view edit history button
+            if (e.target.matches('[data-action="view-edit-history"]')) {
+                const replyId = e.target.dataset.replyId;
+                showEditHistory(replyId);
+            }
+
+            // Handle update reply button
+            if (e.target.matches('[data-action="update-reply"]')) {
+                const replyId = e.target.dataset.replyId;
+                const threadId = e.target.dataset.threadId;
+                await updateReply(replyId, threadId);
+            }
+
+            // Handle cancel edit button
+            if (e.target.matches('[data-action="cancel-edit-reply"]')) {
+                const replyId = e.target.dataset.replyId;
+                cancelReplyEdit(replyId);
+            }
+        });
+
+        function enhanceReplies(replies) {
+            if (!window.MLNFAvatars) return;
+
+            replies.forEach((reply) => {
+                const replyElement = document.querySelector(`.reply[data-id='${reply._id}']`);
+                if (replyElement && reply.author) {
+                    const authorContainer = replyElement.querySelector('.reply-author-info');
+                    if (authorContainer && authorContainer.children.length === 0) {
+                        const authorDisplay = window.MLNFAvatars.createUserDisplay({
+                            username: reply.author.username || 'Anonymous',
+                            title: 'Echo Responder',
+                            avatarSize: 'xs',
+                            displaySize: 'xs',
+                            compact: true,
+                            mystical: reply.author.isVIP || reply.author.role === 'admin',
+                            online: reply.author.online,
+                            customAvatar: reply.author.avatar,
+                            usernameStyle: 'immortal',
+                            enableUnifiedNavigation: true
+                        });
+
+                        if (reply.author._id) {
+                            authorDisplay.setAttribute('data-user-id', reply.author._id);
+                        }
+
+                        if (window.authManager.isLoggedIn() && window.authManager.getUser()?._id !== reply.author._id) {
+                            const flagBtn = document.createElement('button');
+                            flagBtn.className = 'flag-user-btn btn-ghost';
+                            flagBtn.setAttribute('data-user-id', reply.author._id);
+                            flagBtn.innerHTML = '<i class="fas fa-flag"></i>';
+                            flagBtn.title = 'Flag for community review';
+                            
+                            // Add click handler to prevent event bubbling and show flag modal
+                            flagBtn.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                if (window.moderationSystem) {
+                                    window.moderationSystem.showFlagModal(reply.author._id);
+                                }
+                            });
+                            
+                            authorDisplay.appendChild(flagBtn);
+                        }
+                        
+                        authorContainer.appendChild(authorDisplay);
+                    }
+                }
+            });
+        }
+
+        function renderReplies(replies, threadId) {
+            if (!replies || replies.length === 0) {
+                return '<p class="thread-meta">No replies yet. Be the first to echo back.</p>';
+            }
+            
+            const repliesHTML = replies.map((reply, index) => {
+                const isAuthor = window.authManager.isLoggedIn() && window.authManager.getUser()?._id === reply.author?._id;
+                const hasSubsequentReplies = index < replies.length - 1; // Check if there are replies after this one
+                const canEdit = isAuthor && !reply.isAnonymous && !hasSubsequentReplies;
+                
+                return `
+                <div class="reply ${reply.isAnonymous ? 'anonymous' : ''}" data-id="${reply._id}">
+                     <div class="thread-voting reply-voting">
+                        <button class="vote-btn" data-action="upvote-reply" aria-label="Upvote"><i class="fas fa-arrow-up"></i></button>
+                        <button class="vote-btn" data-action="downvote-reply" aria-label="Downvote"><i class="fas fa-arrow-down"></i></button>
+                    </div>
+                    <div class="reply-main" data-thread-id="${threadId}">
+                        <div class="reply-author-info"></div>
+                        <div class="reply-content" id="reply-content-${reply._id}">
+                            ${DOMPurify.sanitize(reply.content)}
+                            ${reply.isAnonymous ? '<span class="reply-anonymous-indicator"><i class="fas fa-mask"></i> Anonymous Reply</span>' : ''}
+                            ${reply.editedAt ? `<span class="reply-edited-indicator"><i class="fas fa-edit"></i> Edited ${new Date(reply.editedAt).toLocaleString()}</span>` : ''}
+                        </div>
+                        <div class="reply-actions">
+                            ${canEdit ? `<button class="btn btn-secondary btn-xs edit-reply-btn" data-action="edit-reply" data-reply-id="${reply._id}" data-thread-id="${threadId}"><i class="fas fa-edit"></i> Edit</button>` : ''}
+                            ${reply.editHistory && reply.editHistory.length > 0 ? `<button class="btn btn-secondary btn-xs view-edit-history-btn" data-action="view-edit-history" data-reply-id="${reply._id}"><i class="fas fa-history"></i> History (${reply.editHistory.length})</button>` : ''}
+                        </div>
+                        ${reply.author && reply.author.status && !reply.isAnonymous ? `<div class="user-status-signature"><i class="fas fa-comment-dots"></i> ${escapeHTML(reply.author.status)}</div>` : ''}
+                    </div>
+                </div>
+            `}).join('');
+            
+
+
+            
+            return repliesHTML;
+        }
+
+        // Modal opening/closing logic for the new composer
+        const composerModal = document.getElementById('threadComposerModal');
+        
+        function closeComposerModal() {
+            composerModal.classList.remove('active');
+            composerModal.setAttribute('aria-hidden', 'true');
+            // Reset form state when closing
+            delete threadForm.dataset.editMode;
+            delete threadForm.dataset.editingId;
+            document.getElementById('composerTitle').textContent = 'Create a New Echo';
+            threadForm.querySelector('button[type="submit"]').textContent = 'Post Thread';
+        }
+        
+        document.getElementById('newThreadBtn').addEventListener('click', () => {
+            // Set category to current selected category
+            if (currentCategory && currentCategory !== 'All Sections') {
+                threadForm.elements.category.value = currentCategory;
+            }
+            
+            composerModal.classList.add('active');
+            composerModal.setAttribute('aria-hidden', 'false');
+            
+            // Trigger anonymous toggle update based on category
+            if (window.AnonymousSubmissions) {
+                const anonymousSystem = new window.AnonymousSubmissions();
+                anonymousSystem.updateAnonymousToggleVisibility();
+            }
+        });
+
+        document.getElementById('closeComposer').addEventListener('click', () => {
+            closeComposerModal();
+        });
+
+        // Click outside to close modal
+        composerModal.addEventListener('click', (e) => {
+            if (e.target === composerModal) {
+                closeComposerModal();
+            }
+        });
+
+        async function openComposerForEdit(threadId) {
+            try {
+                const thread = await window.apiClient.get(`/threads/${threadId}`);
+                
+                // Set form to edit mode
+                threadForm.dataset.editMode = 'true';
+                threadForm.dataset.editingId = threadId;
+
+                // Populate form fields
+                threadForm.elements.title.value = thread.title;
+                threadForm.elements.category.value = thread.category;
+                threadForm.elements.tags.value = thread.tags.join(', ');
+                quill.root.innerHTML = thread.content;
+
+                // Update modal title and button text
+                document.getElementById('composerTitle').textContent = 'Edit Your Echo';
+                threadForm.querySelector('button[type="submit"]').textContent = 'Update Thread';
+
+                // Show the modal
+                composerModal.classList.add('active');
+                composerModal.setAttribute('aria-hidden', 'false');
+            } catch (error) {
+                alert(`Error: Could not load thread for editing.`);
+            }
+        }
+
+        threadForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitButton = threadForm.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Posting...';
+
+            const isEditMode = threadForm.dataset.editMode === 'true';
+            const threadId = threadForm.dataset.editingId;
+
+            const data = {
+                title: threadForm.elements.title.value,
+                category: threadForm.elements.category.value,
+                tags: threadForm.elements.tags.value.split(',').map(t => t.trim()).filter(Boolean),
+                content: quill.root.innerHTML
+            };
+
+            // Check for anonymous posting
+            const anonymousToggle = document.getElementById('anonymousToggle');
+            if (anonymousToggle && anonymousToggle.checked) {
+                data.isAnonymous = true;
+            }
+
+            if (!data.title || !data.content || data.content === '<p><br></p>') {
+                alert('Title and content are required.');
+                submitButton.disabled = false;
+                submitButton.textContent = 'Post Thread';
+                return;
+            }
+
+            try {
+                // Handle governance proposals
+                if (data.category === 'Governance') {
+                    const governanceType = document.querySelector('input[name="governanceType"]:checked').value;
+                    
+                    if (governanceType === 'proposal') {
+                        // Create formal governance proposal
+                        const proposalData = {
+                            title: data.title,
+                            content: data.content,
+                            type: document.getElementById('proposalType').value,
+                            priority: document.getElementById('proposalPriority').value,
+                            estimatedEffort: document.getElementById('estimatedEffort').value,
+                            votingPeriodDays: parseInt(document.getElementById('votingPeriod').value)
+                        };
+                        
+                        submitButton.textContent = 'Creating Proposal...';
+                        await window.apiClient.post('/governance/proposals', proposalData);
+                    } else {
+                        // Create regular governance discussion thread
+                        if (isEditMode) {
+                            await window.apiClient.put(`/threads/${threadId}`, data);
+                        } else {
+                            await window.apiClient.post('/threads', data);
+                        }
+                    }
+                } else {
+                    // Create regular thread
+                    if (isEditMode) {
+                        await window.apiClient.put(`/threads/${threadId}`, data);
+                    } else {
+                        await window.apiClient.post('/threads', data);
+                    }
+                }
+                
+                threadForm.reset();
+                quill.setContents([]);
+                closeComposerModal();
+                
+                // Reset governance options
+                document.querySelector('input[name="governanceType"][value="discussion"]').checked = true;
+                document.getElementById('proposalDetails').style.display = 'none';
+                
+                // Refresh the thread list with current category filter
+                fetchThreads('', currentCategory); 
+                
+            } catch (error) {
+                console.error('Thread creation error:', error);
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    console.error('Response data:', error.response.data);
+                    console.error('Response status:', error.response.status);
+                    console.error('Response headers:', error.response.headers);
+                    alert(`Error: ${error.response.data?.error || 'Could not post thread. Please try again.'}`);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    console.error('No response received:', error.request);
+                    alert('No response from server. Please check your connection and try again.');
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.error('Request setup error:', error.message);
+                    alert(`Error: ${error.message || 'Could not post thread.'}`);
+                }
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Post Thread';
+            }
+        });
+
+        function escapeHTML(str) {
+            return str ? str.replace(/[&<>"']/g, match => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[match])) : '';
+        }
+
+        // Governance Proposal Interface
+        async function renderProposalInterface(proposal) {
+            const isLoggedIn = window.authManager.isLoggedIn();
+            
+            // Get user's vote status if logged in
+            let userVote = null;
+            if (isLoggedIn) {
+                try {
+                    const proposalDetails = await window.apiClient.get(`/governance/proposals/${proposal._id}`);
+                    userVote = proposalDetails.userVote;
+                } catch (error) {
+                    // User vote status not available
+                }
+            }
+
+            const statusClass = proposal.status.toLowerCase();
+            const isVotingActive = proposal.status === 'voting' && proposal.isVotingActive;
+            
+            return `
+                <div class="proposal-voting">
+                    <div class="voting-header">
+                        <h4><i class="fas fa-vote-yea"></i> Community Proposal</h4>
+                        <div class="proposal-status ${statusClass}">
+                            <i class="fas fa-${getStatusIcon(proposal.status)}"></i>
+                            ${proposal.status.charAt(0).toUpperCase() + proposal.status.slice(1)}
+                        </div>
+                    </div>
+                    
+                    <div class="proposal-meta">
+                        <div class="meta-item">
+                            <div class="meta-label">Type</div>
+                            <div class="meta-value">${formatProposalType(proposal.type)}</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Priority</div>
+                            <div class="meta-value">${proposal.implementation?.priority || 'Medium'}</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Effort</div>
+                            <div class="meta-value">${proposal.implementation?.estimatedEffort || 'Medium'}</div>
+                        </div>
+                        ${proposal.votingEndDate ? `
+                            <div class="meta-item">
+                                <div class="meta-label">${isVotingActive ? 'Voting Ends' : 'Voting Ended'}</div>
+                                <div class="meta-value">${new Date(proposal.votingEndDate).toLocaleDateString()}</div>
+                            </div>
+                        ` : ''}
+                    </div>
+
+                    ${isVotingActive ? renderVotingInterface(proposal, userVote) : ''}
+                    ${renderVoteResults(proposal)}
+                    
+                    ${proposal.status === 'discussion' && isLoggedIn ? `
+                        <div class="proposal-actions">
+                            <button class="btn btn-primary" onclick="startProposalVoting('${proposal._id}')">
+                                <i class="fas fa-play"></i> Start Voting Period
+                            </button>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        function renderVotingInterface(proposal, userVote) {
+            if (!window.authManager.isLoggedIn()) {
+                return `
+                    <div class="login-prompt">
+                        <p><i class="fas fa-info-circle"></i> Please log in to vote on this proposal</p>
+                        <button class="btn btn-primary" onclick="window.authManager.showLogin()">
+                            <i class="fas fa-sign-in-alt"></i> Log In to Vote
+                        </button>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="vote-options">
+                    <div class="vote-option approve ${userVote === 'approve' ? 'selected' : ''}" 
+                         onclick="castProposalVote('${proposal._id}', 'approve')">
+                        <i class="fas fa-thumbs-up"></i>
+                        <div>Approve</div>
+                        <small>Support this proposal</small>
+                    </div>
+                    <div class="vote-option reject ${userVote === 'reject' ? 'selected' : ''}" 
+                         onclick="castProposalVote('${proposal._id}', 'reject')">
+                        <i class="fas fa-thumbs-down"></i>
+                        <div>Reject</div>
+                        <small>Oppose this proposal</small>
+                    </div>
+                    <div class="vote-option abstain ${userVote === 'abstain' ? 'selected' : ''}" 
+                         onclick="castProposalVote('${proposal._id}', 'abstain')">
+                        <i class="fas fa-minus"></i>
+                        <div>Abstain</div>
+                        <small>No strong opinion</small>
+                    </div>
+                </div>
+                ${userVote ? `<p class="vote-status"><i class="fas fa-check"></i> You voted: <strong>${userVote}</strong> (you can change your vote)</p>` : ''}
+            `;
+        }
+
+        function renderVoteResults(proposal) {
+            const totalVotes = proposal.votes.approve + proposal.votes.reject + proposal.votes.abstain;
+            
+            if (totalVotes === 0) {
+                return `
+                    <div class="vote-results">
+                        <h5>No votes yet</h5>
+                        <p>Be the first to vote on this proposal!</p>
+                    </div>
+                `;
+            }
+
+            const approvePercent = Math.round((proposal.votes.approve / totalVotes) * 100);
+            const rejectPercent = Math.round((proposal.votes.reject / totalVotes) * 100);
+            const abstainPercent = Math.round((proposal.votes.abstain / totalVotes) * 100);
+
+            return `
+                <div class="vote-results">
+                    <h5>Voting Results</h5>
+                    <div class="result-bar">
+                        <div class="result-label">
+                            <span>Approve: ${proposal.votes.approve} votes</span>
+                            <span>${approvePercent}%</span>
+                        </div>
+                        <div class="result-progress">
+                            <div class="result-fill approve" style="width: ${approvePercent}%"></div>
+                        </div>
+                    </div>
+                    <div class="result-bar">
+                        <div class="result-label">
+                            <span>Reject: ${proposal.votes.reject} votes</span>
+                            <span>${rejectPercent}%</span>
+                        </div>
+                        <div class="result-progress">
+                            <div class="result-fill reject" style="width: ${rejectPercent}%"></div>
+                        </div>
+                    </div>
+                    <div class="result-bar">
+                        <div class="result-label">
+                            <span>Abstain: ${proposal.votes.abstain} votes</span>
+                            <span>${abstainPercent}%</span>
+                        </div>
+                        <div class="result-progress">
+                            <div class="result-fill abstain" style="width: ${abstainPercent}%"></div>
+                        </div>
+                    </div>
+                    <div class="vote-summary">
+                        <div class="participation-rate">
+                            <i class="fas fa-users"></i> ${totalVotes} total votes
+                        </div>
+                        <div class="result-status ${approvePercent >= proposal.passThreshold ? 'passing' : 'failing'}">
+                            ${approvePercent >= proposal.passThreshold ? 'Currently Passing' : 'Currently Failing'} 
+                            (${proposal.passThreshold}% needed)
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getStatusIcon(status) {
+            const icons = {
+                discussion: 'comments',
+                voting: 'clock',
+                passed: 'check',
+                failed: 'times',
+                implemented: 'rocket',
+                blocked: 'ban'
+            };
+            return icons[status] || 'question';
+        }
+
+        function formatProposalType(type) {
+            return type.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        }
+
+        // Governance voting functions
+        async function castProposalVote(proposalId, choice) {
+            if (!window.authManager.isLoggedIn()) {
+                window.authManager.showLogin();
+                return;
+            }
+
+            try {
+                await window.apiClient.post(`/governance/proposals/${proposalId}/vote`, { choice });
+                
+                // Show success message
+                showNotification(`Vote cast: ${choice}`, 'success');
+                
+                // Reload the active thread to show updated results
+                const activeThreadContainer = document.getElementById('lyceum-active-thread');
+                const activeThread = document.querySelector('.thread.active');
+                if (activeThread && activeThreadContainer) {
+                    await loadAndDisplayActiveThread(activeThread.dataset.id, activeThreadContainer);
+                }
+                
+            } catch (error) {
+                console.error('Error casting vote:', error);
+                showNotification(`Error: ${error.error || 'Could not cast vote'}`, 'error');
+            }
+        }
+
+        async function startProposalVoting(proposalId) {
+            if (!window.authManager.isLoggedIn()) {
+                window.authManager.showLogin();
+                return;
+            }
+
+            try {
+                await window.apiClient.post(`/governance/proposals/${proposalId}/start-voting`);
+                
+                showNotification('Voting period started!', 'success');
+                
+                // Reload the active thread to show voting interface
+                const activeThreadContainer = document.getElementById('lyceum-active-thread');
+                const activeThread = document.querySelector('.thread.active');
+                if (activeThread && activeThreadContainer) {
+                    await loadAndDisplayActiveThread(activeThread.dataset.id, activeThreadContainer);
+                }
+                
+            } catch (error) {
+                console.error('Error starting voting:', error);
+                showNotification(`Error: ${error.error || 'Could not start voting'}`, 'error');
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+
+        // All governance functions now in global scope (duplicates removed)
+
+        // Reply editing functions
+        function openReplyEditor(replyId, threadId) {
+            const replyContentElement = document.getElementById(`reply-content-${replyId}`);
+            if (!replyContentElement) return;
+
+            // Get current content (strip out indicators first)
+            const currentContent = replyContentElement.innerHTML
+                .replace(/<span class="reply-anonymous-indicator">.*?<\/span>/g, '')
+                .replace(/<span class="reply-edited-indicator">.*?<\/span>/g, '')
+                .trim();
+
+            // Store original content for cancellation
+            replyContentElement.dataset.originalContent = currentContent;
+
+            // Create edit form
+            replyContentElement.innerHTML = `
+                <div class="reply-edit-form">
+                    <div id="replyEditEditor-${replyId}"></div>
+                    <div class="reply-edit-actions">
+                        <button class="btn btn-primary btn-sm" data-action="update-reply" data-reply-id="${replyId}" data-thread-id="${threadId}">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
+                        <button class="btn btn-secondary btn-sm" data-action="cancel-edit-reply" data-reply-id="${replyId}">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Initialize Quill editor
+            const quill = new Quill(`#replyEditEditor-${replyId}`, {
+                theme: 'snow',
+                placeholder: 'Edit your reply...',
+                modules: { 
+                    toolbar: [['bold', 'italic', 'underline'], ['link', 'blockquote']] 
+                }
+            });
+
+            // Set current content
+            quill.root.innerHTML = currentContent;
+
+            // Store quill instance for later use
+            replyContentElement.dataset.quillId = `replyEditEditor-${replyId}`;
+
+            // Hide edit button to prevent multiple edits
+            const editButton = document.querySelector(`[data-action="edit-reply"][data-reply-id="${replyId}"]`);
+            if (editButton) {
+                editButton.style.display = 'none';
+            }
+        }
+
+        async function updateReply(replyId, threadId) {
+            const replyContentElement = document.getElementById(`reply-content-${replyId}`);
+            const quillId = replyContentElement.dataset.quillId;
+            const quill = Quill.find(document.getElementById(quillId));
+
+            if (!quill) {
+                alert('Editor not found');
+                return;
+            }
+
+            const content = quill.root.innerHTML.trim();
+
+            if (!content || content === '<p><br></p>') {
+                alert('Reply content cannot be empty');
+                return;
+            }
+
+            try {
+                const updateButton = document.querySelector(`[data-action="update-reply"][data-reply-id="${replyId}"]`);
+                updateButton.disabled = true;
+                updateButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+                await window.apiClient.put(`/threads/${threadId}/replies/${replyId}`, { content });
+
+                // Reload the active thread view to show the updated reply
+                await loadAndDisplayActiveThread(threadId, document.getElementById('lyceum-active-thread'));
+
+            } catch (error) {
+                alert(`Error: ${error.error || 'Could not update reply.'}`);
+                
+                // Re-enable button
+                const updateButton = document.querySelector(`[data-action="update-reply"][data-reply-id="${replyId}"]`);
+                if (updateButton) {
+                    updateButton.disabled = false;
+                    updateButton.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+                }
+            }
+        }
+
+        function cancelReplyEdit(replyId) {
+            const replyContentElement = document.getElementById(`reply-content-${replyId}`);
+            const originalContent = replyContentElement.dataset.originalContent;
+
+            // Restore original content
+            replyContentElement.innerHTML = originalContent;
+
+            // Show edit button again
+            const editButton = document.querySelector(`[data-action="edit-reply"][data-reply-id="${replyId}"]`);
+            if (editButton) {
+                editButton.style.display = 'inline-block';
+            }
+
+            // Clean up data attributes
+            delete replyContentElement.dataset.originalContent;
+            delete replyContentElement.dataset.quillId;
+        }
+
+        function showEditHistory(replyId) {
+            // This would show a modal with edit history - for now, just alert
+            // TODO: Implement full edit history modal
+            alert('Edit history feature - coming soon!');
+        }
+
+        // Event delegation for voting
+        document.querySelector('.lyceum-grid').addEventListener('click', async (e) => {
+            const voteBtn = e.target.closest('.vote-btn');
+            if (!voteBtn) return;
+
+            if (!window.authManager.isLoggedIn()) {
+                return alert('You must be logged in to vote.');
+            }
+
+            const action = voteBtn.dataset.action;
+            const isReply = voteBtn.closest('.reply');
+            const element = isReply || voteBtn.closest('.thread');
+            const id = element.dataset.id;
+            
+            let voteType, endpoint;
+
+            if (action.includes('upvote')) {
+                voteType = 'upvote';
+            } else if (action.includes('downvote')) {
+                voteType = 'downvote';
+            } else {
+                return;
+            }
+
+            endpoint = isReply 
+                ? `/threads/${element.closest('.reply-main').dataset.threadId}/replies/${id}/vote` 
+                : `/threads/${id}/vote`;
+            
+            try {
+                const response = await window.apiClient.post(endpoint, { vote: voteType });
+                
+                // Hide vote count since you don't want scores displayed
+                const voteCountElement = element.querySelector('.vote-count');
+                if (voteCountElement) {
+                    voteCountElement.style.display = 'none';
+                }
+
+                // Update active button state based on current vote
+                element.querySelectorAll('.vote-btn.active').forEach(btn => btn.classList.remove('active'));
+                
+                if (response.currentVote) {
+                    // User has an active vote
+                    const activeBtn = element.querySelector(`[data-action*="${response.currentVote}"]`);
+                    if (activeBtn) {
+                        activeBtn.classList.add('active');
+                    }
+                }
+
+            } catch (error) {
+                alert(`Error: ${error.error || 'Could not cast vote.'}`);
+            }
+        });
+
+        // Initialize Community Moderation System
+        if (typeof CommunityModerationSystem !== 'undefined') {
+            window.moderationSystem = new CommunityModerationSystem();
+            console.log('[messageboard] Community moderation system initialized');
+            
+            // Check for active moderation cases to display alerts
+            window.moderationSystem.checkForModerationAlerts();
+        } else {
+            console.error('[messageboard] CommunityModerationSystem not loaded!');
+        }
+        
+        // Debug function to manually test flag buttons
+        window.testFlagButtons = () => {
+            console.log('[Test] Manual flag button test...');
+            console.log('[Test] User displays found:', document.querySelectorAll('[data-user-id]').length);
+            console.log('[Test] Current user:', window.authManager?.getUser());
+            console.log('[Test] Is logged in:', window.authManager?.isLoggedIn());
+            
+            if (window.moderationSystem) {
+                window.moderationSystem.enhanceUserDisplays();
+            } else {
+                console.error('[Test] No moderation system available');
+            }
+        };
+        
+        // Function to clean up flag button parade
+        window.cleanupFlagButtons = () => {
+            console.log('[Cleanup] Removing ALL flag buttons...');
+            const allFlagButtons = document.querySelectorAll('.flag-user-btn');
+            console.log(`[Cleanup] Found ${allFlagButtons.length} flag buttons to remove`);
+            
+            allFlagButtons.forEach(btn => btn.remove());
+            
+            // Clear all enhancement markers
+            const allUserDisplays = document.querySelectorAll('[data-flag-enhanced]');
+            allUserDisplays.forEach(display => display.removeAttribute('data-flag-enhanced'));
+            
+            console.log(`[Cleanup] Removed all flag buttons and reset enhancement markers`);
+        };
+        
+        // Emergency function to check what's creating so many elements
+        window.debugUserDisplays = () => {
+            const all = document.querySelectorAll('[data-user-id]');
+            const specific = document.querySelectorAll('.thread-author-info [data-user-id], .reply-author-info [data-user-id], .user-display [data-user-id]');
+            
+            console.log(`[Debug] Total [data-user-id] elements: ${all.length}`);
+            console.log(`[Debug] Specific message board elements: ${specific.length}`);
+            
+            // Sample the first few to see what they are
+            console.log('[Debug] First 5 elements:', Array.from(all).slice(0, 5));
+        };
+        
+        console.log('[Debug] Type "testFlagButtons()" in console to manually test');
+    });
+    </script>
+    
+    <!-- Required Scripts for MLNF Avatar System -->
+    <script src="../js/mlnf-avatar-system.js?v=2.1"></script>
+    
+    <!-- Analytics Tracking System -->
+    <script src="../js/analytics-tracker.js?v=1.2"></script>
+</body>
+</html>

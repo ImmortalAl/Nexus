@@ -1,0 +1,3572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Immortal Nexus - A refuge for free-thinkers">
+    <meta name="version" content="2.1.0">
+    <link rel="canonical" href="https://immortal.nexus">
+    <title>Soul Sanctum - Immortal Nexus</title>
+    <!-- 1. THEME FOUNDATION (MUST BE FIRST) -->
+    <link rel="stylesheet" href="css/base-theme.css">
+    
+    <!-- 2. CRITICAL CSS - Above-fold essentials loaded synchronously -->
+    <link rel="stylesheet" href="css/critical.css?v=5.3">
+    
+    <!-- 3. GLOBAL STYLES - Site-wide styles loaded synchronously -->
+    <link rel="stylesheet" href="css/styles.css?v=10.0">
+    
+    <!-- 4. PROGRESSIVE LOADING - Non-critical CSS loaded asynchronously -->
+    <link rel="preload" href="css/layout.css?v=8.2" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/layout.css?v=8.2"></noscript>
+    
+    <link rel="preload" href="css/components.css?v=7.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/components.css?v=7.1"></noscript>
+    
+    <link rel="preload" href="css/features.css?v=6.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/features.css?v=6.3"></noscript>
+    
+    <!-- 4. SHARED COMPONENTS (lazy loaded) -->
+    <link rel="preload" href="components/shared/styles.css?v=10.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="components/shared/styles.css?v=10.3"></noscript>
+    
+    <!-- 5. PAGE-SPECIFIC (lazy loaded) -->
+    <link rel="preload" href="css/active-users.css?v=7.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/active-users.css?v=7.0"></noscript>
+    
+    <link rel="preload" href="css/lander.css?v=3.8" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/lander.css?v=3.8"></noscript>
+    
+    <!-- Soul Management Modal Styles -->
+    <style>
+        /* Modal System - Simplified after removing stacking context traps */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(13, 13, 26, 0.9);
+            z-index: 5000; /* Reasonable z-index now that DOM order is fixed */
+            align-items: flex-start;
+            justify-content: center;
+            padding: 80px 20px 20px; /* Compact padding: top, sides, bottom */
+            overflow-y: auto;
+        }
+        
+        .modal.active,
+        .modal[aria-hidden="false"] {
+            display: flex;
+        }
+        
+        .soul-modal {
+            background: linear-gradient(135deg, var(--secondary, #1a1a33) 0%, var(--primary, #0d0d1a) 100%);
+            border-radius: 8px;
+            max-width: 600px; /* Widened to prevent horizontal overflow */
+            width: 90%;
+            min-height: auto; /* Content-based height */
+            max-height: calc(100vh - 140px);
+            overflow-y: auto;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            border: 1px solid var(--accent, #ff5e78);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            position: relative;
+            margin: 0 auto;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--accent, #ff5e78);
+            color: var(--text, #f0e6ff);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .close-modal:hover {
+            color: var(--accent, #ff5e78);
+            transform: scale(1.1);
+        }
+        
+        /* Optimized modal content spacing */
+        .soul-modal .modal-header {
+            padding: 1.25rem 1.75rem 0.75rem;
+        }
+        
+        .soul-modal .modal-body {
+            padding: 0 1.75rem 1.25rem;
+        }
+        
+        .soul-tabs {
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+        }
+        
+        .soul-tab-content {
+            padding: 0.75rem 0;
+        }
+        
+        .profile-header-mini {
+            margin-bottom: 1.25rem;
+            padding: 1rem 1.25rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 6px;
+        }
+        
+        .profile-stats-mini {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: space-between;
+            margin: 1rem 0;
+        }
+        
+        .stat-mini {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            box-sizing: border-box;
+            max-width: 100%;
+        }
+        
+        .privacy-settings-grid {
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .privacy-setting {
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        /* Responsive Design - Mobile First */
+        @media (max-width: 768px) {
+            .modal {
+                padding: 60px 10px 10px; /* Tighter mobile padding */
+            }
+            
+            .soul-modal {
+                max-width: 95%; /* Nearly full width on mobile */
+                width: 95%;
+                max-height: calc(100vh - 80px); /* More screen usage on mobile */
+                border-radius: 12px 12px 0 0; /* Rounded top corners only */
+                margin: 0;
+            }
+            
+            .soul-modal .modal-header {
+                padding: 1rem 1.5rem 0.75rem; /* Compact mobile header */
+            }
+            
+            .soul-modal .modal-body {
+                padding: 0 1.5rem 1rem; /* Tighter mobile content */
+            }
+            
+            .soul-tabs {
+                gap: 0.5rem; /* Closer tabs on mobile */
+                margin-bottom: 1rem;
+                flex-wrap: wrap; /* Allow wrapping if needed */
+            }
+            
+            .soul-tab {
+                padding: 0.5rem 1rem; /* Smaller touch targets */
+                font-size: 0.9rem;
+            }
+            
+            .profile-header-mini {
+                flex-direction: column; /* Stack vertically on mobile */
+                text-align: center;
+                gap: 1rem;
+                padding: 0.75rem;
+                margin-bottom: 1rem;
+            }
+            
+            .profile-stats-mini {
+                justify-content: space-around; /* Spread stats evenly */
+            }
+            
+            .close-modal {
+                top: 0.75rem;
+                right: 0.75rem;
+                width: 36px;
+                height: 36px;
+                font-size: 1.25rem; /* Slightly smaller on mobile */
+            }
+        }
+        
+        /* Desktop UX Optimization - Natural content flow */
+        @media (min-width: 769px) {
+            .modal {
+                padding: 60px 20px 20px;
+            }
+            
+            .soul-modal {
+                max-width: 580px; /* Wider to accommodate content */
+                width: auto; /* Content-based width */
+                min-width: 520px; /* Wider minimum for content flow */
+            }
+            
+            .soul-modal .modal-header {
+                padding: 1.5rem 2rem 1rem;
+            }
+            
+            .soul-modal .modal-body {
+                padding: 0 2rem 1.5rem;
+            }
+            
+            .profile-header-mini {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                padding: 1.25rem;
+                background: rgba(255, 255, 255, 0.03);
+            }
+            
+            .profile-info-mini {
+                flex: 1;
+            }
+            
+            .profile-stats-mini {
+                justify-content: space-around;
+                gap: 2rem;
+                margin: 1.25rem 0;
+            }
+            
+            .soul-tabs {
+                justify-content: center;
+                gap: 1.5rem;
+            }
+            
+            .soul-tab {
+                padding: 0.75rem 1.5rem;
+                min-width: auto;
+            }
+            
+            .form-group input,
+            .form-group textarea,
+            .form-group select {
+                padding: 0.75rem 1rem;
+                border-radius: 6px;
+            }
+            
+            .privacy-settings-grid {
+                gap: 1.25rem;
+            }
+            
+            .privacy-setting {
+                margin-bottom: 1.25rem;
+            }
+        }
+        
+        /* Large Desktop - Proper content accommodation */
+        @media (min-width: 1200px) {
+            .soul-modal {
+                max-width: 620px; /* Sufficient width for content without overflow */
+            }
+            
+            .soul-modal .modal-header {
+                padding: 1.75rem 2.25rem 1.25rem;
+            }
+            
+            .soul-modal .modal-body {
+                padding: 0 2.25rem 1.75rem;
+            }
+        }
+        
+        /* Soul Forge Modal Styles */
+        .soul-forge-modal {
+            background: linear-gradient(135deg, var(--secondary, #1a1a33) 0%, var(--primary, #0d0d1a) 100%);
+            border-radius: 12px;
+            max-width: 700px;
+            width: 95%;
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+            border: 1px solid var(--accent, #ff5e78);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            position: relative;
+            margin: 0 auto;
+        }
+        
+        .forge-modal-header {
+            padding: 2rem 2rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 94, 120, 0.2);
+        }
+        
+        .mode-toggle {
+            margin-top: 1rem;
+        }
+        
+        /* Soul Essence View Styles */
+        .soul-essence-view {
+            padding: 2rem;
+            display: none; /* Hidden by default, shown in view mode */
+        }
+        
+        .essence-avatar-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .essence-avatar-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .essence-avatar-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid var(--accent);
+            object-fit: cover;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .essence-avatar-glow {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 94, 120, 0.3), transparent 70%);
+            animation: pulse 3s ease-in-out infinite;
+            z-index: 1;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+        
+        .essence-identity {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .essence-field {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 94, 120, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .essence-field:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 94, 120, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .essence-label {
+            font-size: 0.85rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .essence-value {
+            color: var(--text);
+            font-size: 1.1rem;
+            line-height: 1.4;
+            min-height: 1.5rem;
+        }
+        
+        .chronicle-field {
+            grid-column: 1 / -1;
+            margin-bottom: 2rem;
+        }
+        
+        .essence-chronicle {
+            color: var(--text);
+            line-height: 1.6;
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 0.5rem 0;
+        }
+        
+        .essence-boundaries {
+            background: linear-gradient(135deg, rgba(255, 94, 120, 0.1), rgba(255, 94, 120, 0.05));
+            border: 1px solid rgba(255, 94, 120, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        
+        .boundaries-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .boundary-display {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            border: 1px solid rgba(255, 94, 120, 0.2);
+        }
+        
+        .boundary-icon {
+            color: var(--accent);
+            width: 20px;
+            text-align: center;
+        }
+        
+        .boundary-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .boundary-value {
+            color: var(--accent);
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+        
+        .forge-modal-header h2 {
+            margin: 0 0 0.5rem 0;
+            font-size: 2rem;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .forge-modal-header p {
+            margin: 0;
+            opacity: 0.8;
+        }
+        
+        .soul-forge-form {
+            padding: 2rem;
+        }
+        
+        .soul-forge-avatar {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .forge-avatar-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid var(--accent);
+            margin-bottom: 1rem;
+            display: block;
+            margin: 0 auto 1rem auto;
+        }
+        
+        .avatar-controls {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .soul-identity-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .forge-input, .forge-textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid rgba(255, 94, 120, 0.3);
+            border-radius: var(--border-radius);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .forge-input:focus, .forge-textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 3px rgba(255, 94, 120, 0.1);
+        }
+        
+        .forge-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .immortal-boundaries {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+        }
+        
+        .immortal-boundaries h3 {
+            margin: 0 0 1.5rem 0;
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+        
+        .boundary-setting {
+            margin-bottom: 1.5rem;
+        }
+        
+        .boundary-setting:last-child {
+            margin-bottom: 0;
+        }
+        
+        .boundary-setting > label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        .toggle-group {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .toggle-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 94, 120, 0.2);
+            background: rgba(255, 255, 255, 0.02);
+        }
+        
+        .toggle-option:hover {
+            background: rgba(255, 94, 120, 0.1);
+        }
+        
+        .toggle-option input[type="radio"] {
+            margin: 0;
+        }
+        
+        .toggle-option input[type="radio"]:checked + span {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        
+        .forge-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 94, 120, 0.2);
+        }
+        
+        .forge-actions .btn {
+            flex: 1;
+            max-width: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        /* Mobile responsive for Soul Forge */
+        @media (max-width: 768px) {
+            .soul-forge-modal {
+                width: 98%;
+                max-height: calc(100vh - 40px);
+                border-radius: 8px;
+            }
+            
+            .forge-modal-header {
+                padding: 1.5rem 1rem 1rem;
+            }
+            
+            .soul-forge-form {
+                padding: 1rem;
+            }
+            
+            .soul-essence-view {
+                padding: 1rem;
+            }
+            
+            .essence-identity {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .boundaries-grid {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+            
+            .essence-avatar-img {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .soul-identity-section {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+            
+            .toggle-group {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .forge-actions {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            .forge-actions .btn {
+                max-width: 100%;
+            }
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .privacy-actions {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        
+        /* Touch Optimization */
+        .soul-tab, .close-modal, .btn {
+            min-height: 44px; /* iOS recommended touch target */
+            touch-action: manipulation; /* Prevent zoom on tap */
+        }
+        
+        .soul-tab {
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent; /* Remove tap highlight */
+        }
+        
+        /* Form improvements for mobile */
+        @media (max-width: 768px) {
+            .form-group input, .form-group textarea, .form-group select {
+                font-size: 16px; /* Prevent zoom on iOS */
+                padding: 0.75rem;
+            }
+            
+            .privacy-setting {
+                margin-bottom: 1rem;
+            }
+            
+            .privacy-setting label {
+                font-size: 0.9rem;
+                margin-bottom: 0.5rem;
+            }
+        }
+        
+        .soul-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 94, 120, 0.2);
+        }
+        
+        .soul-tab {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: none;
+            color: var(--text, #f0e6ff);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .soul-tab.active {
+            color: var(--accent, #ff5e78);
+            border-bottom-color: var(--accent, #ff5e78);
+        }
+        
+        .soul-tab:hover {
+            color: var(--accent, #ff5e78);
+        }
+        
+        .soul-tab-content {
+            display: none;
+            padding: 1rem 0;
+        }
+        
+        .soul-tab-content.active {
+            display: block;
+        }
+        
+        .profile-header-mini {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 94, 120, 0.1);
+            border-radius: 12px;
+        }
+        
+        .profile-avatar-mini {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid var(--accent, #ff5e78);
+            object-fit: cover;
+        }
+        
+        .profile-info-mini h3 {
+            color: var(--accent, #ff5e78);
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-info-mini p {
+            margin-bottom: 0.25rem;
+            opacity: 0.8;
+        }
+        
+        .profile-status-mini {
+            font-style: italic;
+            color: var(--warning, #ffca28);
+        }
+        
+        .profile-stats-mini {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+        
+        .stat-mini {
+            text-align: center;
+        }
+        
+        .stat-mini .stat-value {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent, #ff5e78);
+        }
+        
+        .stat-mini .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .profile-bio-mini {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+        
+        .profile-bio-mini h4 {
+            color: var(--accent, #ff5e78);
+            margin-bottom: 1rem;
+        }
+        
+        .profile-edit-form {
+            max-width: 600px;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--accent, #ff5e78);
+            font-weight: 600;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 94, 120, 0.3);
+            border-radius: 8px;
+            color: var(--text, #f0e6ff);
+            font-family: inherit;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent, #ff5e78);
+            box-shadow: 0 0 10px rgba(255, 94, 120, 0.3);
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+        
+        .privacy-intro {
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .privacy-settings {
+            max-width: 600px;
+        }
+        
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem;
+            background: rgba(255, 94, 120, 0.1);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        .setting-info {
+            flex: 1;
+        }
+        
+        .setting-info h4 {
+            color: var(--accent, #ff5e78);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .setting-info p {
+            opacity: 0.8;
+            margin: 0;
+        }
+        
+        .setting-select {
+            padding: 0.5rem 1rem;
+            background: var(--secondary, #1a1a33);
+            border: 1px solid var(--accent, #ff5e78);
+            border-radius: 6px;
+            color: var(--text, #f0e6ff);
+            min-width: 150px;
+        }
+        
+        .privacy-actions {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, var(--accent, #ff5e78), var(--warning, #ffca28));
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 94, 120, 0.1);
+            color: var(--accent, #ff5e78);
+            border: 1px solid var(--accent, #ff5e78);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--accent, #ff5e78);
+            border: 1px solid var(--accent, #ff5e78);
+            font-size: 0.8rem;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Touch-First Interaction Design */
+        .btn:active,
+        .soul-tab:active,
+        .hub-card:active {
+            transform: scale(0.98);
+            transition: transform 0.1s ease;
+        }
+        
+        @media (hover: none) and (pointer: coarse) {
+            .btn:hover {
+                transform: none;
+                box-shadow: none;
+            }
+            
+            .hub-card:hover {
+                transform: none;
+                box-shadow: var(--shadow);
+            }
+        }
+        
+        /* Haptic Feedback Support */
+        .btn,
+        .soul-tab,
+        .hub-card {
+            -webkit-tap-highlight-color: rgba(255, 94, 120, 0.2);
+            tap-highlight-color: rgba(255, 94, 120, 0.2);
+        }
+        
+        /* Swipe Gesture Support */
+        .soul-tabs {
+            touch-action: pan-x;
+            scroll-behavior: smooth;
+        }
+        
+        .soul-tab-content {
+            touch-action: pan-y;
+        }
+        
+        /* Mobile Soul Tab Content Fixes */
+        @media (max-width: 768px) {
+            .soul-tab-content {
+                display: none;
+                flex: 1;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                padding: 1rem 0 2rem 0;
+                min-height: 0;
+            }
+            
+            .soul-tab-content.active {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .profile-edit-form {
+                max-width: 100%;
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .privacy-settings {
+                max-width: 100%;
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+                gap: 0.75rem;
+                margin-top: auto;
+                padding-top: 1.5rem;
+                flex-shrink: 0;
+            }
+            
+            .privacy-actions {
+                margin-top: auto;
+                padding-top: 1.5rem;
+                flex-shrink: 0;
+            }
+        }
+        
+        /* Quick Actions Bar Styles */
+        .quick-actions-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: linear-gradient(135deg, var(--secondary, #1a1a33) 0%, var(--primary, #0d0d1a) 100%);
+            border-bottom: 1px solid rgba(255, 94, 120, 0.2);
+            padding: 0.75rem 1rem;
+            margin: 0 -2rem 1rem;
+            /* backdrop-filter: blur(10px); REMOVED - Was creating stacking context that trapped modal z-index */
+            /* -webkit-backdrop-filter: blur(10px); */
+        }
+        
+        .quick-actions-content {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .quick-action-btn {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255, 94, 120, 0.1);
+            border: 1px solid rgba(255, 94, 120, 0.3);
+            color: var(--accent, #ff5e78);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+        
+        .quick-action-btn:active {
+            transform: scale(0.95);
+            background: rgba(255, 94, 120, 0.2);
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: var(--accent, #ff5e78);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        /* Soul Status Card Styles */
+        .soul-status-card {
+            background: var(--gradient-secondary, linear-gradient(to bottom, #1a1a33, rgba(26, 26, 51, 0.9)));
+            border-radius: 12px;
+            margin: 0 0 1.5rem 0;
+            border: 1px solid rgba(255, 94, 120, 0.25);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .soul-status-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        
+        .soul-status-header:active {
+            background: rgba(255, 94, 120, 0.05);
+        }
+        
+        .soul-status-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .quick-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--accent, #ff5e78);
+            object-fit: cover;
+        }
+        
+        .soul-status-text h3 {
+            margin: 0 0 0.25rem 0;
+            color: var(--accent, #ff5e78);
+            font-size: 1.1rem;
+        }
+        
+        .soul-status-text p {
+            margin: 0;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
+        .collapse-btn {
+            background: transparent;
+            border: none;
+            color: var(--accent, #ff5e78);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+        
+        .collapse-btn:active {
+            background: rgba(255, 94, 120, 0.1);
+            transform: scale(0.95);
+        }
+        
+        .collapse-btn.collapsed i {
+            transform: rotate(180deg);
+        }
+        
+        .soul-status-details {
+            padding: 0 1.5rem 1rem;
+            transition: all 0.3s ease;
+            max-height: 200px;
+            overflow: hidden;
+        }
+        
+        .soul-status-details.collapsed {
+            max-height: 0;
+            padding: 0 1.5rem;
+        }
+        
+        .soul-quick-stats {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: rgba(255, 94, 120, 0.05);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        
+        .quick-stat {
+            text-align: center;
+        }
+        
+        .quick-stat-value {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent, #ff5e78);
+            margin-bottom: 0.25rem;
+        }
+        
+        .quick-stat-label {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+        
+        /* Bottom Sheet Styles */
+        .bottom-sheet {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--gradient-secondary, linear-gradient(to bottom, #1a1a33, rgba(26, 26, 51, 0.9)));
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            z-index: 200;
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .bottom-sheet.open {
+            transform: translateY(0);
+        }
+        
+        .bottom-sheet-header {
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 94, 120, 0.2);
+            position: relative;
+        }
+        
+        .bottom-sheet-handle {
+            width: 40px;
+            height: 4px;
+            background: rgba(255, 94, 120, 0.5);
+            border-radius: 2px;
+            margin: 0 auto 1rem;
+        }
+        
+        .bottom-sheet-header h3 {
+            margin: 0;
+            color: var(--accent, #ff5e78);
+        }
+        
+        .bottom-sheet-content {
+            padding: 1.5rem;
+        }
+        
+        .secondary-tools-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        .secondary-tool-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1.5rem 1rem;
+            background: rgba(255, 94, 120, 0.1);
+            border: 1px solid rgba(255, 94, 120, 0.2);
+            border-radius: 12px;
+            color: var(--text, #f0e6ff);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+        
+        .secondary-tool-btn:active {
+            transform: scale(0.95);
+            background: rgba(255, 94, 120, 0.2);
+        }
+        
+        .secondary-tool-btn i {
+            font-size: 1.5rem;
+            color: var(--accent, #ff5e78);
+        }
+        
+        /* Activity Section Enhancements */
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .refresh-activity-btn {
+            background: rgba(255, 94, 120, 0.1);
+            border: 1px solid rgba(255, 94, 120, 0.3);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent, #ff5e78);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .refresh-activity-btn:active {
+            transform: scale(0.95);
+            background: rgba(255, 94, 120, 0.2);
+        }
+        
+        .refresh-activity-btn.spinning i {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .pull-to-refresh-indicator {
+            display: none;
+            text-align: center;
+            padding: 1rem;
+            color: var(--accent, #ff5e78);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        .pull-to-refresh-indicator.show {
+            display: block;
+        }
+        
+        .pull-to-refresh-indicator i {
+            margin-right: 0.5rem;
+            animation: bounce 1s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-5px); }
+            60% { transform: translateY(-3px); }
+        }
+        
+        /* PWA Install Banner */
+        .install-banner {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: var(--gradient-secondary, linear-gradient(to bottom, #1a1a33, rgba(26, 26, 51, 0.9)));
+            border: 1px solid var(--accent, #ff5e78);
+            border-radius: 12px;
+            z-index: 1000;
+            animation: slideUp 0.3s ease;
+        }
+        
+        .install-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+        }
+        
+        .install-content i {
+            color: var(--accent, #ff5e78);
+            font-size: 1.2rem;
+        }
+        
+        .install-content span {
+            flex: 1;
+            font-size: 0.9rem;
+        }
+        
+        .install-btn {
+            background: var(--accent, #ff5e78);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .dismiss-btn {
+            background: transparent;
+            border: none;
+            color: var(--text, #f0e6ff);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        /* Mobile-specific improvements */
+        @media (max-width: 768px) {
+            .quick-actions-bar {
+                margin: 0 -1rem 1rem;
+            }
+            
+            .soul-status-card {
+                margin: 0 0 1rem 0;
+            }
+            
+            .install-banner {
+                left: 10px;
+                right: 10px;
+                bottom: 10px;
+            }
+        }
+        
+        /* Enhanced Mobile Optimization */
+        @media (max-width: 768px) {
+            .modal {
+                padding: 0;
+                align-items: flex-start;
+                background: rgba(13, 13, 26, 0.95);
+            }
+            
+            .modal.active {
+                display: flex !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
+            
+            .soul-modal {
+                padding: 1rem;
+                width: 100vw;
+                height: 100vh;
+                max-height: 100vh;
+                max-width: 100vw;
+                border-radius: 0;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                margin: 0;
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                background: linear-gradient(135deg, var(--secondary, #1a1a33) 0%, var(--primary, #0d0d1a) 100%);
+            }
+            
+            .close-modal {
+                position: fixed;
+                top: 1rem;
+                right: 1rem;
+                font-size: 2rem;
+                padding: 0.75rem;
+                z-index: 100000 !important;
+                background: rgba(0, 0, 0, 0.8) !important;
+                border-radius: 50%;
+                width: 48px;
+                height: 48px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 2px solid var(--accent, #ff5e78) !important;
+            }
+            
+            .soul-tabs {
+                position: sticky;
+                top: 0;
+                background: linear-gradient(135deg, var(--secondary, #1a1a33) 0%, var(--primary, #0d0d1a) 100%);
+                z-index: 5;
+                margin: 0 -1rem 1rem;
+                padding: 1rem;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                gap: 0.5rem;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+                flex-shrink: 0;
+            }
+            
+            .soul-tabs::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .soul-tab {
+                flex: 0 0 auto;
+                min-width: 110px;
+                text-align: center;
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+                white-space: nowrap;
+                border-radius: 8px;
+                transition: all 0.2s ease;
+                border: 1px solid rgba(255, 94, 120, 0.2);
+            }
+            
+            .soul-tab.active {
+                background: rgba(255, 94, 120, 0.3);
+                border-color: var(--accent, #ff5e78);
+                color: var(--accent, #ff5e78);
+                font-weight: 600;
+            }
+            
+            .profile-header-mini {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+                padding: 1rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .profile-avatar-mini {
+                width: 60px;
+                height: 60px;
+                border-width: 2px;
+            }
+            
+            .profile-info-mini h3 {
+                font-size: 1.1rem;
+                margin-bottom: 0.25rem;
+            }
+            
+            .profile-info-mini p {
+                font-size: 0.9rem;
+            }
+            
+            .profile-stats-mini {
+                gap: 1.5rem;
+                margin-bottom: 1.5rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .stat-mini .stat-value {
+                font-size: 1.2rem;
+            }
+            
+            .stat-mini .stat-label {
+                font-size: 0.8rem;
+            }
+            
+            .profile-bio-mini {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+            
+            .profile-bio-mini h4 {
+                font-size: 1rem;
+                margin-bottom: 0.75rem;
+            }
+            
+            .profile-edit-form {
+                max-width: 100%;
+            }
+            
+            .form-group {
+                margin-bottom: 1.25rem;
+            }
+            
+            .form-group label {
+                font-size: 0.9rem;
+                margin-bottom: 0.4rem;
+            }
+            
+            .form-group input,
+            .form-group textarea {
+                padding: 0.75rem;
+                font-size: 16px; /* Prevents zoom on iOS */
+                border-radius: 6px;
+            }
+            
+            .form-group textarea {
+                min-height: 100px;
+                resize: vertical;
+            }
+            
+            .setting-item {
+                flex-direction: column;
+                gap: 0.75rem;
+                text-align: left;
+                padding: 1rem;
+                border-radius: 6px;
+            }
+            
+            .setting-info h4 {
+                font-size: 0.95rem;
+                text-align: center;
+            }
+            
+            .setting-info p {
+                font-size: 0.85rem;
+                text-align: center;
+            }
+            
+            .setting-select {
+                width: 100%;
+                padding: 0.75rem;
+                font-size: 16px; /* Prevents zoom on iOS */
+                border-radius: 6px;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+                gap: 0.75rem;
+                margin-top: 1.5rem;
+            }
+            
+            .btn {
+                padding: 0.85rem 1.5rem;
+                font-size: 0.95rem;
+                border-radius: 6px;
+                min-height: 48px; /* Touch target size */
+            }
+            
+            .privacy-actions {
+                margin-top: 1.5rem;
+            }
+            
+            .privacy-intro {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+                text-align: center;
+            }
+        }
+        
+        /* Extra small devices */
+        @media (max-width: 480px) {
+            .soul-modal {
+                padding: 0.5rem;
+            }
+            
+            .soul-tabs {
+                margin: 0 -0.5rem 1rem;
+                padding: 0.5rem;
+            }
+            
+            .soul-tab {
+                min-width: 90px;
+                padding: 0.5rem 0.6rem;
+                font-size: 0.8rem;
+            }
+            
+            .profile-header-mini {
+                padding: 0.75rem;
+            }
+            
+            .profile-avatar-mini {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .profile-stats-mini {
+                gap: 1rem;
+            }
+            
+            .form-group input,
+            .form-group textarea,
+            .setting-select {
+                padding: 0.6rem;
+            }
+            
+            .setting-item {
+                padding: 0.75rem;
+                gap: 0.6rem;
+            }
+            
+            .btn {
+                padding: 0.75rem 1.2rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+    
+    <!-- 6. EXTERNAL RESOURCES (lazy loaded) -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous"></noscript>
+    
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"></noscript>
+    
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css"></noscript>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.6/purify.min.js"></script>
+</head>
+<body>
+    <aside class="active-users" id="activeUsers" aria-label="Active users panel">
+        <div class="active-users-header">
+            <h3>Eternal Seekers</h3>
+            <button class="close-sidebar" id="closeUsers" aria-label="Close sidebar">×</button>
+        </div>
+        <div id="userList"></div>
+    </aside>
+
+    <div class="floating-buttons">
+        <button class="show-users-btn" id="showUsersBtn" aria-label="Show active users"><i class="fas fa-users"></i></button>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"><i class="fas fa-moon"></i></button>
+    </div>
+
+    <div id="messageModal" class="modal" aria-hidden="true">
+        <div class="message-modal-content" role="dialog" aria-labelledby="messageTitle">
+            <h3 id="messageTitle">Direct Message</h3>
+            <p id="recipientName">To: Username</p>
+            <div class="message-history" id="messageHistory"></div>
+            <div>
+                <input type="text" id="messageInput" placeholder="Inscribe your eternal message..." required>
+                <div class="modal-actions">
+                    <button type="submit" id="sendMessageBtn">Send Whisper</button>
+                    <button type="button" id="closeMessageModal">Close Nexus</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Soul Management Modal - MOVED BEFORE HEADER to fix DOM stacking -->
+    <!-- Soul Forge Modal (Unified Profile Management) -->
+    <div id="soulManagementModal" class="modal" aria-hidden="true">
+        <div class="modal-content soul-forge-modal">
+            <button class="close-modal" id="closeSoulModal" aria-label="Close modal">×</button>
+            
+            <!-- Soul Forge Header -->
+            <div class="forge-modal-header">
+                <h2 id="modalTitle">Soul Essence</h2>
+                <p id="modalSubtitle">Witness your immortal essence</p>
+                <div class="mode-toggle">
+                    <button id="switchToEditMode" class="btn btn-secondary" style="display: none;">
+                        <i class="fas fa-edit"></i> Cultivate Essence
+                    </button>
+                    <button id="switchToViewMode" class="btn btn-primary" style="display: none;">
+                        <i class="fas fa-eye"></i> View Essence
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Soul Essence View (Read-Only) -->
+            <div id="soulEssenceView" class="soul-essence-view">
+                <!-- Avatar Section -->
+                <div class="essence-avatar-section">
+                    <div class="essence-avatar-container">
+                        <img id="viewAvatar" src="/assets/images/default.jpg" alt="Soul Avatar" class="essence-avatar-img">
+                        <div class="essence-avatar-glow"></div>
+                    </div>
+                </div>
+                
+                <!-- Identity Display -->
+                <div class="essence-identity">
+                    <div class="essence-field">
+                        <div class="essence-label">Eternal Name</div>
+                        <div id="viewEternalName" class="essence-value">Loading...</div>
+                    </div>
+                    
+                    <div class="essence-field">
+                        <div class="essence-label">Soul Whisper</div>
+                        <div id="viewSoulWhisper" class="essence-value">Loading...</div>
+                    </div>
+                </div>
+                
+                <!-- Soul Chronicle Display -->
+                <div class="essence-field chronicle-field">
+                    <div class="essence-label">Soul Chronicle</div>
+                    <div id="viewSoulChronicle" class="essence-chronicle">Loading...</div>
+                </div>
+                
+                <!-- Immortal Boundaries Display -->
+                <div class="essence-boundaries">
+                    <div class="essence-label">Immortal Boundaries</div>
+                    <div class="boundaries-grid">
+                        <div class="boundary-display">
+                            <span class="boundary-icon"><i class="fas fa-eye"></i></span>
+                            <span class="boundary-label">Revelation:</span>
+                            <span id="viewProfileVisibility" class="boundary-value">Loading...</span>
+                        </div>
+                        <div class="boundary-display">
+                            <span class="boundary-icon"><i class="fas fa-comment"></i></span>
+                            <span class="boundary-label">Soul Echoes:</span>
+                            <span id="viewMessaging" class="boundary-value">Loading...</span>
+                        </div>
+                        <div class="boundary-display">
+                            <span class="boundary-icon"><i class="fas fa-list"></i></span>
+                            <span class="boundary-label">Directory:</span>
+                            <span id="viewDirectoryListing" class="boundary-value">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Unified Soul Form (Editable) -->
+            <div class="soul-forge-form">
+                <!-- Avatar Section -->
+                <div class="soul-forge-avatar">
+                    <img id="forgeAvatar" src="/assets/images/default.jpg" alt="Soul Avatar" class="forge-avatar-img">
+                    <div class="avatar-controls">
+                        <input type="text" id="avatarUrl" placeholder="Avatar URL" class="forge-input">
+                    </div>
+                </div>
+                
+                <!-- Identity Section -->
+                <div class="soul-identity-section">
+                    <div class="form-group">
+                        <label for="eternalNameInput">Eternal Name</label>
+                        <input type="text" id="eternalNameInput" placeholder="Your immortal identity" class="forge-input">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="soulWhisperInput">Soul Whisper</label>
+                        <input type="text" id="soulWhisperInput" placeholder="Your mystical status" class="forge-input">
+                    </div>
+                </div>
+                
+                <!-- Soul Chronicle Section -->
+                <div class="form-group">
+                    <label for="soulChronicle">Soul Chronicle</label>
+                    <textarea id="soulChronicle" placeholder="Chronicle your immortal essence..." class="forge-textarea"></textarea>
+                </div>
+                
+                <!-- Immortal Boundaries Section -->
+                <div class="immortal-boundaries">
+                    <h3>Immortal Boundaries</h3>
+                    
+                    <div class="boundary-setting">
+                        <label>Reveal to Mortals</label>
+                        <div class="toggle-group">
+                            <label class="toggle-option">
+                                <input type="radio" name="profileVisibility" value="public" checked>
+                                <span>Revealed</span>
+                            </label>
+                            <label class="toggle-option">
+                                <input type="radio" name="profileVisibility" value="private">
+                                <span>Veiled</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="boundary-setting">
+                        <label>Soul Echoes</label>
+                        <div class="toggle-group">
+                            <label class="toggle-option">
+                                <input type="radio" name="messaging" value="enabled" checked>
+                                <span>Open</span>
+                            </label>
+                            <label class="toggle-option">
+                                <input type="radio" name="messaging" value="disabled">
+                                <span>Sealed</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="boundary-setting">
+                        <label>Eternal Directory</label>
+                        <div class="toggle-group">
+                            <label class="toggle-option">
+                                <input type="radio" name="directoryListing" value="listed" checked>
+                                <span>Inscribed</span>
+                            </label>
+                            <label class="toggle-option">
+                                <input type="radio" name="directoryListing" value="unlisted">
+                                <span>Hidden</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="forge-actions">
+                    <button type="button" id="restoreEssenceBtn" class="btn btn-secondary">
+                        <i class="fas fa-undo"></i>
+                        Restore Essence
+                    </button>
+                    <button type="submit" id="forgeChangesBtn" class="btn btn-primary">
+                        <i class="fas fa-hammer"></i>
+                        Forge Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div class="logo">
+            <a href="/">
+                <i class="fas fa-infinity"></i>
+                <div class="title-stack">
+                    <span class="full-title">
+                        <span class="title-line-one">Immortal</span>
+                        <span class="title-line-two">Nexus</span>
+                    </span>
+                    <span class="short-title">IN</span>
+                </div>
+            </a>
+        </div>
+        <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+        <nav class="main-nav">
+            <ul>
+                <!-- Populated by navigation.js -->
+            </ul>
+        </nav>
+        <div class="header-controls">
+            <div class="user-menu" id="userMenuContainer"></div> <!-- Populated by userMenu.js -->
+            <div class="header-auth-buttons" id="headerAuthButtonsContainer" style="display: none;">
+                <!-- Populated by userMenu.js when logged out -->
+            </div>
+        </div>
+        
+        <!-- Mobile Navigation Structure (outside of direct header controls but related) -->
+        <!-- It's often placed outside the main <header> for full-screen overlay behavior -->
+        <!-- but let's keep it structurally associated if scripts expect it near <header> -->
+        <!-- The following mobile nav structure is from index.html, adjust if lander has its own -->
+        <div class="mobile-overlay" id="mobileOverlay"></div>
+        <nav class="mobile-nav" id="mobileNav">
+            <div class="sidebar-header">
+                <h2>Eternal Navigation</h2>
+                <button class="close-sidebar" id="closeMobileNav" aria-label="Close mobile navigation">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <ul class="mobile-nav-list">
+                <!-- Links will be dynamically populated -->
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Soul Presence Banner -->
+        <section class="soul-presence">
+            <div class="soul-presence-content">
+                <img id="soulAvatar" src="/assets/images/default.jpg" alt="Your Soul" class="soul-avatar">
+                <div class="soul-identity">
+                    <h2 id="eternalName">Eternal Seeker</h2>
+                    <div class="soul-whisper-container">
+                        <p id="soulWhisper" class="soul-whisper editable" contenteditable="false">Click to set your soul whisper...</p>
+                        <button id="editWhisperBtn" class="edit-whisper-btn" title="Edit Soul Whisper">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Essence Chamber -->
+        <section class="essence-chamber">
+            <div class="essence-actions">
+                <button id="viewSoulEssenceBtn" class="btn btn-primary">
+                    <i class="fas fa-eye"></i>
+                    View Soul Essence
+                </button>
+                <button id="cultivateEssenceBtn" class="btn btn-secondary">
+                    <i class="fas fa-edit"></i>
+                    Cultivate Essence
+                </button>
+            </div>
+        </section>
+        
+        <!-- Inscription Forge (Collapsible Multi-Purpose Editor) -->
+        <section class="inscription-forge collapsed">
+            <div class="forge-header">
+                <h2>Inscription Forge</h2>
+                <div class="forge-tabs">
+                    <button class="forge-tab active" data-type="scroll">
+                        <i class="fas fa-scroll"></i>
+                        Inscribe Scroll
+                    </button>
+                    <button class="forge-tab" data-type="chronicle">
+                        <i class="fas fa-newspaper"></i>
+                        Chronicle News
+                    </button>
+                </div>
+                <button id="toggleForgeBtn" class="toggle-forge-btn">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+            <div class="forge-content" id="forgeContent">
+                <div class="form-group">
+                    <label for="postTitle">Title Your Inscription</label>
+                    <input type="text" id="postTitle" placeholder="Name your eternal thought...">
+                </div>
+                <div id="editor-container">
+                    <div id="editor"></div>
+                </div>
+                <div class="form-actions">
+                    <select id="draftsSelector">
+                        <option value="" disabled selected>Slumbering Scrolls</option>
+                        <!-- Drafts will be populated here -->
+                    </select>
+                    <button id="saveDraftButton" class="btn btn-secondary">Save to Slumber</button>
+                    <button id="publishButton" class="btn btn-primary">Eternalize</button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Recent Scrolls -->
+        <section class="recent-scrolls">
+            <div class="section-header">
+                <h2>Recent Scrolls</h2>
+                <a href="/pages/blog.html?filter=mine" class="witness-all-link">
+                    Witness All Scrolls
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            <div class="scrolls-list" id="recentScrollsList">
+                <div class="empty-state">
+                    <i class="fas fa-feather-alt"></i>
+                    <p>Your scrolls await inscription...</p>
+                    <button class="btn btn-primary" onclick="document.getElementById('toggleForgeBtn').click()">
+                        Begin Your First Scroll
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Immortal Nexus | Embracing Infinity</p>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
+    <!-- Shared MLNF Scripts -->
+    <!-- Config MUST be loaded first -->
+    <script src="components/shared/config.js?v=2.0"></script>
+    <script src="components/shared/mlnf-core.js?v=1.3"></script>
+    <script src="components/shared/navigation.js?v=1.7"></script>
+    <script src="components/shared/userMenu.js?v=1.8"></script>
+    <script src="components/shared/authModal.js?v=2.1"></script>
+    <script src="components/shared/messageModal.js?v=2.5"></script>
+    <script src="components/shared/activeUsers.js?v=1.6"></script>
+    <!-- End Shared MLNF Scripts -->
+
+    <!-- <script src="js/scripts.js?v=1.0"></script> --> <!-- Legacy script - functionality moved to components -->
+    <script src="js/main.js?v=2.3"></script>
+    <script>
+        let quill;
+        
+        
+        function initQuillEditor() {
+            quill = new Quill('#editor', {
+                theme: 'snow',
+                placeholder: 'Share your eternal wisdom...',
+                modules: {
+                    toolbar: [
+                        ['bold', 'italic', 'underline', 'strike'],
+                        ['blockquote', 'code-block'],
+                        [{ 'header': 1 }, { 'header': 2 }],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        [{ 'color': [] }, { 'background': [] }],
+                        ['link', 'image'],
+                        ['clean']
+                    ]
+                }
+            });
+        }
+        
+        async function publishPost() {
+            const title = document.getElementById('postTitle').value.trim();
+            const content = quill.root.innerHTML;
+            
+            if (!title) {
+                alert('Please enter a title for your eternal thought');
+                return;
+            }
+            
+            if (quill.getText().trim().length < 10) {
+                alert('Please share more of your eternal wisdom (at least 10 characters)');
+                return;
+            }
+            
+            const token = localStorage.getItem('sessionToken');
+            if (!token) {
+                window.MLNF.openSoulModal('login');
+                return;
+            }
+            
+            try {
+                const sanitizedContent = DOMPurify.sanitize(content);
+                
+                const publishButton = document.getElementById('publishButton');
+                publishButton.textContent = 'Eternalizing...';
+                publishButton.disabled = true;
+                
+                const draftsSelector = document.getElementById('draftsSelector');
+                const selectedDraftId = draftsSelector.value;
+                
+                let response;
+                if (selectedDraftId) {
+                    // Update existing draft to published
+                    response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/blogs/${selectedDraftId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            title,
+                            content: sanitizedContent,
+                            status: 'published'
+                        })
+                    });
+                } else {
+                    // Create new post
+                    response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/blogs`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            title,
+                            content: sanitizedContent,
+                            status: 'published'
+                        })
+                    });
+                }
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || `API error: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                // Blog post created successfully
+                
+                // Clear form
+                clearForm();
+                publishButton.textContent = 'Eternalize';
+                publishButton.disabled = false;
+                
+                // Refresh drafts list
+                await loadDrafts();
+                
+                // Show success and redirect to blog
+                alert('Your eternal wisdom has been shared with the sanctuary!');
+                window.location.href = '/pages/blog.html';
+                
+            } catch (error) {
+                // Error publishing post
+                alert('Failed to publish your eternal thought: ' + error.message);
+                
+                const publishButton = document.getElementById('publishButton');
+                publishButton.textContent = 'Eternalize';
+                publishButton.disabled = false;
+            }
+        }
+        
+        async function saveDraft() {
+            const title = document.getElementById('postTitle').value.trim();
+            const content = quill.root.innerHTML;
+            
+            if (!title) {
+                alert('Please enter a title for your draft');
+                return;
+            }
+            
+            const token = localStorage.getItem('sessionToken');
+            if (!token) {
+                window.MLNF.openSoulModal('login');
+                return;
+            }
+            
+            try {
+                const sanitizedContent = DOMPurify.sanitize(content);
+                
+                const draftButton = document.getElementById('saveDraftButton');
+                draftButton.textContent = 'Saving...';
+                draftButton.disabled = true;
+                
+                const draftsSelector = document.getElementById('draftsSelector');
+                const selectedDraftId = draftsSelector.value;
+                
+                let response;
+                if (selectedDraftId) {
+                    // Update existing draft
+                    response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/blogs/${selectedDraftId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            title,
+                            content: sanitizedContent,
+                            status: 'draft'
+                        })
+                    });
+                } else {
+                    // Create new draft
+                    response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/blogs`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            title,
+                            content: sanitizedContent,
+                            status: 'draft'
+                        })
+                    });
+                }
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || `API error: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                // Draft saved successfully
+                
+                draftButton.textContent = 'Save as Draft';
+                draftButton.disabled = false;
+                
+                // Refresh drafts list and select the saved draft
+                await loadDrafts();
+                draftsSelector.value = data._id;
+                
+                // Show success message
+                alert('Your draft has been saved! You can continue editing or publish it later.');
+                
+            } catch (error) {
+                // Error saving draft
+                alert('Failed to save draft: ' + error.message);
+                
+                const draftButton = document.getElementById('saveDraftButton');
+                draftButton.textContent = 'Save as Draft';
+                draftButton.disabled = false;
+            }
+        }
+        
+        async function loadDrafts() {
+            const token = localStorage.getItem('sessionToken');
+            if (!token) return;
+            
+            try {
+                const response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/blogs/my/drafts`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (!response.ok) return;
+                
+                const drafts = await response.json();
+                const draftsSelector = document.getElementById('draftsSelector');
+                
+                // Clear existing options except the first one
+                draftsSelector.innerHTML = '<option value="" disabled selected>Slumbering Scrolls</option>';
+                
+                // Add draft options
+                drafts.forEach(draft => {
+                    const option = document.createElement('option');
+                    option.value = draft._id;
+                    option.textContent = draft.title;
+                    draftsSelector.appendChild(option);
+                });
+            } catch (error) {
+                // Error loading drafts
+            }
+        }
+        
+        async function loadSelectedDraft() {
+            const draftsSelector = document.getElementById('draftsSelector');
+            const selectedDraftId = draftsSelector.value;
+            
+            if (!selectedDraftId) {
+                // Clear form for new scroll
+                clearForm();
+                return;
+            }
+            
+            const token = localStorage.getItem('sessionToken');
+            if (!token) return;
+            
+            try {
+                const response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/blogs/${selectedDraftId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (!response.ok) {
+                    alert('Failed to load draft');
+                    return;
+                }
+                
+                const draft = await response.json();
+                
+                // Populate form with draft data
+                document.getElementById('postTitle').value = draft.title;
+                quill.root.innerHTML = draft.content;
+                
+            } catch (error) {
+                // Error loading draft
+                alert('Failed to load draft: ' + error.message);
+            }
+        }
+        
+        function clearForm() {
+            document.getElementById('postTitle').value = '';
+            quill.setText('');
+            document.getElementById('draftsSelector').value = '';
+        }
+        
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Initialize components
+            initQuillEditor();
+            
+            // Load user profile data and update avatar
+            await loadUserProfile();
+            
+            // Load user's drafts
+            await loadDrafts();
+            
+            // Setup event listeners
+            const publishButton = document.getElementById('publishButton');
+            if (publishButton) {
+                publishButton.addEventListener('click', publishPost);
+            }
+            
+            const saveDraftButton = document.getElementById('saveDraftButton');
+            if (saveDraftButton) {
+                saveDraftButton.addEventListener('click', saveDraft);
+            }
+            
+            const draftsSelector = document.getElementById('draftsSelector');
+            if (draftsSelector) {
+                draftsSelector.addEventListener('change', loadSelectedDraft);
+            }
+            
+            // Initialize Soul Management functionality
+            // Delay to ensure DOM is fully ready
+            setTimeout(() => {
+                initSoulManagement();
+                loadSoulPresenceData();
+                // Soul management initialized
+            }, 100);
+            
+            // Initialize Mobile Features  
+            setTimeout(() => {
+                initMobileFeatures();
+                // Mobile features initialized
+            }, 200);
+            
+        });
+        
+        // Soul Management System
+        function initSoulManagement() {
+            // Initialize soul management
+            // Setup button event listeners
+            const viewProfileBtn = document.getElementById('viewSoulEssenceBtn');
+            const editProfileBtn = document.getElementById('cultivateEssenceBtn');
+            const privacySettingsBtn = null; // No separate privacy button - unified in Soul Forge
+            const closeSoulModal = document.getElementById('closeSoulModal');
+            
+            console.log('Soul Sanctum Debug:', { 
+                viewProfileBtn: !!viewProfileBtn, 
+                editProfileBtn: !!editProfileBtn, 
+                closeSoulModal: !!closeSoulModal 
+            });
+            
+            if (viewProfileBtn) {
+                console.log('Setting up View Soul Essence button handler');
+                // View Soul Essence button found - opens public profile page
+                const viewHandler = (e) => {
+                    console.log('View Soul Essence clicked!');
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openSoulForgeModal('view');
+                };
+                viewProfileBtn.addEventListener('click', viewHandler);
+                viewProfileBtn.addEventListener('touchend', viewHandler, { passive: false });
+            }
+            
+            if (editProfileBtn) {
+                console.log('Setting up Cultivate Essence button handler');
+                // Cultivate Essence button found - opens Soul Forge modal
+                const editHandler = (e) => {
+                    console.log('Cultivate Essence clicked!');
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.target.setAttribute('data-recently-clicked', 'true');
+                    openSoulForgeModal('edit');
+                };
+                editProfileBtn.addEventListener('click', editHandler);
+                editProfileBtn.addEventListener('touchend', editHandler, { passive: false });
+            }
+            
+            // Privacy settings now handled within Soul Forge modal
+            
+            if (closeSoulModal) {
+                closeSoulModal.addEventListener('click', closeSoulManagementModal);
+            }
+            
+            // Initialize Soul Whisper inline editing
+            initSoulWhisperEditing();
+            
+            // Initialize Inscription Forge collapsible functionality
+            initInscriptionForge();
+        }
+        
+        function initSoulWhisperEditing() {
+            const whisperElement = document.getElementById('soulWhisper');
+            const editBtn = document.getElementById('editWhisperBtn');
+            
+            if (!whisperElement || !editBtn) return;
+            
+            let isEditing = false;
+            let originalText = whisperElement.textContent;
+            
+            function startEditing() {
+                if (isEditing) return;
+                
+                isEditing = true;
+                originalText = whisperElement.textContent;
+                whisperElement.contentEditable = true;
+                whisperElement.classList.add('editing');
+                whisperElement.focus();
+                
+                // Select all text
+                const range = document.createRange();
+                range.selectNodeContents(whisperElement);
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+                
+                editBtn.innerHTML = '<i class="fas fa-check"></i>';
+            }
+            
+            function saveEditing() {
+                if (!isEditing) return;
+                
+                const newText = whisperElement.textContent.trim();
+                if (newText === '') {
+                    whisperElement.textContent = 'Click to set your soul whisper...';
+                } else {
+                    // Save to localStorage/backend
+                    saveSoulWhisper(newText);
+                }
+                
+                isEditing = false;
+                whisperElement.contentEditable = false;
+                whisperElement.classList.remove('editing');
+                editBtn.innerHTML = '<i class="fas fa-edit"></i>';
+            }
+            
+            function cancelEditing() {
+                whisperElement.textContent = originalText;
+                isEditing = false;
+                whisperElement.contentEditable = false;
+                whisperElement.classList.remove('editing');
+                editBtn.innerHTML = '<i class="fas fa-edit"></i>';
+            }
+            
+            // Event listeners
+            editBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (isEditing) {
+                    saveEditing();
+                } else {
+                    startEditing();
+                }
+            });
+            
+            whisperElement.addEventListener('click', () => {
+                if (!isEditing) {
+                    startEditing();
+                }
+            });
+            
+            whisperElement.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    saveEditing();
+                } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    cancelEditing();
+                }
+            });
+            
+            whisperElement.addEventListener('blur', () => {
+                if (isEditing) {
+                    setTimeout(() => {
+                        if (document.activeElement !== editBtn) {
+                            saveEditing();
+                        }
+                    }, 100);
+                }
+            });
+        }
+        
+        async function saveSoulWhisper(whisper) {
+            // Save the soul whisper to localStorage and backend
+            try {
+                const user = JSON.parse(localStorage.getItem('user')) || {};
+                user.status = whisper;
+                localStorage.setItem('user', JSON.stringify(user));
+                
+                // Save to backend API
+                const token = localStorage.getItem('sessionToken');
+                if (token) {
+                    const apiBaseUrl = window.MLNF_CONFIG?.API_BASE_URL || 'https://mlnf-auth.onrender.com/api';
+                    const response = await fetch(`${apiBaseUrl}/users/me`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ status: whisper })
+                    });
+                    
+                    if (!response.ok) {
+                        console.error('Failed to save status to backend:', response.statusText);
+                    } else {
+                        console.log('Soul whisper saved to backend successfully');
+                    }
+                } else {
+                    console.warn('No auth token found, status not saved to backend');
+                }
+                
+                console.log('Soul whisper saved:', whisper);
+            } catch (e) {
+                console.error('Error saving soul whisper:', e);
+            }
+        }
+        
+        function initInscriptionForge() {
+            const toggleBtn = document.getElementById('toggleForgeBtn');
+            const forge = document.querySelector('.inscription-forge');
+            
+            if (!toggleBtn || !forge) return;
+            
+            let isCollapsed = true; // Start collapsed
+            
+            toggleBtn.addEventListener('click', () => {
+                isCollapsed = !isCollapsed;
+                forge.classList.toggle('collapsed', isCollapsed);
+                
+                // Update toggle button icon
+                const icon = toggleBtn.querySelector('i');
+                if (icon) {
+                    icon.className = isCollapsed ? 'fas fa-chevron-down' : 'fas fa-chevron-up';
+                }
+            });
+            
+            // Initialize forge tabs
+            const tabs = document.querySelectorAll('.forge-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Remove active from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    // Add active to clicked tab
+                    tab.classList.add('active');
+                    
+                    // Update editor placeholder or functionality based on tab
+                    const type = tab.dataset.type;
+                    updateForgeEditor(type);
+                });
+            });
+        }
+        
+        function updateForgeEditor(type) {
+            const titleInput = document.getElementById('postTitle');
+            if (titleInput) {
+                if (type === 'scroll') {
+                    titleInput.placeholder = 'Name your eternal thought...';
+                } else if (type === 'chronicle') {
+                    titleInput.placeholder = 'Title your chronicle...';
+                }
+            }
+        }
+        
+        function setupSoulForgeSubmission() {
+            const forgeBtn = document.getElementById('forgeChangesBtn');
+            const restoreBtn = document.getElementById('restoreEssenceBtn');
+            
+            if (forgeBtn) {
+                forgeBtn.addEventListener('click', handleSoulForgeSubmission);
+            }
+            
+            if (restoreBtn) {
+                restoreBtn.addEventListener('click', () => {
+                    if (confirm('Restore your essence to its previous state?')) {
+                        loadUserDataIntoForge();
+                    }
+                });
+            }
+        }
+        
+        async function handleSoulForgeSubmission(e) {
+            e.preventDefault();
+            
+            // Collect form data
+            const formData = {
+                displayName: document.getElementById('eternalNameInput')?.value || '',
+                status: document.getElementById('soulWhisperInput')?.value || '',
+                bio: document.getElementById('soulChronicle')?.value || '',
+                avatar: document.getElementById('avatarUrl')?.value || '',
+                profileVisibility: document.querySelector('input[name="profileVisibility"]:checked')?.value || 'public',
+                messaging: document.querySelector('input[name="messaging"]:checked')?.value || 'enabled',
+                directoryListing: document.querySelector('input[name="directoryListing"]:checked')?.value || 'listed'
+            };
+            
+            // Save to localStorage
+            try {
+                const user = JSON.parse(localStorage.getItem('user')) || {};
+                Object.assign(user, formData);
+                localStorage.setItem('user', JSON.stringify(user));
+                
+                // Save to backend API
+                const token = localStorage.getItem('sessionToken');
+                if (token) {
+                    const apiBaseUrl = window.MLNF_CONFIG?.API_BASE_URL || 'https://mlnf-auth.onrender.com/api';
+                    const response = await fetch(`${apiBaseUrl}/users/me`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            displayName: formData.displayName,
+                            status: formData.status,
+                            bio: formData.bio,
+                            avatar: formData.avatar
+                        })
+                    });
+                    
+                    if (!response.ok) {
+                        console.error('Failed to save soul forge to backend:', response.statusText);
+                        alert('Changes saved locally but failed to sync with server. Please try again.');
+                        return;
+                    } else {
+                        console.log('Soul forged and saved to backend successfully!');
+                    }
+                } else {
+                    console.warn('No auth token found, soul forge not saved to backend');
+                    alert('Please log in to save your changes permanently.');
+                    return;
+                }
+                
+                // Update Soul Presence banner
+                updateSoulPresence(formData);
+                
+                // Close modal
+                closeSoulManagementModal();
+                
+                // Show success message
+                console.log('Soul forged successfully!');
+                
+            } catch (e) {
+                console.error('Error forging soul:', e);
+                alert('Error saving changes. Please try again.');
+            }
+        }
+        
+        function updateSoulPresence(userData) {
+            // Update the Soul Presence banner with new data
+            const avatar = document.getElementById('soulAvatar');
+            const name = document.getElementById('eternalName');
+            const whisper = document.getElementById('soulWhisper');
+            
+            if (avatar) {
+                if (userData.avatar) {
+                    avatar.src = userData.avatar;
+                } else if (userData.username && window.MLNFAvatarSystem) {
+                    // Use MLNF Avatar System fallback if no custom avatar
+                    avatar.src = window.MLNFAvatarSystem.generateAvatarUrl(userData.username);
+                } else {
+                    avatar.src = '/assets/images/default.jpg';
+                }
+            }
+            
+            if (name && userData.displayName) {
+                name.textContent = userData.displayName;
+            }
+            
+            if (whisper && userData.status) {
+                whisper.textContent = userData.status;
+            }
+        }
+        
+        function loadSoulPresenceData() {
+            // Load user data into Soul Presence banner on page load
+            try {
+                const user = JSON.parse(localStorage.getItem('user'));
+                if (user) {
+                    updateSoulPresence(user);
+                }
+            } catch (e) {
+                console.error('Error loading soul presence data:', e);
+            }
+        }
+        
+        function setupAvatarPreview() {
+            const avatarInput = document.getElementById('avatarUrl');
+            const avatarImg = document.getElementById('forgeAvatar');
+            
+            if (avatarInput && avatarImg) {
+                avatarInput.addEventListener('input', (e) => {
+                    const url = e.target.value.trim();
+                    if (url) {
+                        // Test if URL is valid by trying to load it
+                        const testImg = new Image();
+                        testImg.onload = () => {
+                            avatarImg.src = url;
+                        };
+                        testImg.onerror = () => {
+                            // Reset to default if URL fails
+                            avatarImg.src = '/assets/images/default.jpg';
+                        };
+                        testImg.src = url;
+                    } else {
+                        avatarImg.src = '/assets/images/default.jpg';
+                    }
+                });
+            }
+        }
+        
+        function setupModalMode(mode) {
+            const modalTitle = document.getElementById('modalTitle');
+            const modalSubtitle = document.getElementById('modalSubtitle');
+            const viewDiv = document.getElementById('soulEssenceView');
+            const editDiv = document.querySelector('.soul-forge-form');
+            const switchToEdit = document.getElementById('switchToEditMode');
+            const switchToView = document.getElementById('switchToViewMode');
+            
+            if (mode === 'view') {
+                modalTitle.textContent = 'Soul Essence';
+                modalSubtitle.textContent = 'Witness your immortal essence';
+                viewDiv.style.display = 'block';
+                editDiv.style.display = 'none';
+                switchToEdit.style.display = 'inline-block';
+                switchToView.style.display = 'none';
+            } else {
+                modalTitle.textContent = 'Soul Forge';
+                modalSubtitle.textContent = 'Cultivate your immortal essence';
+                viewDiv.style.display = 'none';
+                editDiv.style.display = 'block';
+                switchToEdit.style.display = 'none';
+                switchToView.style.display = 'inline-block';
+            }
+            
+            // Setup mode switching buttons
+            switchToEdit.onclick = () => setupModalMode('edit');
+            switchToView.onclick = () => setupModalMode('view');
+        }
+        
+        function populateViewDisplay(userData) {
+            // Populate the view-only display
+            const viewAvatar = document.getElementById('viewAvatar');
+            const viewEternalName = document.getElementById('viewEternalName');
+            const viewSoulWhisper = document.getElementById('viewSoulWhisper');
+            const viewSoulChronicle = document.getElementById('viewSoulChronicle');
+            const viewProfileVisibility = document.getElementById('viewProfileVisibility');
+            const viewMessaging = document.getElementById('viewMessaging');
+            const viewDirectoryListing = document.getElementById('viewDirectoryListing');
+            
+            if (viewAvatar) viewAvatar.src = userData.avatar || '/assets/images/default.jpg';
+            if (viewEternalName) viewEternalName.textContent = userData.displayName || userData.username || 'Unnamed Soul';
+            if (viewSoulWhisper) viewSoulWhisper.textContent = userData.status || 'Wandering the eternal realms...';
+            if (viewSoulChronicle) viewSoulChronicle.textContent = userData.bio || 'The chronicles remain unwritten...';
+            
+            // Privacy settings with friendly labels
+            if (viewProfileVisibility) {
+                viewProfileVisibility.textContent = userData.profileVisibility === 'private' ? 'Veiled' : 'Revealed';
+            }
+            if (viewMessaging) {
+                viewMessaging.textContent = userData.messaging === 'disabled' ? 'Sealed' : 'Open';
+            }
+            if (viewDirectoryListing) {
+                viewDirectoryListing.textContent = userData.directoryListing === 'unlisted' ? 'Hidden' : 'Inscribed';
+            }
+        }
+        
+        function openSoulForgeModal(mode = 'edit') {
+            console.log('Opening Soul Forge modal in', mode, 'mode');
+            const modal = document.getElementById('soulManagementModal');
+            if (!modal) {
+                console.error('Soul Forge modal not found');
+                return;
+            }
+            
+            // Activate modal
+            modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
+            
+            // Prevent body scroll on mobile
+            document.body.style.overflow = 'hidden';
+            
+            // Set up mode switching
+            setupModalMode(mode);
+            
+            // Load current user data
+            loadUserDataIntoForge();
+            
+            // Setup form submission (only for edit mode)
+            if (mode === 'edit') {
+                setupSoulForgeSubmission();
+            }
+            
+            // Setup avatar preview
+            setupAvatarPreview();
+            
+            // Focus on first input
+            setTimeout(() => {
+                const firstInput = modal.querySelector('input, textarea');
+                if (firstInput) {
+                    firstInput.focus();
+                }
+            }, 100);
+        }
+        
+        function openSoulModal(tab = 'profile') {
+            // Legacy function - redirect to Soul Forge
+            openSoulForgeModal();
+        }
+        
+        function getCurrentUsername() {
+            // Get current username from auth system
+            try {
+                const user = JSON.parse(localStorage.getItem('user'));
+                return user ? user.username : null;
+            } catch (e) {
+                console.error('Error getting username:', e);
+                return null;
+            }
+        }
+        
+        function loadUserDataIntoForge() {
+            // Load current user data into Soul Forge form
+            try {
+                const user = JSON.parse(localStorage.getItem('user'));
+                if (!user) return;
+                
+                // Populate avatar
+                const avatarImg = document.getElementById('forgeAvatar');
+                const avatarInput = document.getElementById('avatarUrl');
+                if (avatarImg && user.avatar) {
+                    avatarImg.src = user.avatar;
+                }
+                if (avatarInput && user.avatar) {
+                    avatarInput.value = user.avatar;
+                }
+                
+                // Populate identity fields
+                const nameInput = document.getElementById('eternalNameInput');
+                const whisperInput = document.getElementById('soulWhisperInput');
+                const chronicleInput = document.getElementById('soulChronicle');
+                
+                if (nameInput && user.displayName) {
+                    nameInput.value = user.displayName;
+                }
+                if (whisperInput && user.status) {
+                    whisperInput.value = user.status;
+                }
+                if (chronicleInput && user.bio) {
+                    chronicleInput.value = user.bio;
+                }
+                
+                // Populate privacy settings
+                const profileVisibility = document.getElementsByName('profileVisibility');
+                const messaging = document.getElementsByName('messaging');
+                const directoryListing = document.getElementsByName('directoryListing');
+                
+                if (user.profileVisibility && profileVisibility.length) {
+                    Array.from(profileVisibility).forEach(radio => {
+                        radio.checked = radio.value === user.profileVisibility;
+                    });
+                }
+                
+                if (user.messaging && messaging.length) {
+                    Array.from(messaging).forEach(radio => {
+                        radio.checked = radio.value === user.messaging;
+                    });
+                }
+                
+                if (user.directoryListing && directoryListing.length) {
+                    Array.from(directoryListing).forEach(radio => {
+                        radio.checked = radio.value === user.directoryListing;
+                    });
+                }
+                
+                // Also populate the view display
+                populateViewDisplay(user);
+                
+            } catch (e) {
+                console.error('Error loading user data:', e);
+            }
+        }
+        
+        function activateTab(tabName) {
+            // Simple tab activation without debug bloat
+            // Prevent body scroll on mobile when modal is open
+            document.body.style.overflow = 'hidden';
+            
+            // Switch to the requested tab
+            switchSoulTab(tabName);
+            
+            // Load user profile data
+            loadUserProfile();
+            
+            // Focus management for accessibility
+            const modal = document.getElementById('soulManagementModal');
+            setTimeout(() => {
+                const firstInput = modal.querySelector('input, textarea, select, button');
+                if (firstInput) {
+                    firstInput.focus();
+                }
+            }, 100);
+            
+        }
+        
+        function closeSoulManagementModal() {
+            const modal = document.getElementById('soulManagementModal');
+            if (modal) {
+                modal.classList.remove('active');
+                modal.setAttribute('aria-hidden', 'true');
+                
+                // Restore body scroll
+                document.body.style.overflow = '';
+                
+                // Return focus to the button that opened the modal
+                const activeButton = document.querySelector('[data-recently-clicked]');
+                if (activeButton) {
+                    activeButton.focus();
+                    activeButton.removeAttribute('data-recently-clicked');
+                }
+            }
+        }
+        
+        function switchSoulTab(tabName) {
+            // Update modal header title based on tab
+            const modalTitle = document.getElementById('modalTitle');
+            const titles = {
+                'profile': 'My Eternal Soul',
+                'edit': 'Edit Profile',
+                'privacy': 'Privacy Settings'
+            };
+            if (modalTitle && titles[tabName]) {
+                modalTitle.textContent = titles[tabName];
+            }
+            
+            // Update tab buttons
+            const tabs = document.querySelectorAll('.soul-tab');
+            tabs.forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.tab === tabName);
+            });
+            
+            // Update tab content
+            const contents = document.querySelectorAll('.soul-tab-content');
+            contents.forEach(content => {
+                // content.classList.toggle('active', content.id === tabName + 'Tab');
+                if (content.id === tabName + 'Tab') {
+                    content.classList.add('active');
+                } else {
+                    content.classList.remove('active');
+                }
+            });
+        }
+        
+        async function loadUserProfile() {
+            console.log('🔄 Loading user profile...');
+            const token = localStorage.getItem('sessionToken');
+            if (!token) {
+                console.log('❌ No session token found');
+                // Don't show alert if no token - just populate with defaults
+                populateProfileModal({
+                    displayName: 'Eternal Seeker',
+                    username: 'guest',
+                    status: 'Living eternally free',
+                    bio: 'Welcome to your eternal journey...',
+                    avatar: '/assets/images/default.jpg',
+                    postsCount: 0,
+                    commentsCount: 0,
+                    connectionsCount: 0
+                });
+                return;
+            }
+            
+            try {
+                const apiBaseUrl = window.MLNF_CONFIG?.API_BASE_URL || 'https://mlnf-auth.onrender.com/api';
+                // Fetching profile data
+                
+                const response = await fetch(`${apiBaseUrl}/users/me`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`API returned ${response.status}: ${response.statusText}`);
+                }
+                
+                const userData = await response.json();
+                // Profile data loaded successfully
+                
+                // Update localStorage with fresh user data
+                localStorage.setItem('user', JSON.stringify(userData));
+                
+                // Update main dashboard avatar
+                const mainAvatar = document.getElementById('soulAvatar');
+                if (mainAvatar && userData.avatar) {
+                    mainAvatar.src = userData.avatar;
+                }
+                
+                // Also update soul presence to ensure consistency
+                updateSoulPresence(userData);
+                
+                populateProfileModal(userData);
+                
+            } catch (error) {
+                // Error loading profile
+                // Populate with fallback data instead of showing alert
+                populateProfileModal({
+                    displayName: 'Eternal Seeker',
+                    username: 'loading_error',
+                    status: 'Connection temporarily unavailable',
+                    bio: 'Please try refreshing to load your profile...',
+                    avatar: '/assets/images/default.jpg',
+                    postsCount: 0,
+                    commentsCount: 0,
+                    connectionsCount: 0
+                });
+            }
+        }
+        
+        function populateProfileModal(userData) {
+            // Populating modal with user data
+            
+            // Profile overview tab
+            const avatar = document.getElementById('modalProfileAvatar');
+            const name = document.getElementById('modalProfileName');
+            const username = document.getElementById('modalProfileUsername');
+            const status = document.getElementById('modalProfileStatus');
+            const bio = document.getElementById('modalProfileBio');
+            const postsCount = document.getElementById('modalPostsCount');
+            const commentsCount = document.getElementById('modalCommentsCount');
+            const connectionsCount = document.getElementById('modalConnectionsCount');
+            
+            // Modal elements found and ready
+            
+            if (avatar) {
+                avatar.src = userData.avatar || '/assets/images/default.jpg';
+                // Avatar set
+            }
+            if (name) {
+                name.textContent = userData.displayName || userData.username || 'Unknown User';
+                // Name set
+            }
+            if (username) {
+                username.textContent = `@${userData.username || 'unknown'}`;
+                // Username set
+            }
+            if (status) {
+                status.textContent = userData.status || 'Living eternally free';
+                // Status set
+            }
+            if (bio) {
+                bio.textContent = userData.bio || 'No biography written yet';
+                // Bio set
+            }
+            if (postsCount) postsCount.textContent = userData.postsCount || 0;
+            if (commentsCount) commentsCount.textContent = userData.commentsCount || 0;
+            if (connectionsCount) connectionsCount.textContent = userData.connectionsCount || 0;
+            
+            // Enhanced profile fields
+            const enhancedPostsCount = document.getElementById('modalPostsCount');
+            const enhancedCommentsCount = document.getElementById('modalCommentsCount');
+            const enhancedConnectionsCount = document.getElementById('modalConnectionsCount');
+            const memberSince = document.getElementById('memberSince');
+            
+            // Update enhanced stat counts (they use the same IDs so this is for safety)
+            if (enhancedPostsCount && enhancedPostsCount !== postsCount) {
+                enhancedPostsCount.textContent = userData.postsCount || 0;
+            }
+            if (enhancedCommentsCount && enhancedCommentsCount !== commentsCount) {
+                enhancedCommentsCount.textContent = userData.commentsCount || 0;
+            }
+            if (enhancedConnectionsCount && enhancedConnectionsCount !== connectionsCount) {
+                enhancedConnectionsCount.textContent = userData.connectionsCount || 0;
+            }
+            
+            // Set member since date
+            if (memberSince) {
+                const joinDate = userData.createdAt ? new Date(userData.createdAt) : new Date();
+                const options = { year: 'numeric', month: 'long' };
+                memberSince.textContent = joinDate.toLocaleDateString('en-US', options);
+            }
+            
+            // Set last active status
+            const lastActive = document.getElementById('lastActive');
+            if (lastActive) {
+                if (userData.lastActiveAt) {
+                    const lastActiveDate = new Date(userData.lastActiveAt);
+                    const now = new Date();
+                    const diffMinutes = Math.floor((now - lastActiveDate) / (1000 * 60));
+                    
+                    if (diffMinutes < 5) {
+                        lastActive.textContent = 'Online now';
+                    } else if (diffMinutes < 60) {
+                        lastActive.textContent = `${diffMinutes} minutes ago`;
+                    } else if (diffMinutes < 1440) {
+                        const hours = Math.floor(diffMinutes / 60);
+                        lastActive.textContent = `${hours} hour${hours > 1 ? 's' : ''} ago`;
+                    } else {
+                        const days = Math.floor(diffMinutes / 1440);
+                        lastActive.textContent = `${days} day${days > 1 ? 's' : ''} ago`;
+                    }
+                } else {
+                    lastActive.textContent = 'Recently active';
+                }
+            }
+            
+            // Edit profile tab
+            const editDisplayName = document.getElementById('editDisplayName');
+            const editStatus = document.getElementById('editStatus');
+            const editBio = document.getElementById('editBio');
+            const editAvatar = document.getElementById('editAvatar');
+            
+            if (editDisplayName) editDisplayName.value = userData.displayName || '';
+            if (editStatus) editStatus.value = userData.status || '';
+            if (editBio) editBio.value = userData.bio || '';
+            if (editAvatar) editAvatar.value = userData.avatar || '';
+            
+            // Privacy settings tab
+            const privacyVisibility = document.getElementById('privacyVisibilitySetting');
+            const privacyMessaging = document.getElementById('privacyMessagingSetting');
+            const privacyDirectory = document.getElementById('privacyDirectorySetting');
+            
+            if (privacyVisibility) privacyVisibility.value = userData.privacy?.profileVisibility || 'public';
+            if (privacyMessaging) privacyMessaging.value = userData.privacy?.allowMessages ? 'enabled' : 'disabled';
+            if (privacyDirectory) privacyDirectory.value = userData.privacy?.showInDirectory ? 'listed' : 'unlisted';
+        }
+        
+        async function handleProfileUpdate(e) {
+            e.preventDefault();
+            
+            const token = localStorage.getItem('sessionToken');
+            if (!token) {
+                alert('Please log in to update your profile');
+                return;
+            }
+            
+            const formData = {
+                displayName: document.getElementById('editDisplayName').value,
+                status: document.getElementById('editStatus').value,
+                bio: document.getElementById('editBio').value,
+                avatar: document.getElementById('editAvatar').value
+            };
+            
+            try {
+                const apiBaseUrl = window.MLNF_CONFIG?.API_BASE_URL || 'https://mlnf-auth.onrender.com/api';
+                const response = await fetch(`${apiBaseUrl}/users/me`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to update profile');
+                }
+                
+                alert('Profile updated successfully!');
+                loadUserProfile(); // Refresh the profile data
+                
+            } catch (error) {
+                // Error updating profile
+                alert('Failed to update profile: ' + error.message);
+            }
+        }
+        
+        async function handlePrivacyUpdate() {
+            const token = localStorage.getItem('sessionToken');
+            if (!token) {
+                alert('🔐 Please log in to update privacy settings');
+                return;
+            }
+            
+            // Get all privacy settings including new ones
+            const visibilityEl = document.getElementById('privacyVisibilitySetting');
+            const messagingEl = document.getElementById('privacyMessagingSetting');
+            const directoryEl = document.getElementById('privacyDirectorySetting');
+            const activityEl = document.getElementById('privacyActivitySetting');
+            const notificationsEl = document.getElementById('privacyNotificationsSetting');
+            const dataEl = document.getElementById('privacyDataSetting');
+            
+            const privacyData = {
+                privacy: {
+                    profileVisibility: visibilityEl?.value || 'public',
+                    allowMessages: messagingEl?.value === 'enabled' || messagingEl?.value === 'connections',
+                    messageRestriction: messagingEl?.value || 'enabled',
+                    showInDirectory: directoryEl?.value === 'listed',
+                    activityTracking: activityEl?.value || 'full',
+                    notifications: notificationsEl?.value || 'all',
+                    dataSharing: dataEl?.value || 'analytics'
+                }
+            };
+            
+            // Show loading feedback
+            const saveBtn = document.getElementById('savePrivacySettings');
+            const originalText = saveBtn.textContent;
+            saveBtn.textContent = '💾 Saving...';
+            saveBtn.disabled = true;
+            
+            try {
+                const apiBaseUrl = window.MLNF_CONFIG?.API_BASE_URL || 'https://mlnf-auth.onrender.com/api';
+                const response = await fetch(`${apiBaseUrl}/users/me`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(privacyData)
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.message || 'Failed to update privacy settings');
+                }
+                
+                // Success feedback
+                saveBtn.textContent = '✅ Saved!';
+                saveBtn.style.background = 'linear-gradient(135deg, #28a745, #20c997)';
+                
+                setTimeout(() => {
+                    saveBtn.textContent = originalText;
+                    saveBtn.style.background = '';
+                    saveBtn.disabled = false;
+                }, 2000);
+                
+                // Show success message
+                const successMsg = document.createElement('div');
+                successMsg.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: linear-gradient(135deg, #28a745, #20c997);
+                    color: white;
+                    padding: 1rem 1.5rem;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+                    z-index: 15000;
+                    font-weight: 600;
+                    animation: slideInRight 0.3s ease;
+                `;
+                successMsg.innerHTML = '🎉 Privacy settings updated successfully!';
+                document.body.appendChild(successMsg);
+                
+                setTimeout(() => {
+                    successMsg.remove();
+                }, 3000);
+                
+            } catch (error) {
+                // Error updating privacy settings
+                
+                // Error feedback
+                saveBtn.textContent = '❌ Error';
+                saveBtn.style.background = 'linear-gradient(135deg, #dc3545, #c82333)';
+                
+                setTimeout(() => {
+                    saveBtn.textContent = originalText;
+                    saveBtn.style.background = '';
+                    saveBtn.disabled = false;
+                }, 2000);
+                
+                // Show error message
+                const errorMsg = document.createElement('div');
+                errorMsg.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: linear-gradient(135deg, #dc3545, #c82333);
+                    color: white;
+                    padding: 1rem 1.5rem;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+                    z-index: 15000;
+                    font-weight: 600;
+                    animation: slideInRight 0.3s ease;
+                `;
+                errorMsg.innerHTML = `⚠️ Failed to update settings: ${error.message}`;
+                document.body.appendChild(errorMsg);
+                
+                setTimeout(() => {
+                    errorMsg.remove();
+                }, 4000);
+            }
+        }
+        
+        function resetProfileForm() {
+            loadUserProfile(); // Reload original data
+        }
+        
+        // Mobile-Specific Features
+        function initMobileFeatures() {
+            // Haptic Feedback Support
+            if ('vibrate' in navigator) {
+                document.addEventListener('click', handleHapticFeedback);
+            }
+            
+            // Pull-to-Refresh
+            initPullToRefresh();
+            
+            // Quick Actions Bar
+            initQuickActions();
+            
+            // Bottom Sheet
+            initBottomSheet();
+            
+            // Soul Status Collapse
+            initSoulStatusCollapse();
+            
+            // PWA Installation
+            initPWAInstallation();
+            
+            // Share API
+            initShareAPI();
+            
+            // Push Notifications
+            initPushNotifications();
+        }
+        
+        function handleHapticFeedback(e) {
+            const target = e.target.closest('.btn, .quick-action-btn, .soul-tab, .hub-card');
+            if (target && navigator.vibrate) {
+                navigator.vibrate(50); // Light tap feedback
+            }
+        }
+        
+        function initPullToRefresh() {
+            let startY = 0;
+            let currentY = 0;
+            let isPulling = false;
+            const indicator = document.getElementById('pullToRefreshIndicator');
+            const activitySection = document.getElementById('recentActivitySection');
+            
+            if (!activitySection) return;
+            
+            activitySection.addEventListener('touchstart', (e) => {
+                if (activitySection.scrollTop === 0) {
+                    startY = e.touches[0].clientY;
+                    isPulling = true;
+                }
+            });
+            
+            activitySection.addEventListener('touchmove', (e) => {
+                if (!isPulling) return;
+                
+                currentY = e.touches[0].clientY;
+                const pullDistance = currentY - startY;
+                
+                if (pullDistance > 50) {
+                    indicator.classList.add('show');
+                }
+                
+                if (pullDistance > 100) {
+                    e.preventDefault();
+                }
+            });
+            
+            activitySection.addEventListener('touchend', async () => {
+                if (!isPulling) return;
+                
+                const pullDistance = currentY - startY;
+                isPulling = false;
+                
+                if (pullDistance > 100) {
+                    // Pull to refresh - functionality removed with realm reverberations
+                }
+                
+                indicator.classList.remove('show');
+            });
+        }
+        
+        function initQuickActions() {
+            const quickProfileBtn = document.getElementById('quickProfileBtn');
+            const quickPostBtn = document.getElementById('quickPostBtn');
+            const quickNotificationsBtn = document.getElementById('quickNotificationsBtn');
+            const refreshBtn = document.getElementById('refreshBtn');
+            
+            if (quickProfileBtn) {
+                quickProfileBtn.addEventListener('click', () => {
+                    openSoulModal('profile');
+                    navigator.vibrate(100);
+                });
+            }
+            
+            if (quickPostBtn) {
+                quickPostBtn.addEventListener('click', () => {
+                    document.getElementById('postTitle').focus();
+                    navigator.vibrate(100);
+                });
+            }
+            
+            if (quickNotificationsBtn) {
+                quickNotificationsBtn.addEventListener('click', () => {
+                    showNotifications();
+                    navigator.vibrate(100);
+                });
+            }
+            
+        }
+        
+        function initBottomSheet() {
+            const bottomSheet = document.getElementById('bottomSheet');
+            if (!bottomSheet) {
+                return;
+            }
+            
+            let startY = 0;
+            let currentY = 0;
+            let isOpen = false;
+            
+            // Swipe up from bottom to open
+            document.addEventListener('touchstart', (e) => {
+                const touch = e.touches[0];
+                if (touch.clientY > window.innerHeight - 50) {
+                    startY = touch.clientY;
+                }
+            });
+            
+            document.addEventListener('touchmove', (e) => {
+                if (startY === 0) return;
+                
+                currentY = e.touches[0].clientY;
+                const swipeDistance = startY - currentY;
+                
+                if (swipeDistance > 50 && !isOpen) {
+                    bottomSheet.classList.add('open');
+                    isOpen = true;
+                    navigator.vibrate(200);
+                }
+            });
+            
+            document.addEventListener('touchend', () => {
+                startY = 0;
+                currentY = 0;
+            });
+            
+            // Close on background tap
+            bottomSheet.addEventListener('click', (e) => {
+                if (e.target === bottomSheet) {
+                    bottomSheet.classList.remove('open');
+                    isOpen = false;
+                }
+            });
+        }
+        
+        function initSoulStatusCollapse() {
+            const statusHeader = document.getElementById('soulStatusHeader');
+            const statusDetails = document.getElementById('soulStatusDetails');
+            const collapseBtn = document.getElementById('collapseStatusBtn');
+            
+            if (statusHeader && statusDetails && collapseBtn) {
+                statusHeader.addEventListener('click', () => {
+                    const isCollapsed = statusDetails.classList.contains('collapsed');
+                    
+                    if (isCollapsed) {
+                        statusDetails.classList.remove('collapsed');
+                        collapseBtn.classList.remove('collapsed');
+                    } else {
+                        statusDetails.classList.add('collapsed');
+                        collapseBtn.classList.add('collapsed');
+                    }
+                    
+                    navigator.vibrate(75);
+                });
+            }
+        }
+        
+        function initPWAInstallation() {
+            let deferredPrompt;
+            
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                
+                // Show install button after user interaction
+                setTimeout(() => {
+                    showInstallPrompt();
+                }, 3000);
+            });
+            
+            function showInstallPrompt() {
+                if (!deferredPrompt) return;
+                
+                const installBanner = document.createElement('div');
+                installBanner.className = 'install-banner';
+                installBanner.innerHTML = `
+                    <div class="install-content">
+                        <i class="fas fa-download"></i>
+                        <span>Install MLNF for a better experience</span>
+                        <button class="install-btn">Install</button>
+                        <button class="dismiss-btn">×</button>
+                    </div>
+                `;
+                
+                document.body.appendChild(installBanner);
+                
+                installBanner.querySelector('.install-btn').addEventListener('click', async () => {
+                    deferredPrompt.prompt();
+                    const result = await deferredPrompt.userChoice;
+                    // PWA install completed
+                    deferredPrompt = null;
+                    installBanner.remove();
+                });
+                
+                installBanner.querySelector('.dismiss-btn').addEventListener('click', () => {
+                    installBanner.remove();
+                });
+            }
+        }
+        
+        function initShareAPI() {
+            // Check for Web Share API support
+            if ('share' in navigator) {
+                // Add share buttons to secondary tools
+                const shareBtn = document.querySelector('.secondary-tool-btn:last-child');
+                if (shareBtn) {
+                    shareBtn.addEventListener('click', async () => {
+                        try {
+                            await navigator.share({
+                                title: 'MLNF - Manifest Liberation, Naturally Free',
+                                text: 'Join me in the eternal sanctuary for free-thinking immortal souls',
+                                url: window.location.href
+                            });
+                            // Shared successfully
+                        } catch (error) {
+                            // Error sharing
+                        }
+                    });
+                }
+            }
+        }
+        
+        function initPushNotifications() {
+            if ('serviceWorker' in navigator && 'PushManager' in window) {
+                // Request notification permission on user interaction
+                document.addEventListener('click', requestNotificationPermission, { once: true });
+            }
+        }
+        
+        async function requestNotificationPermission() {
+            try {
+                const permission = await Notification.requestPermission();
+                if (permission === 'granted') {
+                    // Notification permission granted
+                    // Subscribe to push notifications
+                    subscribeToPush();
+                }
+            } catch (error) {
+                // Error requesting notification permission
+            }
+        }
+        
+        async function subscribeToPush() {
+            try {
+                const registration = await navigator.serviceWorker.ready;
+                const subscription = await registration.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: urlBase64ToUint8Array('your-vapid-public-key-here')
+                });
+                
+                // Push subscription completed
+                // Send subscription to server
+            } catch (error) {
+                // Error subscribing to push
+            }
+        }
+        
+        function urlBase64ToUint8Array(base64String) {
+            const padding = '='.repeat((4 - base64String.length % 4) % 4);
+            const base64 = (base64String + padding)
+                .replace(/\-/g, '+')
+                .replace(/_/g, '/');
+            
+            const rawData = window.atob(base64);
+            const outputArray = new Uint8Array(rawData.length);
+            
+            for (let i = 0; i < rawData.length; ++i) {
+                outputArray[i] = rawData.charCodeAt(i);
+            }
+            return outputArray;
+        }
+        
+        
+        function showNotifications() {
+            // Placeholder for notifications display
+            alert('Notifications feature coming soon!');
+        }
+    </script>
+
+    <!-- Avatar System -->
+    <script src="js/mlnf-avatar-system.js?v=2.1"></script>
+    
+    <!-- Initialize MLNF and Particles -->
+</body>
+</html>

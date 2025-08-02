@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Eternal Dominion - Administrative control center for Manifest Liberation, Naturally Free">
+    <meta name="theme-color" content="#0d0d1a">
+    <title>Immortal's Sanctum - MLNF Admin</title>
+    <!-- Immortal-themed favicon -->
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="apple-touch-icon" href="../favicon.svg">
+    <!-- 1. THEME FOUNDATION (MUST BE FIRST) -->
+    <link rel="stylesheet" href="../css/base-theme.css">
+    
+    <!-- 2. CRITICAL CSS - Above-fold essentials loaded synchronously -->
+    <link rel="stylesheet" href="../css/critical.css?v=5.3">
+    
+    <!-- 3. GLOBAL STYLES - Site-wide styles loaded synchronously -->
+    <link rel="stylesheet" href="../css/styles.css?v=10.0">
+    
+    <!-- 4. PROGRESSIVE LOADING - Non-critical CSS loaded asynchronously -->
+    <link rel="preload" href="../css/layout.css?v=8.2" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/layout.css?v=8.2"></noscript>
+    
+    <link rel="preload" href="../css/components.css?v=7.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/components.css?v=7.1"></noscript>
+    
+    <link rel="preload" href="../css/features.css?v=6.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/features.css?v=6.3"></noscript>
+    
+    <!-- 5. SHARED COMPONENTS (lazy loaded) -->
+    <link rel="preload" href="../components/shared/styles.css?v=10.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../components/shared/styles.css?v=10.0"></noscript>
+    
+    <!-- 6. PAGE-SPECIFIC (lazy loaded) -->
+    <link rel="preload" href="../css/active-users.css?v=7.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/active-users.css?v=7.0"></noscript>
+    
+    <link rel="preload" href="../css/admin.css?v=6.4" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/admin.css?v=6.4"></noscript>
+    
+    <!-- 7. EXTERNAL RESOURCES (lazy loaded) -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer"></noscript>
+</head>
+<body>
+    
+    <!-- Site Navigation Header (like other pages) -->
+    <header>
+        <div class="logo">
+            <a href="/">
+                <i class="fas fa-infinity"></i>
+                <div class="title-stack">
+                    <span class="full-title">
+                        <span class="title-line-one">Manifest Liberation</span>
+                        <span class="title-line-two">Naturally Free</span>
+                    </span>
+                    <span class="short-title">MLNF</span>
+                </div>
+            </a>
+        </div>
+        <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+        <nav class="main-nav">
+            <ul>
+                <!-- Navigation will be populated by navigation.js -->
+            </ul>
+        </nav>
+        <div class="header-controls">
+            <div class="user-menu" id="userMenuContainer"></div>
+            <div class="header-auth-buttons" id="headerAuthButtonsContainer" style="display: none;"></div>
+        </div>
+    </header>
+
+    <!-- Admin Panel Header (admin tabs) -->
+    <header class="admin-header">
+        <div class="admin-logo">
+            <i class="fas fa-crown"></i>
+            <span>Immortal's Sanctum</span>
+        </div>
+        <nav class="admin-nav">
+            <ul>
+                <li><a href="#dashboard" class="active"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="#users"><i class="fas fa-users"></i> Soul Management</a></li>
+                <li><a href="#curation"><i class="fas fa-star"></i> Content Curation</a></li>
+                <li><a href="#analytics"><i class="fas fa-chart-bar"></i> Eternal Analytics</a></li>
+                <li><a href="#feedback"><i class="fas fa-heart"></i> Eternal Feedback</a></li>
+                <li><a href="/lander.html"><i class="fas fa-home"></i> Return to Sanctuary</a></li>
+            </ul>
+        </nav>
+        
+        <!-- Admin Mobile Navigation Toggle -->
+        <button class="admin-nav-toggle" id="adminMobileNavToggle" aria-label="Toggle admin navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <div class="admin-user">
+            <span id="adminUsername">Administrator</span>
+        </div>
+    </header>
+
+    <!-- Site Navigation Mobile Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+    
+    <!-- Site Navigation Mobile Menu -->
+    <nav class="mobile-nav" id="mobileNav">
+        <div class="sidebar-header">
+            <h2>Eternal Navigation</h2>
+            <button class="close-sidebar" id="closeMobileNav" aria-label="Close mobile navigation">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="mobile-nav-list">
+            <!-- Navigation will be populated by navigation.js -->
+        </ul>
+    </nav>
+
+    <!-- Admin Mobile Navigation Overlay -->
+    <div class="admin-nav-overlay" id="mobileNavOverlay"></div>
+    
+    <!-- Admin Mobile Navigation Menu -->
+    <nav class="admin-nav-mobile" id="mobileNavMenu">
+        <div class="nav-header">
+            <h3>Admin Menu</h3>
+            <button class="nav-close" id="mobileNavClose" aria-label="Close navigation">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul>
+            <li><a href="#dashboard" class="mobile-nav-link"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+            <li><a href="#users" class="mobile-nav-link"><i class="fas fa-users"></i> Soul Management</a></li>
+            <li><a href="#curation" class="mobile-nav-link"><i class="fas fa-star"></i> Content Curation</a></li>
+            <li><a href="#analytics" class="mobile-nav-link"><i class="fas fa-chart-bar"></i> Eternal Analytics</a></li>
+            <li><a href="#feedback" class="mobile-nav-link"><i class="fas fa-heart"></i> Eternal Feedback</a></li>
+            <li><a href="/lander.html" class="mobile-nav-link"><i class="fas fa-home"></i> Return to Sanctuary</a></li>
+        </ul>
+    </nav>
+
+
+    <main class="admin-container">
+        <!-- Mobile Section Tabs -->
+        <div class="mobile-section-tabs">
+            <ul class="mobile-tabs-list">
+                <li><a href="#dashboard" class="mobile-tab-btn active" data-section="dashboard"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="#users" class="mobile-tab-btn" data-section="users"><i class="fas fa-users"></i> Users</a></li>
+                <li><a href="#curation" class="mobile-tab-btn" data-section="curation"><i class="fas fa-star"></i> Curation</a></li>
+                <li><a href="#analytics" class="mobile-tab-btn" data-section="analytics"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+                <li><a href="#feedback" class="mobile-tab-btn" data-section="feedback"><i class="fas fa-heart"></i> Feedback</a></li>
+            </ul>
+        </div>
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="admin-section active">
+            <h2 class="section-title">
+                <i class="fas fa-crown"></i> Immortal's Overview
+            </h2>
+            
+            <!-- Active Community Status -->
+            <div class="community-status">
+                <h3><i class="fas fa-users"></i> Active Community</h3>
+                <div class="community-grid">
+                    <div class="community-stat">
+                        <span class="stat-label">Active Sessions (30d):</span>
+                        <span class="stat-value" id="onlineUsers">--</span>
+                    </div>
+                    <div class="community-stat">
+                        <span class="stat-label">Daily Active:</span>
+                        <span class="stat-value" id="dailyActiveUsers">--</span>
+                    </div>
+                </div>
+                <div class="recent-activity-list" id="recentActiveUsers">
+                    <h4>Recent Activity (last 2h)</h4>
+                    <div class="activity-loading">Loading recent souls...</div>
+                </div>
+            </div>
+
+            <!-- Platform Health -->
+            <div class="platform-health">
+                <h3><i class="fas fa-heartbeat"></i> Platform Health</h3>
+                <div class="health-grid">
+                    <div class="health-stat">
+                        <span class="stat-label">Server Response:</span>
+                        <span class="stat-value" id="serverResponseTime">--</span>
+                    </div>
+                    <div class="health-stat">
+                        <span class="stat-label">Failed Logins (24h):</span>
+                        <span class="stat-value" id="failedLogins">--</span>
+                    </div>
+                    <div class="health-stat">
+                        <span class="stat-label">Peak Hours:</span>
+                        <span class="stat-value" id="peakHours">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recent-activity">
+                <div class="activity-header">
+                    <h3>Recent Manifestations</h3>
+                    <button id="refreshActivityFeed" class="refresh-btn" title="Refresh activity">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+                <div id="activityFeed" class="activity-feed">
+                    <p class="loading">Gathering cosmic data...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- User Management Section -->
+        <section id="users" class="admin-section">
+            <h2 class="section-title">
+                <i class="fas fa-users-cog"></i> Soul Management
+            </h2>
+            
+            
+            <div class="management-controls">
+                <div class="search-controls">
+                    <div class="search-wrapper">
+                        <input type="text" id="userSearch" placeholder="Search souls by username or display name..." />
+                        <button id="searchBtn" class="search-btn" title="Search souls">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="filter-controls">
+                    <select id="filterStatus">
+                        <option value="all">All Souls</option>
+                        <option value="online">Online Souls</option>
+                        <option value="offline">Dormant Souls</option>
+                        <option value="banned">Banished Souls</option>
+                    </select>
+                </div>
+                <div class="cleanup-controls">
+                    <button id="cleanupOnlineBtn" class="btn btn-warning" title="Clean up stale online users (>30 days old)">
+                        <i class="fas fa-broom"></i> Cleanup Stale Online
+                    </button>
+                </div>
+            </div>
+            
+            <div class="users-table-wrapper">
+                <div class="table-responsive">
+                    <table class="users-table">
+                        <thead>
+                            <tr>
+                                <th>Avatar</th>
+                                <th>Username</th>
+                                <th>Display Name</th>
+                                <th>Status</th>
+                                <th>Joined</th>
+                                <th>Last Active</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <tr>
+                                <td colspan="7" class="loading">Summoning souls...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Mobile Table Cards -->
+            <div class="mobile-table-cards" id="mobileUsersCards">
+                <div class="loading">Summoning souls...</div>
+            </div>
+            
+            <div class="pagination" id="usersPagination">
+                <!-- Pagination controls will be generated here -->
+            </div>
+        </section>
+
+        <!-- Content Curation Section -->
+        <section id="curation" class="admin-section">
+            <h2 class="section-title">
+                <i class="fas fa-star"></i> Content Curation
+            </h2>
+            
+            <div class="curation-overview">
+                <div class="current-highlights-grid">
+                    <div class="highlight-status-card">
+                        <h3><i class="fas fa-scroll"></i> Soul Scrolls Editorial</h3>
+                        <div id="currentSoulScrollsHighlight" class="current-highlight">
+                            <div class="loading">Loading current selection...</div>
+                        </div>
+                        <button class="btn btn-primary" onclick="openCurationModal('soul-scrolls')">
+                            <i class="fas fa-edit"></i> Select Editorial Choice
+                        </button>
+                    </div>
+                    
+                    <div class="highlight-status-card">
+                        <h3><i class="fas fa-comments"></i> Echoes Unbound Editorial</h3>
+                        <div id="currentEchoesHighlight" class="current-highlight">
+                            <div class="loading">Loading current selection...</div>
+                        </div>
+                        <button class="btn btn-primary" onclick="openCurationModal('echoes-unbound')">
+                            <i class="fas fa-edit"></i> Select Editorial Choice
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section id="analytics" class="admin-section">
+            <h2 class="section-title">
+                <i class="fas fa-chart-bar"></i> Eternal Analytics
+                <button class="btn btn-outline analytics-help-btn" onclick="openAnalyticsTutorial()" title="View Analytics Guide">
+                    <i class="fas fa-question-circle"></i> Help
+                </button>
+            </h2>
+            
+            <!-- Analytics Controls -->
+            <div class="analytics-controls">
+                <div class="time-range-selector">
+                    <label for="analyticsTimeRange">Time Range:</label>
+                    <select id="analyticsTimeRange">
+                        <option value="24h">Last 24 Hours</option>
+                        <option value="7d" selected>Last 7 Days</option>
+                        <option value="30d">Last 30 Days</option>
+                        <option value="90d">Last 90 Days</option>
+                        <option value="1y">Last Year</option>
+                        <option value="total">Total (All Time)</option>
+                    </select>
+                </div>
+                <button id="refreshAnalytics" class="btn btn-outline">
+                    <i class="fas fa-sync-alt"></i> Refresh Data
+                </button>
+                <button id="exportAnalytics" class="btn btn-primary">
+                    <i class="fas fa-download"></i> Export Report
+                </button>
+            </div>
+
+            <!-- Tier 1: Core Traffic Metrics -->
+            <div class="analytics-tier">
+                <div class="tier-header">
+                    <h3><i class="fas fa-rocket"></i> Site Traffic Overview</h3>
+                </div>
+                <div class="analytics-grid traffic-grid">
+                    <div class="analytics-card highlight-card">
+                        <div class="analytics-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="analytics-content">
+                            <h4>Unique Visitors</h4>
+                            <p class="analytics-number" id="uniqueVisitors">--</p>
+                            <span class="metric-description">Registered + unregistered</span>
+                        </div>
+                    </div>
+
+                    <div class="analytics-card highlight-card">
+                        <div class="analytics-icon">
+                            <i class="fas fa-mouse-pointer"></i>
+                        </div>
+                        <div class="analytics-content">
+                            <h4>Number of Visits</h4>
+                            <p class="analytics-number" id="totalVisits">--</p>
+                            <span class="metric-description">Sessions started</span>
+                        </div>
+                    </div>
+
+                    <div class="analytics-card highlight-card">
+                        <div class="analytics-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="analytics-content">
+                            <h4>Pages</h4>
+                            <p class="analytics-number" id="totalPages">--</p>
+                            <span class="metric-description">HTML page requests</span>
+                        </div>
+                    </div>
+
+                    <div class="analytics-card highlight-card">
+                        <div class="analytics-icon">
+                            <i class="fas fa-mouse"></i>
+                        </div>
+                        <div class="analytics-content">
+                            <h4>Hits</h4>
+                            <p class="analytics-number" id="totalHits">--</p>
+                            <span class="metric-description">All resource requests</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tier 2: Community Health -->
+            <div class="analytics-tier">
+                <div class="tier-header">
+                    <h3><i class="fas fa-heart"></i> Community Activity</h3>
+                </div>
+                <div class="analytics-grid community-grid">
+                    <div class="analytics-card highlight-card">
+                        <div class="analytics-icon">
+                            <i class="fas fa-link"></i>
+                        </div>
+                        <div class="analytics-content">
+                            <h4>Active Sessions</h4>
+                            <p class="analytics-number" id="filteredActiveSessions">--</p>
+                            <span class="metric-description">Valid sessions in timeframe</span>
+                        </div>
+                    </div>
+
+                    <div class="analytics-card highlight-card">
+                        <div class="analytics-icon">
+                            <i class="fas fa-sign-in-alt"></i>
+                        </div>
+                        <div class="analytics-content">
+                            <h4>User Logins</h4>
+                            <p class="analytics-number" id="filteredLogins">--</p>
+                            <span class="metric-description">Login events in timeframe</span>
+                        </div>
+                    </div>
+
+                    <div class="analytics-card highlight-card">
+                        <div class="analytics-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <div class="analytics-content">
+                            <h4>User Engagement</h4>
+                            <p class="analytics-number" id="filteredEngagement">--</p>
+                            <span class="metric-description">Posts, comments, votes</span>
+                        </div>
+                    </div>
+
+                    <div class="analytics-card highlight-card">
+                        <div class="analytics-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <div class="analytics-content">
+                            <h4>New Souls</h4>
+                            <p class="analytics-number" id="filteredNewUsers">--</p>
+                            <span class="metric-description">Registrations in timeframe</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tier 3: Content & Sources -->
+            <div class="analytics-tier">
+                <div class="tier-header">
+                    <h3><i class="fas fa-chart-line"></i> Content & Traffic Sources</h3>
+                </div>
+                <div class="analytics-grid content-sources-grid">
+                    <div class="analytics-list-container">
+                        <h4><i class="fas fa-fire"></i> Popular Pages</h4>
+                        <div id="popularPages" class="analytics-list">
+                            <p class="loading">Loading...</p>
+                        </div>
+                    </div>
+
+                    <div class="analytics-list-container">
+                        <h4><i class="fas fa-external-link-alt"></i> Top Referrers</h4>
+                        <div id="topReferrers" class="analytics-list">
+                            <p class="loading">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tier 4: Detailed Insights (Collapsible) -->
+            <div class="analytics-tier collapsible-tier">
+                <div class="tier-header clickable" onclick="toggleAnalyticsTier(this)">
+                    <h3><i class="fas fa-search"></i> Visitor Details</h3>
+                    <i class="fas fa-chevron-down toggle-icon"></i>
+                </div>
+                <div class="tier-content" style="display: none;">
+                    <div class="analytics-grid details-grid">
+                        <div class="analytics-list-container">
+                            <h4><i class="fas fa-mobile-alt"></i> Device Types</h4>
+                            <div id="deviceTypes" class="analytics-list">
+                                <p class="loading">Loading...</p>
+                            </div>
+                        </div>
+
+                        <div class="analytics-list-container">
+                            <h4><i class="fas fa-browser"></i> Browser Usage</h4>
+                            <div id="browserUsage" class="analytics-list">
+                                <p class="loading">Loading...</p>
+                            </div>
+                        </div>
+
+                        <div class="analytics-list-container">
+                            <h4><i class="fas fa-globe"></i> Geographic Distribution</h4>
+                            <div id="geographicData" class="analytics-list">
+                                <p class="loading">Loading...</p>
+                            </div>
+                        </div>
+
+                        <div class="analytics-list-container">
+                            <h4><i class="fas fa-search"></i> Search Queries</h4>
+                            <div id="searchQueries" class="analytics-list">
+                                <p class="loading">Loading...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tier 5: Community Leaders -->
+            <div class="analytics-tier collapsible-tier">
+                <div class="tier-header clickable" onclick="toggleAnalyticsTier(this)">
+                    <h3><i class="fas fa-crown"></i> Community Leaders</h3>
+                    <i class="fas fa-chevron-down toggle-icon"></i>
+                </div>
+                <div class="tier-content" style="display: none;">
+                    <div class="analytics-grid leaders-grid">
+                        <div class="analytics-list-container">
+                            <h4><i class="fas fa-trophy"></i> Most Active Souls</h4>
+                            <div id="mostActiveSouls" class="analytics-list">
+                                <p class="loading">Loading...</p>
+                            </div>
+                        </div>
+
+                        <div class="analytics-card">
+                            <div class="analytics-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="analytics-content">
+                                <h4>Private Message Volume</h4>
+                                <p class="analytics-number" id="privateMessageVolume">--</p>
+                                <span class="metric-description">Messages sent today</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add JavaScript for tier collapsing -->
+            <script>
+            function toggleAnalyticsTier(header) {
+                const content = header.nextElementSibling;
+                const icon = header.querySelector('.toggle-icon');
+                
+                if (content.style.display === 'none') {
+                    content.style.display = 'block';
+                    icon.style.transform = 'rotate(0deg)';
+                    header.classList.remove('collapsed');
+                } else {
+                    content.style.display = 'none';
+                    icon.style.transform = 'rotate(-90deg)';
+                    header.classList.add('collapsed');
+                }
+            }
+            </script>
+        </section>
+        <!-- Eternal Feedback Section -->
+        <section id="feedback" class="admin-section">
+            <h2 class="section-title">
+                <i class="fas fa-heart"></i> Eternal Feedback
+            </h2>
+            
+            <div class="management-controls">
+                <div class="search-bar">
+                    <input type="text" id="feedbackSearch" placeholder="Search feedback...">
+                    <button id="searchFeedbackBtn"><i class="fas fa-search"></i></button>
+                </div>
+                
+                <div class="filter-controls">
+                    <select id="feedbackFilter">
+                        <option value="all">All Feedback</option>
+                        <option value="unread">Unread</option>
+                        <option value="read">Read</option>
+                        <option value="urgent">Urgent</option>
+                    </select>
+                </div>
+                
+                <button id="refreshFeedbackBtn" class="btn btn-outline">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+            
+            <div class="feedback-table-wrapper">
+                <div class="table-responsive">
+                    <table class="feedback-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Content</th>
+                                <th>Sender</th>
+                                <th>Reply</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody id="feedbackTableBody">
+                            <tr><td colspan="5" class="loading">Summoning immortal feedback...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Mobile Feedback Cards -->
+            <div class="mobile-table-cards" id="mobileFeedbackCards">
+                <div class="loading">Summoning immortal feedback...</div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Active Users Sidebar -->
+    <aside class="active-users" id="activeUsers" aria-label="Active users panel">
+        <div class="active-users-header">
+            <h3>Eternal Seekers</h3>
+            <button class="close-sidebar" id="closeUsers" aria-label="Close sidebar">×</button>
+        </div>
+        <div id="userList"></div>
+    </aside>
+    
+    <!-- Active Users Overlay -->
+    <div class="active-users-overlay" id="activeUsersOverlay"></div>
+
+    <!-- Floating Buttons -->
+    <div class="floating-buttons">
+        <button class="show-users-btn" id="showUsersBtn" aria-label="Show active users">
+            <i class="fas fa-users"></i>
+        </button>
+        <button class="theme-toggle" data-theme-toggle="true" aria-label="Toggle theme">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <!-- Authentication Modal -->
+    <div id="soulModal" class="soul-modal" aria-hidden="true">
+        <div class="soul-modal-content" role="dialog" aria-labelledby="soulModalTitle">
+            <h2 id="soulModalTitle">Enter the Eternal Realm</h2>
+            <div class="soul-modal-body">
+                <!-- Auth form will be populated by authModal.js -->
+            </div>
+        </div>
+    </div>
+
+    <!-- User Action Modal -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal">&times;</button>
+            <h3 id="modalTitle">Soul Details</h3>
+            <div id="modalContent">
+                <!-- User details and actions will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Message Modal for Replies -->
+    <div id="messageModal" class="modal" aria-hidden="true">
+        <div class="message-modal-content" role="dialog" aria-labelledby="messageTitle">
+            <h3 id="messageTitle">Direct Message</h3>
+            <p id="recipientName">To: Username</p>
+            <div class="message-history" id="messageHistory"></div>
+            <div>
+                <input type="text" id="messageInput" placeholder="Inscribe your eternal message..." required>
+                <div class="modal-actions">
+                    <button type="submit" id="sendMessageBtn">Send Whisper</button>
+                    <button type="button" id="closeMessageModal">Close Nexus</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Curation Modal -->
+    <div id="curationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="curationModalTitle">Select Editorial Choice</h3>
+                <button class="modal-close" onclick="closeCurationModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="content-search">
+                    <input type="text" id="contentSearch" placeholder="Search content...">
+                    <button onclick="searchContent()"><i class="fas fa-search"></i></button>
+                </div>
+                
+                <div class="content-type-tabs">
+                    <button class="tab-btn active" data-type="blogs">Soul Scrolls</button>
+                    <button class="tab-btn" data-type="threads">Echoes Unbound</button>
+                </div>
+                
+                <div class="content-list" id="contentList">
+                    <div class="loading">Loading content...</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeCurationModal()">Cancel</button>
+                <button class="btn btn-primary" id="featureContentBtn" onclick="featureSelectedContent()" disabled>
+                    <i class="fas fa-star"></i> Feature Content
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analytics Tutorial Modal -->
+    <div id="analyticsTutorial" class="modal analytics-tutorial-modal" aria-hidden="true">
+        <div class="modal-content tutorial-content">
+            <button class="close-modal" onclick="closeAnalyticsTutorial()">&times;</button>
+            <h2><i class="fas fa-graduation-cap"></i> Eternal Analytics Guide</h2>
+            
+            <div class="tutorial-sections">
+                <!-- Overview Section -->
+                <div class="tutorial-section">
+                    <h3><i class="fas fa-info-circle"></i> Overview</h3>
+                    <p>The Eternal Analytics dashboard provides comprehensive insights into your site's performance and user engagement. All metrics update in real-time to give you the most current data.</p>
+                </div>
+
+                <!-- Visitor Metrics -->
+                <div class="tutorial-section">
+                    <h3><i class="fas fa-users"></i> Visitor Metrics</h3>
+                    <div class="metric-explanation">
+                        <h4><i class="fas fa-eye"></i> Total Page Views</h4>
+                        <p>The total number of pages viewed on your site. Repeated views of a single page are counted.</p>
+                    </div>
+                    <div class="metric-explanation">
+                        <h4><i class="fas fa-users"></i> Unique Visitors</h4>
+                        <p>The number of individual users who have visited your site, counted only once per time period.</p>
+                    </div>
+                    <div class="metric-explanation">
+                        <h4><i class="fas fa-clock"></i> Average Session Duration</h4>
+                        <p>The average length of time users spend on your site during a single visit.</p>
+                    </div>
+                    <div class="metric-explanation">
+                        <h4><i class="fas fa-percentage"></i> Bounce Rate</h4>
+                        <p>The percentage of visitors who leave your site after viewing only one page. Lower is better!</p>
+                    </div>
+                </div>
+
+                <!-- Real-Time Metrics -->
+                <div class="tutorial-section">
+                    <h3><i class="fas fa-globe"></i> Real-Time Metrics</h3>
+                    <div class="metric-explanation">
+                        <h4><i class="fas fa-globe"></i> Online Now</h4>
+                        <p>The number of users currently active on your site. Updates every few seconds.</p>
+                    </div>
+                    <div class="metric-explanation">
+                        <h4><i class="fas fa-chart-line"></i> Page Load Speed</h4>
+                        <p>Average time it takes for pages to fully load. Aim for under 3 seconds for optimal user experience.</p>
+                    </div>
+                </div>
+
+                <!-- Legacy Metrics -->
+                <div class="tutorial-section">
+                    <h3><i class="fas fa-history"></i> Legacy Metrics</h3>
+                    <div class="metric-explanation">
+                        <h4>Daily Active Souls</h4>
+                        <p>Registered users who have logged in and performed actions in the last 24 hours.</p>
+                    </div>
+                    <div class="metric-explanation">
+                        <h4>Content Creation Rate</h4>
+                        <p>Average number of new posts, messages, and comments created per day.</p>
+                    </div>
+                    <div class="metric-explanation">
+                        <h4>Engagement Score</h4>
+                        <p>A composite score (0-100) based on user interactions, content creation, and session quality.</p>
+                    </div>
+                    <div class="metric-explanation">
+                        <h4>Error Rate</h4>
+                        <p>Percentage of page loads that result in errors. Should be below 1% for good user experience.</p>
+                    </div>
+                </div>
+
+                <!-- Time Range Tips -->
+                <div class="tutorial-section">
+                    <h3><i class="fas fa-calendar"></i> Using Time Ranges</h3>
+                    <p>Select different time ranges to analyze trends:</p>
+                    <ul>
+                        <li><strong>Last 24 Hours:</strong> Best for monitoring immediate changes and real-time issues</li>
+                        <li><strong>Last 7 Days:</strong> Ideal for weekly patterns and recent trends</li>
+                        <li><strong>Last 30 Days:</strong> Good for monthly overview and content performance</li>
+                        <li><strong>Last 90 Days:</strong> Useful for quarterly analysis and seasonal patterns</li>
+                        <li><strong>Last Year:</strong> Perfect for long-term growth tracking and yearly comparisons</li>
+                    </ul>
+                </div>
+
+                <!-- Charts Guide -->
+                <div class="tutorial-section">
+                    <h3><i class="fas fa-chart-bar"></i> Understanding Charts</h3>
+                    <p><strong>Visitor Traffic Chart:</strong> Shows page views and unique visitors over time. Look for patterns and spikes.</p>
+                    <p><strong>User Activity Patterns:</strong> Displays when users are most active. Use this to schedule content and maintenance.</p>
+                    <p><strong>Device & Browser Charts:</strong> Helps you understand what devices and browsers to optimize for.</p>
+                </div>
+            </div>
+
+            <div class="tutorial-footer">
+                <button class="btn btn-primary" onclick="closeAnalyticsTutorial()">
+                    <i class="fas fa-check"></i> Got It!
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 Manifest Liberation, Naturally Free. Administrator Access Only.</p>
+        <p>With great power comes eternal responsibility.</p>
+    </footer>
+
+    <!-- Config MUST be loaded first -->
+    <script src="../components/shared/config.js?v=1.4"></script>
+    
+    <!-- Admin Authentication Check -->
+    <script>
+        // Check if user is logged in and has admin role
+        (function() {
+            const token = localStorage.getItem('sessionToken');
+            if (!token) {
+                alert('Admin access requires authentication. Redirecting to login...');
+                window.location.href = '/?login=admin';
+                return;
+            }
+            
+            // Verify admin role via API  
+            const apiBaseUrl = window.MLNF_CONFIG?.API_BASE_URL || 'https://mlnf-auth.onrender.com/api';
+            console.log('Auth check - API base URL:', apiBaseUrl);
+            fetch(`${apiBaseUrl}/debug/whoami`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.isAdmin) {
+                    alert('Admin access denied. Insufficient privileges.');
+                    window.location.href = '/';
+                }
+            })
+            .catch(error => {
+                console.warn('Could not verify admin status:', error);
+                // Continue loading - might be offline or local development
+            });
+        })();
+    </script>
+    
+    <!-- Config MUST be loaded first -->
+    <script src="../components/shared/config.js?v=1.4"></script>
+    
+    <!-- Theme Manager - Load early for immediate theme application -->
+    <script src="../components/shared/themeManager.js?v=1.3"></script>
+    
+    <!-- Core MLNF Components -->
+    <script src="../components/shared/mlnf-core.js?v=1.3"></script>
+    <script src="../components/shared/authManager.js?v=1.3"></script>
+    <script src="../components/shared/authModal.js?v=1.2"></script>
+    <script src="../components/shared/apiClient.js?v=1.3"></script>
+    <script src="../components/shared/navigation.js?v=1.7"></script>
+    <script src="../components/shared/userMenu.js?v=1.8"></script>
+    <script src="../components/shared/activeUsers.js?v=1.7"></script>
+    <script src="../components/shared/messageModal.js?v=2.5"></script>
+    
+    <!-- Avatar System -->
+    <script src="../js/mlnf-avatar-system.js?v=2.1"></script>
+    
+    <!-- Admin Components -->
+    <script src="../js/admin/dashboard.js?v=1.2"></script>
+    <script src="../js/admin/userManagement.js?v=1.7"></script>
+    <script src="../js/admin/analytics.js?v=1.1"></script>
+    <script src="../js/admin/feedback.js?v=2.3"></script>
+    
+    <!-- Analytics Tracking System -->
+    <script src="../js/analytics-tracker.js?v=1.2"></script>
+    
+    <!-- Content Curation System -->
+    <script>
+        // Content Curation System
+        let currentCurationSection = '';
+        let currentContentType = 'blogs';
+        let selectedContentId = null;
+        let selectedContentData = null;
+        
+        function openCurationModal(section) {
+            // Convert frontend section names to backend enum values
+            const sectionMapping = {
+                'soul-scrolls': 'soul_scrolls',
+                'echoes-unbound': 'echoes_unbound'
+            };
+            currentCurationSection = sectionMapping[section] || section;
+            currentContentType = section === 'soul-scrolls' ? 'blogs' : 'threads';
+            
+            const modal = document.getElementById('curationModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                modal.classList.add('active');
+            } else {
+                console.error('Curation modal not found!');
+                return;
+            }
+            
+            const modalTitle = document.getElementById('curationModalTitle');
+            if (modalTitle) {
+                modalTitle.textContent = section === 'soul-scrolls' ? 'Select Soul Scrolls Editorial Choice' : 'Select Echoes Unbound Editorial Choice';
+            } else {
+                console.error('Modal title element not found');
+            }
+            
+            // Update tab visibility
+            const tabs = document.querySelectorAll('.tab-btn');
+            tabs.forEach(tab => {
+                tab.style.display = section === 'soul-scrolls' && tab.dataset.type === 'threads' ? 'none' : 'block';
+                tab.classList.toggle('active', tab.dataset.type === currentContentType);
+            });
+            
+            loadContentForCuration();
+        }
+        
+        function closeCurationModal() {
+            const modal = document.getElementById('curationModal');
+            if (modal) {
+                modal.style.display = 'none';
+                modal.classList.remove('active');
+            }
+            selectedContentId = null;
+            selectedContentData = null;
+            
+            // Reset button state
+            const featureBtn = document.getElementById('featureContentBtn');
+            if (featureBtn) {
+                featureBtn.disabled = true;
+                featureBtn.innerHTML = '<i class="fas fa-star"></i> Feature Content';
+                featureBtn.classList.remove('btn-ready');
+                featureBtn.style.animation = '';
+            }
+            
+            // Clear all selections
+            document.querySelectorAll('.content-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+        }
+        
+        async function loadContentForCuration() {
+            const contentList = document.getElementById('contentList');
+            if (!contentList) {
+                console.error('contentList element not found');
+                return;
+            }
+            
+            contentList.innerHTML = '<div class="loading">Loading content...</div>';
+            
+            try {
+                if (!window.MLNF_CONFIG || !window.MLNF_CONFIG.API_BASE_URL) {
+                    throw new Error('API configuration not available');
+                }
+                
+                const endpoint = currentContentType === 'blogs' ? '/blogs' : '/threads';
+                const token = localStorage.getItem('sessionToken');
+                
+                if (!token) {
+                    throw new Error('No authentication token found');
+                }
+                
+                const url = `${window.MLNF_CONFIG.API_BASE_URL}${endpoint}?limit=20&populate=author`;
+                
+                const response = await fetch(url, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (!response.ok) throw new Error(`Failed to fetch content: ${response.status}`);
+                
+                const data = await response.json();
+                
+                // Handle different API response formats
+                let content = [];
+                if (Array.isArray(data)) {
+                    content = data;
+                } else if (data.docs && Array.isArray(data.docs)) {
+                    content = data.docs;
+                } else if (data.threads && Array.isArray(data.threads)) {
+                    content = data.threads;
+                } else if (data.data && Array.isArray(data.data)) {
+                    content = data.data;
+                } else {
+                    console.warn('Unexpected content response format:', data);
+                    contentList.innerHTML = '<div class="error">No content available</div>';
+                    return;
+                }
+                
+                displayContentForCuration(content);
+                
+            } catch (error) {
+                console.error('Error loading content:', error);
+                contentList.innerHTML = '<div class="error">Failed to load content</div>';
+            }
+        }
+        
+        function displayContentForCuration(content) {
+            const contentList = document.getElementById('contentList');
+            
+            if (content.length === 0) {
+                contentList.innerHTML = '<div class="empty">No content available</div>';
+                return;
+            }
+            
+            contentList.innerHTML = content.map(item => {
+                
+                // Handle missing or invalid items
+                if (!item || !item._id) {
+                    console.warn('Invalid item found:', item);
+                    return '<div class="content-item error">Invalid content item</div>';
+                }
+                
+                const date = item.createdAt ? new Date(item.createdAt).toLocaleDateString() : 'Unknown date';
+                const author = item.author?.username || 'Anonymous';
+                const excerpt = (item.content || item.description || 'No content available').replace(/<[^>]*>/g, '').substring(0, 150) + '...';
+                const title = item.title || 'Untitled';
+                
+                return `
+                    <div class="content-item" data-content-id="${item._id}" onclick="selectContent('${item._id}')">
+                        <div class="content-header">
+                            <h4>${title}</h4>
+                            <span class="content-meta">by ${author} • ${date}</span>
+                        </div>
+                        <p class="content-excerpt">${excerpt}</p>
+                        <div class="content-footer">
+                            <span class="content-type">${currentContentType === 'blogs' ? 'Soul Scroll' : 'Echo Thread'}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function selectContent(contentId) {
+            // Remove previous selection with smooth transition
+            document.querySelectorAll('.content-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // Select current item with enhanced feedback
+            const selectedElement = document.querySelector(`[data-content-id="${contentId}"]`);
+            if (selectedElement) {
+                selectedElement.classList.add('selected');
+                selectedContentId = contentId;
+                selectedContentData = { _id: contentId }; // Store minimal data
+                
+                // Update button state with visual feedback
+                const featureBtn = document.getElementById('featureContentBtn');
+                featureBtn.disabled = false;
+                featureBtn.innerHTML = '<i class="fas fa-star"></i> Feature Selected Content';
+                featureBtn.classList.add('btn-ready');
+                
+                // Scroll selected item into view if needed
+                selectedElement.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'nearest' 
+                });
+                
+                // Show confirmation message
+                const contentTitle = selectedElement.querySelector('.content-header h4')?.textContent || 'Content';
+                
+                // Add subtle pulse effect to the button
+                featureBtn.style.animation = 'pulse-ready 1s ease';
+                setTimeout(() => {
+                    featureBtn.style.animation = '';
+                }, 1000);
+            }
+        }
+        
+        async function featureSelectedContent() {
+            if (!selectedContentId) {
+                alert('Please select content to feature');
+                return;
+            }
+            
+            try {
+                const token = localStorage.getItem('sessionToken');
+                if (!token) {
+                    throw new Error('No authentication token found');
+                }
+                
+                // Verify user is admin
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                
+                if (user.role !== 'admin') {
+                    throw new Error('Admin role required for content curation');
+                }
+                
+                const requestBody = {
+                    contentType: currentContentType === 'blogs' ? 'blog' : 'thread',
+                    contentId: selectedContentId,
+                    section: currentCurationSection,
+                    adminNotes: 'Featured via admin curation interface'
+                };
+                
+                
+                const response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/highlights/admin-feature`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+                
+                
+                if (!response.ok) {
+                    let errorText;
+                    try {
+                        const errorJson = await response.json();
+                        errorText = errorJson.error || JSON.stringify(errorJson);
+                        console.error('API Error JSON:', errorJson);
+                    } catch (parseError) {
+                        errorText = await response.text();
+                        console.error('API Error Text:', errorText);
+                    }
+                    
+                    throw new Error(`HTTP ${response.status}: ${errorText}`);
+                }
+                
+                const result = await response.json();
+                
+                alert('Content successfully featured!');
+                closeCurationModal();
+                loadCurrentHighlights();
+                
+            } catch (error) {
+                console.error('Error featuring content:', error);
+                console.error('Error details:', {
+                    message: error.message,
+                    stack: error.stack
+                });
+                alert(`Failed to feature content: ${error.message}`);
+            }
+        }
+        
+        async function loadCurrentHighlights() {
+            // Load current Soul Scrolls highlight
+            try {
+                const response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/highlights/soul_scrolls`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    const adminHighlight = data.highlights?.find(h => h.type === 'admin');
+                    
+                    const container = document.getElementById('currentSoulScrollsHighlight');
+                    if (adminHighlight && container) {
+                        container.innerHTML = `
+                            <div class="featured-content">
+                                <h4>${adminHighlight.content.title}</h4>
+                                <p>by ${adminHighlight.content.author?.username || 'Anonymous'}</p>
+                                <small>Featured: ${new Date(adminHighlight.content.createdAt).toLocaleDateString()}</small>
+                            </div>
+                        `;
+                    } else if (container) {
+                        container.innerHTML = '<div class="no-selection">No editorial selection</div>';
+                    }
+                }
+                
+                // Load current Echoes Unbound highlight
+                const echoesResponse = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/highlights/echoes_unbound`);
+                
+                if (echoesResponse.ok) {
+                    const echoesData = await echoesResponse.json();
+                    
+                    const echoesAdminHighlight = echoesData.highlights?.find(h => h.type === 'admin');
+                    
+                    const echoesContainer = document.getElementById('currentEchoesHighlight');
+                    if (echoesAdminHighlight && echoesContainer) {
+                        echoesContainer.innerHTML = `
+                            <div class="featured-content">
+                                <h4>${echoesAdminHighlight.content.title}</h4>
+                                <p>by ${echoesAdminHighlight.content.author?.username || 'Anonymous'}</p>
+                                <small>Featured: ${new Date(echoesAdminHighlight.content.createdAt).toLocaleDateString()}</small>
+                            </div>
+                        `;
+                    } else if (echoesContainer) {
+                        echoesContainer.innerHTML = '<div class="no-selection">No editorial selection</div>';
+                    }
+                }
+                
+            } catch (error) {
+                console.error('Error loading current highlights:', error);
+                console.error('Error details:', {
+                    message: error.message,
+                    stack: error.stack
+                });
+            }
+        }
+        
+        // Tab switching
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('tab-btn')) {
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+                currentContentType = e.target.dataset.type;
+                selectedContentId = null;
+                selectedContentData = null;
+                
+                // Reset button state when switching tabs
+                const featureBtn = document.getElementById('featureContentBtn');
+                featureBtn.disabled = true;
+                featureBtn.innerHTML = '<i class="fas fa-star"></i> Feature Content';
+                featureBtn.classList.remove('btn-ready');
+                featureBtn.style.animation = '';
+                
+                loadContentForCuration();
+            }
+        });
+        
+        // Search functionality
+        function searchContent() {
+            const searchTerm = document.getElementById('contentSearch').value;
+            // Could implement search API call here
+            loadContentForCuration();
+        }
+        
+        // Modal close on background click
+        document.addEventListener('click', function(e) {
+            if (e.target.id === 'curationModal') {
+                closeCurationModal();
+            }
+        });
+
+        // Analytics Tutorial Functions
+        function openAnalyticsTutorial() {
+            const tutorial = document.getElementById('analyticsTutorial');
+            if (tutorial) {
+                tutorial.style.display = 'flex';
+                tutorial.classList.add('active');
+                tutorial.setAttribute('aria-hidden', 'false');
+            }
+        }
+
+        function closeAnalyticsTutorial() {
+            const tutorial = document.getElementById('analyticsTutorial');
+            if (tutorial) {
+                tutorial.style.display = 'none';
+                tutorial.classList.remove('active');
+                tutorial.setAttribute('aria-hidden', 'true');
+            }
+        }
+
+        // Close tutorial on background click
+        document.addEventListener('click', function(e) {
+            if (e.target.id === 'analyticsTutorial') {
+                closeAnalyticsTutorial();
+            }
+        });
+    </script>
+
+    <!-- Initialize MLNF -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize MLNF core components (gracefully handle missing elements on admin page)
+            
+            // Ensure MLNF object exists
+            window.MLNF = window.MLNF || {};
+            
+            if (typeof MLNF !== 'undefined') {
+                try {
+                    MLNF.initThemeManager();
+                } catch (error) {
+                    console.warn('Theme manager init skipped on admin page:', error.message);
+                }
+                
+                try {
+                    MLNF.initNavigation();
+                } catch (error) {
+                    console.warn('Navigation init failed:', error.message);
+                }
+                
+                try {
+                    MLNF.initUserMenu();
+                } catch (error) {
+                    console.warn('User menu init failed:', error.message);
+                }
+                
+                try {
+                    MLNF.initAuthModal();
+                } catch (error) {
+                    console.warn('Auth modal init skipped on admin page:', error.message);
+                }
+                
+                try {
+                    MLNF.initMessageModal();
+                } catch (error) {
+                    console.warn('Message modal init skipped on admin page:', error.message);
+                }
+            }
+            
+            // Initialize active users with proper error handling
+            setTimeout(() => {
+                if (typeof MLNF !== 'undefined' && typeof MLNF.initActiveUsers === 'function') {
+                    try {
+                        MLNF.initActiveUsers();
+                    } catch (error) {
+                        console.error('Error initializing active users:', error);
+                    }
+                } else if (typeof initActiveUsers === 'function') {
+                    try {
+                        initActiveUsers();
+                    } catch (error) {
+                        console.error('Error with global initActiveUsers:', error);
+                    }
+                }
+            }, 1000);
+            
+            // Initialize floating buttons
+            initFloatingButtons();
+            
+            // Initialize admin components with delay to ensure all scripts are loaded
+            setTimeout(() => {
+                if (typeof AdminDashboard !== 'undefined') {
+                    AdminDashboard.init();
+                }
+                
+                if (typeof AdminAnalytics !== 'undefined') {
+                    AdminAnalytics.init();
+                }
+                
+                if (typeof AdminFeedback !== 'undefined') {
+                    AdminFeedback.init();
+                }
+            }, 500);
+            
+            // Initialize curation highlights
+            setTimeout(loadCurrentHighlights, 1000);
+            
+            // Initialize mobile navigation
+            initMobileNavigation();
+        });
+        
+        // Floating Buttons Functions
+        function initFloatingButtons() {
+            const themeToggle = document.querySelector('[data-theme-toggle]');
+            
+            // Active users button is now handled by activeUsers.js
+            // No need for duplicate event handling here
+            
+            // Theme toggle button
+            if (themeToggle) {
+                themeToggle.addEventListener('click', () => {
+                    // Use MLNF theme toggle if available
+                    if (typeof MLNF !== 'undefined' && typeof MLNF.toggleTheme === 'function') {
+                        MLNF.toggleTheme();
+                    } else {
+                        // Fallback theme toggle
+                        document.body.classList.toggle('dark-theme');
+                        const icon = themeToggle.querySelector('i');
+                        if (icon) {
+                            icon.classList.toggle('fa-moon');
+                            icon.classList.toggle('fa-sun');
+                        }
+                    }
+                });
+            }
+        }
+        
+        // Mobile Navigation Functions
+        function initMobileNavigation() {
+            const adminMobileNavToggle = document.getElementById('adminMobileNavToggle');
+            const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+            const mobileNavMenu = document.getElementById('mobileNavMenu');
+            const mobileNavClose = document.getElementById('mobileNavClose');
+            
+            // Admin mobile nav toggle
+            if (adminMobileNavToggle) {
+                adminMobileNavToggle.addEventListener('click', () => {
+                    toggleMobileNav(true);
+                });
+            }
+            
+            // Mobile nav close
+            if (mobileNavClose) {
+                mobileNavClose.addEventListener('click', () => {
+                    toggleMobileNav(false);
+                });
+            }
+            
+            // Overlay click to close
+            if (mobileNavOverlay) {
+                mobileNavOverlay.addEventListener('click', () => {
+                    toggleMobileNav(false);
+                });
+            }
+            
+            // Mobile nav links
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav-link, .mobile-tab-btn');
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const section = link.getAttribute('href').substring(1) || link.dataset.section;
+                    if (section && section !== '/') {
+                        // Switch section using existing AdminDashboard function
+                        if (typeof AdminDashboard !== 'undefined' && AdminDashboard.switchSection) {
+                            AdminDashboard.switchSection(section);
+                        }
+                        // Update active states
+                        updateMobileNavActiveStates(section);
+                    }
+                    // Close mobile nav
+                    toggleMobileNav(false);
+                });
+            });
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) {
+                    toggleMobileNav(false);
+                }
+            });
+        }
+        
+        function toggleMobileNav(show) {
+            const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+            const mobileNavMenu = document.getElementById('mobileNavMenu');
+            
+            if (show) {
+                if (mobileNavOverlay) {
+                    mobileNavOverlay.style.display = 'block';
+                }
+                if (mobileNavMenu) {
+                    mobileNavMenu.style.display = 'block';
+                    // Force reflow then add active class for animation
+                    mobileNavMenu.offsetHeight;
+                    mobileNavMenu.classList.add('active');
+                }
+                // Prevent body scroll
+                document.body.style.overflow = 'hidden';
+            } else {
+                if (mobileNavMenu) {
+                    mobileNavMenu.classList.remove('active');
+                    setTimeout(() => {
+                        if (mobileNavMenu) mobileNavMenu.style.display = 'none';
+                    }, 300);
+                }
+                if (mobileNavOverlay) {
+                    mobileNavOverlay.style.display = 'none';
+                }
+                // Restore body scroll
+                document.body.style.overflow = '';
+            }
+        }
+        
+        function updateMobileNavActiveStates(activeSection) {
+            // Update mobile tab buttons
+            const tabBtns = document.querySelectorAll('.mobile-tab-btn');
+            tabBtns.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.section === activeSection);
+            });
+            
+            // Update desktop nav links
+            const navLinks = document.querySelectorAll('.admin-nav a');
+            navLinks.forEach(link => {
+                const section = link.getAttribute('href').substring(1);
+                link.classList.toggle('active', section === activeSection);
+            });
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Boundless Chronicles: Eternal truths and timeless stories in the MLNF sanctuary.">
+    <meta name="theme-color" content="#0d0d1a">
+    <title>Boundless Chronicles - Manifest Liberation, Naturally Free</title>
+    
+    <!-- Immortal-themed favicon -->
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="apple-touch-icon" href="../favicon.svg">
+    
+    <!-- 1. THEME FOUNDATION (MUST BE FIRST) -->
+    <link rel="stylesheet" href="../css/base-theme.css?v=1.0">
+    
+    <!-- 2. CRITICAL CSS - Above-fold essentials loaded synchronously -->
+    <link rel="stylesheet" href="../css/critical.css?v=5.3">
+    
+    <!-- 3. GLOBAL STYLES - Site-wide styling -->
+    <link rel="stylesheet" href="../css/styles.css?v=10.0">
+    
+    <!-- 4. PROGRESSIVE LOADING - Non-critical CSS loaded asynchronously -->
+    <link rel="preload" href="../css/layout.css?v=8.2" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/layout.css?v=8.2"></noscript>
+    
+    <link rel="preload" href="../css/components.css?v=7.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/components.css?v=7.1"></noscript>
+    
+    <link rel="preload" href="../css/features.css?v=6.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/features.css?v=6.3"></noscript>
+    
+    <!-- 4. SHARED COMPONENTS (lazy loaded) -->
+    <link rel="preload" href="../components/shared/styles.css?v=10.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../components/shared/styles.css?v=10.0"></noscript>
+    
+    <!-- 5. PAGE-SPECIFIC (lazy loaded) -->
+    <link rel="preload" href="../css/active-users.css?v=7.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/active-users.css?v=7.0"></noscript>
+    
+    <link rel="preload" href="../css/news.css?v=2.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/news.css?v=2.3"></noscript>
+    
+    <!-- 6. EXTERNAL RESOURCES (lazy loaded) -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous"></noscript>
+    
+    <!-- 7. FONTS (lazy loaded) -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap"></noscript>
+
+    <!-- 8. QUILL EDITOR (for rich text chronicle creation) -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css"></noscript>
+</head>
+<body>
+    <!-- Active Users Sidebar (Shared Component) -->
+    <aside class="active-users" id="activeUsers" aria-label="Active users panel">
+        <div class="active-users-header">
+            <h3>Eternal Chroniclers</h3>
+            <button class="close-sidebar" id="closeUsers" aria-label="Close sidebar">×</button>
+        </div>
+        <div id="userList"></div>
+    </aside>
+
+    <!-- Floating Buttons (Shared Component) -->
+    <div class="floating-buttons">
+        <button class="show-users-btn" id="showUsersBtn" aria-label="Show active users">
+            <i class="fas fa-users"></i>
+        </button>
+    </div>
+
+    <!-- Message Modal (Shared Component) -->
+    <div id="messageModal" class="modal" aria-hidden="true">
+        <div class="message-modal-content" role="dialog" aria-labelledby="messageTitle">
+            <h3 id="messageTitle">Direct Message</h3>
+            <p id="recipientName">To: Username</p>
+            <div class="message-history" id="messageHistory"></div>
+            <div>
+                <input type="text" id="messageInput" placeholder="Inscribe your eternal message..." required>
+                <div class="modal-actions">
+                    <button type="submit" id="sendMessageBtn">Send Whisper</button>
+                    <button type="button" id="closeMessageModal">Close Nexus</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <header>
+        <div class="logo">
+            <a href="/">
+                <i class="fas fa-infinity"></i>
+                <div class="title-stack">
+                    <span class="full-title">
+                        <span class="title-line-one">Manifest Liberation</span>
+                        <span class="title-line-two">Naturally Free</span>
+                    </span>
+                    <span class="short-title">MLNF</span>
+                </div>
+            </a>
+        </div>
+        <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+        <nav class="main-nav">
+            <ul></ul>
+        </nav>
+        <div class="header-controls">
+            <div class="user-menu" id="userMenuContainer"></div>
+            <div class="header-auth-buttons" id="headerAuthButtonsContainer" style="display: none;"></div>
+        </div>
+        
+        <!-- Mobile Navigation -->
+        <div class="mobile-overlay" id="mobileOverlay"></div>
+        <nav class="mobile-nav" id="mobileNav">
+            <div class="sidebar-header">
+                <h2>Eternal Navigation</h2>
+                <button class="close-sidebar" id="closeMobileNav" aria-label="Close mobile navigation">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <ul class="mobile-nav-list"></ul>
+        </nav>
+    </header>
+
+    <main class="chronicles-main">
+        <!-- Newspaper Header -->
+        <div class="newspaper-header">
+            <div class="newspaper-masthead">
+                <h1 class="newspaper-title">The Boundless Chronicles</h1>
+                <div class="newspaper-subtitle">
+                    <span class="motto">"Eternal Truths Beyond Mortal Lies"</span>
+                    <span class="established">Est. Eternity</span>
+                </div>
+                <div class="newspaper-date" id="currentDate"></div>
+            </div>
+        </div>
+
+        <!-- Chronicles Controls -->
+        <div class="chronicles-controls">
+        <div class="view-controls">
+                <button class="view-btn active" data-view="recent" data-sort="submission">
+                    <i class="fas fa-clock"></i> Latest Submissions
+                </button>
+                <button class="view-btn" data-view="chronological" data-sort="event">
+                    <i class="fas fa-history"></i> Historical Order
+                </button>
+            </div>
+            
+            <button class="submit-chronicle-btn" id="openSubmissionModal">
+                <i class="fas fa-feather-alt"></i> Submit Chronicle
+            </button>
+        </div>
+
+        <!-- Chronicles Feed -->
+        <div class="chronicles-container">
+            <div id="chroniclesFeed" class="chronicles-feed">
+                <div class="loading-chronicles">
+                    <div class="chronicle-spinner"></div>
+                    <p>Gathering eternal chronicles...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Chronicle Submission Modal -->
+    <div id="submissionModal" class="modal" aria-hidden="true">
+        <div class="modal-content chronicle-modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-scroll"></i> Submit Chronicle to Eternity</h3>
+                <button class="close-modal" id="closeSubmissionModal" aria-label="Close modal">×</button>
+    </div>
+
+            <form id="submissionForm" class="chronicle-form">
+                <div class="form-group">
+                    <label for="chronicleTitle">Chronicle Title *</label>
+                    <input type="text" id="chronicleTitle" name="title" required 
+                           placeholder="Enter the title of your eternal chronicle">
+                </div>
+                
+                <div class="form-group">
+                    <label for="eventDate">Event Date *</label>
+                    <input type="date" id="eventDate" name="eventDate" required>
+                    <small>When did this event occur?</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="chronicleContent">Chronicle Content *</label>
+                    <div id="chronicleEditor" class="quill-editor">
+                        <p>Tell the story that shall echo through eternity...</p>
+                    </div>
+                    <textarea id="chronicleContent" name="content" required style="display: none;"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="chronicleSources">Sources & References</label>
+                    <textarea id="chronicleSources" name="sources" rows="4"
+                              placeholder="List your sources (one per line)"></textarea>
+                    <small>Help others verify your chronicle's accuracy</small>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-scroll"></i> Immortalize Chronicle
+                    </button>
+                    <button type="button" class="btn btn-outline" id="cancelSubmissionModal">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Chronicle Edit Modal -->
+    <div id="editModal" class="modal" aria-hidden="true">
+        <div class="modal-content chronicle-modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-edit"></i> Edit Chronicle</h3>
+                <button class="close-modal" id="closeEditModal" aria-label="Close modal">×</button>
+            </div>
+            
+            <form id="editForm" class="chronicle-form">
+                <input type="hidden" id="editChronicleId" name="chronicleId">
+                
+                <div class="form-group">
+                    <label for="editTitle">Chronicle Title *</label>
+                    <input type="text" id="editTitle" name="title" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editEventDate">Event Date *</label>
+                    <input type="date" id="editEventDate" name="eventDate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editContent">Chronicle Content *</label>
+                    <textarea id="editContent" name="content" required rows="10"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editSources">Sources & References</label>
+                    <textarea id="editSources" name="sources" rows="4"></textarea>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                    <button type="button" class="btn btn-danger" id="deleteChronicle">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                    <button type="button" class="btn btn-outline" id="cancelEditModal">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Chronicle Detail Modal -->
+    <div id="chronicleModal" class="modal" aria-hidden="true">
+        <div class="modal-content chronicle-detail-modal">
+            <div class="modal-header">
+                <button class="close-modal" id="closeChronicleModal" aria-label="Close modal">×</button>
+            </div>
+            
+            <article class="chronicle-detail">
+                <div class="chronicle-detail-header">
+                    <h2 id="modalChronicleTitle" class="chronicle-title"></h2>
+                    <div class="chronicle-meta">
+                        <div class="chronicle-author-info">
+                            <!-- MLNF Avatar System will populate this -->
+                        </div>
+                        <div class="chronicle-dates">
+                            <div class="event-date">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span id="modalEventDate"></span>
+                            </div>
+                            <div class="submission-date">
+                                <i class="fas fa-clock"></i>
+                                <span id="modalSubmissionDate"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chronicle-content" id="modalChronicleContent"></div>
+                
+                <div class="chronicle-sources" id="modalChronicleSourcesContainer" style="display: none;">
+                    <h4><i class="fas fa-link"></i> Sources & References</h4>
+                    <ul id="modalChronicleSourcesList"></ul>
+                </div>
+                
+                <div class="chronicle-actions">
+                    <div class="voting-actions">
+                        <button class="action-btn consecrate" id="modalConsecrateBtn" title="Consecrate this chronicle as eternal truth">
+                            <i class="fas fa-certificate"></i>
+                            <span>Consecrate</span>
+                            <span class="count" id="modalConsecrateCount">(0)</span>
+                        </button>
+                        <button class="action-btn investigate" id="modalInvestigateBtn" title="Investigate this chronicle for accuracy">
+                            <i class="fas fa-search"></i>
+                            <span>Investigate</span>
+                            <span class="count" id="modalInvestigateCount">(0)</span>
+                        </button>
+                    </div>
+                    
+                    <div class="chronicle-management">
+                        <button class="action-btn edit" id="modalEditBtn" style="display: none;" title="Edit this chronicle">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="action-btn comments" id="modalCommentsBtn" title="View comments">
+                            <i class="fas fa-comments"></i> Comments
+                        </button>
+                    </div>
+                </div>
+            </article>
+            
+            <!-- Comments Section -->
+            <div class="chronicle-comments" id="chronicleCommentsSection">
+                <div id="chronicleCommentsContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comments Modal -->
+    <div id="commentsModal" class="modal" aria-hidden="true">
+        <div class="modal-content comments-modal">
+            <div class="modal-header">
+                <h3 id="commentsModalTitle">Chronicle Comments</h3>
+                <button class="close-modal" id="closeCommentsModal" aria-label="Close modal">×</button>
+            </div>
+            
+            <div class="comments-content">
+                <div id="commentsContainer" class="comments-container"></div>
+                
+                <!-- Comment Input Form -->
+                <div class="comment-input-section">
+                    <div class="comment-form">
+                        <textarea id="newCommentText" 
+                                  placeholder="Share your thoughts on this chronicle..." 
+                                  rows="3" 
+                                  maxlength="1000"></textarea>
+                        <div class="comment-actions">
+                            <button type="button" id="submitCommentBtn" class="btn btn-primary">
+                                <i class="fas fa-comment"></i> Post Comment
+                            </button>
+                            <div class="character-count">
+                                <span id="commentCharCount">0</span>/1000
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Feedback Section -->
+            <div id="commentFeedback" class="modal-feedback" style="display: none;"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="newspaper-footer">
+            <p class="copyright">© Eternal Year ∞ - The Boundless Chronicles</p>
+            <p class="motto">Where truth transcends time and mortal limitations</p>
+        </div>
+    </footer>
+
+    <!-- Shared Component Scripts -->
+    <script src="../components/shared/config.js?v=1.4"></script>
+    <script src="../components/shared/mlnf-core.js?v=1.3"></script>
+    <script src="../components/shared/authManager.js?v=1.3"></script>
+    <script src="../components/shared/apiClient.js?v=1.3"></script>
+    <script src="../components/shared/navigation.js?v=1.7"></script>
+    <script src="../components/shared/authModal.js?v=1.4"></script>
+    <script src="../components/shared/userMenu.js?v=1.8"></script>
+    <script src="../components/shared/activeUsers.js?v=1.6"></script>
+    <script src="../components/shared/messageModal.js?v=2.5"></script>
+    
+    <!-- Avatar System -->
+    <script src="../js/mlnf-avatar-system.js?v=2.1"></script>
+    
+    <!-- Quill Editor -->
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+    
+    <!-- Page-specific Scripts -->
+    <script src="../js/news/chroniclesFeed.js?v=2.1"></script>
+    <script src="../js/news/submissionModal.js?v=2.1"></script>
+    <script src="../js/news/commentsSystem.js?v=2.1"></script>
+    
+    <!-- News Page JavaScript -->
+    <script>
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('News page initializing...');
+            
+            // Check if all required components are available
+            const requiredComponents = ['ChroniclesFeed', 'SubmissionModal', 'CommentsSystem'];
+            const missingComponents = requiredComponents.filter(comp => !window[comp]);
+            
+            if (missingComponents.length > 0) {
+                console.error('Missing required components:', missingComponents);
+                return;
+            }
+
+            // Initialize all components
+            try {
+                window.SubmissionModal.init();
+                window.CommentsSystem.init();
+                window.ChroniclesFeed.init();
+                
+                // Ensure chroniclesFeed is properly exposed (compatibility fix)
+                if (window.ChroniclesFeed && !window.chroniclesFeed) {
+                    window.chroniclesFeed = window.ChroniclesFeed;
+                    console.log('[news.html] ChroniclesFeed exposed as chroniclesFeed for compatibility');
+                }
+                
+                console.log('All news page components initialized successfully');
+                
+                // Initialize Quill editor for chronicle content
+                if (typeof Quill !== 'undefined') {
+                    const chronicleEditor = new Quill('#chronicleEditor', {
+                        theme: 'snow',
+                        placeholder: 'Tell the story that shall echo through eternity...',
+                        modules: {
+                            toolbar: [
+                                [{ 'header': [1, 2, 3, false] }],
+                                ['bold', 'italic', 'underline', 'strike'],
+                                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                                [{ 'indent': '-1'}, { 'indent': '+1' }],
+                                ['blockquote', 'code-block'],
+                                ['link'],
+                                [{ 'align': [] }],
+                                ['clean']
+                            ]
+                        }
+                    });
+
+                    // Sync Quill content with hidden textarea for form submission
+                    chronicleEditor.on('text-change', function() {
+                        const content = chronicleEditor.root.innerHTML;
+                        document.getElementById('chronicleContent').value = content;
+                    });
+
+                    // Store reference for access in submission modal
+                    window.chronicleQuillEditor = chronicleEditor;
+                    console.log('Quill editor initialized for chronicle creation');
+                } else {
+                    console.warn('Quill editor not available, falling back to textarea');
+                }
+                
+                // Check for chronicle ID to auto-open modal (from front page highlights)
+                const urlParams = new URLSearchParams(window.location.search);
+                const openChronicleId = urlParams.get('openChronicle');
+                if (openChronicleId) {
+                    console.log('[news.html] Auto-opening chronicle modal for ID:', openChronicleId);
+                    // Clear URL parameter for cleaner experience
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    
+                    // Simple approach: wait a bit then try to open the modal
+                    console.log('[news.html] Waiting for ChroniclesFeed to be ready...');
+                    
+                    const tryOpenModal = () => {
+                        console.log('[news.html] Checking for ChroniclesFeed...');
+                        console.log('[news.html] window.chroniclesFeed exists?', !!window.chroniclesFeed);
+                        console.log('[news.html] openChronicleModal method exists?', !!(window.chroniclesFeed && window.chroniclesFeed.openChronicleModal));
+                        
+                        if (window.chroniclesFeed && window.chroniclesFeed.openChronicleModal) {
+                            console.log('[news.html] SUCCESS! Opening modal for chronicle:', openChronicleId);
+                            window.chroniclesFeed.openChronicleModal(openChronicleId);
+                        } else {
+                            console.log('[news.html] ChroniclesFeed not ready yet, trying again in 1 second...');
+                            setTimeout(tryOpenModal, 1000);
+                        }
+                    };
+                    
+                    // Start trying after a short delay
+                    setTimeout(tryOpenModal, 2000);
+                }
+            } catch (error) {
+                console.error('Error initializing news page components:', error);
+            }
+
+            // Setup Submit Truth button
+            const submitTruthBtn = document.getElementById('submitTruthBtn');
+            if (submitTruthBtn) {
+                submitTruthBtn.addEventListener('click', () => {
+                    // Check if user is logged in
+                    const token = localStorage.getItem('sessionToken');
+                    if (!token) {
+                        // Try to open login modal if AuthManager is available
+                        if (window.AuthManager && window.AuthManager.openLoginModal) {
+                            window.AuthManager.openLoginModal();
+                        } else if (window.openSoulModal) {
+                            window.openSoulModal('login');
+                        } else {
+                            alert('Please log in to submit truth');
+                        }
+                        return;
+                    }
+                    
+                    window.SubmissionModal.open();
+                });
+            }
+        });
+    </script>
+
+    <script src="../news-hotfix.js"></script>
+</body>
+</html> 

@@ -1,0 +1,286 @@
+/* Active Users Sidebar */
+.active-users {
+    position: fixed;
+    top: 0;
+    right: -340px; /* Increased from -320px to ensure it's fully hidden */
+    width: 320px;
+    height: 100vh;
+    background: var(--secondary, #1a1a33);
+    border-left: 3px solid var(--accent, #ff5e78);
+    z-index: 9999 !important;
+    padding: var(--header-height, 70px) 1rem 1rem 1rem;
+    transition: right 0.3s ease;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    /* Ensure this creates its own stacking context */
+    transform: translateZ(0);
+    will-change: transform;
+    /* Ensure sidebar stays off viewport completely */
+    max-width: 320px;
+}
+
+/* Force sidebar to be fully hidden by default - prevent any partial visibility */
+.active-users:not(.active) {
+    right: -340px !important; /* Force completely off-screen */
+    visibility: hidden; /* Additional safety */
+}
+
+/* ---------------------------------------------------------
+   Sidebar Activation Override
+   ---------------------------------------------------------
+   On some pages (e.g. profile/index.html) local CSS may have
+   broader selectors that unintentionally override the
+   .active-users.active rule coming from this file.  When that
+   happens the sidebar's computed "right" value stays at the
+   default -320px, so it remains off-screen even though the
+   JavaScript added the .active class successfully.
+
+   We fix that generically here by re-declaring the rule with
+   !important and a short explanation so future devs know why
+   the extra specificity is required.  This guarantees the
+   sidebar slides in whenever it has the .active class.
+--------------------------------------------------------- */
+aside#activeUsers.active-users.active {
+    right: 0 !important; /* Force visible – wins against page-specific overrides */
+    z-index: 99999 !important; /* Ensure maximum z-index when active */
+    visibility: visible !important; /* Ensure visibility when active */
+}
+
+/* Force sidebar to close - overrides all other rules including .active */
+aside#activeUsers.active-users.force-close {
+    right: -340px !important; /* Force hidden – wins against all other overrides */
+    transition: right 0.3s ease !important;
+    visibility: hidden !important;
+}
+
+/* On very small screens, reduce sidebar width to prevent overflow */
+@media (max-width: 480px) {
+    .active-users {
+        width: 280px;
+        right: -300px; /* Adjusted for smaller width */
+    }
+    
+    .active-users:not(.active) {
+        right: -300px !important;
+    }
+    
+    aside#activeUsers.active-users.force-close {
+        right: -300px !important;
+    }
+}
+
+/* Ensure body overflow is handled when sidebar is open */
+body.sidebar-open {
+    overflow-x: hidden !important;
+}
+
+.active-users-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 94, 120, 0.2);
+}
+
+.active-users-header h3 {
+    color: var(--accent, #ff5e78);
+    font-size: 1.2rem;
+}
+
+.active-users .close-sidebar {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-size: 1.2rem;
+    padding: 0.5rem 0.8rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.active-users .close-sidebar:hover {
+    background: var(--accent);
+    color: var(--primary);
+    transform: rotate(90deg);
+}
+
+#userList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.user-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-radius: var(--border-radius, 12px);
+    background: rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+.user-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.user-info {
+    flex: 1;
+    min-width: 0; /* Allow text truncation */
+}
+
+.user-info h4 {
+    font-size: 0.9rem;
+    margin: 0;
+    font-weight: 600;
+    color: var(--text, #f0e6ff);
+}
+
+.status-message {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    color: var(--text, #f0e6ff);
+    font-style: italic;
+    display: block;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.status {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.status.online {
+    color: var(--success, #5cb85c);
+}
+
+.status.away {
+    color: orange;
+}
+
+.message-btn {
+    background: none;
+    border: none;
+    color: var(--accent, #ff5e78);
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.message-btn:hover {
+    transform: scale(1.1);
+}
+
+.show-users-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: var(--gradient-accent);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 0 10px rgba(255, 94, 120, 0.3);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-decoration: none;
+    z-index: 9000; /* Ensure it's above most elements but below the sidebar */
+}
+
+.show-users-btn i {
+    transition: transform 0.3s ease-out;
+}
+
+.show-users-btn:hover {
+    transform: translateY(-5px) scale(1.08) rotate(-5deg);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25), 0 0 15px rgba(255, 94, 120, 0.5);
+}
+
+.show-users-btn:hover i {
+    transform: scale(1.1) rotate(10deg);
+}
+
+.show-users-btn:active {
+    transform: translateY(-2px) scale(1.02) rotate(0deg);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2), 0 0 5px rgba(255, 94, 120, 0.2);
+}
+
+/* Active Users Sidebar Overlay */
+.active-users-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Same as user sidebar overlay */
+    z-index: 9998; /* Between content and sidebar */
+    opacity: 0;
+    visibility: hidden; /* Add visibility to ensure it's truly hidden */
+    pointer-events: none !important; /* Force no pointer events when hidden */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    display: none; /* Default to hidden */
+}
+
+.active-users-overlay.active {
+    opacity: 1 !important; /* Force visible – wins against page-specific overrides */
+    visibility: visible !important; /* Ensure visibility */
+    pointer-events: auto !important; /* Allow interactions when active */
+    display: block !important; /* Show when active */
+}
+
+/* Hide active users overlay when any modal is open */
+body:has(.modal.active) .active-users-overlay {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    z-index: -1 !important; /* Move behind everything when modal is open */
+}
+
+/* Hide active users sidebar when any modal is open */
+body:has(.modal.active) .active-users {
+    right: -320px !important;
+    transition: right 0.3s ease !important;
+}
+
+/* Message Modal styles (original lines 170-267) were here. */
+/* They have been moved to components/shared/styles.css */
+
+.message {
+    padding: 0.5rem 0.8rem;
+    border-radius: var(--border-radius, 12px);
+    max-width: 80%;
+    position: relative;
+}
+
+.message.sent {
+    align-self: flex-end;
+    background: var(--accent, #ff5e78);
+    color: white;
+}
+
+.message.received {
+    align-self: flex-start;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.message-time {
+    font-size: 0.7rem;
+    opacity: 0.7;
+    display: block;
+    margin-top: 0.3rem;
+    text-align: right;
+}
+
+/* Theme toggle styling moved to floating-buttons in features.css */
+/* Removed conflicting positioning styles */ 

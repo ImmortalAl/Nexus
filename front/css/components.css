@@ -1,0 +1,496 @@
+/* MLNF Components CSS - Interactive components loaded after layout */
+/* Version: 1.0.0 - Performance optimized split */
+
+/* ==========================================
+   BUTTON STYLES MOVED TO /css/components/buttons.css
+   ========================================== */
+
+/* ==========================================
+   FEATURE CARD STYLING
+   ========================================== */
+
+/* Feature Card Styling */
+.feature-card {
+    background: var(--gradient-secondary);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    border: 1px solid rgba(var(--accent-rgb, 255, 94, 120), 0.25);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: none;
+    height: 100%; /* Ensure full height */
+}
+
+.feature-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex-grow: 1; /* Allow content to grow and fill available space */
+    width: 100%;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    border-color: var(--accent);
+    box-shadow: 0 20px 30px rgba(var(--accent-rgb, 255, 94, 120), 0.2);
+}
+
+.feature-card i {
+    font-size: 2.5rem;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover i {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+.feature-card h3 {
+    font-family: 'Lato', sans-serif;
+    font-size: 1.6rem;
+    background: var(--gradient-accent);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+}
+
+.feature-card p {
+    font-size: 1rem;
+    line-height: 1.6;
+    opacity: 0.9;
+    margin-bottom: 2rem;
+    flex-grow: 1; /* Allow text to take available space */
+    display: flex;
+    align-items: center; /* Center text vertically in its container */
+}
+
+body.light-theme .feature-card p {
+    opacity: 1;
+}
+
+.feature-card .btn-primary {
+    margin-top: auto;
+}
+
+/* ==========================================
+   IMMORTAL AVATAR SYSTEM - Site-wide Component
+   ========================================== */
+
+/* Avatar base component */
+.mlnf-avatar {
+    display: inline-block;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    position: relative;
+    background: var(--gradient-accent);
+    border: 2px solid var(--accent);
+    transition: var(--transition);
+    box-shadow: 
+        0 0 15px rgba(var(--accent-rgb, 255, 94, 120), 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Avatar hover effects */
+.mlnf-avatar:hover {
+    transform: scale(1.05);
+    box-shadow: 
+        0 0 25px rgba(var(--accent-rgb, 255, 94, 120), 0.5),
+        0 0 40px rgba(var(--accent-rgb, 255, 94, 120), 0.2),
+        inset 0 2px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Avatar size variants */
+.mlnf-avatar--xs { width: 20px; height: 20px; border-width: 1px; }
+.mlnf-avatar--sm { width: 28px; height: 28px; border-width: 1.5px; }
+.mlnf-avatar--md { width: 36px; height: 36px; border-width: 2px; }
+.mlnf-avatar--lg { width: 48px; height: 48px; border-width: 2.5px; }
+.mlnf-avatar--xl { width: 64px; height: 64px; border-width: 3px; }
+.mlnf-avatar--xxl { width: 80px; height: 80px; border-width: 3px; }
+
+/* Avatar with mystical glow effect */
+.mlnf-avatar--mystical {
+    position: relative;
+    animation: mysticalPulse 3s ease-in-out infinite;
+}
+
+.mlnf-avatar--mystical::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border-radius: 50%;
+    background: conic-gradient(
+        from 0deg,
+        var(--accent),
+        rgba(255, 202, 40, 0.8),
+        var(--accent),
+        rgba(255, 94, 120, 0.6),
+        var(--accent)
+    );
+    z-index: -1;
+    opacity: 0.6;
+    animation: rotate 4s linear infinite;
+}
+
+@keyframes mysticalPulse {
+    0%, 100% { 
+        box-shadow: 
+            0 0 15px rgba(var(--accent-rgb, 255, 94, 120), 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    50% { 
+        box-shadow: 
+            0 0 30px rgba(var(--accent-rgb, 255, 94, 120), 0.6),
+            0 0 50px rgba(var(--accent-rgb, 255, 94, 120), 0.3),
+            inset 0 2px 0 rgba(255, 255, 255, 0.2);
+    }
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Avatar status indicators - Global online dot system */
+.online-dot {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--secondary, #1a1a33);
+}
+
+.online-dot.online {
+    background: radial-gradient(circle at center, #5cb85c, #3d8b3d);
+    box-shadow: 0 0 10px rgba(92, 184, 92, 0.8), 
+                0 0 20px rgba(92, 184, 92, 0.6),
+                0 0 30px rgba(92, 184, 92, 0.4),
+                inset 0 0 8px rgba(255, 255, 255, 0.3);
+    animation: immortalPulse 2s ease-in-out infinite;
+}
+
+@keyframes immortalPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 10px rgba(92, 184, 92, 0.8), 
+                    0 0 20px rgba(92, 184, 92, 0.6),
+                    0 0 30px rgba(92, 184, 92, 0.4),
+                    inset 0 0 8px rgba(255, 255, 255, 0.3);
+    }
+    50% {
+        transform: scale(1.2);
+        box-shadow: 0 0 15px rgba(92, 184, 92, 1), 
+                    0 0 30px rgba(92, 184, 92, 0.8),
+                    0 0 45px rgba(92, 184, 92, 0.6),
+                    inset 0 0 12px rgba(255, 255, 255, 0.5);
+    }
+}
+
+.online-dot.offline {
+    background: radial-gradient(circle at center, #6c757d, #495057);
+    box-shadow: 0 0 5px rgba(108, 117, 125, 0.5),
+                inset 0 0 4px rgba(0, 0, 0, 0.3);
+    opacity: 0.7;
+}
+
+/* User display component with avatar */
+.mlnf-user-display {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: var(--transition);
+    background: rgba(var(--accent-rgb, 255, 94, 120), 0.05);
+    border: 1px solid rgba(var(--accent-rgb, 255, 94, 120), 0.15);
+}
+
+.mlnf-user-display:hover {
+    background: rgba(var(--accent-rgb, 255, 94, 120), 0.1);
+    border-color: rgba(var(--accent-rgb, 255, 94, 120), 0.3);
+    transform: translateY(-1px);
+}
+
+/* User display size variants */
+.mlnf-user-display--xs { padding: 0.25rem; gap: 0.5rem; }
+.mlnf-user-display--sm { padding: 0.375rem; gap: 0.5rem; }
+.mlnf-user-display--md { padding: 0.5rem; gap: 0.75rem; }
+.mlnf-user-display--lg { padding: 0.75rem; gap: 1rem; }
+.mlnf-user-display--xl { padding: 1rem; gap: 1.25rem; }
+
+/* User info section */
+.mlnf-user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    min-width: 0; /* Allows text truncation */
+}
+
+.mlnf-username {
+    font-weight: 600;
+    color: var(--accent);
+    font-size: 0.95rem;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.mlnf-user-title {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    font-style: italic;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.mlnf-user-status {
+    font-size: 0.7rem;
+    opacity: 0.6;
+    color: var(--text);
+}
+
+/* Username size variants - ONLY font-size to avoid overriding font-family */
+.mlnf-user-display--xs .mlnf-username { font-size: 0.8rem; }
+.mlnf-user-display--sm .mlnf-username { font-size: 0.85rem; }
+.mlnf-user-display--md .mlnf-username { font-size: 0.95rem; }
+.mlnf-user-display--lg .mlnf-username { font-size: 1.1rem; }
+.mlnf-user-display--xl .mlnf-username { font-size: 1.25rem; }
+
+/* Ensure username style classes take precedence over size variants */
+.mlnf-username--immortal {
+    font-family: 'Cinzel', serif !important;
+    background: var(--gradient-accent) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    color: transparent !important;
+    font-weight: 600 !important;
+}
+
+.mlnf-username--mystical {
+    font-family: 'Caesar Dressing', serif !important;
+    color: var(--accent) !important;
+    text-shadow: 0 0 10px rgba(var(--accent-rgb, 255, 94, 120), 0.5) !important;
+    font-weight: 400 !important;
+    letter-spacing: 0.03em !important;
+}
+
+.mlnf-username--eternal {
+    font-family: 'Metal Mania', serif !important;
+    color: var(--accent) !important;
+    letter-spacing: 0.05em !important;
+}
+
+.mlnf-user-display--xs .mlnf-user-title { font-size: 0.65rem; }
+.mlnf-user-display--sm .mlnf-user-title { font-size: 0.7rem; }
+.mlnf-user-display--md .mlnf-user-title { font-size: 0.75rem; }
+.mlnf-user-display--lg .mlnf-user-title { font-size: 0.85rem; }
+.mlnf-user-display--xl .mlnf-user-title { font-size: 0.95rem; }
+
+/* Compact user display (horizontal layout) */
+.mlnf-user-display--compact {
+    background: transparent;
+    border: none;
+    padding: 0.25rem;
+    gap: 0.5rem;
+}
+
+.mlnf-user-display--compact:hover {
+    background: rgba(var(--accent-rgb, 255, 94, 120), 0.08);
+}
+
+/* Light theme adjustments */
+body.light-theme .mlnf-user-display {
+    background: rgba(214, 45, 77, 0.05);
+    border-color: rgba(214, 45, 77, 0.15);
+}
+
+body.light-theme .mlnf-user-display:hover {
+    background: rgba(214, 45, 77, 0.1);
+    border-color: rgba(214, 45, 77, 0.25);
+}
+
+/* Banned user styles */
+.mlnf-user-display--banned {
+    opacity: 0.6;
+    background: rgba(220, 38, 127, 0.08);
+    border-color: rgba(220, 38, 127, 0.3);
+    position: relative;
+}
+
+.mlnf-user-display--banned::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(220, 38, 127, 0.05) 10px,
+        rgba(220, 38, 127, 0.05) 20px
+    );
+    pointer-events: none;
+    border-radius: inherit;
+}
+
+.mlnf-user-display--banned .mlnf-username {
+    text-decoration: line-through;
+    opacity: 0.8;
+}
+
+.mlnf-ban-icon {
+    color: #dc267f;
+    margin-left: 0.25rem;
+    font-size: 0.8em;
+}
+
+.mlnf-user-display--banned:hover {
+    background: rgba(220, 38, 127, 0.12);
+    border-color: rgba(220, 38, 127, 0.4);
+    transform: none;
+    cursor: not-allowed;
+}
+
+/* Light theme banned styles */
+body.light-theme .mlnf-user-display--banned {
+    background: rgba(220, 38, 127, 0.1);
+    border-color: rgba(220, 38, 127, 0.4);
+}
+
+body.light-theme .mlnf-user-display--banned:hover {
+    background: rgba(220, 38, 127, 0.15);
+}
+
+body.light-theme .mlnf-avatar {
+    border-color: var(--accent);
+    box-shadow: 
+        0 0 15px rgba(214, 45, 77, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* ==========================================
+   IMMORTAL TYPOGRAPHY SYSTEM
+   ========================================== */
+
+/* Immortal font families for different use cases */
+.font-immortal-heading {
+    font-family: 'Cinzel', serif;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.font-immortal-mystical {
+    font-family: 'Caesar Dressing', serif;
+    letter-spacing: 0.03em;
+}
+
+.font-immortal-gothic {
+    font-family: 'Metal Mania', serif;
+    letter-spacing: 0.05em;
+}
+
+.font-immortal-ancient {
+    font-family: 'Griffy', serif;
+    letter-spacing: 0.02em;
+}
+
+/* Special immortal text effects */
+.text-immortal-glow {
+    color: var(--accent);
+    text-shadow: 
+        0 0 10px rgba(var(--accent-rgb, 255, 94, 120), 0.5),
+        0 0 20px rgba(var(--accent-rgb, 255, 94, 120), 0.3),
+        0 0 30px rgba(var(--accent-rgb, 255, 94, 120), 0.1);
+}
+
+.text-immortal-gradient {
+    background: var(--gradient-accent);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.text-immortal-pulse {
+    animation: immortalTextPulse 2s ease-in-out infinite;
+}
+
+@keyframes immortalTextPulse {
+    0%, 100% { 
+        text-shadow: 0 0 10px rgba(var(--accent-rgb, 255, 94, 120), 0.5);
+        transform: scale(1);
+    }
+    50% { 
+        text-shadow: 
+            0 0 20px rgba(var(--accent-rgb, 255, 94, 120), 0.8),
+            0 0 30px rgba(var(--accent-rgb, 255, 94, 120), 0.4);
+        transform: scale(1.02);
+    }
+}
+
+/* ==========================================
+   THEME TOGGLE
+   ========================================== */
+
+/* Theme Toggle Button */
+.theme-toggle {
+    background: var(--secondary);
+    border: 1px solid var(--accent);
+    padding: 0.8rem;
+    border-radius: 50%;
+    cursor: pointer;
+    color: var(--text);
+    z-index: 250;
+    transition: var(--transition);
+}
+
+.theme-toggle:hover {
+    background: var(--accent);
+    color: var(--primary);
+    transform: scale(1.1);
+}
+
+/* ==========================================
+   RESPONSIVE COMPONENTS
+   ========================================== */
+
+/* Mobile responsive avatar adjustments */
+@media (max-width: 768px) {
+    .mlnf-user-display { gap: 0.5rem; padding: 0.375rem; }
+    .mlnf-avatar--xs { width: 18px; height: 18px; }
+    .mlnf-avatar--sm { width: 24px; height: 24px; }
+    .mlnf-avatar--md { width: 32px; height: 32px; }
+    .mlnf-avatar--lg { width: 40px; height: 40px; }
+    .mlnf-avatar--xl { width: 52px; height: 52px; }
+    .mlnf-avatar--xxl { width: 64px; height: 64px; }
+    
+    .feature-card { padding: 1.5rem; }
+}
+
+@media (max-width: 480px) {
+    .mlnf-avatar--xs { width: 16px; height: 16px; }
+    .mlnf-avatar--sm { width: 20px; height: 20px; }
+    .mlnf-avatar--md { width: 28px; height: 28px; }
+    .mlnf-avatar--lg { width: 36px; height: 36px; }
+    .mlnf-avatar--xl { width: 44px; height: 44px; }
+    .mlnf-avatar--xxl { width: 56px; height: 56px; }
+    
+    .feature-card h3 { font-size: 1.4rem; }
+    
+}

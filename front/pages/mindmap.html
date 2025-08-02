@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Infinite Nexus - Collaborative knowledge mindmap | Manifest Liberation, Naturally Free">
+    <link rel="canonical" href="https://mlnf.net/pages/infinite-nexus">
+    <title>Infinite Nexus - MLNF</title>
+    <link rel="stylesheet" href="../css/base-theme.css?v=1.0">
+    <link rel="stylesheet" href="../css/critical.css?v=5.3">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css?v=10.0">
+    <link rel="stylesheet" href="../components/shared/styles.css?v=10.0">
+    <link rel="stylesheet" href="../css/active-users.css?v=7.0">
+    <link rel="stylesheet" href="../css/mindmap.css">
+    <link rel="stylesheet" href="../css/features.css?v=6.3">
+    <!-- Quill editor styles -->
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="/">
+                <i class="fas fa-infinity"></i>
+                <div class="title-stack">
+                    <span class="full-title">
+                        <span class="title-line-one">Manifest Liberation</span>
+                        <span class="title-line-two">Naturally Free</span>
+                    </span>
+                    <span class="short-title">MLNF</span>
+                </div>
+            </a>
+        </div>
+        <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+        <nav class="main-nav">
+            <ul>
+                <!-- Populated by navigation.js -->
+            </ul>
+        </nav>
+        <div class="header-controls">
+            <div class="user-menu" id="userMenuContainer"></div>
+            <div class="header-auth-buttons" id="headerAuthButtonsContainer" style="display: none;">
+                <!-- Populated by userMenu.js when logged out -->
+            </div>
+        </div>
+        <div class="mobile-overlay" id="mobileOverlay"></div>
+        <nav class="mobile-nav" id="mobileNav">
+            <div class="sidebar-header">
+                <h2>Eternal Navigation</h2>
+                <button class="close-sidebar" id="closeMobileNav" aria-label="Close mobile navigation">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <ul class="mobile-nav-list">
+                <!-- Links will be dynamically populated -->
+            </ul>
+        </nav>
+    </header>
+
+    <aside class="active-users" id="activeUsers" aria-label="Active users panel">
+        <div class="active-users-header">
+            <h3>Eternal Seekers</h3>
+            <button class="close-sidebar" id="closeUsers" aria-label="Close sidebar">×</button>
+        </div>
+        <div id="userList"></div>
+    </aside>
+
+    <div class="floating-buttons">
+        <button class="show-users-btn" id="showUsersBtn" aria-label="Show active users"><i class="fas fa-users"></i></button>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"><i class="fas fa-moon"></i></button>
+    </div>
+
+    <div id="messageModal" class="modal" aria-hidden="true">
+        <div class="message-modal-content" role="dialog" aria-labelledby="messageTitle">
+            <h3 id="messageTitle">Direct Message</h3>
+            <p id="recipientName">To: Username</p>
+            <div class="message-history" id="messageHistory"></div>
+            <div>
+                <input type="text" id="messageInput" placeholder="Inscribe your eternal message..." required>
+                <div class="modal-actions">
+                    <button type="submit" id="sendMessageBtn">Send Whisper</button>
+                    <button type="button" id="closeMessageModal">Close Nexus</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <section class="page-header">
+            <h1>Infinite Nexus</h1>
+            <p>Collaboratively build the eternal knowledge web - A refuge for free thinkers</p>
+        </section>
+        
+        <section class="mindmap-section">
+            <div class="container">
+                <div class="mindmap-container">
+                    <!-- Controls toolbar -->
+                    <div class="mindmap-controls">
+                        <div class="search-container">
+                            <input type="text" id="mindmap-search" placeholder="Search the Infinite Nexus..." />
+                            <button id="search-btn"><i class="fas fa-search"></i></button>
+                        </div>
+                        <button id="add-node-btn"><i class="fas fa-plus"></i> Add Node</button>
+                        <button id="connect-mode-btn"><i class="fas fa-link"></i> Connect</button>
+                        <button id="filter-btn"><i class="fas fa-filter"></i> Filter</button>
+                    </div>
+                    
+                    <!-- Cytoscape canvas -->
+                    <div id="cy">
+                        <div class="mindmap-loading">Loading the Infinite Nexus...</div>
+                    </div>
+                    
+                    <!-- Node details panel -->
+                    <div class="node-details-panel" id="nodeDetailsPanel">
+                        <button class="close" id="closeNodeDetails">×</button>
+                        <h3 id="nodeTitle"></h3>
+                        <div class="content" id="nodeContent"></div>
+                        
+                        <div class="credibility-widget">
+                            <div>
+                                <div class="credibility-label">Credibility</div>
+                                <div class="credibility-score" id="credibilityScore">50</div>
+                            </div>
+                            <div class="vote-buttons">
+                                <button id="upvoteBtn" title="Upvote"><i class="fas fa-arrow-up"></i></button>
+                                <button id="downvoteBtn" title="Downvote"><i class="fas fa-arrow-down"></i></button>
+                            </div>
+                        </div>
+                        
+                        <div class="citations-list">
+                            <h4>References</h4>
+                            <div id="citationsList"></div>
+                            <button id="addCitationBtn" class="add-citation-btn">+ Add Reference</button>
+                        </div>
+                        
+                        <div class="node-actions">
+                            <button id="editNodeBtn" class="edit-node-btn">Edit Node</button>
+                            <button id="deleteNodeBtn" class="delete-node-btn">Delete Node</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Search results overlay -->
+                    <div class="search-results-overlay" id="searchResults"></div>
+                    
+                    <!-- Connection modal -->
+                    <div class="connection-modal" id="connectionModal">
+                        <h4>Define Relationship</h4>
+                        <div class="connection-input">
+                            <input type="text" id="relationshipLabel" placeholder="Enter relationship type..." />
+                            <div class="label-suggestions" id="labelSuggestions"></div>
+                        </div>
+                        <div class="connection-actions">
+                            <button id="confirmConnection">Connect</button>
+                            <button id="cancelConnection">Cancel</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Mobile tilt indicator -->
+                    <div class="tilt-indicator" id="tiltIndicator" style="display: none;">
+                        <span>Tilt Navigation</span>
+                        <div class="tilt-toggle" id="tiltToggle"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Node Editor Modal -->
+    <div class="node-editor-modal" id="nodeEditorModal">
+        <div class="node-editor-content">
+            <span class="close" id="closeNodeEditor">×</span>
+            <h2 id="editorTitle">Create Node</h2>
+            <form class="node-editor-form" id="nodeEditorForm">
+                <div>
+                    <label for="nodeTitleInput">Title</label>
+                    <input type="text" id="nodeTitleInput" required maxlength="200" />
+                </div>
+                
+                <div>
+                    <label for="node-content-editor">Content</label>
+                    <div id="node-content-editor"></div>
+                </div>
+                
+                <div>
+                    <label for="nodeTagsInput">Tags (comma separated)</label>
+                    <input type="text" id="nodeTagsInput" placeholder="science, philosophy, technology" />
+                </div>
+                
+                <button type="submit">Save Node</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Citation Modal -->
+    <div class="modal" id="citationModal" style="display: none;" aria-hidden="true">
+        <div class="modal-content" role="dialog" aria-labelledby="citationModalTitle">
+            <span class="close" id="closeCitationModal" aria-label="Close modal">×</span>
+            <h3 id="citationModalTitle">Add Reference</h3>
+            <form id="citationForm">
+                <div>
+                    <label for="citationUrl">URL</label>
+                    <input type="url" id="citationUrl" required />
+                </div>
+                <div>
+                    <label for="citationDescription">Description</label>
+                    <input type="text" id="citationDescription" maxlength="500" />
+                </div>
+                <button type="submit">Add Citation</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Relationship Modal -->
+    <div class="modal" id="editRelationshipModal" style="display: none;" aria-hidden="true">
+        <div class="modal-content" role="dialog" aria-labelledby="editRelationshipTitle">
+            <span class="close" id="closeEditRelationship" aria-label="Close modal">×</span>
+            <h3 id="editRelationshipTitle">Edit Relationship</h3>
+            <form id="editRelationshipForm">
+                <div>
+                    <label for="editRelationshipLabel">Relationship Type</label>
+                    <div class="relationship-input-container">
+                        <input type="text" id="editRelationshipLabel" placeholder="Enter relationship type..." required />
+                        <div class="relationship-suggestions" id="editRelationshipSuggestions"></div>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit">Update Relationship</button>
+                    <button type="button" id="deleteRelationshipBtn" class="delete-relationship-btn">Delete Relationship</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 Manifest Liberation, Naturally Free | Embracing Infinity</p>
+    </footer>
+    
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.26.0/cytoscape.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+    
+    <!-- Shared MLNF Scripts -->
+    <script src="../components/shared/config.js?v=1.4"></script>
+    <script src="../components/shared/mlnf-core.js?v=20240701"></script>
+    <script src="../components/shared/authManager.js?v=20240701"></script>
+    <script src="../components/shared/apiClient.js?v=20240701"></script>
+    <script src="../components/shared/navigation.js?v=1.7"></script>
+    <script src="../components/shared/authModal.js?v=20240701"></script>
+    <script src="../components/shared/userMenu.js?v=1.8"></script>
+    <script src="../components/shared/activeUsers.js?v=1.6"></script>
+    <script src="../components/shared/messageModal.js?v=20240701"></script>
+    <script src="../components/shared/websocket.js?v=20240701"></script>
+
+    <script src="../js/mlnf-avatar-system.js?v=2.1"></script>
+    <script src="../js/main.js?v=2.3"></script>
+    
+    <!-- Mindmap specific scripts -->
+    <script src="../js/mindmap/nexusEngine.js?v=20250120a"></script>
+    <script src="../js/mindmap/nodeEditor.js?v=20240701g"></script>
+    <script src="../js/mindmap/search.js?v=20240701j"></script>
+    <script src="../js/mindmap/tiltNavigation.js?v=20240701g"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // The mindmap should be accessible to all users, logged in or not
+            // Authentication is only required for specific actions (editing, creating nodes)
+            // Let the shared components handle authentication state
+            console.log('Infinite Nexus initialized - ready for eternal seekers');
+        });
+    </script>
+</body>
+</html> 
