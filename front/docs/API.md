@@ -1,8 +1,8 @@
-# MLNF API Documentation
+# Immortal Nexus API Documentation
 
 ## Overview
 
-The MLNF (Manifest Liberation, Naturally Free) API provides the backend services for the community platform. This document outlines all available endpoints, authentication mechanisms, data models, and WebSocket events.
+The Immortal Nexus API provides the backend services for the community platform. This document outlines all available endpoints, authentication mechanisms, data models, and WebSocket events.
 
 ## Base Configuration
 
@@ -22,7 +22,7 @@ const API_BASE_URL = isLocalDevelopment ? 'http://localhost:3001/api' : 'https:/
 
 ### Authentication Flow
 
-The MLNF platform uses JWT (JSON Web Token) based authentication with session tokens stored in localStorage.
+The Immortal Nexus platform uses JWT (JSON Web Token) based authentication with session tokens stored in localStorage.
 
 #### Token Storage
 ```javascript
@@ -1169,7 +1169,7 @@ POST /api/highlights/admin-feature
 
 ### WebSocket Connection
 
-The MLNF platform uses WebSocket for real-time features. The WebSocket endpoint automatically converts the API base URL:
+The Immortal Nexus platform uses WebSocket for real-time features. The WebSocket endpoint automatically converts the API base URL:
 
 ```javascript
 // Convert HTTP URL to WebSocket URL

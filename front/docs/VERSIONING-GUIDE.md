@@ -1,10 +1,10 @@
-# MLNF Versioning Guide - THE GOLDEN RULE
+# Immortal Nexus Versioning Guide - THE GOLDEN RULE
 
 ## 🚨 CRITICAL VERSIONING RULE 🚨
 
 > **MANDATORY: ALWAYS bump version numbers when modifying files with ?v= parameters**
 
-**This is the #1 cause of "changes don't appear" issues in MLNF development.**
+**This is the #1 cause of "changes don't appear" issues in Immortal Nexus development.**
 
 ## 📋 Files That REQUIRE Version Bumps
 
@@ -44,7 +44,7 @@
 - ✅ **Remove Features**: Like removing anonymous messaging
 - ✅ **Refactor Code**: Even if functionality appears unchanged
 
-### Examples from MLNF Development:
+### Examples from Immortal Nexus Development:
 ```bash
 # Mobile modal optimization → styles.css v2.3 to v5.0
 # Anonymous messaging removal → main.js v1.3 to v2.0
@@ -81,7 +81,7 @@ find /home/immortalal/sites/mlnf/front -name "*.html" -exec sed -i 's/messageMod
 - **Minor Changes**: Increment decimal (`v=2.0` → `v=2.1`)
 - **Emergency Fixes**: Add patch (`v=2.1` → `v=2.1.1`)
 
-### Current MLNF Versions (as of 2025-06-30):
+### Current Immortal Nexus Versions (as of 2025-06-30):
 ```
 CSS:
 - css/styles.css → v=2.3
@@ -104,7 +104,7 @@ JavaScript:
 - **Lost time debugging**: Hours spent troubleshooting cache issues
 - **User frustration**: Broken or inconsistent site behavior
 
-### Real Examples from MLNF:
+### Real Examples from Immortal Nexus:
 1. **Mobile modal fixes**: Didn't work until CSS version bumped
 2. **Anonymous messaging removal**: Invisible until JS version bumped
 3. **Authentication changes**: Cached until main.js version updated
@@ -159,7 +159,7 @@ git commit -m "emergency: force cache refresh with version bump"
 git push origin main
 ```
 
-## 📚 Learning from MLNF History
+## 📚 Learning from Immortal Nexus History
 
 ### Major Versioning Milestones:
 - **CSS v5.0**: Mobile modal optimization breakthrough

@@ -1,4 +1,4 @@
-# MLNF Development Roadmap
+# Immortal Nexus Development Roadmap
 
 ## Site Audit Summary
 Based on comprehensive codebase analysis:

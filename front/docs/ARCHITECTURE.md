@@ -1,4 +1,4 @@
-# MLNF Technical Architecture
+# Immortal Nexus Technical Architecture
 
 ## Table of Contents
 
