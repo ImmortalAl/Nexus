@@ -3,7 +3,8 @@
 
 # IMPORTANT: More specific rules must come before general rules
 # Vanity URL for individual soul profiles - route to dynamic template
-/souls/:username    /souls/profile.html?user=:username   200
+/souls/:username.html    /souls/profile.html?user=:username   200
+/souls/:username         /souls/profile.html?user=:username   200
 
 # Exact match for /souls (directory listing)
 /souls       /souls/index.html           200
