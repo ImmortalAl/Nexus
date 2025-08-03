@@ -34,25 +34,65 @@ const allowedOrigins = [
     'http://localhost:8080',
     'http://127.0.0.1:3000',
     'http://127.0.0.1:8080',
-    'https://immortal.nexus/' // Add with slash if needed
+    'https://immortal.nexus/',
+    'https://immortal.nexus',
+    'https://www.immortal.nexus/',
+    'https://www.immortal.nexus'
 ];
 
 const corsOptions = {
     origin: function (origin, callback) {
-        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) {
+            return callback(null, true);
         }
+        
+        // Check if origin is in allowed list
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            return callback(null, true);
+        }
+        
+        // For production, be more permissive with immortal.nexus domains
+        if (origin.includes('immortal.nexus')) {
+            return callback(null, true);
+        }
+        
+        console.log(`CORS blocked origin: ${origin}`);
+        return callback(new Error('Not allowed by CORS'));
     },
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
     optionsSuccessStatus: 204,
-    allowedHeaders: ['Content-Type', 'Authorization', 'Cache-Control', 'Pragma', 'Expires']
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cache-Control', 'Pragma', 'Expires', 'X-Requested-With'],
+    preflightContinue: false
 };
 
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
+
+// Additional CORS headers middleware for extra safety
+app.use((req, res, next) => {
+    const origin = req.headers.origin;
+    
+    // Set CORS headers for all responses
+    if (origin && (origin.includes('immortal.nexus') || allowedOrigins.includes(origin))) {
+        res.header('Access-Control-Allow-Origin', origin);
+    } else if (!origin) {
+        res.header('Access-Control-Allow-Origin', '*');
+    }
+    
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Cache-Control, Pragma, Expires, X-Requested-With');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    
+    // Handle preflight requests
+    if (req.method === 'OPTIONS') {
+        res.status(200).end();
+        return;
+    }
+    
+    next();
+});
 
 // Logging middleware (place early to see all requests)
 app.use((req, res, next) => {

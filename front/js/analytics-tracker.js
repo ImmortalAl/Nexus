@@ -1,3 +1,15 @@
+// Disable analytics completely for now to prevent CORS issues
+if (true) {
+    console.log('Analytics disabled to prevent CORS issues');
+    return;
+}
+
+// Disable analytics in local development to stop loop
+if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    console.log('Analytics disabled locally');
+    return;
+}
+
 // MLNF Analytics Tracker
 // Comprehensive visitor and engagement tracking system
 
