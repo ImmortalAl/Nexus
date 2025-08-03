@@ -249,14 +249,14 @@ class MLNFWebSocket {
 }
 
 // Create global WebSocket instance
-window.MLNF = window.MLNF || {};
-window.MLNF.websocket = new MLNFWebSocket();
+window.NEXUS = window.NEXUS || {};
+window.NEXUS.websocket = new MLNFWebSocket();
 
 // Auto-connect when user is authenticated
 document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('sessionToken');
     if (token) {
-        window.MLNF.websocket.connect();
+        window.NEXUS.websocket.connect();
     }
 });
 

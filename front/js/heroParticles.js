@@ -44,8 +44,8 @@ function initHeroParticles(creationInterval = 200) {
 }
 
 // Expose to global MLNF namespace if it exists, otherwise just run on DOMContentLoaded
-if (window.MLNF) {
-    window.MLNF.initHeroParticles = initHeroParticles;
+if (window.NEXUS) {
+    window.NEXUS.initHeroParticles = initHeroParticles;
 } else {
     document.addEventListener('DOMContentLoaded', () => {
         initHeroParticles(); // Default interval of 200ms

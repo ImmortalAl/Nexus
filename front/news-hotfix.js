@@ -44,13 +44,13 @@
     
     // 2. Wait for avatar system and patch if needed
     const patchAvatarSystem = () => {
-        if (window.MLNFAvatars) {
+        if (window.NEXUSAvatars) {
             
             // Store original method
-            const originalCreateUserDisplay = window.MLNFAvatars.createUserDisplay;
+            const originalCreateUserDisplay = window.NEXUSAvatars.createUserDisplay;
             
             // Override with error handling
-            window.MLNFAvatars.createUserDisplay = function(options) {
+            window.NEXUSAvatars.createUserDisplay = function(options) {
                 try {
                     // Ensure options is an object
                     if (typeof options !== 'object') {

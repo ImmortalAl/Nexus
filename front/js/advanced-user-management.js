@@ -409,8 +409,8 @@ class AdvancedUserManager {
 
     async showNotification(message, type = 'info') {
         // Integration with notification system
-        if (window.MLNF && window.MLNF.showNotification) {
-            window.MLNF.showNotification(message, type);
+        if (window.NEXUS && window.NEXUS.showNotification) {
+            window.NEXUS.showNotification(message, type);
         } else {
         }
     }
@@ -457,5 +457,5 @@ class AdvancedUserManager {
 }
 
 // Initialize global advanced user manager
-window.MLNF = window.MLNF || {};
-window.MLNF.advancedUserManager = new AdvancedUserManager();
+window.NEXUS = window.NEXUS || {};
+window.NEXUS.advancedUserManager = new AdvancedUserManager();

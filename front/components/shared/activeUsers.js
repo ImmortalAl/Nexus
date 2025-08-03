@@ -202,13 +202,13 @@ async function populateActiveUsersList() {
                 const statusMessage = user.status && user.status.trim() !== '' ? user.status : 'Wandering the eternal realms...';
                 
                 
-                // Create unified user display using MLNF Avatar System
-                if (!window.MLNFAvatars) {
-                    console.warn('[activeUsers.js] MLNFAvatars not available yet');
+                // Create unified user display using Nexus Avatar System
+                if (!window.NEXUSAvatars) {
+                    console.warn('[activeUsers.js] NexusAvatars not available yet');
                     return;
                 }
                 
-                const userDisplay = window.MLNFAvatars.createUserDisplay({
+                const userDisplay = window.NEXUSAvatars.createUserDisplay({
                     username: username,
                     title: null, // Don't show title to avoid duplicate names
                     status: statusMessage,
@@ -250,8 +250,8 @@ async function populateActiveUsersList() {
                 event.preventDefault(); 
                 const username = event.currentTarget.dataset.username;
                 
-                if (window.MLNF && typeof window.MLNF.openMessageModal === 'function') {
-                    window.MLNF.openMessageModal(username);
+                if (window.NEXUS && typeof window.NEXUS.openMessageModal === 'function') {
+                    window.NEXUS.openMessageModal(username);
                 } else {
                     console.error(`[activeUsers.js] MLNF.openMessageModal function not found.`);
                 }
@@ -307,8 +307,8 @@ function initActiveUsers() {
 }
 
 // Expose the init function
-window.MLNF = window.MLNF || {};
-window.MLNF.initActiveUsers = initActiveUsers;
+window.NEXUS = window.NEXUS || {};
+window.NEXUS.initActiveUsers = initActiveUsers;
 
 // Auto-initialize when DOM is ready
 if (document.readyState === 'loading') {

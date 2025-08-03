@@ -33,8 +33,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (heroSignupButton) {
             heroSignupButton.addEventListener('click', function(e) {
                 e.preventDefault();
-                if (window.MLNF && window.MLNF.openSoulModal) {
-                    window.MLNF.openSoulModal('register');
+                if (window.NEXUS && window.NEXUS.openSoulModal) {
+                    window.NEXUS.openSoulModal('register');
                 }
             });
         }
@@ -42,8 +42,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (heroLoginButton) {
             heroLoginButton.addEventListener('click', function(e) {
                 e.preventDefault();
-                if (window.MLNF && window.MLNF.openSoulModal) {
-                    window.MLNF.openSoulModal('login');
+                if (window.NEXUS && window.NEXUS.openSoulModal) {
+                    window.NEXUS.openSoulModal('login');
                 }
             });
         }

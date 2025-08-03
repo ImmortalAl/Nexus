@@ -474,7 +474,7 @@
         });
 
         // Message Modal Listeners - Only set up if messageModal.js component is not available
-        if (!window.MLNF || !window.MLNF.initMessageModal) {
+        if (!window.NEXUS || !window.NEXUS.initMessageModal) {
             const messageModal = document.getElementById('messageModal');
             const sendMessageBtn = document.getElementById('sendMessageBtn');
             const closeMessageModalBtn = document.getElementById('closeMessageModal');

@@ -150,13 +150,13 @@ const CommentsSystem = {
             <div class="comment-item" data-comment-id="${comment._id}">
                 <div class="comment-header">
                     <div class="comment-author">
-                        <div class="mlnf-user-display mlnf-user-display--sm">
-                            <div class="mlnf-avatar mlnf-avatar--sm">
+                        <div class="nexus-user-display nexus-user-display--sm">
+                            <div class="nexus-avatar nexus-avatar--sm">
                                 <img src="${comment.author?.avatar || '/assets/images/default.jpg'}" 
                                      alt="${comment.author?.displayName || comment.author?.username || 'Unknown'}" />
                             </div>
-                            <div class="mlnf-user-info">
-                                <span class="mlnf-username">${comment.author?.displayName || comment.author?.username || 'Unknown'}</span>
+                            <div class="nexus-user-info">
+                                <span class="nexus-username">${comment.author?.displayName || comment.author?.username || 'Unknown'}</span>
                             </div>
                         </div>
                     </div>

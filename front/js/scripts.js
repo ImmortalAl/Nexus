@@ -242,13 +242,13 @@ window.openMessageModal = async function(username) {
 
 
     // Check if messageModal.js component is available and properly initialized
-    if (window.MLNF && window.MLNF.openMessageModal && window.messageModalInitialized) {
+    if (window.NEXUS && window.NEXUS.openMessageModal && window.messageModalInitialized) {
         // Use the proper messageModal.js component
-        return window.MLNF.openMessageModal(username);
+        return window.NEXUS.openMessageModal(username);
     }
 
     // If component exists but isn't initialized yet, try to initialize it
-    if (window.MLNF && window.MLNF.initMessageModal && !window.messageModalInitialized) {
+    if (window.NEXUS && window.NEXUS.initMessageModal && !window.messageModalInitialized) {
         
         // Check if elements exist
         const requiredElements = ['messageModal', 'recipientName', 'messageInput', 'messageHistory', 'sendMessageBtn', 'closeMessageModal'];
@@ -257,9 +257,9 @@ window.openMessageModal = async function(username) {
         if (missingElements.length > 0) {
             console.error('Cannot initialize messageModal, missing elements:', missingElements);
         } else {
-            window.MLNF.initMessageModal();
+            window.NEXUS.initMessageModal();
             window.messageModalInitialized = true;
-            return window.MLNF.openMessageModal(username);
+            return window.NEXUS.openMessageModal(username);
         }
     }
 
@@ -566,7 +566,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.openSoulModal = openSoulModal;
 
     // Initialize messageModal component if available
-    if (window.MLNF && window.MLNF.initMessageModal && !window.messageModalInitialized) {
+    if (window.NEXUS && window.NEXUS.initMessageModal && !window.messageModalInitialized) {
         
         // Add a small delay to ensure DOM elements are ready
         setTimeout(() => {
@@ -579,10 +579,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
-            window.MLNF.initMessageModal();
+            window.NEXUS.initMessageModal();
             window.messageModalInitialized = true;
         }, 100);
-    } else if (!window.MLNF || !window.MLNF.initMessageModal) {
+    } else if (!window.NEXUS || !window.NEXUS.initMessageModal) {
     } else if (window.messageModalInitialized) {
     }
 
@@ -602,7 +602,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // MESSAGE MODAL CLOSE LISTENERS - Only attach if messageModal.js component is not available
     
     // Only attach fallback listeners if the proper messageModal component is not available
-    if (!window.MLNF || !window.MLNF.initMessageModal) {
+    if (!window.NEXUS || !window.NEXUS.initMessageModal) {
         if (closeMessageModalBtn && messageModal) {
             closeMessageModalBtn.addEventListener('click', () => {
                 messageModal.classList.remove('active');
@@ -619,7 +619,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // SEND MESSAGE BUTTON LISTENER - Only attach if messageModal.js component is not available
     
     // Only attach fallback listeners if the proper messageModal component is not available  
-    if (!window.MLNF || !window.MLNF.initMessageModal) {
+    if (!window.NEXUS || !window.NEXUS.initMessageModal) {
         if (sendMessageBtn && messageInput) {
             sendMessageBtn.addEventListener('click', () => {
                 if(messageInput) messageInput.value = ''; 

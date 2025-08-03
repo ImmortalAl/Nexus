@@ -1,7 +1,7 @@
 // front/components/shared/messageModal.js - Standardized Module Pattern
 
 (function() {
-    window.MLNF = window.MLNF || {};
+    window.NEXUS = window.NEXUS || {};
 
 let messageModal, recipientNameElement, messageInputElement, messageHistoryElement, sendMessageBtnElement, closeMessageModalBtnElement;
     let currentBackdropListener = null;
@@ -145,8 +145,8 @@ function initMessageModal() {
     // Removed scroll event listeners - they were contributing to scrollbar issues
 
     // Set up WebSocket message listeners to handle incoming messages properly
-    if (window.MLNF && window.MLNF.websocket) {
-        window.MLNF.websocket.on('newMessage', handleIncomingMessage);
+    if (window.NEXUS && window.NEXUS.websocket) {
+        window.NEXUS.websocket.on('newMessage', handleIncomingMessage);
     }
 
         isInitialized = true;
@@ -200,13 +200,13 @@ async function openMessageModal(username) {
     }
 
     function handleTyping() {
-        if (!currentRecipientUsername || !window.MLNF || !window.MLNF.websocket) return;
+        if (!currentRecipientUsername || !window.NEXUS || !window.NEXUS.websocket) return;
         if (typingTimeout) clearTimeout(typingTimeout);
     const currentUser = JSON.parse(localStorage.getItem('user'));
     if (currentUser) {
-        window.MLNF.websocket.sendTypingIndicator(currentRecipientUsername, true);
+        window.NEXUS.websocket.sendTypingIndicator(currentRecipientUsername, true);
         typingTimeout = setTimeout(() => {
-            window.MLNF.websocket.sendTypingIndicator(currentRecipientUsername, false);
+            window.NEXUS.websocket.sendTypingIndicator(currentRecipientUsername, false);
         }, 2000);
     }
 }
@@ -237,6 +237,6 @@ async function openMessageModal(username) {
 // Mobile keyboard detection removed - was causing scrollbar issues
 
 // Expose to global MLNF object
-window.MLNF.initMessageModal = initMessageModal;
-    window.MLNF.openMessageModal = openMessageModal; // Still useful to expose for direct calls if needed
+window.NEXUS.initMessageModal = initMessageModal;
+    window.NEXUS.openMessageModal = openMessageModal; // Still useful to expose for direct calls if needed
 })(); 

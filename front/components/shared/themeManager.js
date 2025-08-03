@@ -3,10 +3,10 @@
  * Provides consistent dark/light mode across all pages
  */
 
-class MLNFThemeManager {
+class NexusThemeManager {
     constructor() {
         this.currentTheme = 'dark'; // Default theme
-        this.themeKey = 'mlnf-theme';
+        this.themeKey = 'nexus-theme';
         this.init();
     }
 
@@ -76,7 +76,7 @@ class MLNFThemeManager {
         this.updateThemeToggles(theme);
         
         // Dispatch custom event for other components
-        window.dispatchEvent(new CustomEvent('mlnf-theme-changed', { 
+        window.dispatchEvent(new CustomEvent('nexus-theme-changed', { 
             detail: { theme } 
         }));
     }
@@ -126,10 +126,10 @@ class MLNFThemeManager {
 
 // Initialize theme manager globally
 function initThemeManager() {
-    if (!window.MLNFTheme) {
-        window.MLNFTheme = new MLNFThemeManager();
+    if (!window.NEXUSTheme) {
+        window.NEXUSTheme = new NexusThemeManager();
     }
-    return window.MLNFTheme;
+    return window.NEXUSTheme;
 }
 
 // Auto-initialize theme manager
@@ -143,11 +143,11 @@ if (document.readyState === 'loading') {
 }
 
 // Expose on MLNF namespace
-window.MLNF = window.MLNF || {};
-window.MLNF.initThemeManager = initThemeManager;
-window.MLNF.ThemeManager = MLNFThemeManager;
+window.NEXUS = window.NEXUS || {};
+window.NEXUS.initThemeManager = initThemeManager;
+window.NEXUS.ThemeManager = NexusThemeManager;
 
 // Export for module usage
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = MLNFThemeManager;
+    module.exports = NexusThemeManager;
 }

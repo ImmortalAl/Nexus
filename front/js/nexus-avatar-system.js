@@ -1,5 +1,5 @@
 /**
- * MLNF Avatar System - Site-wide avatar and user display utilities
+ * Nexus Avatar System - Site-wide avatar and user display utilities
  * Version: 2.0 - Enhanced with Unified Profile Navigation
  * 
  * This utility provides consistent avatar and user display functionality
@@ -10,7 +10,7 @@
 /**
  * Profile Router - Handles smooth navigation to user profiles
  */
-class MLNFProfileRouter {
+class NexusProfileRouter {
     static navigateToProfile(username, options = {}) {
         const { newTab = false, trackInteraction = true } = options;
         
@@ -32,7 +32,7 @@ class MLNFProfileRouter {
             // Handle keyboard shortcuts
             if (event.shiftKey) {
                 // Shift+Click: Open profile preview modal
-                MLNFProfilePreview.showPreview(username);
+                NexusProfilePreview.showPreview(username);
             } else if (event.ctrlKey || event.metaKey) {
                 // Ctrl+Click: Open in new tab
                 this.navigateToProfile(username, { newTab: true });
@@ -47,7 +47,7 @@ class MLNFProfileRouter {
 /**
  * Profile Preview Modal - Quick profile previews with immortal theming
  */
-class MLNFProfilePreview {
+class NexusProfilePreview {
     static currentModal = null;
     
     static async showPreview(username) {
@@ -66,7 +66,7 @@ class MLNFProfilePreview {
             
             // Show modal with animation
             requestAnimationFrame(() => {
-                modal.classList.add('mlnf-profile-preview--visible');
+                modal.classList.add('nexus-profile-preview--visible');
             });
             
             // Add event listeners
@@ -80,21 +80,21 @@ class MLNFProfilePreview {
     
     static createModalElement(username) {
         const modal = document.createElement('div');
-        modal.className = 'mlnf-profile-preview';
+        modal.className = 'nexus-profile-preview';
         modal.innerHTML = `
-            <div class="mlnf-profile-preview__backdrop"></div>
-            <div class="mlnf-profile-preview__content">
-                <div class="mlnf-profile-preview__header">
-                    <div class="mlnf-profile-preview__loading">
-                        <div class="mlnf-loading-spinner"></div>
+            <div class="nexus-profile-preview__backdrop"></div>
+            <div class="nexus-profile-preview__content">
+                <div class="nexus-profile-preview__header">
+                    <div class="nexus-profile-preview__loading">
+                        <div class="nexus-loading-spinner"></div>
                         <span class="font-immortal-heading">Loading ${username}'s profile...</span>
                     </div>
-                    <button class="mlnf-profile-preview__close" aria-label="Close profile preview">
+                    <button class="nexus-profile-preview__close" aria-label="Close profile preview">
                         <span>×</span>
                     </button>
                 </div>
-                <div class="mlnf-profile-preview__body"></div>
-                <div class="mlnf-profile-preview__actions"></div>
+                <div class="nexus-profile-preview__body"></div>
+                <div class="nexus-profile-preview__actions"></div>
             </div>
         `;
         return modal;
@@ -110,15 +110,15 @@ class MLNFProfilePreview {
     }
     
     static populateModal(modal, userData) {
-        const body = modal.querySelector('.mlnf-profile-preview__body');
-        const actions = modal.querySelector('.mlnf-profile-preview__actions');
-        const loading = modal.querySelector('.mlnf-profile-preview__loading');
+        const body = modal.querySelector('.nexus-profile-preview__body');
+        const actions = modal.querySelector('.nexus-profile-preview__actions');
+        const loading = modal.querySelector('.nexus-profile-preview__loading');
         
         // Hide loading spinner
         loading.style.display = 'none';
         
         // Create user display with enhanced styling
-        const userDisplay = window.MLNFAvatars.createUserDisplay({
+        const userDisplay = window.NexusAvatars.createUserDisplay({
             username: userData.username,
             title: userData.title || 'Eternal Soul',
             status: userData.status || (userData.online ? 'Online now' : 'Eternal wanderer'),
@@ -135,7 +135,7 @@ class MLNFProfilePreview {
         // Add bio if available
         if (userData.bio) {
             const bioEl = document.createElement('div');
-            bioEl.className = 'mlnf-profile-preview__bio';
+            bioEl.className = 'nexus-profile-preview__bio';
             bioEl.innerHTML = `
                 <h4 class="font-immortal-heading">About ${userData.username}</h4>
                 <p>${userData.bio}</p>
@@ -146,20 +146,20 @@ class MLNFProfilePreview {
         // Add stats if available
         if (userData.stats) {
             const statsEl = document.createElement('div');
-            statsEl.className = 'mlnf-profile-preview__stats';
+            statsEl.className = 'nexus-profile-preview__stats';
             statsEl.innerHTML = `
-                <div class="mlnf-stats-grid">
-                    <div class="mlnf-stat">
-                        <span class="mlnf-stat__value">${userData.stats.posts || 0}</span>
-                        <span class="mlnf-stat__label">Chronicles</span>
+                <div class="nexus-stats-grid">
+                    <div class="nexus-stat">
+                        <span class="nexus-stat__value">${userData.stats.posts || 0}</span>
+                        <span class="nexus-stat__label">Chronicles</span>
                     </div>
-                    <div class="mlnf-stat">
-                        <span class="mlnf-stat__value">${userData.stats.comments || 0}</span>
-                        <span class="mlnf-stat__label">Reflections</span>
+                    <div class="nexus-stat">
+                        <span class="nexus-stat__value">${userData.stats.comments || 0}</span>
+                        <span class="nexus-stat__label">Reflections</span>
                     </div>
-                    <div class="mlnf-stat">
-                        <span class="mlnf-stat__value">${userData.stats.connections || 0}</span>
-                        <span class="mlnf-stat__label">Connections</span>
+                    <div class="nexus-stat">
+                        <span class="nexus-stat__value">${userData.stats.connections || 0}</span>
+                        <span class="nexus-stat__label">Connections</span>
                     </div>
                 </div>
             `;
@@ -168,10 +168,10 @@ class MLNFProfilePreview {
         
         // Create immortal-themed action buttons
         actions.innerHTML = `
-            <button class="mlnf-btn mlnf-btn--primary" onclick="MLNFProfileRouter.navigateToProfile('${userData.username}')">
+            <button class="nexus-btn nexus-btn--primary" onclick="NexusProfileRouter.navigateToProfile('${userData.username}')">
                 <span class="font-immortal-heading">View Full Profile</span>
             </button>
-            <button class="mlnf-btn mlnf-btn--accent" onclick="window.MLNF.openMessageModal('${userData.username}')">
+            <button class="nexus-btn nexus-btn--accent" onclick="window.NEXUS.openMessageModal('${userData.username}')">
                 <span class="font-immortal-mystical">Send Message</span>
             </button>
         `;
@@ -179,11 +179,11 @@ class MLNFProfilePreview {
     
     static addModalEventListeners(modal) {
         // Close button
-        const closeBtn = modal.querySelector('.mlnf-profile-preview__close');
+        const closeBtn = modal.querySelector('.nexus-profile-preview__close');
         closeBtn.addEventListener('click', () => this.closePreview());
         
         // Backdrop click
-        const backdrop = modal.querySelector('.mlnf-profile-preview__backdrop');
+        const backdrop = modal.querySelector('.nexus-profile-preview__backdrop');
         backdrop.addEventListener('click', () => this.closePreview());
         
         // Escape key
@@ -198,7 +198,7 @@ class MLNFProfilePreview {
     
     static closePreview() {
         if (this.currentModal) {
-            this.currentModal.classList.add('mlnf-profile-preview--closing');
+            this.currentModal.classList.add('nexus-profile-preview--closing');
             setTimeout(() => {
                 if (this.currentModal) {
                     this.currentModal.remove();
@@ -215,7 +215,7 @@ class MLNFProfilePreview {
     }
 }
 
-class MLNFAvatarSystem {
+class NexusAvatarSystem {
     constructor() {
         this.defaultAvatarConfig = {
             background: 'ff5e78',
@@ -301,11 +301,11 @@ class MLNFAvatarSystem {
 
         img.src = avatarUrl;
         img.alt = username;
-        img.className = `mlnf-avatar mlnf-avatar--${size}`;
+        img.className = `nexus-avatar nexus-avatar--${size}`;
         img.loading = 'lazy';
         
         // Add optional classes
-        if (mystical) img.classList.add('mlnf-avatar--mystical');
+        if (mystical) img.classList.add('nexus-avatar--mystical');
         
         // Create container for avatar + status dot
         const avatarContainer = document.createElement('div');
@@ -326,11 +326,11 @@ class MLNFAvatarSystem {
 
         // Enhanced error handling for avatar loading
         img.onerror = () => {
-            console.warn(`[MLNF Avatar] Primary avatar failed for ${username}, trying fallback: ${fallbackUrl}`);
+            console.warn(`[Nexus Avatar] Primary avatar failed for ${username}, trying fallback: ${fallbackUrl}`);
             if (img.src !== fallbackUrl) {
                 img.src = fallbackUrl;
             } else {
-                console.error(`[MLNF Avatar] Both primary and fallback failed for ${username}`);
+                console.error(`[Nexus Avatar] Both primary and fallback failed for ${username}`);
                 // Last resort: use a default avatar
                 img.src = window.NEXUS_CONFIG?.DEFAULT_AVATAR || '/assets/images/default.jpg';
             }
@@ -365,10 +365,10 @@ class MLNFAvatarSystem {
 
         // Create container
         const container = document.createElement('div');
-        const containerClasses = ['mlnf-user-display', `mlnf-user-display--${displaySize}`];
+        const containerClasses = ['nexus-user-display', `nexus-user-display--${displaySize}`];
         
-        if (compact) containerClasses.push('mlnf-user-display--compact');
-        if (banned) containerClasses.push('mlnf-user-display--banned');
+        if (compact) containerClasses.push('nexus-user-display--compact');
+        if (banned) containerClasses.push('nexus-user-display--banned');
         if (clickable) container.style.cursor = 'pointer';
         
         container.className = containerClasses.join(' ');
@@ -384,13 +384,13 @@ class MLNFAvatarSystem {
 
         // Create user info container
         const userInfo = document.createElement('div');
-        userInfo.className = 'mlnf-user-info';
+        userInfo.className = 'nexus-user-info';
 
         // Create username element
         const usernameEl = document.createElement('span');
-        const usernameClasses = ['mlnf-username'];
+        const usernameClasses = ['nexus-username'];
         if (usernameStyle !== 'default') {
-            usernameClasses.push(`mlnf-username--${usernameStyle}`);
+            usernameClasses.push(`nexus-username--${usernameStyle}`);
         }
         usernameEl.className = usernameClasses.join(' ');
         usernameEl.textContent = username;
@@ -398,7 +398,7 @@ class MLNFAvatarSystem {
         // Add ban icon if user is banned
         if (banned) {
             const banIcon = document.createElement('i');
-            banIcon.className = 'fas fa-ban mlnf-ban-icon';
+            banIcon.className = 'fas fa-ban nexus-ban-icon';
             banIcon.title = 'This soul has been banned';
             usernameEl.appendChild(document.createTextNode(' '));
             usernameEl.appendChild(banIcon);
@@ -406,7 +406,7 @@ class MLNFAvatarSystem {
 
         // Create title element
         const titleEl = document.createElement('span');
-        titleEl.className = 'mlnf-user-title';
+        titleEl.className = 'nexus-user-title';
         titleEl.textContent = title;
 
         // Add elements to user info
@@ -416,7 +416,7 @@ class MLNFAvatarSystem {
         // Add status if provided
         if (status) {
             const statusEl = document.createElement('span');
-            statusEl.className = 'mlnf-user-status';
+            statusEl.className = 'nexus-user-status';
             statusEl.textContent = status;
             userInfo.appendChild(statusEl);
         }
@@ -428,7 +428,7 @@ class MLNFAvatarSystem {
         // Add unified click handler with enhanced navigation
         if (enableUnifiedNavigation && clickable && !banned) {
             // Create unified click handler with keyboard shortcuts
-            const unifiedHandler = MLNFProfileRouter.createUnifiedClickHandler(username);
+            const unifiedHandler = NexusProfileRouter.createUnifiedClickHandler(username);
             container.addEventListener('click', unifiedHandler);
             
             // Add accessibility attributes
@@ -446,7 +446,7 @@ class MLNFAvatarSystem {
             });
             
             // Add immortal hover effect
-            container.classList.add('mlnf-user-display--interactive');
+            container.classList.add('nexus-user-display--interactive');
         } else if (onClick) {
             // Use custom click handler
             container.addEventListener('click', onClick);
@@ -492,11 +492,11 @@ class MLNFAvatarSystem {
             online = null
         } = options;
 
-        avatarElement.className = `mlnf-avatar mlnf-avatar--${size}`;
+        avatarElement.className = `nexus-avatar nexus-avatar--${size}`;
         
-        if (mystical) avatarElement.classList.add('mlnf-avatar--mystical');
-        if (online === true) avatarElement.classList.add('mlnf-avatar--online');
-        if (online === false) avatarElement.classList.add('mlnf-avatar--offline');
+        if (mystical) avatarElement.classList.add('nexus-avatar--mystical');
+        if (online === true) avatarElement.classList.add('nexus-avatar--online');
+        if (online === false) avatarElement.classList.add('nexus-avatar--offline');
     }
 
     /**
@@ -530,9 +530,9 @@ class MLNFAvatarSystem {
             });
         } catch (error) {
             if (error.message.includes('CORS')) {
-                console.warn('[MLNF Avatar] UI-Avatars CORS restriction detected - service still functional for avatar generation');
+                console.warn('[Nexus Avatar] UI-Avatars CORS restriction detected - service still functional for avatar generation');
             } else {
-                console.error('[MLNF Avatar] UI-Avatars connectivity test failed:', error);
+                console.error('[Nexus Avatar] UI-Avatars connectivity test failed:', error);
             }
         }
     }
@@ -550,7 +550,7 @@ class MLNFAvatarSystem {
         // Add immortal styling to existing usernames
         const existingUsernames = document.querySelectorAll('.author-username, .modal-author-username');
         existingUsernames.forEach(username => {
-            username.classList.add('mlnf-username', 'mlnf-username--immortal');
+            username.classList.add('nexus-username', 'nexus-username--immortal');
         });
 
         // Run test for debugging
@@ -562,18 +562,18 @@ class MLNFAvatarSystem {
 }
 
 // Create global instance
-window.MLNFAvatars = new MLNFAvatarSystem();
+window.NexusAvatars = new NexusAvatarSystem();
 
 // Auto-initialize when DOM is loaded
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-        window.MLNFAvatars.initializeExistingElements();
+        window.NexusAvatars.initializeExistingElements();
     });
 } else {
-    window.MLNFAvatars.initializeExistingElements();
+    window.NEXUSAvatars.initializeExistingElements();
 }
 
 // Export for module systems
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = MLNFAvatarSystem;
+    module.exports = NexusAvatarSystem;
 }

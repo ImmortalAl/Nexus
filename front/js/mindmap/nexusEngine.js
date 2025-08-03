@@ -796,37 +796,37 @@ class NexusEngine {
     
     initWebSocket() {
         // Use the existing MLNF WebSocket manager
-        if (window.MLNF && window.MLNF.websocket) {
+        if (window.NEXUS && window.NEXUS.websocket) {
             // Register mindmap-specific handlers
-            window.MLNF.websocket.on('nodeCreated', (data) => {
+            window.NEXUS.websocket.on('nodeCreated', (data) => {
                 this.handleNodeCreated(data);
             });
             
-            window.MLNF.websocket.on('nodeUpdated', (data) => {
+            window.NEXUS.websocket.on('nodeUpdated', (data) => {
                 this.handleNodeUpdated(data);
             });
             
-            window.MLNF.websocket.on('nodeDeleted', (data) => {
+            window.NEXUS.websocket.on('nodeDeleted', (data) => {
                 this.handleNodeDeleted(data);
             });
             
-            window.MLNF.websocket.on('edgeCreated', (data) => {
+            window.NEXUS.websocket.on('edgeCreated', (data) => {
                 this.handleEdgeCreated(data);
             });
             
-            window.MLNF.websocket.on('edgeUpdated', (data) => {
+            window.NEXUS.websocket.on('edgeUpdated', (data) => {
                 this.handleEdgeUpdated(data);
             });
             
-            window.MLNF.websocket.on('edgeDeleted', (data) => {
+            window.NEXUS.websocket.on('edgeDeleted', (data) => {
                 this.handleEdgeDeleted(data);
             });
             
-            window.MLNF.websocket.on('nodeVoted', (data) => {
+            window.NEXUS.websocket.on('nodeVoted', (data) => {
                 this.handleNodeVoted(data);
             });
             
-            window.MLNF.websocket.on('citationAdded', (data) => {
+            window.NEXUS.websocket.on('citationAdded', (data) => {
                 this.handleCitationAdded(data);
             });
         }

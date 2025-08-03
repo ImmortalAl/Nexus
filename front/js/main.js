@@ -297,12 +297,12 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize Eternal Souls Highlight system
     setTimeout(() => {
-        if (window.MLNFAvatars) {
+        if (window.NEXUSAvatars) {
             window.eternalSoulsHighlight = new EternalSoulsHighlight();
         } else {
             // Wait for Avatar System to load
             const checkAvatarSystem = setInterval(() => {
-                if (window.MLNFAvatars) {
+                if (window.NEXUSAvatars) {
                     clearInterval(checkAvatarSystem);
                     window.eternalSoulsHighlight = new EternalSoulsHighlight();
                 }
@@ -329,7 +329,7 @@ class EternalSoulsHighlight {
             // This is expected on pages without the founder display element
             return;
         }
-        if (!window.MLNFAvatars) {
+        if (!window.NEXUSAvatars) {
             // Avatar System not available for founder display
             return;
         }
@@ -359,8 +359,8 @@ class EternalSoulsHighlight {
                 };
             }
 
-            // Create founder display using MLNF Avatar System
-            const founderUserDisplay = window.MLNFAvatars.createUserDisplay({
+            // Create founder display using Nexus Avatar System
+            const founderUserDisplay = window.NEXUSAvatars.createUserDisplay({
                 username: founderData.username,
                 title: founderData.title,
                 status: founderData.status,
@@ -397,7 +397,7 @@ class EternalSoulsHighlight {
             // This is expected on pages without the featured soul display element
             return;
         }
-        if (!window.MLNFAvatars) {
+        if (!window.NEXUSAvatars) {
             // Avatar System not available for featured soul display
             return;
         }
@@ -443,7 +443,7 @@ class EternalSoulsHighlight {
             const featuredSoul = this.featuredSoulData;
 
             // Create featured soul display
-            const featuredUserDisplay = window.MLNFAvatars.createUserDisplay({
+            const featuredUserDisplay = window.NEXUSAvatars.createUserDisplay({
                 username: featuredSoul.username,
                 title: 'Featured Community Soul',
                 status: featuredSoul.status || 'Wandering the eternal realms...',
@@ -487,9 +487,9 @@ class EternalSoulsHighlight {
 // Authenticated Messaging for Soul Highlights  
 function openFounderMessage() {
     // Check if user is authenticated
-    if (window.MLNF?.authManager?.isAuthenticated?.() || localStorage.getItem('sessionToken')) {
-        if (window.MLNF?.openMessageModal) {
-            window.MLNF.openMessageModal('ImmortalAl');
+    if (window.NEXUS?.authManager?.isAuthenticated?.() || localStorage.getItem('sessionToken')) {
+        if (window.NEXUS?.openMessageModal) {
+            window.NEXUS.openMessageModal('ImmortalAl');
         } else {
             // Message modal not available
         }
@@ -508,9 +508,9 @@ function openFeaturedSoulMessage() {
     const featured = window.eternalSoulsHighlight.featuredSoulData;
     
     // Check if user is authenticated
-    if (window.MLNF?.authManager?.isAuthenticated?.() || localStorage.getItem('sessionToken')) {
-        if (window.MLNF?.openMessageModal) {
-            window.MLNF.openMessageModal(featured.username);
+    if (window.NEXUS?.authManager?.isAuthenticated?.() || localStorage.getItem('sessionToken')) {
+        if (window.NEXUS?.openMessageModal) {
+            window.NEXUS.openMessageModal(featured.username);
         } else {
             // Message modal not available
         }
@@ -530,7 +530,7 @@ function showAuthenticationRequired(action) {
             <h4>Authentication Required</h4>
             <p>You must be logged in to ${action}. Authentic soul-to-soul connections require verified identity.</p>
             <div class="notification-actions">
-                <button class="btn btn-primary" onclick="this.parentElement.parentElement.parentElement.remove(); window.MLNF?.authManager?.openAuthModal?.()">
+                <button class="btn btn-primary" onclick="this.parentElement.parentElement.parentElement.remove(); window.NEXUS?.authManager?.openAuthModal?.()">
                     <i class="fas fa-sign-in-alt"></i> Login
                 </button>
                 <button class="btn btn-outline" onclick="this.parentElement.parentElement.parentElement.remove()">

@@ -810,7 +810,7 @@ body.light-theme .debate-position h4 {
     margin-bottom: 1.5rem;
 }
 
-/* Legacy styles deprecated - use MLNF Avatar System instead */
+/* Legacy styles deprecated - use Nexus Avatar System instead */
 
 /* Read more indicator */
 .read-more-indicator {
@@ -827,7 +827,7 @@ body.light-theme .debate-position h4 {
    ========================================== */
 
 /* Avatar base component */
-.mlnf-avatar {
+.nexus-avatar {
     display: inline-block;
     border-radius: 50%;
     object-fit: cover;
@@ -842,7 +842,7 @@ body.light-theme .debate-position h4 {
 }
 
 /* Avatar hover effects */
-.mlnf-avatar:hover {
+.nexus-avatar:hover {
     transform: scale(1.05);
     box-shadow: 
         0 0 25px rgba(var(--accent-rgb, 255, 94, 120), 0.5),
@@ -851,20 +851,20 @@ body.light-theme .debate-position h4 {
 }
 
 /* Avatar size variants */
-.mlnf-avatar--xs { width: 20px; height: 20px; border-width: 1px; }
-.mlnf-avatar--sm { width: 28px; height: 28px; border-width: 1.5px; }
-.mlnf-avatar--md { width: 36px; height: 36px; border-width: 2px; }
-.mlnf-avatar--lg { width: 48px; height: 48px; border-width: 2.5px; }
-.mlnf-avatar--xl { width: 64px; height: 64px; border-width: 3px; }
-.mlnf-avatar--xxl { width: 80px; height: 80px; border-width: 3px; }
+.nexus-avatar--xs { width: 20px; height: 20px; border-width: 1px; }
+.nexus-avatar--sm { width: 28px; height: 28px; border-width: 1.5px; }
+.nexus-avatar--md { width: 36px; height: 36px; border-width: 2px; }
+.nexus-avatar--lg { width: 48px; height: 48px; border-width: 2.5px; }
+.nexus-avatar--xl { width: 64px; height: 64px; border-width: 3px; }
+.nexus-avatar--xxl { width: 80px; height: 80px; border-width: 3px; }
 
 /* Avatar with mystical glow effect */
-.mlnf-avatar--mystical {
+.nexus-avatar--mystical {
     position: relative;
     animation: mysticalPulse 3s ease-in-out infinite;
 }
 
-.mlnf-avatar--mystical::before {
+.nexus-avatar--mystical::before {
     content: '';
     position: absolute;
     top: -4px;
@@ -949,7 +949,7 @@ body.light-theme .debate-position h4 {
 }
 
 /* User display component with avatar */
-.mlnf-user-display {
+.nexus-user-display {
     display: flex;
     align-items: center;
     gap: 0.75rem;
@@ -960,28 +960,28 @@ body.light-theme .debate-position h4 {
     border: 1px solid rgba(var(--accent-rgb, 255, 94, 120), 0.15);
 }
 
-.mlnf-user-display:hover {
+.nexus-user-display:hover {
     background: rgba(var(--accent-rgb, 255, 94, 120), 0.1);
     border-color: rgba(var(--accent-rgb, 255, 94, 120), 0.3);
     transform: translateY(-1px);
 }
 
 /* User display size variants */
-.mlnf-user-display--xs { padding: 0.25rem; gap: 0.5rem; }
-.mlnf-user-display--sm { padding: 0.375rem; gap: 0.5rem; }
-.mlnf-user-display--md { padding: 0.5rem; gap: 0.75rem; }
-.mlnf-user-display--lg { padding: 0.75rem; gap: 1rem; }
-.mlnf-user-display--xl { padding: 1rem; gap: 1.25rem; }
+.nexus-user-display--xs { padding: 0.25rem; gap: 0.5rem; }
+.nexus-user-display--sm { padding: 0.375rem; gap: 0.5rem; }
+.nexus-user-display--md { padding: 0.5rem; gap: 0.75rem; }
+.nexus-user-display--lg { padding: 0.75rem; gap: 1rem; }
+.nexus-user-display--xl { padding: 1rem; gap: 1.25rem; }
 
 /* User info section */
-.mlnf-user-info {
+.nexus-user-info {
     display: flex;
     flex-direction: column;
     gap: 0.125rem;
     min-width: 0; /* Allows text truncation */
 }
 
-.mlnf-username {
+.nexus-username {
     font-weight: 600;
     color: var(--accent);
     font-size: 0.95rem;
@@ -991,7 +991,7 @@ body.light-theme .debate-position h4 {
     white-space: nowrap;
 }
 
-.mlnf-user-title {
+.nexus-user-title {
     font-size: 0.75rem;
     opacity: 0.8;
     font-style: italic;
@@ -1001,21 +1001,21 @@ body.light-theme .debate-position h4 {
     white-space: nowrap;
 }
 
-.mlnf-user-status {
+.nexus-user-status {
     font-size: 0.7rem;
     opacity: 0.6;
     color: var(--text);
 }
 
 /* Username size variants - ONLY font-size to avoid overriding font-family */
-.mlnf-user-display--xs .mlnf-username { font-size: 0.8rem; }
-.mlnf-user-display--sm .mlnf-username { font-size: 0.85rem; }
-.mlnf-user-display--md .mlnf-username { font-size: 0.95rem; }
-.mlnf-user-display--lg .mlnf-username { font-size: 1.1rem; }
-.mlnf-user-display--xl .mlnf-username { font-size: 1.25rem; }
+.nexus-user-display--xs .nexus-username { font-size: 0.8rem; }
+.nexus-user-display--sm .nexus-username { font-size: 0.85rem; }
+.nexus-user-display--md .nexus-username { font-size: 0.95rem; }
+.nexus-user-display--lg .nexus-username { font-size: 1.1rem; }
+.nexus-user-display--xl .nexus-username { font-size: 1.25rem; }
 
 /* Ensure username style classes take precedence over size variants */
-.mlnf-username--immortal {
+.nexus-username--immortal {
     font-family: 'Cinzel', serif !important;
     background: var(--gradient-accent) !important;
     -webkit-background-clip: text !important;
@@ -1024,7 +1024,7 @@ body.light-theme .debate-position h4 {
     font-weight: 600 !important;
 }
 
-.mlnf-username--mystical {
+.nexus-username--mystical {
     font-family: 'Caesar Dressing', serif !important;
     color: var(--accent) !important;
     text-shadow: 0 0 10px rgba(var(--accent-rgb, 255, 94, 120), 0.5) !important;
@@ -1032,44 +1032,44 @@ body.light-theme .debate-position h4 {
     letter-spacing: 0.03em !important;
 }
 
-.mlnf-username--eternal {
+.nexus-username--eternal {
     font-family: 'Metal Mania', serif !important;
     color: var(--accent) !important;
     letter-spacing: 0.05em !important;
 }
 
-.mlnf-user-display--xs .mlnf-user-title { font-size: 0.65rem; }
-.mlnf-user-display--sm .mlnf-user-title { font-size: 0.7rem; }
-.mlnf-user-display--md .mlnf-user-title { font-size: 0.75rem; }
-.mlnf-user-display--lg .mlnf-user-title { font-size: 0.85rem; }
-.mlnf-user-display--xl .mlnf-user-title { font-size: 0.95rem; }
+.nexus-user-display--xs .nexus-user-title { font-size: 0.65rem; }
+.nexus-user-display--sm .nexus-user-title { font-size: 0.7rem; }
+.nexus-user-display--md .nexus-user-title { font-size: 0.75rem; }
+.nexus-user-display--lg .nexus-user-title { font-size: 0.85rem; }
+.nexus-user-display--xl .nexus-user-title { font-size: 0.95rem; }
 
 /* Compact user display (horizontal layout) */
-.mlnf-user-display--compact {
+.nexus-user-display--compact {
     background: transparent;
     border: none;
     padding: 0.25rem;
     gap: 0.5rem;
 }
 
-.mlnf-user-display--compact:hover {
+.nexus-user-display--compact:hover {
     background: rgba(var(--accent-rgb, 255, 94, 120), 0.08);
 }
 
 /* Old immortal username styles removed - now using !important versions above */
 
 /* Light theme adjustments */
-body.light-theme .mlnf-user-display {
+body.light-theme .nexus-user-display {
     background: rgba(214, 45, 77, 0.05);
     border-color: rgba(214, 45, 77, 0.15);
 }
 
-body.light-theme .mlnf-user-display:hover {
+body.light-theme .nexus-user-display:hover {
     background: rgba(214, 45, 77, 0.1);
     border-color: rgba(214, 45, 77, 0.25);
 }
 
-body.light-theme .mlnf-avatar {
+body.light-theme .nexus-avatar {
     border-color: var(--accent);
     box-shadow: 
         0 0 15px rgba(214, 45, 77, 0.3),
@@ -1137,22 +1137,22 @@ body.light-theme .mlnf-avatar {
 
 /* Mobile responsive avatar adjustments */
 @media (max-width: 768px) {
-    .mlnf-user-display { gap: 0.5rem; padding: 0.375rem; }
-    .mlnf-avatar--xs { width: 18px; height: 18px; }
-    .mlnf-avatar--sm { width: 24px; height: 24px; }
-    .mlnf-avatar--md { width: 32px; height: 32px; }
-    .mlnf-avatar--lg { width: 40px; height: 40px; }
-    .mlnf-avatar--xl { width: 52px; height: 52px; }
-    .mlnf-avatar--xxl { width: 64px; height: 64px; }
+    .nexus-user-display { gap: 0.5rem; padding: 0.375rem; }
+    .nexus-avatar--xs { width: 18px; height: 18px; }
+    .nexus-avatar--sm { width: 24px; height: 24px; }
+    .nexus-avatar--md { width: 32px; height: 32px; }
+    .nexus-avatar--lg { width: 40px; height: 40px; }
+    .nexus-avatar--xl { width: 52px; height: 52px; }
+    .nexus-avatar--xxl { width: 64px; height: 64px; }
 }
 
 @media (max-width: 480px) {
-    .mlnf-avatar--xs { width: 16px; height: 16px; }
-    .mlnf-avatar--sm { width: 20px; height: 20px; }
-    .mlnf-avatar--md { width: 28px; height: 28px; }
-    .mlnf-avatar--lg { width: 36px; height: 36px; }
-    .mlnf-avatar--xl { width: 44px; height: 44px; }
-    .mlnf-avatar--xxl { width: 56px; height: 56px; }
+    .nexus-avatar--xs { width: 16px; height: 16px; }
+    .nexus-avatar--sm { width: 20px; height: 20px; }
+    .nexus-avatar--md { width: 28px; height: 28px; }
+    .nexus-avatar--lg { width: 36px; height: 36px; }
+    .nexus-avatar--xl { width: 44px; height: 44px; }
+    .nexus-avatar--xxl { width: 56px; height: 56px; }
 }
 
 .highlight-item p,
@@ -1178,14 +1178,14 @@ body.light-theme .mlnf-avatar {
    ========================================== */
 
 /* Interactive user display hover effects */
-.mlnf-user-display--interactive {
+.nexus-user-display--interactive {
     transition: all 0.3s ease;
     border-radius: 8px;
     position: relative;
     overflow: hidden;
 }
 
-.mlnf-user-display--interactive::before {
+.nexus-user-display--interactive::before {
     content: '';
     position: absolute;
     top: 0;
@@ -1200,29 +1200,29 @@ body.light-theme .mlnf-avatar {
     pointer-events: none;
 }
 
-.mlnf-user-display--interactive:hover::before {
+.nexus-user-display--interactive:hover::before {
     opacity: 1;
 }
 
-.mlnf-user-display--interactive:hover {
+.nexus-user-display--interactive:hover {
     transform: translateY(-2px);
     box-shadow: 
         0 8px 25px rgba(0, 0, 0, 0.15),
         0 0 0 1px rgba(var(--accent-rgb, 255, 94, 120), 0.2);
 }
 
-.mlnf-user-display--interactive:hover .mlnf-username:not(.mlnf-username--mystical):not(.mlnf-username--immortal):not(.mlnf-username--eternal) {
+.nexus-user-display--interactive:hover .nexus-username:not(.nexus-username--mystical):not(.nexus-username--immortal):not(.nexus-username--eternal) {
     color: var(--accent);
     text-shadow: 0 0 8px rgba(var(--accent-rgb, 255, 94, 120), 0.5);
 }
 
-.mlnf-user-display--interactive:hover .mlnf-avatar {
+.nexus-user-display--interactive:hover .nexus-avatar {
     transform: scale(1.05);
     box-shadow: 0 0 20px rgba(var(--accent-rgb, 255, 94, 120), 0.3);
 }
 
 /* Profile Preview Modal */
-.mlnf-profile-preview {
+.nexus-profile-preview {
     position: fixed;
     top: 0;
     left: 0;
@@ -1237,17 +1237,17 @@ body.light-theme .mlnf-avatar {
     transition: all 0.3s ease;
 }
 
-.mlnf-profile-preview--visible {
+.nexus-profile-preview--visible {
     opacity: 1;
     visibility: visible;
 }
 
-.mlnf-profile-preview--closing {
+.nexus-profile-preview--closing {
     opacity: 0;
     visibility: hidden;
 }
 
-.mlnf-profile-preview__backdrop {
+.nexus-profile-preview__backdrop {
     position: absolute;
     top: 0;
     left: 0;
@@ -1257,7 +1257,7 @@ body.light-theme .mlnf-avatar {
     backdrop-filter: blur(8px);
 }
 
-.mlnf-profile-preview__content {
+.nexus-profile-preview__content {
     position: relative;
     background: var(--background-elevated);
     border-radius: 16px;
@@ -1273,11 +1273,11 @@ body.light-theme .mlnf-avatar {
     transition: transform 0.3s ease;
 }
 
-.mlnf-profile-preview--visible .mlnf-profile-preview__content {
+.nexus-profile-preview--visible .nexus-profile-preview__content {
     transform: scale(1);
 }
 
-.mlnf-profile-preview__header {
+.nexus-profile-preview__header {
     position: relative;
     padding: 1.5rem;
     background: linear-gradient(135deg, 
@@ -1286,14 +1286,14 @@ body.light-theme .mlnf-avatar {
     border-bottom: 1px solid rgba(var(--accent-rgb, 255, 94, 120), 0.2);
 }
 
-.mlnf-profile-preview__loading {
+.nexus-profile-preview__loading {
     display: flex;
     align-items: center;
     gap: 1rem;
     color: var(--text-secondary);
 }
 
-.mlnf-loading-spinner {
+.nexus-loading-spinner {
     width: 24px;
     height: 24px;
     border: 2px solid rgba(var(--accent-rgb, 255, 94, 120), 0.3);
@@ -1307,7 +1307,7 @@ body.light-theme .mlnf-avatar {
     100% { transform: rotate(360deg); }
 }
 
-.mlnf-profile-preview__close {
+.nexus-profile-preview__close {
     position: absolute;
     top: 1rem;
     right: 1rem;
@@ -1325,50 +1325,50 @@ body.light-theme .mlnf-avatar {
     transition: all 0.2s ease;
 }
 
-.mlnf-profile-preview__close:hover {
+.nexus-profile-preview__close:hover {
     background: var(--accent);
     color: white;
     transform: scale(1.1);
 }
 
-.mlnf-profile-preview__body {
+.nexus-profile-preview__body {
     padding: 1.5rem;
     max-height: 400px;
     overflow-y: auto;
 }
 
-.mlnf-profile-preview__bio {
+.nexus-profile-preview__bio {
     margin-top: 1.5rem;
     padding-top: 1.5rem;
     border-top: 1px solid rgba(var(--accent-rgb, 255, 94, 120), 0.2);
 }
 
-.mlnf-profile-preview__bio h4 {
+.nexus-profile-preview__bio h4 {
     color: var(--accent);
     margin-bottom: 0.75rem;
     font-size: 1.1rem;
 }
 
-.mlnf-profile-preview__bio p {
+.nexus-profile-preview__bio p {
     color: var(--text-secondary);
     line-height: 1.6;
     font-size: 0.95rem;
 }
 
-.mlnf-profile-preview__stats {
+.nexus-profile-preview__stats {
     margin-top: 1.5rem;
     padding-top: 1.5rem;
     border-top: 1px solid rgba(var(--accent-rgb, 255, 94, 120), 0.2);
 }
 
-.mlnf-stats-grid {
+.nexus-stats-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
     margin-top: 1rem;
 }
 
-.mlnf-stat {
+.nexus-stat {
     text-align: center;
     padding: 1rem;
     background: rgba(var(--accent-rgb, 255, 94, 120), 0.05);
@@ -1376,7 +1376,7 @@ body.light-theme .mlnf-avatar {
     border: 1px solid rgba(var(--accent-rgb, 255, 94, 120), 0.1);
 }
 
-.mlnf-stat__value {
+.nexus-stat__value {
     display: block;
     font-size: 1.5rem;
     font-weight: 600;
@@ -1384,7 +1384,7 @@ body.light-theme .mlnf-avatar {
     font-family: 'Cinzel', serif;
 }
 
-.mlnf-stat__label {
+.nexus-stat__label {
     display: block;
     font-size: 0.85rem;
     color: var(--text-secondary);
@@ -1392,7 +1392,7 @@ body.light-theme .mlnf-avatar {
     font-family: 'Caesar Dressing', serif;
 }
 
-.mlnf-profile-preview__actions {
+.nexus-profile-preview__actions {
     padding: 1.5rem;
     background: rgba(var(--background-elevated), 0.5);
     border-top: 1px solid rgba(var(--accent-rgb, 255, 94, 120), 0.2);
@@ -1400,7 +1400,7 @@ body.light-theme .mlnf-avatar {
     gap: 1rem;
 }
 
-.mlnf-profile-preview__actions .mlnf-btn {
+.nexus-profile-preview__actions .nexus-btn {
     flex: 1;
     padding: 0.75rem 1.5rem;
     border: none;
@@ -1412,24 +1412,24 @@ body.light-theme .mlnf-avatar {
     overflow: hidden;
 }
 
-.mlnf-btn--primary {
+.nexus-btn--primary {
     background: var(--accent);
     color: white;
 }
 
-.mlnf-btn--primary:hover {
+.nexus-btn--primary:hover {
     background: var(--accent-hover);
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(var(--accent-rgb, 255, 94, 120), 0.3);
 }
 
-.mlnf-btn--accent {
+.nexus-btn--accent {
     background: rgba(var(--secondary-rgb, 76, 175, 80), 0.1);
     color: var(--secondary);
     border: 1px solid rgba(var(--secondary-rgb, 76, 175, 80), 0.3);
 }
 
-.mlnf-btn--accent:hover {
+.nexus-btn--accent:hover {
     background: var(--secondary);
     color: white;
     transform: translateY(-2px);
@@ -1438,28 +1438,28 @@ body.light-theme .mlnf-avatar {
 
 /* Mobile responsive adjustments */
 @media (max-width: 768px) {
-    .mlnf-profile-preview__content {
+    .nexus-profile-preview__content {
         max-width: 95vw;
         max-height: 90vh;
     }
     
-    .mlnf-profile-preview__header,
-    .mlnf-profile-preview__body,
-    .mlnf-profile-preview__actions {
+    .nexus-profile-preview__header,
+    .nexus-profile-preview__body,
+    .nexus-profile-preview__actions {
         padding: 1rem;
     }
     
-    .mlnf-stats-grid {
+    .nexus-stats-grid {
         grid-template-columns: repeat(2, 1fr);
     }
     
-    .mlnf-profile-preview__actions {
+    .nexus-profile-preview__actions {
         flex-direction: column;
     }
 }
 
 @media (max-width: 480px) {
-    .mlnf-stats-grid {
+    .nexus-stats-grid {
         grid-template-columns: 1fr;
     }
 }
@@ -2232,7 +2232,7 @@ footer {
     .highlight-item, .debate-position { padding: 1.5rem; }
     .highlight-item h4, .debate-position h4 { font-size: 1.5rem; }
     .chronicle-title-prominent { font-size: 1.6rem !important; }
-    /* Legacy mobile styles removed - handled by MLNF Avatar System responsive design */
+    /* Legacy mobile styles removed - handled by Nexus Avatar System responsive design */
     /* Chronicles modal responsive styles removed */
 
     #messageModal .auth-modal { /* Message modal content on smaller screens */
@@ -2266,7 +2266,7 @@ footer {
     .feature-card h3 { font-size: 1.4rem; }
     .highlight-item h4, .debate-position h4 { font-size: 1.3rem; }
     .chronicle-title-prominent { font-size: 1.4rem !important; }
-    /* Legacy mobile styles removed - handled by MLNF Avatar System responsive design */
+    /* Legacy mobile styles removed - handled by Nexus Avatar System responsive design */
     /* Chronicles modal responsive styles removed */
 
     #messageModal .auth-modal { padding: 1rem; }
@@ -2689,7 +2689,7 @@ main {
     animation: breathingGradient 3s ease-in-out infinite;
 }
 
-.highlight-card:hover .mlnf-avatar {
+.highlight-card:hover .nexus-avatar {
     animation: avatarGlow 2s ease-in-out infinite alternate;
     border-color: rgba(255, 202, 40, 0.8) !important;
 }
@@ -3332,41 +3332,41 @@ nav a {
 }
 
 /* Soul Highlight Avatar Customization */
-.soul-highlight-card .mlnf-user-display {
+.soul-highlight-card .nexus-user-display {
     background: transparent;
     border: none;
     padding: 0;
 }
 
-.soul-highlight-card .mlnf-user-display--lg {
+.soul-highlight-card .nexus-user-display--lg {
     flex-direction: column;
     text-align: center;
     gap: 1rem;
 }
 
-.soul-highlight-card .mlnf-avatar--xl {
+.soul-highlight-card .nexus-avatar--xl {
     border: 3px solid rgba(255, 94, 120, 0.3);
     transition: var(--transition);
 }
 
-.soul-highlight-card:hover .mlnf-avatar--xl {
+.soul-highlight-card:hover .nexus-avatar--xl {
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
     transform: scale(1.02);
 }
 
-.soul-highlight-card .mlnf-username--mystical {
+.soul-highlight-card .nexus-username--mystical {
     /* Font now properly inherited from !important rules above */
     font-size: 1.3rem;
     margin-bottom: 0.5rem;
 }
 
-.soul-highlight-card .mlnf-user-title {
+.soul-highlight-card .nexus-user-title {
     font-size: 1rem;
     color: var(--text-secondary);
     margin-bottom: 0.3rem;
 }
 
-.soul-highlight-card .mlnf-user-status {
+.soul-highlight-card .nexus-user-status {
     font-size: 0.9rem;
     font-style: italic;
     color: var(--text-muted);
@@ -3421,7 +3421,7 @@ nav a {
     
 
     
-    .soul-highlight-card .mlnf-username--mystical {
+    .soul-highlight-card .nexus-username--mystical {
         /* Font now properly inherited from !important rules above */
         font-size: 1.1rem;
     }

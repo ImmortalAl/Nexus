@@ -151,11 +151,11 @@ class CommentsSystem {
         commentDiv.className = 'comment';
         commentDiv.id = `comment-${comment._id}`;
         
-        // Create unified author display using MLNF Avatar System
+        // Create unified author display using Nexus Avatar System
         let authorDisplay;
         
-        if (window.MLNFAvatars && window.MLNFAvatars.createUserDisplay) {
-            authorDisplay = window.MLNFAvatars.createUserDisplay({
+        if (window.NEXUSAvatars && window.NEXUSAvatars.createUserDisplay) {
+            authorDisplay = window.NEXUSAvatars.createUserDisplay({
                 username: comment.author.username,
                 title: comment.author.title || 'Eternal Soul',
                 status: `${formattedDate}${editedText}`,
@@ -335,5 +335,5 @@ class CommentsSystem {
 }
 
 // Add to global MLNF object
-window.MLNF = window.MLNF || {};
-window.MLNF.CommentsSystem = CommentsSystem; 
+window.NEXUS = window.NEXUS || {};
+window.NEXUS.CommentsSystem = CommentsSystem; 

@@ -76,8 +76,8 @@ function updateUserMenu() {
     populateHeaderAuthButtons(headerAuthButtonsContainer);
   }
   
-  if (window.MLNF && window.MLNF.updateActiveUsersButtonVisibility) {
-    window.MLNF.updateActiveUsersButtonVisibility();
+  if (window.NEXUS && window.NEXUS.updateActiveUsersButtonVisibility) {
+    window.NEXUS.updateActiveUsersButtonVisibility();
   }
   
   setupUserMenuEvents(); // Sets up dropdown toggle and logout
@@ -95,8 +95,8 @@ function populateHeaderAuthButtons(container) {
   if (headerSignupButton) {
     headerSignupButton.addEventListener('click', (e) => {
       e.preventDefault();
-      if (window.MLNF && window.MLNF.openSoulModal) {
-        window.MLNF.openSoulModal('register');
+      if (window.NEXUS && window.NEXUS.openSoulModal) {
+        window.NEXUS.openSoulModal('register');
       } else {
         console.error('[userMenu.js] openSoulModal function not available!');
         alert('Registration modal not available. Please refresh the page.');
@@ -107,9 +107,9 @@ function populateHeaderAuthButtons(container) {
     headerLoginButton.addEventListener('click', (e) => {
       e.preventDefault();
       console.log('[userMenu.js] Login button clicked');
-      if (window.MLNF && window.MLNF.openSoulModal) {
+      if (window.NEXUS && window.NEXUS.openSoulModal) {
         console.log('[userMenu.js] Calling openSoulModal with login mode');
-        window.MLNF.openSoulModal('login');
+        window.NEXUS.openSoulModal('login');
       } else {
         console.error('[userMenu.js] openSoulModal function not available!');
         alert('Login modal not available. Please refresh the page.');
@@ -123,8 +123,8 @@ function updateThemeMenuText() {
   const themeToggleMenu = document.getElementById('themeToggleMenu');
   const themeToggleText = document.getElementById('themeToggleText');
   
-  if (themeToggleMenu && themeToggleText && window.MLNFTheme) {
-    const currentTheme = window.MLNFTheme.getTheme();
+  if (themeToggleMenu && themeToggleText && window.NEXUSTheme) {
+    const currentTheme = window.NEXUSTheme.getTheme();
     const icon = themeToggleMenu.querySelector('i');
     
     if (currentTheme === 'dark') {
@@ -166,8 +166,8 @@ function setupUserMenuEvents() {
   if (themeToggleMenu) {
     themeToggleMenu.addEventListener('click', (e) => {
       e.preventDefault();
-      if (window.MLNFTheme) {
-        window.MLNFTheme.toggleTheme();
+      if (window.NEXUSTheme) {
+        window.NEXUSTheme.toggleTheme();
         updateThemeMenuText();
       }
     });
@@ -225,14 +225,14 @@ function initUserMenu() {
   // updateUserMenu(); // This is now called by validateUserSession
   
   // Listen for theme changes to update menu text
-  window.addEventListener('mlnf-theme-changed', updateThemeMenuText);
+  window.addEventListener('nexus-theme-changed', updateThemeMenuText);
 }
 
 // Export the initialization function
-window.MLNF = window.MLNF || {};
-window.MLNF.initUserMenu = initUserMenu;
-window.MLNF.updateUserMenu = updateUserMenu; // Expose for mlnf-core.js storage listener
-window.MLNF.handleLogout = handleLogout; // Expose if needed by other components, e.g. mobile menu
+window.NEXUS = window.NEXUS || {};
+window.NEXUS.initUserMenu = initUserMenu;
+window.NEXUS.updateUserMenu = updateUserMenu; // Expose for nexus-core.js storage listener
+window.NEXUS.handleLogout = handleLogout; // Expose if needed by other components, e.g. mobile menu
 
 // Function to update mobile auth links - DISABLED: Mobile nav should only contain navigation links
 function updateMobileAuthLinks() {
@@ -241,5 +241,5 @@ function updateMobileAuthLinks() {
     return;
 }
 // Make sure setupMobileAuthClickHandlers can be called by navigation.js if it's responsible for main link injection
-window.MLNF.setupMobileAuthClickHandlers = updateMobileAuthLinks;
-window.MLNF.updateMobileAuthLinks = updateMobileAuthLinks;
+window.NEXUS.setupMobileAuthClickHandlers = updateMobileAuthLinks;
+window.NEXUS.updateMobileAuthLinks = updateMobileAuthLinks;

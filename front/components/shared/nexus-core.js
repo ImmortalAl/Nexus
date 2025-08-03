@@ -1,7 +1,7 @@
-// mlnf-core.js - Core initialization for MLNF components
+// nexus-core.js - Core initialization for MLNF components
 
 // Establish the global namespace
-window.MLNF = window.MLNF || {};
+window.NEXUS = window.NEXUS || {};
 
 // Centralized component initialization
 document.addEventListener('DOMContentLoaded', () => {
@@ -21,9 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let successfulInits = 0;
   
   components.forEach(component => {
-    if (typeof window.MLNF[component.name] === 'function') {
+    if (typeof window.NEXUS[component.name] === 'function') {
       try {
-        window.MLNF[component.name]();
+        window.NEXUS[component.name]();
         successfulInits++;
       } catch (error) {
         console.error(`Failed to initialize ${component.desc}:`, error);
@@ -33,8 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   
   // Optional components
-  if (typeof window.MLNF.initHeroParticles === 'function') {
-    window.MLNF.initHeroParticles(350);
+  if (typeof window.NEXUS.initHeroParticles === 'function') {
+    window.NEXUS.initHeroParticles(350);
   }
 
 });
@@ -42,8 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // Listen for authentication state changes
 window.addEventListener('storage', (event) => {
   if (event.key === 'sessionToken' || event.key === 'user') {
-    if (typeof window.MLNF.updateUserMenu === 'function') {
-      window.MLNF.updateUserMenu();
+    if (typeof window.NEXUS.updateUserMenu === 'function') {
+      window.NEXUS.updateUserMenu();
     }
   }
 }); 

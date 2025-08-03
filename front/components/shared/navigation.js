@@ -164,15 +164,15 @@ function initNavigation() {
 }
 
 // Expose to global MLNF object
-window.MLNF = window.MLNF || {};
-window.MLNF.initNavigation = initNavigation;
+window.NEXUS = window.NEXUS || {};
+window.NEXUS.initNavigation = initNavigation;
 // Expose injectNavigation if other scripts need to refresh it, e.g., after login/logout
-window.MLNF.injectNavigation = injectNavigation;
+window.NEXUS.injectNavigation = injectNavigation;
 // Expose setupMobileNavLinkHandlers so it can be called after auth links are updated
-window.MLNF.setupMobileNavLinkHandlers = setupMobileNavLinkHandlers;
+window.NEXUS.setupMobileNavLinkHandlers = setupMobileNavLinkHandlers;
 
 // Make sure to call initNavigation after the DOM is loaded,
-// for example, from mlnf-core.js or a DOMContentLoaded listener.
+// for example, from nexus-core.js or a DOMContentLoaded listener.
 // For now, if no core script is orchestrating, call it directly for testing,
 // but ideally this is called by a main script.
 // document.addEventListener('DOMContentLoaded', initNavigation); // Example: direct call 

@@ -220,8 +220,8 @@ async function handleSoulModalSubmit(event) {
         modalFeedback.classList.add('success');
         
         // After successful login or registration, optionally update user display
-        if (window.MLNF && window.MLNF.updateUserMenu) {
-          window.MLNF.updateUserMenu();
+        if (window.NEXUS && window.NEXUS.updateUserMenu) {
+          window.NEXUS.updateUserMenu();
         }
         
         // Close the modal
@@ -247,8 +247,8 @@ async function handleSoulModalSubmit(event) {
         modalFeedback.classList.add('success');
         
         // Update user display
-        if (window.MLNF && window.MLNF.updateUserMenu) {
-          window.MLNF.updateUserMenu();
+        if (window.NEXUS && window.NEXUS.updateUserMenu) {
+          window.NEXUS.updateUserMenu();
         }
         
         // Close the modal and refresh page
@@ -348,10 +348,10 @@ function initAuthModal() {
 }
 
 // Export functions
-window.MLNF = window.MLNF || {};
-window.MLNF.initAuthModal = initAuthModal;
-window.MLNF.openSoulModal = openSoulModal;
-window.MLNF.closeSoulModal = closeSoulModal;
+window.NEXUS = window.NEXUS || {};
+window.NEXUS.initAuthModal = initAuthModal;
+window.NEXUS.openSoulModal = openSoulModal;
+window.NEXUS.closeSoulModal = closeSoulModal;
 
 // Auto-initialize when DOM is ready
 if (document.readyState === 'loading') {

@@ -42,7 +42,7 @@ class MLNFRichTextEditor {
         // Create editor container if not exists
         if (!this.container.querySelector('.quill-editor')) {
             this.container.innerHTML = `
-                <div class="mlnf-rich-editor-container">
+                <div class="nexus-rich-editor-container">
                     <div class="quill-editor"></div>
                 </div>
             `;
@@ -166,4 +166,4 @@ class MLNFRichTextEditor {
 }
 
 // Export for use across the site
-window.MLNFRichTextEditor = MLNFRichTextEditor;
+window.NEXUSRichTextEditor = MLNFRichTextEditor;

@@ -75,8 +75,8 @@ class SubmissionModal {
     openSubmissionModal() {
         // Check if user is logged in
         if (!window.authManager || !window.authManager.isLoggedIn()) {
-            if (window.MLNF && window.MLNF.openSoulModal) {
-                window.MLNF.openSoulModal('login');
+            if (window.NEXUS && window.NEXUS.openSoulModal) {
+                window.NEXUS.openSoulModal('login');
             } else {
                 alert('Please log in to submit a chronicle.');
             }

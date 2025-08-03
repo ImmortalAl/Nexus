@@ -5,7 +5,7 @@
 // console.log('Analytics tracker disabled'); // Removed to reduce console noise
 
 // Create empty object to prevent errors
-window.MLNFAnalytics = {
+window.NEXUSAnalytics = {
     init: function() { /* Analytics disabled */ },
     trackEngagement: function() { /* Analytics disabled */ },
     trackPageView: function() { /* Analytics disabled */ }

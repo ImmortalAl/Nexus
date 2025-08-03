@@ -1,8 +1,8 @@
 // MLNF Service Worker - PWA Core Functionality
-const CACHE_VERSION = 'mlnf-v1.2.0';
-const STATIC_CACHE = `mlnf-static-${CACHE_VERSION}`;
-const DYNAMIC_CACHE = `mlnf-dynamic-${CACHE_VERSION}`;
-const API_CACHE = `mlnf-api-${CACHE_VERSION}`;
+const CACHE_VERSION = 'nexus-v1.2.0';
+const STATIC_CACHE = `nexus-static-${CACHE_VERSION}`;
+const DYNAMIC_CACHE = `nexus-dynamic-${CACHE_VERSION}`;
+const API_CACHE = `nexus-api-${CACHE_VERSION}`;
 
 // Static assets to cache immediately
 const STATIC_ASSETS = [
@@ -20,8 +20,8 @@ const STATIC_ASSETS = [
   '/css/lander.css',
   '/components/shared/styles.css',
   '/components/shared/config.js',
-  '/components/shared/mlnf-core.js',
-  '/js/mlnf-avatar-system.js',
+  '/components/shared/nexus-core.js',
+  '/js/nexus-avatar-system.js',
   '/favicon.svg',
   '/favicon.ico',
   '/assets/images/default.jpg'
@@ -73,7 +73,7 @@ self.addEventListener('activate', event => {
       .then(cacheNames => {
         return Promise.all(
           cacheNames.map(cacheName => {
-            if (cacheName.startsWith('mlnf-') && 
+            if (cacheName.startsWith('nexus-') && 
                 cacheName !== STATIC_CACHE && 
                 cacheName !== DYNAMIC_CACHE && 
                 cacheName !== API_CACHE) {
@@ -302,7 +302,7 @@ self.addEventListener('push', event => {
     body: 'You have a new update',
     icon: '/favicon.svg',
     badge: '/assets/icons/badge-72x72.png',
-    tag: 'mlnf-notification'
+    tag: 'nexus-notification'
   };
   
   if (event.data) {
@@ -471,7 +471,7 @@ async function syncLikeActions() {
 // IndexedDB helpers for offline storage
 async function getStoredData(storeName) {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open('mlnf-offline-storage', 1);
+    const request = indexedDB.open('nexus-offline-storage', 1);
     
     request.onsuccess = () => {
       const db = request.result;
@@ -490,7 +490,7 @@ async function getStoredData(storeName) {
 
 async function clearStoredData(storeName) {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open('mlnf-offline-storage', 1);
+    const request = indexedDB.open('nexus-offline-storage', 1);
     
     request.onsuccess = () => {
       const db = request.result;

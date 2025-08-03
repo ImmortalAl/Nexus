@@ -142,7 +142,7 @@ class ChroniclesFeed {
                     <h3 class="chronicle-title">${this.escapeHtml(chronicle.title)}</h3>
                     <div class="chronicle-meta">
                         <div class="chronicle-author-info">
-                            <!-- MLNF Avatar System will populate this -->
+                            <!-- Nexus Avatar System will populate this -->
                         </div>
                         <div class="chronicle-dates">
                             <div class="event-date">
@@ -241,8 +241,8 @@ class ChroniclesFeed {
             if (this.chronicles[index] && this.chronicles[index].author) {
                 const author = this.chronicles[index].author;
                 
-                if (window.MLNFAvatars) {
-                    const avatarElement = window.MLNFAvatars.createUserDisplay({
+                if (window.NEXUSAvatars) {
+                    const avatarElement = window.NEXUSAvatars.createUserDisplay({
                         username: author.username || author.displayName || 'Anonymous',
                         title: author.title || 'Eternal Soul',
                         status: author.status || null,
@@ -256,7 +256,7 @@ class ChroniclesFeed {
                     container.innerHTML = '';
                     container.appendChild(avatarElement);
                 } else {
-                    console.warn('[Chronicles] MLNFAvatars not available, creating fallback');
+                    console.warn('[Chronicles] NexusAvatars not available, creating fallback');
                     // Fallback if avatar system not loaded
                     container.innerHTML = `
                         <div class="fallback-author">
@@ -372,8 +372,8 @@ class ChroniclesFeed {
         const authorContainer = document.querySelector('.chronicle-detail .chronicle-author-info');
         if (authorContainer && chronicle.author) {
             
-            if (window.MLNFAvatars) {
-                const avatarElement = window.MLNFAvatars.createUserDisplay({
+            if (window.NEXUSAvatars) {
+                const avatarElement = window.NEXUSAvatars.createUserDisplay({
                     username: chronicle.author.username || chronicle.author.displayName || 'Anonymous',
                     title: chronicle.author.title || 'Eternal Soul',
                     status: chronicle.author.status || null,
@@ -387,7 +387,7 @@ class ChroniclesFeed {
                 authorContainer.innerHTML = '';
                 authorContainer.appendChild(avatarElement);
             } else {
-                console.warn('[Chronicles Modal] MLNFAvatars not available, creating fallback');
+                console.warn('[Chronicles Modal] NexusAvatars not available, creating fallback');
                 // Fallback if avatar system not loaded
                 authorContainer.innerHTML = `
                     <div class="fallback-author">

@@ -98,8 +98,8 @@ async function fetchBlogPosts(page = 1) {
                     day: 'numeric'
                 });
                 
-                // Create unified author display using MLNF Avatar System
-                const authorDisplay = window.MLNFAvatars.createUserDisplay({
+                // Create unified author display using Nexus Avatar System
+                const authorDisplay = window.NEXUSAvatars.createUserDisplay({
                     username: post.author.username,
                     title: post.author.title || 'Scroll Author',
                     avatarSize: 'md',
@@ -300,8 +300,8 @@ async function createBlog() {
             errorElement.textContent = 'Please log in to share a scroll';
             errorElement.style.display = 'block';
         }
-        if (window.MLNF && window.MLNF.openSoulModal) {
-            window.MLNF.openSoulModal('login');
+        if (window.NEXUS && window.NEXUS.openSoulModal) {
+            window.NEXUS.openSoulModal('login');
         }
         return;
     }
@@ -539,9 +539,9 @@ function updateAuthorInfo(post) {
     const modalAuthorContainer = document.querySelector('.modal-author-info');
     const fallbackContainer = document.querySelector('.scroll-author');
     
-    if (modalAuthorContainer && window.MLNFAvatars) {
+    if (modalAuthorContainer && window.NEXUSAvatars) {
         modalAuthorContainer.innerHTML = '';
-        const modalAuthorDisplay = window.MLNFAvatars.createUserDisplay({
+        const modalAuthorDisplay = window.NEXUSAvatars.createUserDisplay({
             username: post.author.username,
             displayName: post.author.displayName || post.author.username,
             title: post.author.title || 'Scroll Author',
@@ -567,7 +567,7 @@ function updateAuthorInfo(post) {
             fallbackContainer.style.display = 'none';
         }
     } else {
-        console.warn('MLNF Avatar System not available, using fallback author display');
+        console.warn('Nexus Avatar System not available, using fallback author display');
         
         if (fallbackContainer) {
             fallbackContainer.style.display = 'flex';
@@ -674,12 +674,12 @@ function handleModalKeyboard(e) {
 function initializeCommentsSystem(postId) {
     // Initialize comments system
     setTimeout(() => {
-        if (window.MLNF && window.MLNF.CommentsSystem) {
+        if (window.NEXUS && window.NEXUS.CommentsSystem) {
             try {
                 if (commentsSystem) {
                     commentsSystem = null;
                 }
-                commentsSystem = new window.MLNF.CommentsSystem('blog', postId, 'blogComments');
+                commentsSystem = new window.NEXUS.CommentsSystem('blog', postId, 'blogComments');
             } catch (error) {
                 console.error('Error initializing comments:', error);
             }
@@ -903,8 +903,8 @@ function sharePost(postId) {
 async function likePost(postId) {
     const token = localStorage.getItem('sessionToken');
     if (!isTokenValid(token)) {
-        if (window.MLNF && window.MLNF.openSoulModal) {
-            window.MLNF.openSoulModal('login');
+        if (window.NEXUS && window.NEXUS.openSoulModal) {
+            window.NEXUS.openSoulModal('login');
         }
         return;
     }
@@ -935,8 +935,8 @@ async function likePost(postId) {
 async function dislikePost(postId) {
     const token = localStorage.getItem('sessionToken');
     if (!isTokenValid(token)) {
-        if (window.MLNF && window.MLNF.openSoulModal) {
-            window.MLNF.openSoulModal('login');
+        if (window.NEXUS && window.NEXUS.openSoulModal) {
+            window.NEXUS.openSoulModal('login');
         }
         return;
     }
@@ -1005,8 +1005,8 @@ function editCurrentPost() {
 async function editPost(postId) {
     const token = localStorage.getItem('sessionToken');
     if (!isTokenValid(token)) {
-        if (window.MLNF && window.MLNF.openSoulModal) {
-            window.MLNF.openSoulModal('login');
+        if (window.NEXUS && window.NEXUS.openSoulModal) {
+            window.NEXUS.openSoulModal('login');
         }
         return;
     }
@@ -1246,7 +1246,7 @@ function checkAutoOpen() {
         
         // Wait for all systems to be ready
         const attemptAutoOpen = (attempts = 0) => {
-            if (!window.MLNFAvatars) {
+            if (!window.NEXUSAvatars) {
                 if (attempts < 20) {
                     setTimeout(() => attemptAutoOpen(attempts + 1), 500);
                 }

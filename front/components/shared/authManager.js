@@ -141,8 +141,8 @@ class AuthManager {
      * Show login modal (for compatibility with apiClient)
      */
     showLogin() {
-        if (window.MLNF && window.MLNF.openSoulModal) {
-            window.MLNF.openSoulModal('login');
+        if (window.NEXUS && window.NEXUS.openSoulModal) {
+            window.NEXUS.openSoulModal('login');
         } else {
             console.warn('[AuthManager] Cannot show login modal - openSoulModal not available');
         }
