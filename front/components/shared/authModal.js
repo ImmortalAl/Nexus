@@ -5,7 +5,6 @@
 
 // Create and inject the Soul Modal
 function injectSoulModal() {
-  console.log('[Auth Modal] Injecting Soul Modal into DOM...');
   // Create modal element directly
   const modalDiv = document.createElement('div');
   modalDiv.id = 'soulModal';
@@ -43,11 +42,9 @@ function injectSoulModal() {
   
   // Append directly to body
   document.body.appendChild(modalDiv);
-  console.log('[Auth Modal] Modal element appended to body');
   
   // Get modal elements
   soulModal = document.getElementById('soulModal');
-  console.log('[Auth Modal] Soul modal element found:', soulModal ? 'YES' : 'NO');
   soulModalTitle = document.getElementById('soulModalTitle');
   soulLoginForm = document.getElementById('soulLoginForm');
   soulModalSubmit = document.getElementById('soulModalSubmit');
@@ -95,7 +92,6 @@ function setSoulModalView(mode) {
 
 // Open the Soul Modal
 function openSoulModal(mode = 'login') {
-  console.log('[Auth Modal] openSoulModal called with mode:', mode);
   if (!soulModal) {
     console.error('[Auth Modal] openSoulModal: soulModal element not found!');
     return;
@@ -107,7 +103,6 @@ function openSoulModal(mode = 'login') {
   soulModal.style.zIndex = '99999'; // Force highest z-index
   soulModal.style.opacity = '1'; // Force opacity
   soulModal.style.visibility = 'visible'; // Force visibility
-  console.log('[Auth Modal] Modal styles set - opacity:', soulModal.style.opacity, 'visibility:', soulModal.style.visibility, 'z-index:', soulModal.style.zIndex);
   document.body.style.overflow = 'hidden'; // Prevent background scroll
   
   const usernameInput = soulModal.querySelector('input[name="username"]');
@@ -348,10 +343,8 @@ function setupSoulModalEvents() {
 
 // Initialize auth modal
 function initAuthModal() {
-  console.log('[Auth Modal] Initializing auth modal...');
   injectSoulModal();
   setupSoulModalEvents();
-  console.log('[Auth Modal] Auth modal initialization complete');
 }
 
 // Export functions

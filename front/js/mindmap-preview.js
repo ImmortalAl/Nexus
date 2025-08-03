@@ -15,21 +15,10 @@ class MindmapPreview {
         this.data = null;
         this.selectedNode = null;
         
-        console.log('MindmapPreview: Constructor - Elements found:', {
-            container: !!this.container,
-            nodesContainer: !!this.nodesContainer,
-            connectionsContainer: !!this.connectionsContainer,
-            tooltip: !!this.tooltip,
-            searchInput: !!this.searchInput,
-            searchBtn: !!this.searchBtn,
-            statsContainer: !!this.statsContainer
-        });
-        
         this.init();
     }
     
     async init() {
-        console.log('MindmapPreview: Initializing...');
         try {
             // Load preview data
             await this.loadPreviewData();
@@ -43,7 +32,6 @@ class MindmapPreview {
                 loading.style.display = 'none';
             }
             
-            console.log('MindmapPreview: Initialized successfully');
         } catch (error) {
             console.error('Failed to initialize mindmap preview:', error);
             this.showError('Failed to load Nexus preview');
@@ -52,7 +40,6 @@ class MindmapPreview {
     
     async loadPreviewData() {
         try {
-            console.log('MindmapPreview: Loading preview data...');
             const apiBaseUrl = window.MLNF_CONFIG?.API_BASE_URL || 'https://nexus-cryc.onrender.com/api';
             const response = await fetch(`${apiBaseUrl}/mindmap/preview`);
             
@@ -61,7 +48,6 @@ class MindmapPreview {
             }
             
             this.data = await response.json();
-            console.log('MindmapPreview: Data loaded:', this.data);
             
             // Render the preview
             this.renderNodes();

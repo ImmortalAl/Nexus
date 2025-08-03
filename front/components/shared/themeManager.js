@@ -22,8 +22,6 @@ class MLNFThemeManager {
             this.currentTheme = 'dark';
         }
         
-        console.log('[Theme] Initializing with theme:', this.currentTheme);
-        
         // Apply theme immediately
         this.applyTheme(this.currentTheme);
         
@@ -43,14 +41,12 @@ class MLNFThemeManager {
         setTimeout(() => {
             // Find and connect existing theme toggle buttons
             const toggleButtons = document.querySelectorAll('[data-theme-toggle]');
-            console.log('[Theme] Found toggle buttons:', toggleButtons.length);
             
             toggleButtons.forEach(button => {
                 // Remove any existing click listeners to avoid duplicates
                 button.removeEventListener('click', this.handleToggleClick);
                 // Add new click listener
                 button.addEventListener('click', () => {
-                    console.log('[Theme] Toggle clicked, current theme:', this.currentTheme);
                     this.toggleTheme();
                 });
             });
@@ -58,7 +54,6 @@ class MLNFThemeManager {
     }
 
     applyTheme(theme) {
-        console.log('[Theme] Applying theme:', theme);
         
         // Remove existing theme classes
         document.body.classList.remove('light-theme', 'dark-theme');
@@ -69,8 +64,6 @@ class MLNFThemeManager {
         } else {
             document.body.classList.add('dark-theme');
         }
-        
-        console.log('[Theme] Body classes after apply:', document.body.className);
         
         // Update theme color meta tag
         const themeColor = theme === 'light' ? '#ffffff' : '#0d0d1a';

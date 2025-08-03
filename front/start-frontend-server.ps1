@@ -50,7 +50,7 @@ try {
     } else {
         Write-Host "❌ Neither Python nor Node.js found!" -ForegroundColor Red
         Write-Host "💡 Please install Python or Node.js to run a local server" -ForegroundColor Yellow
-        Write-Host "   Or manually open: file:///$(Get-Location)\pages\news.html" -ForegroundColor Cyan
+        Write-Host "   Or manually open: file:///$(Get-Location -Replace '\\', '/')\pages\news.html" -ForegroundColor Cyan
     }
 } finally {
     # Return to root directory when done
