@@ -34,4 +34,4 @@ git diff --name-only HEAD~1
 echo ""
 
 echo "✅ Ready to deploy Nexus backend!"
-echo "   Service URL: https://nexus-cryc.onrender.com"
+echo "   Service URL: https://nexus-ytrg.onrender.com"

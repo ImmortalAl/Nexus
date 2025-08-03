@@ -9,7 +9,7 @@ const apiClient = {
     /**
      * The base URL for all API requests.
      */
-    baseURL: window.NEXUS_CONFIG?.API_BASE_URL || 'https://nexus-cryc.onrender.com/api',
+    baseURL: window.NEXUS_CONFIG?.API_BASE_URL || 'https://nexus-ytrg.onrender.com/api',
 
     /**
      * Performs a GET request.

@@ -7,7 +7,7 @@ The Immortal Nexus API provides the backend services for the community platform.
 ## Base Configuration
 
 ### API Base URLs
-- **Production**: `https://nexus-cryc.onrender.com/api`
+- **Production**: `https://nexus-ytrg.onrender.com/api`
 - **Local Development**: `http://localhost:3001/api`
 
 ### Environment Detection
@@ -15,7 +15,7 @@ The frontend automatically detects the environment and uses the appropriate base
 
 ```javascript
 const isLocalDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-const API_BASE_URL = isLocalDevelopment ? 'http://localhost:3001/api' : 'https://nexus-cryc.onrender.com/api';
+const API_BASE_URL = isLocalDevelopment ? 'http://localhost:3001/api' : 'https://nexus-ytrg.onrender.com/api';
 ```
 
 ## Authentication

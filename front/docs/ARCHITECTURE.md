@@ -662,7 +662,7 @@ function broadcastUserStatus(userId, isOnline) {
 // Planned: Frontend WebSocket integration
 class RealTimeStatusUpdater {
     constructor() {
-        this.ws = new WebSocket('wss://nexus-cryc.onrender.com/ws');
+        this.ws = new WebSocket('wss://nexus-ytrg.onrender.com/ws');
         this.setupEventListeners();
     }
     
