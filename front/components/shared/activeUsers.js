@@ -144,7 +144,7 @@ async function populateActiveUsersList() {
         let fetchedUsers;
         
         try {
-            response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/users/online?_cb=${new Date().getTime()}`, {
+            response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/users/online?_cb=${new Date().getTime()}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -160,7 +160,7 @@ async function populateActiveUsersList() {
             console.warn('[activeUsers.js] /users/online failed, trying fallback:', onlineError.message);
             
             // Fallback to general users endpoint
-            response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/users?_cb=${new Date().getTime()}`, {
+            response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/users?_cb=${new Date().getTime()}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -263,7 +263,7 @@ async function populateActiveUsersList() {
         console.error('[activeUsers.js] Error details:', {
             message: error.message,
             stack: error.stack,
-            apiUrl: window.MLNF_CONFIG?.API_BASE_URL,
+            apiUrl: window.NEXUS_CONFIG?.API_BASE_URL,
             hasToken: !!token
         });
         

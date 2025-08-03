@@ -23,7 +23,7 @@
         }
         
         try {
-            const response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/users/me`, {
+            const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/users/me`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -97,7 +97,7 @@
         
         try {
             // Fetch total users
-            const usersResponse = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/users`, {
+            const usersResponse = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/users`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             
@@ -160,7 +160,7 @@
         tbody.innerHTML = '<tr><td colspan="7" class="loading">Summoning souls...</td></tr>';
         
         try {
-            const response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/users`, {
+            const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/users`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             
@@ -228,7 +228,7 @@
         
         tbody.innerHTML = paginatedUsers.map(user => `
             <tr>
-                <td><img src="${user.avatar || window.MLNF_CONFIG.DEFAULT_AVATAR}" alt="${user.username}" class="user-avatar"></td>
+                <td><img src="${user.avatar || window.NEXUS_CONFIG.DEFAULT_AVATAR}" alt="${user.username}" class="user-avatar"></td>
                 <td>${user.username}</td>
                 <td>${user.displayName || '--'}</td>
                 <td><span class="user-status status-${user.online ? 'online' : 'offline'}">${user.online ? 'Online' : 'Offline'}</span></td>
@@ -370,7 +370,7 @@
         
         modalContent.innerHTML = `
             <div class="user-details">
-                <img src="${user.avatar || window.MLNF_CONFIG.DEFAULT_AVATAR}" alt="${user.username}" style="width: 100px; height: 100px; border-radius: 50%; margin-bottom: 1rem;">
+                <img src="${user.avatar || window.NEXUS_CONFIG.DEFAULT_AVATAR}" alt="${user.username}" style="width: 100px; height: 100px; border-radius: 50%; margin-bottom: 1rem;">
                 <h4>${user.displayName || user.username}</h4>
                 <p>@${user.username}</p>
                 <p>Status: ${user.status || 'No status set'}</p>
@@ -390,7 +390,7 @@
         const modalContent = document.getElementById('modalContent');
         modalContent.innerHTML = `
             <div class="user-details">
-                <img src="${user.avatar || window.MLNF_CONFIG.DEFAULT_AVATAR}" alt="${user.username}" style="width: 100px; height: 100px; border-radius: 50%; margin-bottom: 1rem;">
+                <img src="${user.avatar || window.NEXUS_CONFIG.DEFAULT_AVATAR}" alt="${user.username}" style="width: 100px; height: 100px; border-radius: 50%; margin-bottom: 1rem;">
                 <h4>Edit Soul: ${user.displayName || user.username}</h4>
                 <label>Display Name: <input type="text" id="editDisplayName" value="${user.displayName || ''}"></label><br>
                 <label>Status: <input type="text" id="editStatus" value="${user.status || ''}"></label><br>
@@ -407,7 +407,7 @@
             const bio = document.getElementById('editBio').value;
             const token = localStorage.getItem('sessionToken');
             try {
-                const res = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/users/${username}`, {
+                const res = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/users/${username}`, {
                     method: 'PUT',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -429,13 +429,13 @@
         const token = localStorage.getItem('sessionToken');
         try {
             // Try PATCH first, fallback to DELETE if needed
-            let res = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/users/${username}/ban`, {
+            let res = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/users/${username}/ban`, {
                 method: 'PATCH',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (!res.ok) {
                 // Try DELETE as fallback
-                res = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/users/${username}`, {
+                res = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/users/${username}`, {
                     method: 'DELETE',
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
@@ -497,7 +497,7 @@
                     }
 
                     try {
-                        const response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/messages/reply`, {
+                        const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/messages/reply`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -561,7 +561,7 @@
         const tbody = document.getElementById('feedbackTableBody');
         tbody.innerHTML = '<tr><td colspan="5" class="loading">Summoning immortal feedback...</td></tr>';
         try {
-            const response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/messages/feedback`, {
+            const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/messages/feedback`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (!response.ok) throw new Error('Failed to fetch feedback');
@@ -612,7 +612,7 @@
                 btn.addEventListener('click', async function() {
                     if (!confirm('Delete this feedback forever?')) return;
                     const id = btn.getAttribute('data-id');
-                    const delRes = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/messages/feedback/${id}`, {
+                    const delRes = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/messages/feedback/${id}`, {
                         method: 'DELETE',
                         headers: { 'Authorization': `Bearer ${token}` }
                     });

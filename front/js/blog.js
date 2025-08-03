@@ -13,7 +13,7 @@ function jwt_decode(token) {
     }
 }
 
-const BLOG_API_BASE_URL = window.MLNF_CONFIG?.API_BASE_URL || 'https://nexus-cryc.onrender.com/api';
+const BLOG_API_BASE_URL = window.NEXUS_CONFIG?.API_BASE_URL || 'https://nexus-cryc.onrender.com/api';
 
 // const activeUsers = document.getElementById('activeUsers'); // Handled by activeUsers.js
 // const showUsersBtn = document.getElementById('showUsersBtn'); // Handled by activeUsers.js

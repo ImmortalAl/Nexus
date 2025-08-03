@@ -1,6 +1,6 @@
 // authModal.js - Handles the Soul Modal for authentication
 
-// Constants are now in config.js and accessed via window.MLNF_CONFIG
+// Constants are now in config.js and accessed via window.NEXUS_CONFIG
 // const API_BASE_URL = 'https://nexus-cryc.onrender.com/api'; // REMOVED
 
 // Create and inject the Soul Modal
@@ -131,7 +131,7 @@ function closeSoulModal() {
 // Handle form submission for login/register
 async function handleSoulModalSubmit(event) {
   event.preventDefault();
-  const API_BASE_URL = window.MLNF_CONFIG.API_BASE_URL; // Use from config
+  const API_BASE_URL = window.NEXUS_CONFIG.API_BASE_URL; // Use from config
   
   if (!soulLoginForm || !modalFeedback || !soulModalSubmit || !soulModal) return;
   

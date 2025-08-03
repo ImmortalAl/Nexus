@@ -332,7 +332,7 @@ class MLNFAvatarSystem {
             } else {
                 console.error(`[MLNF Avatar] Both primary and fallback failed for ${username}`);
                 // Last resort: use a default avatar
-                img.src = window.MLNF_CONFIG?.DEFAULT_AVATAR || '/assets/images/default.jpg';
+                img.src = window.NEXUS_CONFIG?.DEFAULT_AVATAR || '/assets/images/default.jpg';
             }
             img.onerror = null; // Prevent infinite loop
         };

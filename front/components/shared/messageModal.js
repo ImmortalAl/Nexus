@@ -50,7 +50,7 @@ let messageModal, recipientNameElement, messageInputElement, messageHistoryEleme
         try {
             const token = localStorage.getItem('sessionToken');
             if (!token) throw new Error('No auth token');
-            await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/messages/send`, {
+            await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/messages/send`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify({ recipientUsername: currentRecipientUsername, content: messageText })
@@ -85,7 +85,7 @@ let messageModal, recipientNameElement, messageInputElement, messageHistoryEleme
         try {
             const token = localStorage.getItem('sessionToken');
             if (!token) throw new Error('No auth token');
-            const response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/messages/conversation/${username}`, {
+            const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/messages/conversation/${username}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (!response.ok) throw new Error(`HTTP error ${response.status}`);

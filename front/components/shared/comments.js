@@ -66,7 +66,7 @@ class CommentsSystem {
             }
             
             const response = await fetch(
-                `${window.MLNF_CONFIG.API_BASE_URL}/comments/${this.targetType}/${this.targetId}`,
+                `${window.NEXUS_CONFIG.API_BASE_URL}/comments/${this.targetType}/${this.targetId}`,
                 { headers }
             );
             
@@ -255,7 +255,7 @@ class CommentsSystem {
         }
         
         try {
-            const response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/comments`, {
+            const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/comments`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${this.token}`,
@@ -288,7 +288,7 @@ class CommentsSystem {
         if (!newContent || newContent === comment.content) return;
         
         try {
-            const response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/comments/${commentId}`, {
+            const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/comments/${commentId}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${this.token}`,
@@ -315,7 +315,7 @@ class CommentsSystem {
         if (!confirm('Delete this eternal thought forever?')) return;
         
         try {
-            const response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/comments/${commentId}`, {
+            const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/comments/${commentId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${this.token}`,

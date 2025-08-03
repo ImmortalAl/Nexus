@@ -34,7 +34,7 @@ class MLNFWebSocket {
 
         try {
             // Convert HTTP URL to WebSocket URL
-            const wsUrl = MLNF_CONFIG.API_BASE_URL.replace('https://', 'wss://').replace('http://', 'ws://').replace('/api', '');
+            const wsUrl = NEXUS_CONFIG.API_BASE_URL.replace('https://', 'wss://').replace('http://', 'ws://').replace('/api', '');
             const fullUrl = `${wsUrl}?token=${encodeURIComponent(token)}`;
             
             

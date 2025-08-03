@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            const apiBaseUrl = window.MLNF_CONFIG?.API_BASE_URL || 'https://nexus-cryc.onrender.com/api';
+            const apiBaseUrl = window.NEXUS_CONFIG?.API_BASE_URL || 'https://nexus-cryc.onrender.com/api';
             const response = await fetch(`${apiBaseUrl}/users/me`, {
                 method: 'GET',
                 headers: {
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error('Please log in to save your profile');
             }
 
-            const apiBaseUrl = window.MLNF_CONFIG?.API_BASE_URL || 'https://nexus-cryc.onrender.com/api';
+            const apiBaseUrl = window.NEXUS_CONFIG?.API_BASE_URL || 'https://nexus-cryc.onrender.com/api';
             const response = await fetch(`${apiBaseUrl}/users/me`, {
                 method: 'PATCH',
                 headers: {

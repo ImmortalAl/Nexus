@@ -40,7 +40,7 @@ class MindmapPreview {
     
     async loadPreviewData() {
         try {
-            const apiBaseUrl = window.MLNF_CONFIG?.API_BASE_URL || 'https://nexus-cryc.onrender.com/api';
+            const apiBaseUrl = window.NEXUS_CONFIG?.API_BASE_URL || 'https://nexus-cryc.onrender.com/api';
             const response = await fetch(`${apiBaseUrl}/mindmap/preview`);
             
             if (!response.ok) {

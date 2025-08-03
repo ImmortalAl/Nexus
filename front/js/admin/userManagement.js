@@ -13,7 +13,7 @@ const UserManagement = {
     init() {
         try {
             console.log('UserManagement: Starting initialization...');
-            this.apiBaseUrl = window.MLNF_CONFIG?.API_BASE_URL || 'https://nexus-cryc.onrender.com/api';
+            this.apiBaseUrl = window.NEXUS_CONFIG?.API_BASE_URL || 'https://nexus-cryc.onrender.com/api';
             console.log('UserManagement: API Base URL set to:', this.apiBaseUrl);
             this.setupEventListeners();
             console.log('UserManagement: Event listeners set up');

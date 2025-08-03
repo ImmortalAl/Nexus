@@ -1,14 +1,14 @@
 // userMenu.js - Handles the user dropdown menu functionality
 
-// Constants are now in config.js and accessed via window.MLNF_CONFIG
+// Constants are now in config.js and accessed via window.NEXUS_CONFIG
 // const API_BASE_URL = 'https://nexus-cryc.onrender.com/api'; // REMOVED
 // const DEFAULT_AVATAR = '/assets/images/default-avatar.png'; // REMOVED
 
 // Update user dropdown menu based on authentication status
 function updateUserMenu() {
   
-  const API_BASE_URL = window.MLNF_CONFIG.API_BASE_URL;
-  const DEFAULT_AVATAR = window.MLNF_CONFIG.DEFAULT_AVATAR;
+  const API_BASE_URL = window.NEXUS_CONFIG.API_BASE_URL;
+  const DEFAULT_AVATAR = window.NEXUS_CONFIG.DEFAULT_AVATAR;
   
   const userMenuContainer = document.getElementById('userMenuContainer');
   const headerAuthButtonsContainer = document.getElementById('headerAuthButtonsContainer');
@@ -192,7 +192,7 @@ function handleLogout() {
 
 // Check if token exists but user data is missing, then fetch user data
 async function validateUserSession() {
-  const API_BASE_URL = window.MLNF_CONFIG.API_BASE_URL;
+  const API_BASE_URL = window.NEXUS_CONFIG.API_BASE_URL;
   const token = localStorage.getItem('sessionToken');
   const cachedUser = localStorage.getItem('user');
   

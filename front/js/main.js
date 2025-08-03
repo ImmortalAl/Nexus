@@ -157,7 +157,7 @@ class FeedbackSystem {
         };
         try {
             this.showLoading();
-            const response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/messages/feedback`, {
+            const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/messages/feedback`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -336,7 +336,7 @@ class EternalSoulsHighlight {
 
         try {
             // Fetch ImmortalAl's profile data
-            const response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/users/ImmortalAl`);
+            const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/users/ImmortalAl`);
             let founderData = {
                 username: 'ImmortalAl',
                 displayName: 'ImmortalAl',
@@ -409,7 +409,7 @@ class EternalSoulsHighlight {
                 { 'Authorization': `Bearer ${token}` } : 
                 {};
 
-            const response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/users?limit=5`, {
+            const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/users?limit=5`, {
                 headers: headers
             });
 
@@ -759,7 +759,7 @@ async function sendAnonymousMessage(recipientUsername, content, senderName = 'An
             recipient: recipientUsername
         };
 
-        const response = await fetch(`${window.MLNF_CONFIG.API_BASE_URL}/messages/feedback`, {
+        const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/messages/feedback`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(messageData)
