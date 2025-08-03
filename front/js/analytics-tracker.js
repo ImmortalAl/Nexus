@@ -2,11 +2,11 @@
 // Comprehensive visitor and engagement tracking system
 
 // Completely disabled to prevent CORS issues and syntax errors
-console.log('Analytics tracker disabled');
+// console.log('Analytics tracker disabled'); // Removed to reduce console noise
 
 // Create empty object to prevent errors
 window.MLNFAnalytics = {
-    init: function() { console.log('Analytics disabled'); },
-    trackEngagement: function() { console.log('Analytics disabled'); },
-    trackPageView: function() { console.log('Analytics disabled'); }
+    init: function() { /* Analytics disabled */ },
+    trackEngagement: function() { /* Analytics disabled */ },
+    trackPageView: function() { /* Analytics disabled */ }
 };
