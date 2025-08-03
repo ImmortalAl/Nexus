@@ -737,11 +737,11 @@
     <script src="../components/shared/apiClient.js?v=1.2"></script>
     <script src="../components/shared/navigation.js?v=1.7"></script>
     <script src="../components/shared/userMenu.js?v=1.8"></script>
-    <script src="../components/shared/activeUsers.js?v=1.6"></script>
+    <script src="../components/shared/activeUsers.js?v=1.8"></script>
     <script src="../components/shared/messageModal.js?v=2.5"></script>
     
     <!-- Avatar System -->
-    <script src="../js/nexus-avatar-system.js?v=2.1"></script>
+    <script src="../js/nexus-avatar-system.js?v=2.2"></script>
     
     <!-- Comments System -->
     <script src="../components/shared/comments.js?v=1.0"></script>
@@ -752,8 +752,8 @@
             // nexus-core.js handles component initialization automatically
             
             // Initialize Nexus Avatar System
-            if (!window.NEXUSAvatars && window.NEXUSAvatarSystem) {
-                window.NEXUSAvatars = new window.NEXUSAvatarSystem();
+            if (!window.NexusAvatars && window.NexusAvatarSystem) {
+                window.NexusAvatars = new window.NexusAvatarSystem();
                 console.log('[Profile] Nexus Avatar System initialized');
             }
             
@@ -860,8 +860,8 @@
             const status = profileHeader.querySelector('.profile-status');
 
             // Use Nexus Avatar System for consistent avatar handling
-            if (avatar && window.NEXUSAvatars) {
-                const avatarUrl = window.NEXUSAvatars.generateAvatarUrl(
+            if (avatar && window.NexusAvatars) {
+                const avatarUrl = window.NexusAvatars.generateAvatarUrl(
                     userData.username,
                     150, // Large size for profile
                     userData.avatar

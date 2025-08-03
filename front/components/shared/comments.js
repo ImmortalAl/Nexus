@@ -154,8 +154,8 @@ class CommentsSystem {
         // Create unified author display using Nexus Avatar System
         let authorDisplay;
         
-        if (window.NEXUSAvatars && window.NEXUSAvatars.createUserDisplay) {
-            authorDisplay = window.NEXUSAvatars.createUserDisplay({
+        if (window.NexusAvatars && window.NexusAvatars.createUserDisplay) {
+            authorDisplay = window.NexusAvatars.createUserDisplay({
                 username: comment.author.username,
                 title: comment.author.title || 'Eternal Soul',
                 status: `${formattedDate}${editedText}`,

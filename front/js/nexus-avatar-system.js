@@ -570,7 +570,7 @@ if (document.readyState === 'loading') {
         window.NexusAvatars.initializeExistingElements();
     });
 } else {
-    window.NEXUSAvatars.initializeExistingElements();
+    window.NexusAvatars.initializeExistingElements();
 }
 
 // Export for module systems

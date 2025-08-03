@@ -737,11 +737,11 @@
     <script src="/components/shared/apiClient.js?v=1.2"></script>
     <script src="/components/shared/navigation.js?v=1.7"></script>
     <script src="/components/shared/userMenu.js?v=1.8"></script>
-    <script src="/components/shared/activeUsers.js?v=1.6"></script>
+    <script src="/components/shared/activeUsers.js?v=1.8"></script>
     <script src="/components/shared/messageModal.js?v=2.5"></script>
     
     <!-- Avatar System -->
-    <script src="/js/nexus-avatar-system.js?v=2.1"></script>
+    <script src="/js/nexus-avatar-system.js?v=2.2"></script>
     
     <!-- Comments System -->
     <script src="/components/shared/comments.js?v=1.0"></script>
@@ -799,10 +799,10 @@
                 loadUserBlogs(username);
                 
                 // Initialize profile comments
-                if (window.Immortal Nexus && window.Immortal Nexus.CommentsSystem) {
+                if (window.ImmortalNexus && window.ImmortalNexus.CommentsSystem) {
                     console.log('[Profile] Initializing comments for profile:', username);
                     try {
-                        const commentsInstance = new window.Immortal Nexus.CommentsSystem('profile', username, 'profileComments');
+                        const commentsInstance = new window.ImmortalNexus.CommentsSystem('profile', username, 'profileComments');
                         console.log('[Profile] Comments system initialized successfully');
                     } catch (error) {
                         console.error('[Profile] Failed to initialize comments:', error);

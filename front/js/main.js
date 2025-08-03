@@ -297,12 +297,12 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize Eternal Souls Highlight system
     setTimeout(() => {
-        if (window.NEXUSAvatars) {
+        if (window.NexusAvatars) {
             window.eternalSoulsHighlight = new EternalSoulsHighlight();
         } else {
             // Wait for Avatar System to load
             const checkAvatarSystem = setInterval(() => {
-                if (window.NEXUSAvatars) {
+                if (window.NexusAvatars) {
                     clearInterval(checkAvatarSystem);
                     window.eternalSoulsHighlight = new EternalSoulsHighlight();
                 }
@@ -329,7 +329,7 @@ class EternalSoulsHighlight {
             // This is expected on pages without the founder display element
             return;
         }
-        if (!window.NEXUSAvatars) {
+        if (!window.NexusAvatars) {
             // Avatar System not available for founder display
             return;
         }
@@ -360,7 +360,7 @@ class EternalSoulsHighlight {
             }
 
             // Create founder display using Nexus Avatar System
-            const founderUserDisplay = window.NEXUSAvatars.createUserDisplay({
+            const founderUserDisplay = window.NexusAvatars.createUserDisplay({
                 username: founderData.username,
                 title: founderData.title,
                 status: founderData.status,
@@ -397,7 +397,7 @@ class EternalSoulsHighlight {
             // This is expected on pages without the featured soul display element
             return;
         }
-        if (!window.NEXUSAvatars) {
+        if (!window.NexusAvatars) {
             // Avatar System not available for featured soul display
             return;
         }
@@ -443,7 +443,7 @@ class EternalSoulsHighlight {
             const featuredSoul = this.featuredSoulData;
 
             // Create featured soul display
-            const featuredUserDisplay = window.NEXUSAvatars.createUserDisplay({
+            const featuredUserDisplay = window.NexusAvatars.createUserDisplay({
                 username: featuredSoul.username,
                 title: 'Featured Community Soul',
                 status: featuredSoul.status || 'Wandering the eternal realms...',

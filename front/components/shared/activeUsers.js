@@ -203,12 +203,12 @@ async function populateActiveUsersList() {
                 
                 
                 // Create unified user display using Nexus Avatar System
-                if (!window.NEXUSAvatars) {
+                if (!window.NexusAvatars) {
                     console.warn('[activeUsers.js] NexusAvatars not available yet');
                     return;
                 }
                 
-                const userDisplay = window.NEXUSAvatars.createUserDisplay({
+                const userDisplay = window.NexusAvatars.createUserDisplay({
                     username: username,
                     title: null, // Don't show title to avoid duplicate names
                     status: statusMessage,

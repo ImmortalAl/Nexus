@@ -99,7 +99,7 @@ async function fetchBlogPosts(page = 1) {
                 });
                 
                 // Create unified author display using Nexus Avatar System
-                const authorDisplay = window.NEXUSAvatars.createUserDisplay({
+                const authorDisplay = window.NexusAvatars.createUserDisplay({
                     username: post.author.username,
                     title: post.author.title || 'Scroll Author',
                     avatarSize: 'md',
@@ -539,9 +539,9 @@ function updateAuthorInfo(post) {
     const modalAuthorContainer = document.querySelector('.modal-author-info');
     const fallbackContainer = document.querySelector('.scroll-author');
     
-    if (modalAuthorContainer && window.NEXUSAvatars) {
+    if (modalAuthorContainer && window.NexusAvatars) {
         modalAuthorContainer.innerHTML = '';
-        const modalAuthorDisplay = window.NEXUSAvatars.createUserDisplay({
+        const modalAuthorDisplay = window.NexusAvatars.createUserDisplay({
             username: post.author.username,
             displayName: post.author.displayName || post.author.username,
             title: post.author.title || 'Scroll Author',
@@ -1246,7 +1246,7 @@ function checkAutoOpen() {
         
         // Wait for all systems to be ready
         const attemptAutoOpen = (attempts = 0) => {
-            if (!window.NEXUSAvatars) {
+            if (!window.NexusAvatars) {
                 if (attempts < 20) {
                     setTimeout(() => attemptAutoOpen(attempts + 1), 500);
                 }

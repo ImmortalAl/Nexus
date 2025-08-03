@@ -241,8 +241,8 @@ class ChroniclesFeed {
             if (this.chronicles[index] && this.chronicles[index].author) {
                 const author = this.chronicles[index].author;
                 
-                if (window.NEXUSAvatars) {
-                    const avatarElement = window.NEXUSAvatars.createUserDisplay({
+                if (window.NexusAvatars) {
+                    const avatarElement = window.NexusAvatars.createUserDisplay({
                         username: author.username || author.displayName || 'Anonymous',
                         title: author.title || 'Eternal Soul',
                         status: author.status || null,
@@ -372,8 +372,8 @@ class ChroniclesFeed {
         const authorContainer = document.querySelector('.chronicle-detail .chronicle-author-info');
         if (authorContainer && chronicle.author) {
             
-            if (window.NEXUSAvatars) {
-                const avatarElement = window.NEXUSAvatars.createUserDisplay({
+            if (window.NexusAvatars) {
+                const avatarElement = window.NexusAvatars.createUserDisplay({
                     username: chronicle.author.username || chronicle.author.displayName || 'Anonymous',
                     title: chronicle.author.title || 'Eternal Soul',
                     status: chronicle.author.status || null,
