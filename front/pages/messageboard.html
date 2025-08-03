@@ -636,14 +636,14 @@
         
         // After creating the HTML, add unified user displays
         setTimeout(() => {
-            if (!window.Immortal NexusAvatars) return;
+            if (!window.ImmortalNexusAvatars) return;
 
             threads.forEach(thread => {
                 const threadElement = threadList.querySelector(`.thread[data-id='${thread._id}']`);
                 if (threadElement && thread.author) {
                     const authorContainer = threadElement.querySelector('.thread-author-info');
                     if (authorContainer && authorContainer.children.length === 0) {
-                        const authorDisplay = window.Immortal NexusAvatars.createUserDisplay({
+                        const authorDisplay = window.ImmortalNexusAvatars.createUserDisplay({
                             username: thread.author.username || 'Anonymous',
                             title: thread.author.title || 'Echo Author',
                             avatarSize: 'xs',
@@ -1075,14 +1075,14 @@
         });
 
         function enhanceReplies(replies) {
-            if (!window.Immortal NexusAvatars) return;
+            if (!window.ImmortalNexusAvatars) return;
 
             replies.forEach((reply) => {
                 const replyElement = document.querySelector(`.reply[data-id='${reply._id}']`);
                 if (replyElement && reply.author) {
                     const authorContainer = replyElement.querySelector('.reply-author-info');
                     if (authorContainer && authorContainer.children.length === 0) {
-                        const authorDisplay = window.Immortal NexusAvatars.createUserDisplay({
+                        const authorDisplay = window.ImmortalNexusAvatars.createUserDisplay({
                             username: reply.author.username || 'Anonymous',
                             title: 'Echo Responder',
                             avatarSize: 'xs',

@@ -804,7 +804,7 @@
             }
             
             // Verify admin role via API  
-            const apiBaseUrl = window.Immortal Nexus_CONFIG?.API_BASE_URL || 'https://nexus-cryc.onrender.com/api';
+            const apiBaseUrl = window.NEXUS_CONFIG?.API_BASE_URL || 'https://nexus-cryc.onrender.com/api';
             console.log('Auth check - API base URL:', apiBaseUrl);
             fetch(`${apiBaseUrl}/debug/whoami`, {
                 headers: { 'Authorization': `Bearer ${token}` }
@@ -928,7 +928,7 @@
             contentList.innerHTML = '<div class="loading">Loading content...</div>';
             
             try {
-                if (!window.Immortal Nexus_CONFIG || !window.Immortal Nexus_CONFIG.API_BASE_URL) {
+                if (!window.NEXUS_CONFIG || !window.NEXUS_CONFIG.API_BASE_URL) {
                     throw new Error('API configuration not available');
                 }
                 
@@ -939,7 +939,7 @@
                     throw new Error('No authentication token found');
                 }
                 
-                const url = `${window.Immortal Nexus_CONFIG.API_BASE_URL}${endpoint}?limit=20&populate=author`;
+                const url = `${window.NEXUS_CONFIG.API_BASE_URL}${endpoint}?limit=20&populate=author`;
                 
                 const response = await fetch(url, {
                     headers: {
@@ -1074,7 +1074,7 @@
                 };
                 
                 
-                const response = await fetch(`${window.Immortal Nexus_CONFIG.API_BASE_URL}/highlights/admin-feature`, {
+                const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/highlights/admin-feature`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1117,7 +1117,7 @@
         async function loadCurrentHighlights() {
             // Load current Soul Scrolls highlight
             try {
-                const response = await fetch(`${window.Immortal Nexus_CONFIG.API_BASE_URL}/highlights/soul_scrolls`);
+                const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/highlights/soul_scrolls`);
                 
                 if (response.ok) {
                     const data = await response.json();
@@ -1139,7 +1139,7 @@
                 }
                 
                 // Load current Echoes Unbound highlight
-                const echoesResponse = await fetch(`${window.Immortal Nexus_CONFIG.API_BASE_URL}/highlights/echoes_unbound`);
+                const echoesResponse = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/highlights/echoes_unbound`);
                 
                 if (echoesResponse.ok) {
                     const echoesData = await echoesResponse.json();

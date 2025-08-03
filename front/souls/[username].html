@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="View profile of an eternal soul on Immortal Nexus.">
+    <meta name="description" content="View profile of an eternal soul on Manifest Liberation, Naturally Free.">
     <meta name="theme-color" content="#0d0d1a">
-    <title>Soul Profile - Immortal Nexus</title>
+    <title>Soul Profile - Manifest Liberation, Naturally Free</title>
     <!-- Immortal-themed favicon -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="apple-touch-icon" href="/favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="apple-touch-icon" href="../favicon.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link rel="stylesheet" href="/css/base-theme.css?v=2.2">
-    <link rel="stylesheet" href="/css/styles.css?v=10.0">
-    <link rel="stylesheet" href="/components/shared/styles.css?v=10.0">
+    <link rel="stylesheet" href="../css/base-theme.css?v=2.2">
+    <link rel="stylesheet" href="../css/styles.css?v=10.0">
+    <link rel="stylesheet" href="../components/shared/styles.css?v=10.0">
     <!-- Only load critical blog styles for profile pages - reduced CSS load -->
-    <link rel="stylesheet" href="/css/blog-critical.css?v=5.3">
-    <link rel="stylesheet" href="/css/active-users.css?v=7.0">
-    <link rel="stylesheet" href="/css/souls-listing.css">
-    <link rel="stylesheet" href="/css/soul-comments.css?v=1.4">
+    <link rel="stylesheet" href="../css/blog-critical.css?v=5.3">
+    <link rel="stylesheet" href="../css/active-users.css?v=7.0">
+    <link rel="stylesheet" href="../css/souls-listing.css">
+    <link rel="stylesheet" href="../css/soul-comments.css?v=1.4">
     <script src="/components/shared/messageModal.js"></script>
     <script src="/components/shared/mlnf-core.js"></script>
     <style>
@@ -576,7 +576,7 @@
                         <span class="title-line-one">Manifest Liberation</span>
                         <span class="title-line-two">Naturally Free</span>
                     </span>
-                    <span class="short-title">Immortal Nexus</span>
+                    <span class="short-title">MLNF</span>
                 </div>
             </a>
         </div>
@@ -634,7 +634,7 @@
             <!-- Profile Content -->
             <div id="profileContent" style="display: none;">
                 <div class="profile-header">
-                    <img id="profileAvatar" src="/assets/images/default.jpg" alt="Profile Avatar" class="profile-avatar">
+                    <img id="profileAvatar" src="../assets/images/default.jpg" alt="Profile Avatar" class="profile-avatar">
                     <h1 id="profileName" class="profile-name">Loading...</h1>
                     <p id="profileUsername" class="profile-username">@loading</p>
                     <div id="profileStatus" class="profile-status" style="display: none;"></div>
@@ -721,40 +721,40 @@
     </div>
 
     <footer>
-        <p>&copy; 2023 Immortal Nexus. All eternal rights reserved.</p>
+        <p>&copy; 2023 Manifest Liberation, Naturally Free. All eternal rights reserved.</p>
         <p>Embrace your infinite potential and connect across eternity.</p>
     </footer>
 
     <!-- Config MUST be loaded first -->
-    <script src="/components/shared/config.js?v=1.4"></script>
+    <script src="../components/shared/config.js?v=1.4"></script>
     
     <!-- Theme Manager - Load early for immediate theme application -->
-    <script src="/components/shared/themeManager.js?v=1.3"></script>
+    <script src="../components/shared/themeManager.js?v=1.3"></script>
     
-    <!-- Core Immortal Nexus Components -->
-    <script src="/components/shared/mlnf-core.js?v=1.2"></script>
-    <script src="/components/shared/authManager.js?v=1.2"></script>
-    <script src="/components/shared/apiClient.js?v=1.2"></script>
-    <script src="/components/shared/navigation.js?v=1.7"></script>
-    <script src="/components/shared/userMenu.js?v=1.8"></script>
-    <script src="/components/shared/activeUsers.js?v=1.6"></script>
-    <script src="/components/shared/messageModal.js?v=2.5"></script>
+    <!-- Core MLNF Components -->
+    <script src="../components/shared/mlnf-core.js?v=1.2"></script>
+    <script src="../components/shared/authManager.js?v=1.2"></script>
+    <script src="../components/shared/apiClient.js?v=1.2"></script>
+    <script src="../components/shared/navigation.js?v=1.7"></script>
+    <script src="../components/shared/userMenu.js?v=1.8"></script>
+    <script src="../components/shared/activeUsers.js?v=1.6"></script>
+    <script src="../components/shared/messageModal.js?v=2.5"></script>
     
     <!-- Avatar System -->
-    <script src="/js/mlnf-avatar-system.js?v=2.1"></script>
+    <script src="../js/mlnf-avatar-system.js?v=2.1"></script>
     
     <!-- Comments System -->
-    <script src="/components/shared/comments.js?v=1.0"></script>
+    <script src="../components/shared/comments.js?v=1.0"></script>
     
-    <!-- Initialize Immortal Nexus -->
+    <!-- Initialize MLNF -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // mlnf-core.js handles component initialization automatically
             
-            // Initialize Immortal Nexus Avatar System
-            if (!window.ImmortalNexusAvatars && window.ImmortalNexusAvatarSystem) {
-                window.ImmortalNexusAvatars = new window.ImmortalNexusAvatarSystem();
-                console.log('[Profile] Immortal Nexus Avatar System initialized');
+            // Initialize MLNF Avatar System
+            if (!window.MLNFAvatars && window.MLNFAvatarSystem) {
+                window.MLNFAvatars = new window.MLNFAvatarSystem();
+                console.log('[Profile] MLNF Avatar System initialized');
             }
             
             loadProfile();
@@ -766,15 +766,29 @@
             const profileContent = document.getElementById('profileContent');
             
             try {
-                // Get username from query parameter (passed by Netlify redirect)
-                const urlParams = new URLSearchParams(window.location.search);
-                let username = urlParams.get('user') || urlParams.get('username');
+                // Get username from URL path (Netlify redirects /souls/username to this template)
+                const pathParts = window.location.pathname.split('/');
+                let username = pathParts[pathParts.length - 1]; // Get last part of path
+                
+                // Remove .html extension if present
+                if (username && username.endsWith('.html')) {
+                    username = username.slice(0, -5); // Remove last 5 characters (.html)
+                }
                 
                 console.log('[Profile] URL debug:', {
                     pathname: window.location.pathname,
-                    search: window.location.search,
-                    extractedUsername: username
+                    pathParts: pathParts,
+                    extractedUsername: username,
+                    search: window.location.search
                 });
+                
+                // Handle both direct access and Netlify rewrite scenarios
+                if (!username || username === '[username].html' || username === 'index.html' || username === '') {
+                    // Try to get from query parameters as fallback
+                    const urlParams = new URLSearchParams(window.location.search);
+                    username = urlParams.get('user');
+                    console.log('[Profile] Using fallback username from query:', username);
+                }
                 
                 if (!username) {
                     console.error('[Profile] No username found in URL or query parameters');
@@ -799,10 +813,10 @@
                 loadUserBlogs(username);
                 
                 // Initialize profile comments
-                if (window.Immortal Nexus && window.Immortal Nexus.CommentsSystem) {
+                if (window.MLNF && window.MLNF.CommentsSystem) {
                     console.log('[Profile] Initializing comments for profile:', username);
                     try {
-                        const commentsInstance = new window.Immortal Nexus.CommentsSystem('profile', username, 'profileComments');
+                        const commentsInstance = new window.MLNF.CommentsSystem('profile', username, 'profileComments');
                         console.log('[Profile] Comments system initialized successfully');
                     } catch (error) {
                         console.error('[Profile] Failed to initialize comments:', error);
@@ -845,9 +859,9 @@
             const username = profileHeader.querySelector('.profile-username');
             const status = profileHeader.querySelector('.profile-status');
 
-            // Use Immortal Nexus Avatar System for consistent avatar handling
-            if (avatar && window.ImmortalNexusAvatars) {
-                const avatarUrl = window.ImmortalNexusAvatars.generateAvatarUrl(
+            // Use MLNF Avatar System for consistent avatar handling
+            if (avatar && window.MLNFAvatars) {
+                const avatarUrl = window.MLNFAvatars.generateAvatarUrl(
                     userData.username,
                     150, // Large size for profile
                     userData.avatar

@@ -2039,7 +2039,7 @@
             
             const token = localStorage.getItem('sessionToken');
             if (!token) {
-                window.Immortal Nexus.openSoulModal('login');
+                window.MLNF.openSoulModal('login');
                 return;
             }
             
@@ -2056,7 +2056,7 @@
                 let response;
                 if (selectedDraftId) {
                     // Update existing draft to published
-                    response = await fetch(`${window.Immortal Nexus_CONFIG.API_BASE_URL}/blogs/${selectedDraftId}`, {
+                    response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/blogs/${selectedDraftId}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
@@ -2070,7 +2070,7 @@
                     });
                 } else {
                     // Create new post
-                    response = await fetch(`${window.Immortal Nexus_CONFIG.API_BASE_URL}/blogs`, {
+                    response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/blogs`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -2125,7 +2125,7 @@
             
             const token = localStorage.getItem('sessionToken');
             if (!token) {
-                window.Immortal Nexus.openSoulModal('login');
+                window.MLNF.openSoulModal('login');
                 return;
             }
             
@@ -2142,7 +2142,7 @@
                 let response;
                 if (selectedDraftId) {
                     // Update existing draft
-                    response = await fetch(`${window.Immortal Nexus_CONFIG.API_BASE_URL}/blogs/${selectedDraftId}`, {
+                    response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/blogs/${selectedDraftId}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
@@ -2156,7 +2156,7 @@
                     });
                 } else {
                     // Create new draft
-                    response = await fetch(`${window.Immortal Nexus_CONFIG.API_BASE_URL}/blogs`, {
+                    response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/blogs`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -2203,7 +2203,7 @@
             if (!token) return;
             
             try {
-                const response = await fetch(`${window.Immortal Nexus_CONFIG.API_BASE_URL}/blogs/my/drafts`, {
+                const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/blogs/my/drafts`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -2243,7 +2243,7 @@
             if (!token) return;
             
             try {
-                const response = await fetch(`${window.Immortal Nexus_CONFIG.API_BASE_URL}/blogs/${selectedDraftId}`, {
+                const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/blogs/${selectedDraftId}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -2469,7 +2469,7 @@
                 // Save to backend API
                 const token = localStorage.getItem('sessionToken');
                 if (token) {
-                    const apiBaseUrl = window.Immortal Nexus_CONFIG?.API_BASE_URL || 'https://nexus-cryc.onrender.com/api';
+                    const apiBaseUrl = window.NEXUS_CONFIG?.API_BASE_URL || 'https://nexus-cryc.onrender.com/api';
                     const response = await fetch(`${apiBaseUrl}/users/me`, {
                         method: 'PATCH',
                         headers: {
@@ -2580,7 +2580,7 @@
                 // Save to backend API
                 const token = localStorage.getItem('sessionToken');
                 if (token) {
-                    const apiBaseUrl = window.Immortal Nexus_CONFIG?.API_BASE_URL || 'https://nexus-cryc.onrender.com/api';
+                    const apiBaseUrl = window.NEXUS_CONFIG?.API_BASE_URL || 'https://nexus-cryc.onrender.com/api';
                     const response = await fetch(`${apiBaseUrl}/users/me`, {
                         method: 'PATCH',
                         headers: {
@@ -2632,9 +2632,9 @@
             if (avatar) {
                 if (userData.avatar) {
                     avatar.src = userData.avatar;
-                } else if (userData.username && window.Immortal NexusAvatarSystem) {
+                } else if (userData.username && window.ImmortalNexusAvatars) {
                     // Use Immortal Nexus Avatar System fallback if no custom avatar
-                    avatar.src = window.Immortal NexusAvatarSystem.generateAvatarUrl(userData.username);
+                    avatar.src = window.ImmortalNexusAvatars.generateAvatarUrl(userData.username);
                 } else {
                     avatar.src = '/assets/images/default.jpg';
                 }
@@ -2948,7 +2948,7 @@
             }
             
             try {
-                const apiBaseUrl = window.Immortal Nexus_CONFIG?.API_BASE_URL || 'https://nexus-cryc.onrender.com/api';
+                const apiBaseUrl = window.NEXUS_CONFIG?.API_BASE_URL || 'https://nexus-cryc.onrender.com/api';
                 // Fetching profile data
                 
                 const response = await fetch(`${apiBaseUrl}/users/me`, {
@@ -3120,7 +3120,7 @@
             };
             
             try {
-                const apiBaseUrl = window.Immortal Nexus_CONFIG?.API_BASE_URL || 'https://nexus-cryc.onrender.com/api';
+                const apiBaseUrl = window.NEXUS_CONFIG?.API_BASE_URL || 'https://nexus-cryc.onrender.com/api';
                 const response = await fetch(`${apiBaseUrl}/users/me`, {
                     method: 'PUT',
                     headers: {
@@ -3177,7 +3177,7 @@
             saveBtn.disabled = true;
             
             try {
-                const apiBaseUrl = window.Immortal Nexus_CONFIG?.API_BASE_URL || 'https://nexus-cryc.onrender.com/api';
+                const apiBaseUrl = window.NEXUS_CONFIG?.API_BASE_URL || 'https://nexus-cryc.onrender.com/api';
                 const response = await fetch(`${apiBaseUrl}/users/me`, {
                     method: 'PUT',
                     headers: {
