@@ -16,7 +16,7 @@
     overflow-y: auto;
     /* Ensure this creates its own stacking context */
     transform: translateZ(0);
-    will-change: transform;
+    /* will-change: transform; - removed for performance */
     /* Ensure sidebar stays off viewport completely */
     max-width: 320px;
 }

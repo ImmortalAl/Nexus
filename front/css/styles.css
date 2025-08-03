@@ -255,7 +255,7 @@ body.light-theme .hero::before {
     
     /* Optimize particle performance on Fairphone 4 */
     .particle-container {
-        will-change: transform;
+        /* will-change: transform; - removed for performance */
         contain: layout style paint;
     }
 }
@@ -281,7 +281,7 @@ body.light-theme .hero-content {
     filter: brightness(1.4) saturate(1.3);
     animation: eternalGlow 3s ease-in-out infinite alternate;
     /* Hardware acceleration for performance */
-    will-change: transform, filter;
+    /* will-change: transform, filter; - removed for performance */
     transform: translateZ(0);
 }
 
@@ -2363,7 +2363,7 @@ body.light-theme {
     position: relative;
     z-index: 2;
     /* Hardware acceleration for smooth scrolling */
-    will-change: transform;
+    /* will-change: transform; - removed for performance */
     transform: translateZ(0);
 }
 
@@ -2791,7 +2791,7 @@ main {
 
 /* Advanced Interaction States */
 .highlight-card {
-    will-change: transform, box-shadow;
+    /* will-change: transform, box-shadow; - removed for performance */
     /* Comprehensive transform reset to prevent ANY 3D effects */
     transform: none !important;
 }
@@ -2831,7 +2831,7 @@ main {
 /* .highlight-card:active - removed to eliminate ALL 3D effects */
 
 .highlight-card .card-header h3 {
-    will-change: transform;
+    /* will-change: transform; - removed for performance */
 }
 
 .highlight-card:hover .card-header h3 {
@@ -2861,7 +2861,7 @@ main {
 .highlight-card::after,
 .highlight-card .card-header::before,
 .highlight-card .card-header::after {
-    will-change: opacity, transform;
+    /* will-change: opacity, transform; - removed for performance */
 }
 
 /* Enhanced Soul Scrolls Loading States */

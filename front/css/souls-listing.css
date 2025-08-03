@@ -84,7 +84,7 @@
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     backdrop-filter: blur(10px);
     transform: translateZ(0);
-    will-change: transform, box-shadow;
+    /* will-change: transform, box-shadow; - removed for performance */
 }
 
 .profile-card:hover {
@@ -141,7 +141,7 @@
     object-fit: cover;
     transition: all 0.3s ease;
     transform: translateZ(0);
-    will-change: transform, border-color, opacity;
+    /* will-change: transform, border-color, opacity; - removed for performance */
     background-color: var(--secondary);
     display: block;
     opacity: 0.7;
