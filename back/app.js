@@ -42,6 +42,11 @@ const allowedOrigins = [
 
 const corsOptions = {
     origin: function (origin, callback) {
+        // Allow all requests for now to debug CORS issues
+        return callback(null, true);
+        
+        // Original logic (commented out for debugging)
+        /*
         // Allow requests with no origin (like mobile apps or curl requests)
         if (!origin) {
             return callback(null, true);
@@ -59,6 +64,7 @@ const corsOptions = {
         
         console.log(`CORS blocked origin: ${origin}`);
         return callback(new Error('Not allowed by CORS'));
+        */
     },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
@@ -119,6 +125,18 @@ mongoose.connect(mongoUri, {
 // --- Test Route ---
 app.get('/ping', (req, res) => {
     res.status(200).send('pong');
+});
+
+// Simple test route for CORS
+app.get('/test-cors', (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.status(200).json({ 
+        message: 'CORS test successful',
+        timestamp: new Date().toISOString(),
+        origin: req.headers.origin
+    });
 });
 
 // Routes
