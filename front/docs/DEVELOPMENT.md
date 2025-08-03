@@ -162,7 +162,7 @@ Future integration planned for monorepo deployment.
 
 ### **Production Portals**
 - **Frontend**: https://immortal.nexus
-- **Backend**: https://mlnf-auth.onrender.com/api
+- **Backend**: https://nexus-cryc.onrender.com/api
 - **Repository**: https://github.com/ImmortalAl/Nexus
 
 ## 🔮 Troubleshooting Séances

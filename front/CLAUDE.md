@@ -157,7 +157,7 @@ This ensures continuous deployment and prevents work loss.
 
 ### Important Monorepo Notes:
 - All frontend work happens in `/home/immortalal/sites/Nexus/front/`
-- Backend API remains at `https://mlnf-auth.onrender.com/api`
+- Backend API remains at `https://nexus-cryc.onrender.com/api`
 - Git operations should be run from the root `/home/immortalal/sites/Nexus/`
 - The `front/` folder contains its own `_redirects` for Netlify routing
 

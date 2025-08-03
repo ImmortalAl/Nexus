@@ -72,7 +72,7 @@ npm start  # Port 3001
 ## 🚀 **Production URLs**
 
 - **Frontend**: https://immortal.nexus (Netlify)
-- **Backend API**: https://mlnf-auth.onrender.com/api (Render)  
+- **Backend API**: https://nexus-cryc.onrender.com/api (Render)  
 - **Database**: MongoDB Atlas (Cloud)
 
 ## 📖 **Development Resources**

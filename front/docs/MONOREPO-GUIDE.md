@@ -72,7 +72,7 @@ The backend lurks in `back/` - a Node.js API deployed on Render's eternal server
 - **WebSocket Sorcery**: `back/websocket.js`
 
 ### Current Deployment
-- **URL**: `https://mlnf-auth.onrender.com/api`
+- **URL**: `https://nexus-cryc.onrender.com/api`
 - **Platform**: Render
 - **Database**: MongoDB Atlas
 
@@ -130,7 +130,7 @@ Frontend (`front/components/shared/config.js`):
 const isLocalDevelopment = window.location.hostname === 'localhost';
 const API_BASE_URL = isLocalDevelopment 
   ? 'http://localhost:3001/api' 
-  : 'https://mlnf-auth.onrender.com/api';
+  : 'https://nexus-cryc.onrender.com/api';
 ```
 
 ## Common Séances
