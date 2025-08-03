@@ -2,6 +2,8 @@
 const allowedOrigins = [
   'https://immortalal.github.io',
   'https://mlnf.net',
+  'https://immortal.nexus',
+  'https://www.immortal.nexus',
   'http://localhost:3000',
   'http://localhost:8080',
   'http://127.0.0.1:3000',

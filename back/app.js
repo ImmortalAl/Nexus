@@ -23,8 +23,25 @@ const WebSocketManager = require('./websocket');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+const allowedOrigins = [
+    'https://immortalal.github.io',
+    'https://mlnf.net',
+    'https://immortal.nexus',
+    'https://www.immortal.nexus',
+    'http://localhost:3000',
+    'http://localhost:8080',
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:8080'
+];
+
 const corsOptions = {
-    origin: '*',
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
     optionsSuccessStatus: 204,
