@@ -17,6 +17,7 @@ const governanceRoutes = require('./routes/governance');
 const communityModRoutes = require('./routes/communityMod');
 const analyticsRoutes = require('./routes/analytics');
 const activityRoutes = require('./routes/activity');
+const mindmapRoutes = require('./routes/mindmap');
 const http = require('http');
 const WebSocketManager = require('./websocket');
 
@@ -28,6 +29,7 @@ const allowedOrigins = [
     'https://mlnf.net',
     'https://immortal.nexus',
     'https://www.immortal.nexus',
+    'https://dashing-belekoy-7a0095.netlify.app',
     'http://localhost:3000',
     'http://localhost:8080',
     'http://127.0.0.1:3000',
@@ -94,6 +96,7 @@ app.use('/api/governance', governanceRoutes);
 app.use('/api/community-mod', communityModRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/activity', activityRoutes);
+app.use('/api/mindmap', mindmapRoutes);
 
 // Health Check Endpoint with explicit CORS
 app.options('/health', (req, res) => {
