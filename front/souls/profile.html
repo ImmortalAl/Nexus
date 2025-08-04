@@ -751,10 +751,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             // nexus-core.js handles component initialization automatically
             
-            // Initialize Immortal Nexus Avatar System
-            if (!window.ImmortalNexusAvatars && window.ImmortalNexusAvatarSystem) {
-                window.ImmortalNexusAvatars = new window.ImmortalNexusAvatarSystem();
-            }
+            // Initialize Nexus Avatar System (already initialized by nexus-avatar-system.js)
+            // The avatar system is available as window.NexusAvatars
             
             loadProfile();
         });
@@ -798,9 +796,9 @@
                 loadUserBlogs(username);
                 
                 // Initialize profile comments
-                if (window.ImmortalNexus && window.ImmortalNexus.CommentsSystem) {
+                if (window.NEXUS && window.NEXUS.CommentsSystem) {
                     try {
-                        const commentsInstance = new window.ImmortalNexus.CommentsSystem('profile', username, 'profileComments');
+                        const commentsInstance = new window.NEXUS.CommentsSystem('profile', username, 'profileComments');
                     } catch (error) {
                         console.error('[Profile] Failed to initialize comments:', error);
                     }
@@ -867,9 +865,9 @@
             const username = profileHeader.querySelector('.profile-username');
             const status = profileHeader.querySelector('.profile-status');
 
-            // Use Immortal Nexus Avatar System for consistent avatar handling
-            if (avatar && window.ImmortalNexusAvatars) {
-                const avatarUrl = window.ImmortalNexusAvatars.generateAvatarUrl(
+            // Use Nexus Avatar System for consistent avatar handling
+            if (avatar && window.NexusAvatars) {
+                const avatarUrl = window.NexusAvatars.generateAvatarUrl(
                     userData.username,
                     150, // Large size for profile
                     userData.avatar
