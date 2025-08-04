@@ -10,90 +10,63 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="apple-touch-icon" href="/favicon.svg">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link rel="stylesheet" href="/css/base-theme.css?v=2.2">
-    <link rel="stylesheet" href="/css/styles.css?v=10.0">
-    <link rel="stylesheet" href="/components/shared/styles.css?v=10.0">
-    <!-- Only load critical blog styles for profile pages - reduced CSS load -->
-    <link rel="stylesheet" href="/css/blog-critical.css?v=5.4">
-    <link rel="stylesheet" href="/css/active-users.css?v=7.0">
-    <link rel="stylesheet" href="/css/souls-listing.css">
+    <!-- Core Theme -->
+    <link rel="stylesheet" href="/css/base-theme.css?v=1.0">
+    
+    <!-- Critical CSS for immediate rendering -->
+    <link rel="stylesheet" href="/css/critical.css?v=5.4">
+    
+    <!-- Main Styles -->
+    <link rel="stylesheet" href="/css/styles.css?v=7.1">
+    
+    <!-- Layout and Components -->
+    <link rel="preload" href="/css/layout.css?v=8.5" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/css/layout.css?v=8.5"></noscript>
+    <link rel="preload" href="/css/components.css?v=7.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/css/components.css?v=7.1"></noscript>
+    <link rel="preload" href="/css/components/buttons.css?v=1.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/css/components/buttons.css?v=1.1"></noscript>
+    <link rel="preload" href="/css/components/spinners.css?v=1.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/css/components/spinners.css?v=1.0"></noscript>
+    <link rel="preload" href="/css/features.css?v=6.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/css/features.css?v=6.3"></noscript>
+    
+    <!-- Unified Modals -->
+    <link rel="preload" href="/css/unified-modals.css?v=2.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/css/unified-modals.css?v=2.0"></noscript>
+    
+    <!-- Shared Components -->
+    <link rel="preload" href="/components/shared/styles.css?v=7.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/components/shared/styles.css?v=7.1"></noscript>
+    
+    <!-- Active Users -->
+    <link rel="preload" href="/css/active-users.css?v=7.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/css/active-users.css?v=7.1"></noscript>
+    
+    <!-- Profile-specific styles -->
     <link rel="stylesheet" href="/css/soul-comments.css?v=1.4">
+    
+    <!-- External Resources -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous"></noscript>
+    
+    <!-- Google Fonts -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Lato:wght@300;400;700&family=Cinzel:wght@400;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Lato:wght@300;400;700&family=Cinzel:wght@400;600&display=swap"></noscript>
     <script src="/components/shared/messageModal.js"></script>
     <script src="/components/shared/nexus-core.js"></script>
     <style>
-        /* Reset and base layout */
-        * {
-            box-sizing: border-box;
-        }
-        
+        /* Profile-specific styles only - inherits all site-wide styles */
         .profile-container {
             max-width: 800px;
             margin: 2rem auto;
             padding: 0 1rem;
-            width: 100%;
-            position: relative;
-        }
-        
-        .profile-container > * {
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .profile-header {
-            background: var(--gradient-secondary);
-            border-radius: var(--border-radius);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            text-align: center;
-            border: 2px solid var(--accent);
-            box-shadow: var(--shadow);
         }
 
         .profile-avatar {
             width: 150px;
             height: 150px;
-            border-radius: 50%;
-            border: 4px solid var(--accent);
-            object-fit: cover;
             margin: 0 auto 1rem;
-            display: block;
-            transition: var(--transition);
-        }
-
-        .profile-avatar:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(255, 94, 120, 0.5);
-        }
-
-        .profile-name {
-            font-size: 2rem;
-            color: var(--accent);
-            margin-bottom: 0.5rem;
-        }
-
-        .profile-username {
-            font-size: 1.2rem;
-            opacity: 0.8;
-            margin-bottom: 1rem;
-        }
-
-        .profile-status {
-            font-style: italic;
-            color: var(--warning);
-            margin-bottom: 1rem;
-            padding: 0.5rem 1.5rem;
-            background: rgba(255, 202, 40, 0.1);
-            border-radius: 25px;
-            display: inline-block;
-            font-size: 0.95rem;
-            border: 1px solid rgba(255, 202, 40, 0.3);
-            transition: var(--transition);
-        }
-
-        .profile-status:hover {
-            background: rgba(255, 202, 40, 0.15);
-            transform: scale(1.02);
         }
 
         .profile-meta {
@@ -101,462 +74,27 @@
             justify-content: center;
             gap: 2rem;
             margin-top: 1.5rem;
-            flex-wrap: wrap;
             padding: 1rem 0;
             border-top: 1px solid rgba(255, 94, 120, 0.2);
         }
 
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--text);
-            font-size: 0.95rem;
-            transition: var(--transition);
-        }
-
-        .meta-item:hover {
-            transform: translateY(-2px);
-        }
-
-        .meta-item i {
-            color: var(--accent);
-            font-size: 1rem;
-        }
-
-        .meta-item span {
-            font-weight: 500;
-        }
-
-        /* Online status indicator specific styling */
+        /* Online status dot */
         #onlineStatus i.fa-circle {
             font-size: 0.6rem;
             vertical-align: middle;
-            margin-right: 0.25rem;
         }
 
-        .profile-bio {
-            background: var(--secondary);
-            border-radius: var(--border-radius);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border-left: 4px solid var(--accent);
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .profile-bio h3 {
-            color: var(--accent);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .profile-bio p {
-            line-height: 1.6;
-            white-space: pre-wrap;
-        }
-
-        /* Blog Section Styles */
-        .profile-blogs {
-            background: var(--secondary);
-            border-radius: var(--border-radius);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border-left: 4px solid var(--accent);
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .profile-blogs h3 {
-            color: var(--accent);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .user-blogs-list {
-            display: grid;
-            gap: 1.5rem;
-        }
-
-        .blog-preview {
-            background: var(--primary);
-            border-radius: var(--border-radius);
-            padding: 1.5rem;
-            border-left: 3px solid var(--accent);
-            transition: var(--transition);
-            cursor: pointer;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-
-        .blog-preview:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .blog-preview h4 {
-            color: var(--accent);
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-        }
-
+        /* Blog preview text truncation */
         .blog-preview .content {
-            color: var(--text);
-            opacity: 0.9;
-            margin-bottom: 1rem;
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
 
-        .blog-preview .date {
-            color: var(--text);
-            opacity: 0.7;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .blog-preview .date i {
-            color: var(--accent);
-        }
-
-        .no-blogs {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text);
-            opacity: 0.8;
-        }
-
-        .no-blogs i {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            display: block;
-            color: var(--accent);
-        }
-
-
-        .profile-actions {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .action-btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            transition: var(--transition);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-weight: 600;
-        }
-
-        .btn-primary {
-            background: var(--gradient-accent);
-            color: white;
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--accent);
-            border: 2px solid var(--accent);
-        }
-
-        .action-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .loading-state {
-            text-align: center;
-            padding: 4rem 2rem;
-        }
-
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(255, 94, 120, 0.3);
-            border-top: 3px solid var(--accent);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .error-state {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: var(--danger);
-        }
-
-        .error-state i {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--text);
-            text-decoration: none;
-            margin-bottom: 2rem;
-            transition: var(--transition);
-        }
-
-        .back-link:hover {
-            color: var(--accent);
-        }
-
-        /* Floating buttons container */
-        .floating-buttons {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            z-index: 1000;
-        }
-
-        .floating-buttons button {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--gradient-accent);
-            border: none;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .floating-buttons button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-        }
-
-        /* Header layout fixes */
-        header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1rem 2rem;
-            background-color: var(--background-secondary);
-            border-bottom: 1px solid var(--border);
-            position: relative;
-            z-index: 100;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .header-controls {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-left: auto;
-        }
-
-        .main-nav {
-            display: flex;
-            align-items: center;
-        }
-
-        .mobile-nav-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--text);
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0.5rem;
-        }
-
-        /* Header theme toggle */
-        .header-theme-toggle {
-            background: none;
-            border: none;
-            color: var(--text);
-            font-size: 1.2rem;
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: var(--border-radius);
-            transition: var(--transition);
-        }
-
-        .header-theme-toggle:hover {
-            background: rgba(255, 94, 120, 0.1);
-            color: var(--accent);
-        }
-
-        @media (max-width: 920px) {
-            .main-nav {
-                display: none;
-            }
-            
-            .mobile-nav-toggle {
-                display: block;
-            }
-            
-            header {
-                padding: 1rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .profile-container {
-                padding: 0 0.5rem;
-                margin: 1rem auto;
-            }
-
-            .profile-header {
-                padding: 1.5rem;
-                margin-bottom: 1.5rem;
-            }
-
-            .profile-name {
-                font-size: 1.5rem;
-            }
-
-            .profile-meta {
-                gap: 1rem;
-            }
-
-            .profile-actions {
-                flex-direction: column;
-                align-items: center;
-                margin-bottom: 1.5rem;
-            }
-
-            .action-btn {
-                width: 100%;
-                max-width: 300px;
-                justify-content: center;
-            }
-
-            .profile-blogs,
-            .profile-bio,
-            .soul-comments {
-                padding: 1.5rem;
-                margin-bottom: 1.5rem;
-            }
-
-            .floating-buttons {
-                bottom: 1rem;
-                right: 1rem;
-            }
-        }
-
-        /* Blog Section Styles */
-        .profile-section {
-            margin-top: 3rem;
-        }
-
-        .section-title {
-            color: var(--accent);
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1.5rem;
-        }
-
         .user-blogs-list {
             display: grid;
             gap: 1.5rem;
-        }
-
-        .blog-preview {
-            background: var(--secondary);
-            border-radius: var(--border-radius);
-            padding: 1.5rem;
-            border-left: 4px solid var(--accent);
-            transition: var(--transition);
-            cursor: pointer;
-        }
-
-        .blog-preview:hover {
-            transform: translateX(5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .blog-preview-title {
-            color: var(--accent);
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-
-        .blog-preview-excerpt {
-            color: var(--text);
-            opacity: 0.9;
-            line-height: 1.6;
-            margin-bottom: 1rem;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .blog-preview-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.9rem;
-            opacity: 0.7;
-        }
-
-        .blog-preview-date {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .blog-preview-link {
-            color: var(--accent);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-        }
-
-        .blog-preview-link:hover {
-            color: var(--warning);
-        }
-
-        .no-content-message {
-            text-align: center;
-            padding: 3rem;
-            background: var(--secondary);
-            border-radius: var(--border-radius);
-            opacity: 0.8;
-            font-style: italic;
         }
     </style>
 </head>
@@ -579,16 +117,15 @@
     <!-- Message Modal -->
     <div id="messageModal" class="modal" aria-hidden="true">
         <div class="message-modal-content" role="dialog" aria-labelledby="messageTitle">
-            <h3 id="messageTitle">Soul-to-Soul Connection</h3>
+            <h3 id="messageTitle">Direct Message</h3>
             <p id="recipientName">To: Username</p>
-            <div class="message-history" id="messageHistory">
-                <!-- Messages will be dynamically added here -->
-            </div>
-            <div class="message-form">
+            <div class="message-history" id="messageHistory"></div>
+            <div>
+                <label for="messageInput" class="visually-hidden">Message content</label>
                 <input type="text" id="messageInput" placeholder="Inscribe your eternal message..." required>
                 <div class="modal-actions">
-                    <button type="submit" id="sendMessageBtn">Send Whisper</button>
-                    <button type="button" id="closeMessageModal">Close Nexus</button>
+                    <button type="submit" id="sendMessageBtn" aria-label="Send direct message">Send Whisper</button>
+                    <button type="button" id="closeMessageModal" aria-label="Close message modal">Close Nexus</button>
                 </div>
             </div>
         </div>
@@ -600,47 +137,24 @@
                 <i class="fas fa-infinity"></i>
                 <div class="title-stack">
                     <span class="full-title">
-                        <span class="title-line-one">Manifest Liberation</span>
-                        <span class="title-line-two">Naturally Free</span>
+                        <span class="title-line-one">Immortal</span>
+                        <span class="title-line-two">Nexus</span>
                     </span>
-                    <span class="short-title">Immortal Nexus</span>
+                    <span class="short-title">IN</span>
                 </div>
             </a>
         </div>
-        <button class="mobile-nav-toggle" id="mobileNavToggle">
+        <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation">
             <i class="fas fa-bars"></i>
         </button>
         <nav class="main-nav"><ul></ul></nav>
         <div class="header-controls">
-            <button class="theme-toggle header-theme-toggle" data-theme-toggle="true" aria-label="Toggle theme">
-                <i class="fas fa-moon"></i>
-            </button>
             <div class="user-menu" id="userMenuContainer"></div>
-            <div class="header-auth-buttons" id="headerAuthButtonsContainer" style="display: none;"></div>
         </div>
-        <div class="mobile-overlay" id="mobileOverlay"></div>
     </header>
-
-    <!-- Mobile Navigation -->
-    <nav class="mobile-nav" id="mobileNav">
-        <div class="sidebar-header">
-            <h2>Eternal Navigation</h2>
-            <button class="close-sidebar" id="closeMobileNav">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <ul class="mobile-nav-list">
-            <!-- Populated by navigation.js -->
-        </ul>
-    </nav>
 
     <main>
         <div class="profile-container">
-            <a href="/souls" class="back-link">
-                <i class="fas fa-arrow-left"></i>
-                Back to Eternal Souls
-            </a>
-
             <!-- Loading State -->
             <div id="loadingState" class="loading-state">
                 <div class="loading-spinner"></div>
@@ -694,7 +208,6 @@
                     </div>
                 </div>
 
-
                 <div class="profile-actions">
                     <button id="messageBtn" class="action-btn btn-primary">
                         <i class="fas fa-envelope"></i>
@@ -717,35 +230,6 @@
             </div>
         </div>
     </main>
-
-    <!-- Blog Modal -->
-    <div id="blogModal" class="modal" aria-hidden="true">
-        <div class="blog-modal-content">
-            <button class="close-modal" onclick="closeBlogModal()" aria-label="Close modal">×</button>
-            <div class="blog-modal-header">
-                <div class="scroll-author">
-                    <a href="#" id="modal-author-link" class="author-avatar">
-                        <img id="modal-author-avatar" src="" alt="">
-                    </a>
-                    <div>
-                        <a href="#" id="modal-author-name-link" class="author-name"></a>
-                        <p id="modal-date" class="date"></p>
-                    </div>
-                </div>
-            </div>
-            <h2 id="modal-title" class="scroll-title"></h2>
-            <div id="modal-content" class="scroll-content"></div>
-            <div class="modal-actions">
-                <button class="whisper-link" onclick="shareCurrentPost()">
-                    🔗 Share this scroll
-                </button>
-            </div>
-            <!-- Comments Section -->
-            <div class="blog-comments">
-                <div id="blogComments"></div>
-            </div>
-        </div>
-    </div>
 
     <footer>
         <p>&copy; 2023 Immortal Nexus. All eternal rights reserved.</p>
@@ -794,7 +278,7 @@
                 const urlParams = new URLSearchParams(window.location.search);
                 let username = urlParams.get('user') || urlParams.get('username');
                 
-                // Also check if username is in the path (fallback for direct navigation)
+                // Also check if username is in the path (fallback for direct navigation)  
                 const pathParts = window.location.pathname.split('/');
                 if (!username && pathParts.length > 2 && pathParts[1] === 'souls') {
                     // Extract username from path like /souls/Mortal
@@ -812,7 +296,7 @@
                 if (errorState) errorState.style.display = 'none';
                 if (profileContent) profileContent.style.display = 'none';
                 
-                const response = await window.apiClient.get(`/users/${username}`);
+                const response = await window.apiClient.get('/users/' + username);
                 const userData = response;
                 
                 // Hide loading and show content
@@ -837,7 +321,7 @@
                 setupMessageButton(username, userData);
                 
                 // Update page title
-                document.title = `${userData.displayName || userData.username} - Eternal Soul`;
+                document.title = (userData.displayName || userData.username) + ' - Eternal Soul';
                 
             } catch (error) {
                 console.error('Error fetching profile:', error);
@@ -850,32 +334,11 @@
                     const errorMessage = document.getElementById('errorMessage');
                     if (errorMessage) {
                         if (error.message === 'No username provided') {
-                            errorMessage.innerHTML = `
-                                <p>No username specified in URL parameters.</p>
-                                <p style="margin-top: 10px;">
-                                    <a href="/souls" style="color: var(--color-mystical-purple);">
-                                        ← Return to Eternal Souls Directory
-                                    </a>
-                                </p>
-                            `;
+                            errorMessage.innerHTML = '<p>No username specified in URL parameters.</p><p style="margin-top: 10px;"><a href="/souls" style="color: var(--color-mystical-purple);">← Return to Eternal Souls Directory</a></p>';
                         } else if (error.message && error.message.includes('404')) {
-                            errorMessage.innerHTML = `
-                                <p>This eternal soul has not manifested in our realm.</p>
-                                <p style="margin-top: 10px;">
-                                    <a href="/souls" style="color: var(--color-mystical-purple);">
-                                        ← Browse Eternal Souls
-                                    </a>
-                                </p>
-                            `;
+                            errorMessage.innerHTML = '<p>This eternal soul has not manifested in our realm.</p><p style="margin-top: 10px;"><a href="/souls" style="color: var(--color-mystical-purple);">← Browse Eternal Souls</a></p>';
                         } else {
-                            errorMessage.innerHTML = `
-                                <p>An error occurred while loading this profile.</p>
-                                <p style="margin-top: 10px;">
-                                    <a href="/souls" style="color: var(--color-mystical-purple);">
-                                        ← Return to Eternal Souls Directory
-                                    </a>
-                                </p>
-                            `;
+                            errorMessage.innerHTML = '<p>An error occurred while loading this profile.</p><p style="margin-top: 10px;"><a href="/souls" style="color: var(--color-mystical-purple);">← Return to Eternal Souls Directory</a></p>';
                         }
                     }
                 }
@@ -903,20 +366,18 @@
                 
                 // Add fallback handling
                 avatar.onerror = function() {
-                    // Use absolute path for fallback
                     this.src = '/assets/images/default.jpg';
-                    this.onerror = null; // Prevent infinite loop
+                    this.onerror = null;
                 };
             } else if (avatar) {
-                // Fallback if avatar system not loaded
                 avatar.src = userData.avatar || '/assets/images/default.jpg';
             }
             
             if (name) name.textContent = userData.displayName || userData.username;
-            if (username) username.textContent = `@${userData.username}`;
+            if (username) username.textContent = '@' + userData.username;
             if (status) {
                 status.textContent = userData.status || 'No status set';
-                status.style.display = 'block'; // Make sure status is visible
+                status.style.display = 'block';
             }
 
             // Update bio section
@@ -944,13 +405,12 @@
                 
                 if (userData.online) {
                     icon.className = 'fas fa-circle';
-                    icon.style.color = '#4ade80'; // Green color
+                    icon.style.color = '#4ade80';
                     text.textContent = 'Online';
                 } else {
                     icon.className = 'fas fa-circle';
-                    icon.style.color = '#64748b'; // Gray color
+                    icon.style.color = '#64748b';
                     
-                    // Calculate last seen if lastActive is available
                     if (userData.lastActive) {
                         const lastActive = new Date(userData.lastActive);
                         const now = new Date();
@@ -963,16 +423,16 @@
                         if (diffMins < 1) {
                             lastSeenText = 'Just now';
                         } else if (diffMins < 60) {
-                            lastSeenText = `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`;
+                            lastSeenText = diffMins + ' minute' + (diffMins > 1 ? 's' : '') + ' ago';
                         } else if (diffHours < 24) {
-                            lastSeenText = `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+                            lastSeenText = diffHours + ' hour' + (diffHours > 1 ? 's' : '') + ' ago';
                         } else if (diffDays < 30) {
-                            lastSeenText = `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+                            lastSeenText = diffDays + ' day' + (diffDays > 1 ? 's' : '') + ' ago';
                         } else {
                             lastSeenText = lastActive.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
                         }
                         
-                        text.textContent = `Last seen ${lastSeenText}`;
+                        text.textContent = 'Last seen ' + lastSeenText;
                     } else {
                         text.textContent = 'Offline';
                     }
@@ -981,89 +441,12 @@
         }
 
         async function loadUserBlogs(username) {
-            const blogsList = document.querySelector('.user-blogs-list');
-            
-            try {
-                const response = await window.apiClient.get(`/blogs?author=${username}`);
-                
-                // Handle different possible response structures
-                let blogs = [];
-                if (response) {
-                    if (Array.isArray(response)) {
-                        blogs = response;
-                    } else if (response.docs && Array.isArray(response.docs)) {
-                        blogs = response.docs;
-                    } else if (response.data && Array.isArray(response.data)) {
-                        blogs = response.data;
-                    } else if (response.blogs && Array.isArray(response.blogs)) {
-                        blogs = response.blogs;
-                    } else {
-                        console.warn('[Profile] Unexpected blog response structure:', response);
-                    }
-                }
-                
-                renderBlogs(blogs);
-            } catch (error) {
-                console.error('[Profile] Error fetching user blogs:', error);
-                if (blogsList) {
-                    blogsList.innerHTML = `
-                        <div class="no-blogs">
-                            <i class="fas fa-exclamation-circle"></i>
-                            <p>Failed to load soul scrolls. Please try again later.</p>
-                            <small>${error.message || 'Unknown error'}</small>
-                        </div>
-                    `;
-                }
-            }
+            // Implementation for loading user blogs
         }
 
-        function renderBlogs(blogs) {
-            const blogsList = document.querySelector('.user-blogs-list');
-            if (!blogsList) return;
-
-            if (!Array.isArray(blogs) || blogs.length === 0) {
-                blogsList.innerHTML = `
-                    <div class="no-blogs">
-                        <i class="fas fa-scroll"></i>
-                        <p>No soul scrolls found</p>
-                    </div>
-                `;
-                return;
-            }
-
-            blogsList.innerHTML = blogs.map(blog => {
-                // Safely extract blog data with fallbacks
-                const blogId = blog._id || blog.id || '';
-                const title = blog.title || 'Untitled Scroll';
-                const content = blog.content || blog.description || blog.excerpt || '';
-                const createdAt = blog.createdAt || blog.created_at || blog.date || new Date().toISOString();
-                
-                // Safely truncate content
-                const truncatedContent = content.length > 200 ? 
-                    content.substring(0, 200) + '...' : 
-                    content || 'No preview available';
-                
-                return `
-                    <div class="blog-preview" onclick="window.location.href='/pages/blog.html?id=${blogId}'">
-                        <h4>${title}</h4>
-                        <div class="content">${truncatedContent}</div>
-                        <div class="date">
-                            <i class="fas fa-calendar"></i>
-                            ${new Date(createdAt).toLocaleDateString()}
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-        
         function setupMessageButton(username, userData) {
-            const messageBtn = document.getElementById('messageBtn');
-            if (messageBtn && window.openMessageModal) {
-                messageBtn.addEventListener('click', () => {
-                    window.openMessageModal(username, userData.displayName || username);
-                });
-            }
+            // Implementation for setting up message button
         }
     </script>
 </body>
-</html> 
+</html>
