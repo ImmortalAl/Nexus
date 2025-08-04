@@ -769,9 +769,15 @@
                 const urlParams = new URLSearchParams(window.location.search);
                 let username = urlParams.get('user') || urlParams.get('username');
                 
+                // Also check if username is in the path (fallback for direct navigation)
+                const pathParts = window.location.pathname.split('/');
+                if (!username && pathParts.length > 2 && pathParts[1] === 'souls') {
+                    // Extract username from path like /souls/Mortal
+                    username = pathParts[2];
+                }
                 
                 if (!username) {
-                    console.error('[Profile] No username found in URL or query parameters');
+                    console.error('[Profile] No username found in URL, path, or query parameters');
                     throw new Error('No username provided');
                 }
                 
@@ -818,9 +824,34 @@
                     errorState.style.display = 'block';
                     const errorMessage = document.getElementById('errorMessage');
                     if (errorMessage) {
-                        errorMessage.textContent = error.message === 'No username provided' ? 
-                            'No username specified in URL parameters.' :
-                            'This eternal soul has not manifested in our realm.';
+                        if (error.message === 'No username provided') {
+                            errorMessage.innerHTML = `
+                                <p>No username specified in URL parameters.</p>
+                                <p style="margin-top: 10px;">
+                                    <a href="/souls" style="color: var(--color-mystical-purple);">
+                                        ← Return to Eternal Souls Directory
+                                    </a>
+                                </p>
+                            `;
+                        } else if (error.message && error.message.includes('404')) {
+                            errorMessage.innerHTML = `
+                                <p>This eternal soul has not manifested in our realm.</p>
+                                <p style="margin-top: 10px;">
+                                    <a href="/souls" style="color: var(--color-mystical-purple);">
+                                        ← Browse Eternal Souls
+                                    </a>
+                                </p>
+                            `;
+                        } else {
+                            errorMessage.innerHTML = `
+                                <p>An error occurred while loading this profile.</p>
+                                <p style="margin-top: 10px;">
+                                    <a href="/souls" style="color: var(--color-mystical-purple);">
+                                        ← Return to Eternal Souls Directory
+                                    </a>
+                                </p>
+                            `;
+                        }
                     }
                 }
             }
