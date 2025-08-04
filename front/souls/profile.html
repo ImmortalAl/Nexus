@@ -178,6 +178,77 @@
             gap: 1.5rem;
         }
 
+        .blog-preview {
+            background: var(--primary);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            border-left: 3px solid var(--accent);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .blog-preview:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .blog-preview-title {
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .blog-preview-excerpt {
+            color: var(--text);
+            opacity: 0.9;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .blog-preview-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .blog-preview-date {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .blog-preview-link {
+            color: var(--accent);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .blog-preview-link:hover {
+            color: var(--warning);
+        }
+
+        .no-blogs {
+            text-align: center;
+            padding: 3rem;
+            background: var(--secondary);
+            border-radius: var(--border-radius);
+            opacity: 0.8;
+            font-style: italic;
+        }
+
+        .no-blogs i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+            color: var(--accent);
+        }
+
         .profile-actions {
             display: flex;
             gap: 1rem;
@@ -581,11 +652,115 @@
         }
 
         async function loadUserBlogs(username) {
-            // Implementation for loading user blogs
+            const blogsList = document.querySelector('.user-blogs-list');
+            
+            try {
+                const response = await window.apiClient.get(`/blogs?author=${username}`);
+                
+                // Handle different possible response structures
+                let blogs = [];
+                if (response) {
+                    if (Array.isArray(response)) {
+                        blogs = response;
+                    } else if (response.docs && Array.isArray(response.docs)) {
+                        blogs = response.docs;
+                    } else if (response.data && Array.isArray(response.data)) {
+                        blogs = response.data;
+                    }
+                }
+                
+                if (blogs.length === 0) {
+                    blogsList.innerHTML = `
+                        <div class="no-blogs">
+                            <i class="fas fa-scroll"></i>
+                            <p>This soul has not written any scrolls yet.</p>
+                            <p style="opacity: 0.7; font-size: 0.9rem;">The eternal canvas awaits their first inscription.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Clear loading state and render blogs
+                blogsList.innerHTML = '';
+                blogs.slice(0, 5).forEach(blog => { // Show max 5 recent blogs
+                    const blogElement = document.createElement('div');
+                    blogElement.className = 'blog-preview';
+                    blogElement.innerHTML = `
+                        <h4 class="blog-preview-title">${blog.title || 'Untitled'}</h4>
+                        <div class="blog-preview-excerpt">${(blog.content || blog.excerpt || '').substring(0, 150)}${blog.content && blog.content.length > 150 ? '...' : ''}</div>
+                        <div class="blog-preview-meta">
+                            <div class="blog-preview-date">
+                                <i class="fas fa-clock"></i>
+                                ${new Date(blog.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                            </div>
+                            <a href="/pages/blog.html?id=${blog._id}" class="blog-preview-link">
+                                Read More <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    `;
+                    
+                    // Make the whole preview clickable
+                    blogElement.addEventListener('click', (e) => {
+                        if (!e.target.closest('.blog-preview-link')) {
+                            window.location.href = `/pages/blog.html?id=${blog._id}`;
+                        }
+                    });
+                    
+                    blogsList.appendChild(blogElement);
+                });
+                
+            } catch (error) {
+                console.error('Error loading user blogs:', error);
+                blogsList.innerHTML = `
+                    <div class="no-blogs">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Unable to load eternal scrolls at this time.</p>
+                        <p style="opacity: 0.7; font-size: 0.9rem;">The archives may be temporarily sealed.</p>
+                    </div>
+                `;
+            }
         }
 
         function setupMessageButton(username, userData) {
-            // Implementation for setting up message button
+            const messageBtn = document.getElementById('messageBtn');
+            if (!messageBtn) return;
+            
+            // Don't show message button for viewing your own profile
+            const currentUser = window.NEXUS?.currentUser;
+            if (currentUser && currentUser.username === username) {
+                messageBtn.style.display = 'none';
+                return;
+            }
+            
+            messageBtn.addEventListener('click', () => {
+                // Check if user is logged in
+                if (!currentUser) {
+                    // Show login prompt or redirect to auth
+                    if (window.NEXUS?.AuthManager?.showLoginModal) {
+                        window.NEXUS.AuthManager.showLoginModal();
+                    } else {
+                        alert('Please log in to send messages.');
+                    }
+                    return;
+                }
+                
+                // Open message modal if available
+                if (window.openMessageModal) {
+                    window.openMessageModal(username, userData.displayName || username);
+                } else if (window.MessageModal?.open) {
+                    window.MessageModal.open(username, userData.displayName || username);
+                } else {
+                    // Fallback to direct messaging page
+                    window.location.href = `/pages/messaging.html?to=${encodeURIComponent(username)}`;
+                }
+            });
+            
+            // Update button text with user's display name
+            const displayName = userData.displayName || username;
+            messageBtn.innerHTML = `
+                <i class="fas fa-envelope"></i>
+                Message ${displayName}
+            `;
         }
     </script>
 </body>
