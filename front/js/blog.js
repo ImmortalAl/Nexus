@@ -147,8 +147,8 @@ async function fetchBlogPosts(page = 1) {
                             <button class="like-btn" data-post-id="${post._id}" onclick="event.stopPropagation(); likePost('${post._id}')">
                                 <i class="fas fa-heart"></i> <span class="like-count">${post.likes ? post.likes.length : 0}</span>
                             </button>
-                            <button class="dislike-btn" data-post-id="${post._id}" onclick="event.stopPropagation(); dislikePost('${post._id}')">
-                                <i class="fas fa-heart-broken"></i> <span class="dislike-count">${post.dislikes ? post.dislikes.length : 0}</span>
+                            <button class="challenge-btn" data-post-id="${post._id}" onclick="event.stopPropagation(); challengePost('${post._id}')" title="Challenge this scroll">
+                                <i class="fas fa-swords"></i> <span class="challenge-count">${post.dislikes ? post.dislikes.length : 0}</span>
                             </button>
                         </div>
                         <div class="scroll-controls">
@@ -503,6 +503,15 @@ function populateModalContent(modal, post) {
     // Update modal content
     try {
         essentialElements['modal-title'].textContent = post.title;
+        
+        // Show category if present
+        if (post.category) {
+            const categoryBadge = document.createElement('span');
+            categoryBadge.className = 'category-badge';
+            categoryBadge.textContent = post.category;
+            essentialElements['modal-title'].appendChild(categoryBadge);
+        }
+        
         essentialElements['modal-content'].innerHTML = post.content;
         
         // Update author info
@@ -510,6 +519,9 @@ function populateModalContent(modal, post) {
         
         // Show edit button if user is the author
         updateEditButton(post);
+        
+        // Load author's other scrolls
+        loadAuthorOtherScrolls(post.author._id, post._id);
         
     } catch (error) {
         console.error('Error updating modal content:', error);
@@ -605,6 +617,68 @@ function updateAuthorInfo(post) {
         
         if (modalAuthorContainer) {
             modalAuthorContainer.style.display = 'none';
+        }
+    }
+}
+
+// Load author's other scrolls
+async function loadAuthorOtherScrolls(authorId, currentPostId) {
+    const otherScrollsContainer = document.getElementById('authorOtherScrolls');
+    if (!otherScrollsContainer) {
+        // Create the container if it doesn't exist
+        const modalBody = document.getElementById('modalBody');
+        if (!modalBody) return;
+        
+        const container = document.createElement('div');
+        container.id = 'authorOtherScrolls';
+        container.className = 'author-other-scrolls';
+        container.innerHTML = '<h3>More scrolls from this soul</h3><div class="other-scrolls-list"></div>';
+        modalBody.appendChild(container);
+    }
+    
+    try {
+        const response = await fetch(`${BLOG_API_BASE_URL}/blogs?author=${authorId}&limit=5`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to fetch author scrolls');
+        }
+        
+        const result = await response.json();
+        const posts = result.docs || result;
+        
+        // Filter out current post and render others
+        const otherPosts = posts.filter(post => post._id !== currentPostId);
+        
+        const listContainer = document.querySelector('.other-scrolls-list');
+        if (!listContainer) return;
+        
+        if (otherPosts.length === 0) {
+            listContainer.innerHTML = '<p class="no-other-scrolls">No other scrolls from this author yet.</p>';
+        } else {
+            listContainer.innerHTML = '';
+            otherPosts.forEach(post => {
+                const scrollItem = document.createElement('div');
+                scrollItem.className = 'other-scroll-item';
+                scrollItem.innerHTML = `
+                    <h4>${post.title}</h4>
+                    <p class="scroll-date">${new Date(post.createdAt).toLocaleDateString()}</p>
+                `;
+                scrollItem.onclick = () => {
+                    // Close current modal and open new one
+                    closeBlogModal();
+                    setTimeout(() => openBlogModal(post._id), 300);
+                };
+                listContainer.appendChild(scrollItem);
+            });
+        }
+    } catch (error) {
+        console.error('Error loading author scrolls:', error);
+        const listContainer = document.querySelector('.other-scrolls-list');
+        if (listContainer) {
+            listContainer.innerHTML = '<p class="error-loading">Failed to load other scrolls.</p>';
         }
     }
 }
@@ -931,8 +1005,8 @@ async function likePost(postId) {
     }
 }
 
-// Dislike a blog post
-async function dislikePost(postId) {
+// Challenge a blog post with 3-tier response system
+async function challengePost(postId) {
     const token = localStorage.getItem('sessionToken');
     if (!isTokenValid(token)) {
         if (window.NEXUS && window.NEXUS.openSoulModal) {
@@ -940,6 +1014,63 @@ async function dislikePost(postId) {
         }
         return;
     }
+
+    // Show challenge options dropdown
+    showChallengeOptions(postId);
+}
+
+// Show challenge options dropdown
+function showChallengeOptions(postId) {
+    // Remove any existing challenge dropdown
+    const existingDropdown = document.querySelector('.challenge-dropdown');
+    if (existingDropdown) {
+        existingDropdown.remove();
+    }
+
+    // Create challenge dropdown
+    const dropdown = document.createElement('div');
+    dropdown.className = 'challenge-dropdown';
+    dropdown.innerHTML = `
+        <div class="challenge-options">
+            <button onclick="quickDownvote('${postId}')" class="challenge-option">
+                <i class="fas fa-thumbs-down"></i> Quick Downvote
+            </button>
+            <button onclick="openCounterpoint('${postId}')" class="challenge-option">
+                <i class="fas fa-comment-dots"></i> Write Counter-point
+            </button>
+            <button onclick="createFormalDebate('${postId}')" class="challenge-option">
+                <i class="fas fa-gavel"></i> Create Formal Debate
+            </button>
+        </div>
+    `;
+
+    // Find the challenge button and position dropdown
+    const challengeBtn = document.querySelector(`button[data-post-id="${postId}"].challenge-btn`) || 
+                         document.querySelector(`button[onclick*="challengePost('${postId}')"]`);
+    
+    if (challengeBtn) {
+        challengeBtn.parentElement.style.position = 'relative';
+        challengeBtn.parentElement.appendChild(dropdown);
+    }
+
+    // Close dropdown when clicking outside
+    setTimeout(() => {
+        document.addEventListener('click', function closeDropdown(e) {
+            if (!dropdown.contains(e.target) && !challengeBtn.contains(e.target)) {
+                dropdown.remove();
+                document.removeEventListener('click', closeDropdown);
+            }
+        });
+    }, 100);
+}
+
+// Quick downvote (old dislike functionality)
+async function quickDownvote(postId) {
+    const token = localStorage.getItem('sessionToken');
+    
+    // Remove dropdown
+    const dropdown = document.querySelector('.challenge-dropdown');
+    if (dropdown) dropdown.remove();
 
     try {
         const response = await fetch(`${BLOG_API_BASE_URL}/blogs/${postId}/dislike`, {
@@ -952,15 +1083,91 @@ async function dislikePost(postId) {
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.error || `Failed to dislike post`);
+            throw new Error(errorData.error || `Failed to downvote post`);
         }
 
         const result = await response.json();
         updateLikeButtons(postId, result);
+        showNotification('Downvoted', 'info');
     } catch (error) {
-        console.error('Error disliking post:', error);
-        alert('Failed to dislike post: ' + error.message);
+        console.error('Error downvoting post:', error);
+        alert('Failed to downvote post: ' + error.message);
     }
+}
+
+// Open counterpoint comment box
+function openCounterpoint(postId) {
+    // Remove dropdown
+    const dropdown = document.querySelector('.challenge-dropdown');
+    if (dropdown) dropdown.remove();
+
+    // Find or scroll to comments section
+    const commentsSection = document.getElementById('commentsSection');
+    if (commentsSection) {
+        // Scroll to comments
+        commentsSection.scrollIntoView({ behavior: 'smooth' });
+        
+        // Focus on comment input and add Challenge prefix
+        setTimeout(() => {
+            const commentInput = document.getElementById('commentInput');
+            if (commentInput) {
+                commentInput.value = '🗡️ Challenge: ';
+                commentInput.focus();
+                commentInput.setSelectionRange(commentInput.value.length, commentInput.value.length);
+            }
+        }, 500);
+    }
+}
+
+// Create formal debate in Clash of Immortals
+async function createFormalDebate(postId) {
+    const token = localStorage.getItem('sessionToken');
+    const post = blogPosts[postId];
+    
+    // Remove dropdown
+    const dropdown = document.querySelector('.challenge-dropdown');
+    if (dropdown) dropdown.remove();
+
+    if (!post) {
+        alert('Unable to create debate: Post not found');
+        return;
+    }
+
+    try {
+        const response = await fetch(`${BLOG_API_BASE_URL}/debates/from-scroll`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                sourceScrollId: postId,
+                scrollTitle: post.title,
+                originalAuthorId: post.author._id
+            })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.error || 'Failed to create debate');
+        }
+
+        const result = await response.json();
+        showNotification('Debate created! Redirecting to Clash of Immortals...', 'success');
+        
+        // Redirect to debate page after short delay
+        setTimeout(() => {
+            window.location.href = `/pages/debate.html#debate-${result.debateId}`;
+        }, 2000);
+    } catch (error) {
+        console.error('Error creating debate:', error);
+        alert('Failed to create debate: ' + error.message);
+    }
+}
+
+// Backward compatibility - redirect old dislikePost calls to challengePost
+function dislikePost(postId) {
+    challengePost(postId);
 }
 
 // Update like/dislike button states
@@ -1189,6 +1396,11 @@ window.sharePost = sharePost;
 window.shareCurrentPost = shareCurrentPost;
 window.likePost = likePost;
 window.dislikePost = dislikePost;
+window.challengePost = challengePost;
+window.showChallengeOptions = showChallengeOptions;
+window.quickDownvote = quickDownvote;
+window.openCounterpoint = openCounterpoint;
+window.createFormalDebate = createFormalDebate;
 window.editCurrentPost = editCurrentPost;
 window.editPost = editPost;
 window.savePostEdit = savePostEdit;

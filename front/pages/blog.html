@@ -21,7 +21,7 @@
     
     <!-- 2. CRITICAL CSS - Above-fold essentials loaded synchronously -->
     <link rel="stylesheet" href="../css/critical.css?v=5.4">
-    <link rel="stylesheet" href="../css/blog-critical.css?v=5.4">
+    <link rel="stylesheet" href="../css/blog-critical.css?v=5.5">
     
     <!-- 3. GLOBAL STYLES - Site-wide styles loaded synchronously -->
     <link rel="stylesheet" href="../css/styles.css?v=10.0">
@@ -48,8 +48,8 @@
     <noscript><link rel="stylesheet" href="../css/active-users.css?v=7.0"></noscript>
     
     <!-- Blog-specific modules (lazy loaded) -->
-    <link rel="preload" href="../css/blog-cards.css?v=2.4" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="../css/blog-cards.css?v=2.4"></noscript>
+    <link rel="preload" href="../css/blog-cards.css?v=2.5" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/blog-cards.css?v=2.5"></noscript>
     
     <link rel="preload" href="../css/blog-modal.css?v=2.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="../css/blog-modal.css?v=2.3"></noscript>
@@ -137,6 +137,15 @@
     <main>
         <div class="scroll-archive">
             <h1 class="archive-title">📜 Soul Scrolls</h1>
+            
+            <!-- Inscribe a Scroll button -->
+            <div class="inscribe-scroll-container">
+                <button class="inscribe-scroll-btn" onclick="window.location.href='/profile/index.html#eternal-hearth'" title="Scrolls are crafted in the Eternal Hearth">
+                    <i class="fas fa-feather-alt"></i>
+                    <span>Inscribe a Scroll</span>
+                    <small>✨ Crafted in the Eternal Hearth</small>
+                </button>
+            </div>
             
             <div id="blogList" class="scroll-grid"></div>
             
@@ -239,7 +248,7 @@
     <script src="../components/shared/activeUsers.js?v=1.8"></script>
     <script src="../components/shared/messageModal.js?v=2.5"></script>
     <script src="../components/shared/comments.js?v=1.2"></script>
-    <script src="../js/blog.js?v=3.0"></script>
+    <script src="../js/blog.js?v=4.0"></script>
     <!-- <script src="../js/scripts.js?v=1.2"></script> --> <!-- Legacy script - functionality moved to components -->
     
     <!-- Analytics Tracking System -->
