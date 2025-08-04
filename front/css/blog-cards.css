@@ -1,51 +1,99 @@
 /* Blog Card Components - Soul Scrolls Design System */
 
-/* ===== CARD COMPONENT FOUNDATION ===== */
+/* ===== IMMORTAL SCROLL CARDS ===== */
 .blog-post {
-    /* Base card styling using MLNF design system */
-    background: linear-gradient(135deg, rgba(26, 26, 51, 0.95), rgba(42, 64, 102, 0.9));
-    border: 2px solid rgba(255, 94, 120, 0.3);
-    border-radius: 16px;
-    padding: 1.5rem;
+    /* Epic immortal scroll styling */
+    background: linear-gradient(135deg, 
+        rgba(26, 26, 51, 0.98), 
+        rgba(42, 64, 102, 0.95), 
+        rgba(13, 13, 26, 0.97)
+    );
+    border: 2px solid rgba(255, 94, 120, 0.4);
+    border-radius: 20px;
+    padding: 2rem;
     box-shadow: 
-        0 8px 32px rgba(0, 0, 0, 0.6),
-        0 4px 16px rgba(255, 94, 120, 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        0 12px 40px rgba(0, 0, 0, 0.7),
+        0 6px 20px rgba(255, 94, 120, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 -1px 0 rgba(255, 94, 120, 0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    backdrop-filter: blur(10px);
-    
-    /* Mystical glow effect */
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        border-radius: inherit;
-        padding: 2px;
-        background: linear-gradient(45deg, rgba(255, 94, 120, 0.6), rgba(255, 202, 40, 0.4));
-        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-        mask-composite: exclude;
-        opacity: 0;
-        transition: opacity 0.3s ease;
+    backdrop-filter: blur(15px);
+    border-left: 6px solid transparent;
+    border-image: linear-gradient(45deg, rgba(255, 94, 120, 0.8), rgba(255, 202, 40, 0.6)) 1;
+}
+
+/* Mystical glow effect */
+.blog-post::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, 
+        rgba(255, 94, 120, 0.6), 
+        rgba(255, 202, 40, 0.4), 
+        rgba(79, 195, 247, 0.4),
+        rgba(255, 94, 120, 0.6)
+    );
+    border-radius: 22px;
+    z-index: -1;
+    opacity: 0;
+    animation: mysticalPulse 4s ease-in-out infinite;
+    transition: opacity 0.4s ease;
+}
+
+/* Floating runes effect */
+.blog-post::after {
+    content: '⟡ ∞ ⟐';
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 0.8rem;
+    color: rgba(255, 202, 40, 0.3);
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.4s ease;
+    text-shadow: 0 0 8px rgba(255, 202, 40, 0.5);
+    letter-spacing: 0.5rem;
+}
+
+@keyframes mysticalPulse {
+    0%, 100% { 
+        background-size: 100% 100%;
+        opacity: 0.3;
+    }
+    50% { 
+        background-size: 120% 120%;
+        opacity: 0.6;
     }
 }
 
 .blog-post:hover {
-    transform: translateY(-4px) scale(1.02);
+    transform: translateY(-8px) scale(1.03);
     box-shadow: 
-        0 16px 64px rgba(0, 0, 0, 0.8),
-        0 8px 32px rgba(255, 94, 120, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 94, 120, 0.6);
+        0 20px 60px rgba(0, 0, 0, 0.9),
+        0 12px 40px rgba(255, 94, 120, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        inset 0 -1px 0 rgba(255, 94, 120, 0.3);
+    border-color: rgba(255, 94, 120, 0.8);
+    background: linear-gradient(135deg, 
+        rgba(26, 26, 51, 1), 
+        rgba(42, 64, 102, 0.98), 
+        rgba(13, 13, 26, 0.99)
+    );
 }
 
 .blog-post:hover::before {
     opacity: 1;
+}
+
+.blog-post:hover::after {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .blog-post:focus-within {
@@ -60,38 +108,78 @@
     align-items: center;
     gap: 0.75rem;
     margin-bottom: 1rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 94, 120, 0.15);
 }
 
 .author-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: var(--radius-full);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
     overflow: hidden;
-    border: 2px solid var(--border);
+    border: 2px solid rgba(255, 94, 120, 0.4);
     flex-shrink: 0;
-    transition: border-color 0.2s ease;
+    transition: all 0.3s ease;
+    position: relative;
+    box-shadow: 0 0 10px rgba(255, 94, 120, 0.2);
+}
+
+.author-avatar::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, rgba(255, 94, 120, 0.6), rgba(255, 202, 40, 0.4));
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .author-avatar:hover {
-    border-color: var(--accent);
+    border-color: rgba(255, 94, 120, 0.8);
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 94, 120, 0.4);
+}
+
+.author-avatar:hover::before {
+    opacity: 1;
 }
 
 .author-avatar img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.author-avatar:hover img {
+    transform: scale(1.1);
 }
 
 .author-name {
-    color: var(--text);
+    color: rgba(255, 255, 255, 0.9);
     text-decoration: none;
     font-weight: 600;
-    font-size: var(--text-sm);
-    transition: color 0.2s ease;
+    font-size: 0.95rem;
+    font-family: 'Cinzel', serif;
+    transition: all 0.3s ease;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, rgba(255, 94, 120, 0.8), rgba(255, 202, 40, 0.6));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .author-name:hover {
-    color: var(--accent);
+    background: linear-gradient(135deg, rgba(255, 94, 120, 1), rgba(255, 202, 40, 0.9));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 8px rgba(255, 94, 120, 0.5);
+    transform: translateX(2px);
 }
 
 /* ===== CARD CONTENT ===== */
@@ -128,17 +216,51 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     padding-top: 1rem;
-    border-top: 1px solid rgba(255, 94, 120, 0.2);
+    border-top: 2px solid;
+    border-image: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 94, 120, 0.4), 
+        rgba(255, 202, 40, 0.3), 
+        rgba(255, 94, 120, 0.4), 
+        transparent
+    ) 1;
+    position: relative;
+}
+
+.scroll-footer::before {
+    content: '⟐ ∞ ⟐';
+    position: absolute;
+    top: -0.6rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7rem;
+    color: rgba(255, 202, 40, 0.5);
+    background: linear-gradient(135deg, rgba(26, 26, 51, 0.9), rgba(42, 64, 102, 0.8));
+    padding: 0.2rem 0.8rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 94, 120, 0.3);
+    backdrop-filter: blur(10px);
+    letter-spacing: 0.3rem;
 }
 
 .scroll-date,
 .date {
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.7);
     font-size: 0.85rem;
     font-style: italic;
+    font-family: 'Cinzel', serif;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.scroll-date::before,
+.date::before {
+    content: '⧖';
+    margin-right: 0.5rem;
+    color: rgba(255, 202, 40, 0.6);
+    font-style: normal;
 }
 
 .post-actions {
@@ -266,31 +388,60 @@
 .whisper-link, .edit-post-btn {
     background: linear-gradient(135deg, rgba(255, 94, 120, 0.8), rgba(255, 202, 40, 0.7));
     color: rgba(26, 26, 51, 0.95);
-    border: 1px solid rgba(255, 94, 120, 0.4);
-    border-radius: 12px;
-    padding: 0.5rem 1rem;
-    font-size: 0.85rem;
-    font-weight: 600;
+    border: 2px solid rgba(255, 94, 120, 0.4);
+    border-radius: 20px;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.8rem;
+    font-weight: 700;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     cursor: pointer;
-    min-height: 36px;
+    min-height: 38px;
     font-family: 'Cinzel', serif;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(5px);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.whisper-link::before, .edit-post-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s ease;
 }
 
 .whisper-link:hover, .edit-post-btn:hover {
-    background: linear-gradient(135deg, rgba(255, 94, 120, 0.9), rgba(255, 202, 40, 0.8));
-    transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 4px 12px rgba(255, 94, 120, 0.4);
+    background: linear-gradient(135deg, rgba(255, 94, 120, 1), rgba(255, 202, 40, 0.9));
+    transform: translateY(-3px) scale(1.08);
+    box-shadow: 
+        0 8px 25px rgba(255, 94, 120, 0.5),
+        0 4px 12px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 94, 120, 0.8);
+}
+
+.whisper-link:hover::before, .edit-post-btn:hover::before {
+    left: 100%;
 }
 
 .whisper-link:focus, .edit-post-btn:focus {
-    outline: 3px solid var(--focus);
-    outline-offset: 2px;
+    outline: 3px solid rgba(255, 94, 120, 0.6);
+    outline-offset: 3px;
+}
+
+.whisper-link:active, .edit-post-btn:active {
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: 0 4px 12px rgba(255, 94, 120, 0.4);
 }
 
 /* ===== RESPONSIVE DESIGN - Mobile First ===== */
