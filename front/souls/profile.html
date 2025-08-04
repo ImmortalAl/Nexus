@@ -82,18 +82,28 @@
             font-style: italic;
             color: var(--warning);
             margin-bottom: 1rem;
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 1.5rem;
             background: rgba(255, 202, 40, 0.1);
-            border-radius: 20px;
+            border-radius: 25px;
             display: inline-block;
+            font-size: 0.95rem;
+            border: 1px solid rgba(255, 202, 40, 0.3);
+            transition: var(--transition);
+        }
+
+        .profile-status:hover {
+            background: rgba(255, 202, 40, 0.15);
+            transform: scale(1.02);
         }
 
         .profile-meta {
             display: flex;
             justify-content: center;
             gap: 2rem;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
             flex-wrap: wrap;
+            padding: 1rem 0;
+            border-top: 1px solid rgba(255, 94, 120, 0.2);
         }
 
         .meta-item {
@@ -101,11 +111,28 @@
             align-items: center;
             gap: 0.5rem;
             color: var(--text);
-            opacity: 0.8;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .meta-item:hover {
+            transform: translateY(-2px);
         }
 
         .meta-item i {
             color: var(--accent);
+            font-size: 1rem;
+        }
+
+        .meta-item span {
+            font-weight: 500;
+        }
+
+        /* Online status indicator specific styling */
+        #onlineStatus i.fa-circle {
+            font-size: 0.6rem;
+            vertical-align: middle;
+            margin-right: 0.25rem;
         }
 
         .profile-bio {
@@ -898,6 +925,57 @@
                 const bioContent = bioSection.querySelector('p');
                 if (bioContent) {
                     bioContent.textContent = userData.bio || 'No bio provided';
+                }
+            }
+
+            // Update join date
+            const joinDateElement = document.getElementById('joinDate');
+            if (joinDateElement && userData.createdAt) {
+                const joinDate = new Date(userData.createdAt);
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                joinDateElement.textContent = joinDate.toLocaleDateString('en-US', options);
+            }
+
+            // Update online status
+            const onlineStatusElement = document.getElementById('onlineStatus');
+            if (onlineStatusElement) {
+                const icon = onlineStatusElement.querySelector('i');
+                const text = onlineStatusElement.querySelector('span');
+                
+                if (userData.online) {
+                    icon.className = 'fas fa-circle';
+                    icon.style.color = '#4ade80'; // Green color
+                    text.textContent = 'Online';
+                } else {
+                    icon.className = 'fas fa-circle';
+                    icon.style.color = '#64748b'; // Gray color
+                    
+                    // Calculate last seen if lastActive is available
+                    if (userData.lastActive) {
+                        const lastActive = new Date(userData.lastActive);
+                        const now = new Date();
+                        const diffMs = now - lastActive;
+                        const diffMins = Math.floor(diffMs / 60000);
+                        const diffHours = Math.floor(diffMs / 3600000);
+                        const diffDays = Math.floor(diffMs / 86400000);
+                        
+                        let lastSeenText = 'Offline';
+                        if (diffMins < 1) {
+                            lastSeenText = 'Just now';
+                        } else if (diffMins < 60) {
+                            lastSeenText = `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`;
+                        } else if (diffHours < 24) {
+                            lastSeenText = `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+                        } else if (diffDays < 30) {
+                            lastSeenText = `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+                        } else {
+                            lastSeenText = lastActive.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                        }
+                        
+                        text.textContent = `Last seen ${lastSeenText}`;
+                    } else {
+                        text.textContent = 'Offline';
+                    }
                 }
             }
         }
