@@ -153,31 +153,251 @@
     min-height: calc(100vh - 200px);
 }
 
-/* Archive Header */
-.archive-title {
-    font-family: 'MedievalSharp', cursive;
-    text-align: center;
-    font-size: clamp(2rem, 5vw, 3rem);
-    margin: 2rem 0 3rem 0;
+/* ===== EPIC SOUL SCROLLS HEADER ===== */
+.soul-scrolls-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin: 3rem 0 4rem 0;
     position: relative;
-    color: var(--ink);
-    letter-spacing: 2px;
-    text-shadow: 2px 2px 4px var(--shadow);
-    background: linear-gradient(135deg, var(--ink), var(--ink-light));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    overflow: hidden;
+    padding: 2rem 1rem;
 }
 
-.archive-title::after {
+.soul-scrolls-header::before {
     content: '';
-    display: block;
-    width: min(300px, 80%);
-    height: 3px;
-    background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent);
-    margin: 1.5rem auto;
-    border-radius: 2px;
-    box-shadow: 0 2px 4px var(--shadow);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(ellipse at center, 
+        rgba(255, 94, 120, 0.1) 0%,
+        rgba(255, 202, 40, 0.05) 30%,
+        transparent 70%);
+    animation: headerGlow 4s ease-in-out infinite alternate;
+    z-index: -1;
+}
+
+@keyframes headerGlow {
+    0% { opacity: 0.3; transform: scale(0.95); }
+    100% { opacity: 0.7; transform: scale(1.05); }
+}
+
+.header-ornament {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    color: var(--accent);
+    opacity: 0.8;
+    animation: ornamentPulse 3s ease-in-out infinite;
+}
+
+.header-ornament-left {
+    animation-delay: 0s;
+}
+
+.header-ornament-right {
+    animation-delay: 1.5s;
+}
+
+@keyframes ornamentPulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); }
+}
+
+.infinity-symbol {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(255, 94, 120, 0.5);
+    animation: infinityRotate 8s linear infinite;
+}
+
+@keyframes infinityRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.mystic-runes {
+    font-size: 1.2rem;
+    letter-spacing: 0.5rem;
+    color: rgba(255, 202, 40, 0.8);
+    text-shadow: 0 0 8px rgba(255, 202, 40, 0.4);
+}
+
+.main-title-container {
+    position: relative;
+    text-align: center;
+    z-index: 2;
+}
+
+.title-backdrop {
+    position: absolute;
+    top: -20px;
+    left: -40px;
+    right: -40px;
+    bottom: -20px;
+    background: linear-gradient(135deg,
+        rgba(26, 26, 51, 0.3),
+        rgba(42, 64, 102, 0.2),
+        rgba(26, 26, 51, 0.3)
+    );
+    border-radius: 20px;
+    border: 1px solid rgba(255, 94, 120, 0.2);
+    backdrop-filter: blur(10px);
+    z-index: -1;
+    animation: backdropShimmer 6s ease-in-out infinite;
+}
+
+@keyframes backdropShimmer {
+    0%, 100% { 
+        box-shadow: 0 0 20px rgba(255, 94, 120, 0.1);
+        border-color: rgba(255, 94, 120, 0.2);
+    }
+    50% { 
+        box-shadow: 0 0 40px rgba(255, 94, 120, 0.3);
+        border-color: rgba(255, 94, 120, 0.5);
+    }
+}
+
+.soul-scrolls-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 700;
+    margin: 0;
+    position: relative;
+    letter-spacing: 0.1em;
+    line-height: 1.1;
+}
+
+.title-word {
+    display: inline-block;
+    margin: 0 0.2em;
+    position: relative;
+}
+
+.title-word.soul {
+    background: linear-gradient(45deg, 
+        #ff5e78, 
+        #ffca28, 
+        #ff8f00, 
+        #ff5722);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: soulGlow 3s ease-in-out infinite alternate;
+}
+
+.title-word.scrolls {
+    background: linear-gradient(45deg, 
+        #4fc3f7, 
+        #29b6f6, 
+        #03a9f4, 
+        #0288d1);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: scrollsGlow 3s ease-in-out infinite alternate;
+    animation-delay: 1s;
+}
+
+@keyframes soulGlow {
+    0% { 
+        filter: drop-shadow(0 0 5px rgba(255, 94, 120, 0.5));
+        transform: translateY(0px);
+    }
+    100% { 
+        filter: drop-shadow(0 0 15px rgba(255, 94, 120, 0.8));
+        transform: translateY(-2px);
+    }
+}
+
+@keyframes scrollsGlow {
+    0% { 
+        filter: drop-shadow(0 0 5px rgba(79, 195, 247, 0.5));
+        transform: translateY(0px);
+    }
+    100% { 
+        filter: drop-shadow(0 0 15px rgba(79, 195, 247, 0.8));
+        transform: translateY(-2px);
+    }
+}
+
+.subtitle {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
+    color: rgba(240, 230, 255, 0.8);
+    margin-top: 0.5rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 400;
+    text-shadow: 0 0 10px rgba(255, 94, 120, 0.3);
+}
+
+/* Responsive Header Styles */
+@media (max-width: 768px) {
+    .soul-scrolls-header {
+        flex-direction: column;
+        gap: 1.5rem;
+        margin: 2rem 0 3rem 0;
+        padding: 1.5rem 0.5rem;
+    }
+    
+    .header-ornament {
+        flex-direction: row;
+        gap: 2rem;
+    }
+    
+    .infinity-symbol {
+        font-size: 2rem;
+    }
+    
+    .mystic-runes {
+        font-size: 1rem;
+        letter-spacing: 0.3rem;
+    }
+    
+    .soul-scrolls-title {
+        font-size: clamp(2rem, 8vw, 3rem);
+    }
+    
+    .title-backdrop {
+        top: -15px;
+        left: -20px;
+        right: -20px;
+        bottom: -15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .soul-scrolls-header {
+        margin: 1.5rem 0 2.5rem 0;
+        padding: 1rem 0.5rem;
+    }
+    
+    .header-ornament {
+        gap: 1.5rem;
+    }
+    
+    .infinity-symbol {
+        font-size: 1.5rem;
+    }
+    
+    .mystic-runes {
+        font-size: 0.9rem;
+        letter-spacing: 0.2rem;
+    }
+    
+    .soul-scrolls-title {
+        font-size: clamp(1.5rem, 10vw, 2.5rem);
+    }
+    
+    .subtitle {
+        font-size: clamp(0.8rem, 3vw, 1rem);
+        letter-spacing: 0.1em;
+    }
 }
 
 /* Enhanced Scroll Grid - Basic Layout */
