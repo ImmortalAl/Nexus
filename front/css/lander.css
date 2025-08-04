@@ -1,22 +1,11 @@
 /* lander.css - Styles for the Soul Sanctum page */
 
-<<<<<<< Updated upstream
 :root {
-    --primary: #0d0d1a;
-    --secondary: #1a1a33;
-    --accent: #ff5e78;
-    --text: #f0e6ff;
-    --highlight: #2a4066;
+    /* Lander-specific gradients and effects */
     --gradient-accent: linear-gradient(45deg, #ff5e78, #ff8f00);
     --gradient-secondary: linear-gradient(to bottom, var(--secondary), rgba(26, 26, 51, 0.9));
-    --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
-    --shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
-    --border-radius: 10px;
     --soul-glow: 0 0 20px rgba(255, 94, 120, 0.3);
 }
-=======
-@import 'core/01-variables.css';
->>>>>>> Stashed changes
 
 body {
     background: var(--gradient-primary);
@@ -54,7 +43,6 @@ h3 {
     margin-bottom: var(--space-sm);
 }
 
-<<<<<<< Updated upstream
 /* Soul Presence Banner */
 .soul-presence {
     background: var(--gradient-secondary);
@@ -242,10 +230,10 @@ h3 {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
-=======
+}
+
 .welcome-section p {
     margin-bottom: var(--space-lg);
->>>>>>> Stashed changes
 }
 
 .section-header h2 {
