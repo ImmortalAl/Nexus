@@ -27,7 +27,7 @@ html {
 
 body {
     /* Primary background with fallback */
-    background-color: #ff0000 !important; /* BRIGHT RED FOR TESTING */
+    background-color: #0a0a0a;
     background-image: url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&w=2070&q=80') !important;
     background-position: center center !important;
     background-size: cover !important;

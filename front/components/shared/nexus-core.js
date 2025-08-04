@@ -32,10 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   
-  // Optional components
-  if (typeof window.NEXUS.initHeroParticles === 'function') {
-    window.NEXUS.initHeroParticles(350);
-  }
+  // Particle system is auto-initialized by particleSystem.js
 
 });
 
