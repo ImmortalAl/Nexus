@@ -306,6 +306,49 @@
     }
 }
 
+/* Soul status styling - three-tier hierarchy */
+.soul-online {
+    border-color: rgba(0, 255, 100, 0.6) !important;
+    box-shadow: 0 8px 25px rgba(0, 255, 100, 0.15), 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+    background: linear-gradient(135deg, var(--secondary), rgba(26, 26, 51, 0.98)) !important;
+}
+
+.soul-online .profile-card-avatar {
+    border-color: rgba(0, 255, 100, 0.8) !important;
+    animation: soulGlowPulse 2s ease-in-out infinite;
+}
+
+.soul-online:hover {
+    transform: translateY(-6px) !important;
+    box-shadow: 0 15px 35px rgba(0, 255, 100, 0.25), 0 12px 30px rgba(0, 0, 0, 0.2) !important;
+}
+
+@keyframes soulGlowPulse {
+    0%, 100% { 
+        box-shadow: 0 0 10px rgba(0, 255, 100, 0.4);
+        border-color: rgba(0, 255, 100, 0.8);
+    }
+    50% { 
+        box-shadow: 0 0 20px rgba(0, 255, 100, 0.7);
+        border-color: rgba(0, 255, 100, 1);
+    }
+}
+
+.soul-recent {
+    border-color: rgba(255, 94, 120, 0.5) !important;
+    box-shadow: 0 7px 22px rgba(255, 94, 120, 0.12), 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+    background: linear-gradient(135deg, var(--secondary), rgba(26, 26, 51, 0.97)) !important;
+}
+
+.soul-recent .profile-card-avatar {
+    border-color: rgba(255, 94, 120, 0.7) !important;
+}
+
+.soul-recent:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 12px 32px rgba(255, 94, 120, 0.2), 0 12px 30px rgba(0, 0, 0, 0.2) !important;
+}
+
 /* Removed user sidebar styles - using only active users sidebar for instant messaging */
 
 .loading-indicator {

@@ -38,8 +38,8 @@
     <link rel="preload" href="../css/active-users.css?v=7.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="../css/active-users.css?v=7.0"></noscript>
     
-    <link rel="preload" href="../css/souls-listing.css?v=2.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="../css/souls-listing.css?v=2.1"></noscript>
+    <link rel="preload" href="../css/souls-listing.css?v=2.2" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/souls-listing.css?v=2.2"></noscript>
     
     <!-- 6. EXTERNAL RESOURCES (lazy loaded) -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous">
@@ -213,35 +213,77 @@
                 return;
             }
 
-            profilesGrid.innerHTML = '';
+            // Sort users into three groups
+            const onlineUsers = [];
+            const recentUsers = [];
+            const allOtherUsers = [];
+            
+            const sevenDaysAgo = new Date();
+            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
             users.forEach(user => {
-                            if (window.NexusAvatars) {
-                const userDisplay = window.NexusAvatars.createUserDisplay({
-                        username: user.username,
-                        title: user.displayName || user.username,
-                        status: user.status || 'Eternal seeker',
-                        avatarSize: 'lg',
-                        displaySize: 'md',
-                        mystical: user.isVIP || user.role === 'admin',
-                        online: user.online,
-                        customAvatar: user.avatar,
-                        usernameStyle: 'immortal',
-                        enableUnifiedNavigation: true,
-                        banned: user.banned || false
-                    });
-                    
-                    profilesGrid.appendChild(userDisplay);
+                if (user.online) {
+                    onlineUsers.push(user);
+                } else if (user.lastActive && new Date(user.lastActive) > sevenDaysAgo) {
+                    recentUsers.push(user);
                 } else {
-                    const fallbackCard = document.createElement('div');
-                    fallbackCard.className = 'profile-card';
-                    fallbackCard.innerHTML = `
-                        <img src="${user.avatar || '../assets/images/default.jpg'}" alt="${user.username}">
-                        <h3>${user.displayName || user.username}</h3>
-                        <p>@${user.username}</p>
-                    `;
-                    profilesGrid.appendChild(fallbackCard);
+                    allOtherUsers.push(user);
                 }
             });
+
+            profilesGrid.innerHTML = '';
+
+            // Render online users first (flashiest styling)
+            onlineUsers.forEach(user => {
+                const userDisplay = createUserDisplay(user, 'soul-online');
+                profilesGrid.appendChild(userDisplay);
+            });
+
+            // Render recently active users (medium styling)
+            recentUsers.forEach(user => {
+                const userDisplay = createUserDisplay(user, 'soul-recent');
+                profilesGrid.appendChild(userDisplay);
+            });
+
+            // Render all other users (standard styling)
+            allOtherUsers.forEach(user => {
+                const userDisplay = createUserDisplay(user);
+                profilesGrid.appendChild(userDisplay);
+            });
+        }
+
+        function createUserDisplay(user, additionalClass = '') {
+            if (window.NexusAvatars) {
+                const userDisplay = window.NexusAvatars.createUserDisplay({
+                    username: user.username,
+                    title: user.displayName || user.username,
+                    status: user.status || 'Eternal seeker',
+                    avatarSize: 'lg',
+                    displaySize: 'md',
+                    mystical: user.isVIP || user.role === 'admin',
+                    online: user.online,
+                    customAvatar: user.avatar,
+                    usernameStyle: 'immortal',
+                    enableUnifiedNavigation: true,
+                    banned: user.banned || false
+                });
+                
+                // Add additional class for soul status styling
+                if (additionalClass) {
+                    userDisplay.classList.add(additionalClass);
+                }
+                
+                return userDisplay;
+            } else {
+                const fallbackCard = document.createElement('div');
+                fallbackCard.className = `profile-card ${additionalClass}`;
+                fallbackCard.innerHTML = `
+                    <img src="${user.avatar || '../assets/images/default.jpg'}" alt="${user.username}">
+                    <h3>${user.displayName || user.username}</h3>
+                    <p>@${user.username}</p>
+                `;
+                return fallbackCard;
+            }
         }
     </script>
     
