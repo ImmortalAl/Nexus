@@ -522,29 +522,7 @@
 /* ==========================================================================
    MODAL SYSTEM - NEWSPAPER THEMED
    ========================================================================== */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 9000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(8px);
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-}
-
-.modal[aria-hidden="false"] {
-    display: flex !important;
-    opacity: 1;
-    pointer-events: auto;
-}
+/* Base .modal definition moved to unified-modals.css */
 
 .chronicle-modal,
 .chronicle-detail-modal,

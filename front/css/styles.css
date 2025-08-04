@@ -1792,26 +1792,7 @@ body.light-theme .nexus-avatar {
 }
 
 /* Immortal Feedback Modal & Button Styles */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.7);
-    z-index: 2600;
-    align-items: center;
-    justify-content: center;
-    transition: opacity 0.3s;
-    opacity: 0;
-    pointer-events: none;
-}
-
-/* Mobile override with higher specificity */
-@media (max-width: 480px) {
-    .modal {
-        align-items: flex-start !important;
-        padding-top: 2vh !important;
-    }
-}
+/* Base .modal definition moved to unified-modals.css */
 .modal[aria-hidden="false"],
 .modal.active {
     display: flex !important;
@@ -2011,14 +1992,7 @@ body.light-theme .nexus-avatar {
         max-height: 90vh;
     }
     
-    /* Simple solution: Modal flush with top on mobile */
-    .modal {
-        align-items: flex-start;
-        justify-content: center;
-        padding-top: 2vh;
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
+    /* Modal mobile styles now handled by unified-modals.css */
     
     .feedback-modal h3 {
         font-size: 1.2rem !important;
