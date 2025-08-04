@@ -56,17 +56,61 @@
     <script src="/components/shared/messageModal.js"></script>
     <script src="/components/shared/nexus-core.js"></script>
     <style>
-        /* Profile-specific styles only - inherits all site-wide styles */
+        /* Profile-specific styles - extends site-wide styles */
         .profile-container {
             max-width: 800px;
             margin: 2rem auto;
             padding: 0 1rem;
         }
 
+        .profile-header {
+            background: var(--gradient-secondary);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            border: 2px solid var(--accent);
+            box-shadow: var(--shadow);
+        }
+
         .profile-avatar {
             width: 150px;
             height: 150px;
+            border-radius: 50%;
+            border: 4px solid var(--accent);
+            object-fit: cover;
             margin: 0 auto 1rem;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 94, 120, 0.5);
+        }
+
+        .profile-name {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-username {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 1rem;
+        }
+
+        .profile-status {
+            font-style: italic;
+            color: var(--warning);
+            margin-bottom: 1rem;
+            padding: 0.5rem 1.5rem;
+            background: rgba(255, 202, 40, 0.1);
+            border-radius: 25px;
+            display: inline-block;
+            font-size: 0.95rem;
+            border: 1px solid rgba(255, 202, 40, 0.3);
         }
 
         .profile-meta {
@@ -74,27 +118,123 @@
             justify-content: center;
             gap: 2rem;
             margin-top: 1.5rem;
+            flex-wrap: wrap;
             padding: 1rem 0;
             border-top: 1px solid rgba(255, 94, 120, 0.2);
         }
 
-        /* Online status dot */
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        .meta-item i {
+            color: var(--accent);
+        }
+
+        /* Online status indicator */
         #onlineStatus i.fa-circle {
             font-size: 0.6rem;
             vertical-align: middle;
         }
 
-        /* Blog preview text truncation */
-        .blog-preview .content {
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+        .profile-bio {
+            background: var(--secondary);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--accent);
+        }
+
+        .profile-bio h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .profile-blogs {
+            background: var(--secondary);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--accent);
+        }
+
+        .profile-blogs h3 {
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .user-blogs-list {
             display: grid;
             gap: 1.5rem;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .soul-comments {
+            background: var(--secondary);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--accent);
+        }
+
+        .soul-comments h3 {
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .profile-container {
+                padding: 0 0.5rem;
+                margin: 1rem auto;
+            }
+
+            .profile-header {
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .profile-name {
+                font-size: 1.5rem;
+            }
+
+            .profile-meta {
+                gap: 1rem;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .profile-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .profile-blogs,
+            .profile-bio,
+            .soul-comments {
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
         }
     </style>
 </head>
