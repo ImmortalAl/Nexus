@@ -5,6 +5,11 @@
 
 // Create and inject the Soul Modal
 function injectSoulModal() {
+  // Check if modal already exists
+  if (document.getElementById('soulModal')) {
+    return; // Modal already exists, don't create duplicate
+  }
+  
   // Create modal element directly
   const modalDiv = document.createElement('div');
   modalDiv.id = 'soulModal';
@@ -63,7 +68,7 @@ const switchToLoginLinkHTML = 'Already an Immortal? <a href="#" id="switchToLogi
 // Set modal view (login or register)
 function setSoulModalView(mode) {
   if (!soulModal || !soulLoginForm || !soulModalTitle || !confirmPasswordField || !soulModalSubmit || !modalToggleView) {
-    console.error('[Auth Modal] setSoulModalView: Crucial modal elements missing.');
+    // Modal elements missing - return silently as this may be expected on some pages
     return;
   }
   
@@ -307,7 +312,8 @@ function setupSoulModalEvents() {
   if (!modalToggleView) modalToggleView = document.getElementById('modalToggleView');
   
   if (!soulModal || !soulLoginForm) {
-    console.error('[Auth Modal] Setup failed: Required elements not found');
+    // Elements not found - this may be expected on pages that don't need authentication
+    // Log at debug level instead of error to avoid console noise
     return;
   }
   

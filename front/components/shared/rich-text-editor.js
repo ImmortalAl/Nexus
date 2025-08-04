@@ -29,7 +29,7 @@ class MLNFRichTextEditor {
     
     init() {
         if (!this.container) {
-            console.error(`MLNF Rich Text Editor: Container #${this.containerId} not found`);
+            // Rich text editor container not found - this is expected on pages without rich text editing
             return;
         }
         

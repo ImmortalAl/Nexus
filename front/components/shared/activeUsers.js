@@ -253,7 +253,7 @@ async function populateActiveUsersList() {
                 if (window.NEXUS && typeof window.NEXUS.openMessageModal === 'function') {
                     window.NEXUS.openMessageModal(username);
                 } else {
-                    console.error(`[activeUsers.js] MLNF.openMessageModal function not found.`);
+                    // Message modal not available - this is expected on pages without messaging functionality
                 }
             });
         });
