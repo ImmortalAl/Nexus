@@ -637,7 +637,7 @@
                     <img id="profileAvatar" src="/assets/images/default.jpg" alt="Profile Avatar" class="profile-avatar">
                     <h1 id="profileName" class="profile-name">Loading...</h1>
                     <p id="profileUsername" class="profile-username">@loading</p>
-                    <div id="profileStatus" class="profile-status" style="display: none;"></div>
+                    <div id="profileStatus" class="profile-status"></div>
                     
                     <div class="profile-meta">
                         <div class="meta-item">
@@ -887,7 +887,10 @@
             
             if (name) name.textContent = userData.displayName || userData.username;
             if (username) username.textContent = `@${userData.username}`;
-            if (status) status.textContent = userData.status || 'No status set';
+            if (status) {
+                status.textContent = userData.status || 'No status set';
+                status.style.display = 'block'; // Make sure status is visible
+            }
 
             // Update bio section
             const bioSection = document.querySelector('.profile-bio');
