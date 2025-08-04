@@ -628,10 +628,7 @@ section {
     text-align: right;
 }
 
-#threadComposerModal .form-actions .btn {
-    padding: 0.6rem 1.2rem;
-    font-size: 0.95rem;
-}
+/* Button styles moved to unified components/buttons.css */
 
 /* Responsive Adjustments */
 @media (max-width: 1024px) {
@@ -1086,15 +1083,7 @@ input[type="checkbox"] {
     align-items: center;
 }
 
-.reply-actions .btn {
-    font-size: 0.75rem;
-    padding: 0.25rem 0.5rem;
-}
-
-.btn-xs {
-    font-size: 0.7rem;
-    padding: 0.2rem 0.4rem;
-}
+/* Reply button sizes moved to unified components/buttons.css */
 
 /* Reply Edit Indicators */
 .reply-edited-indicator {
@@ -1140,10 +1129,7 @@ input[type="checkbox"] {
     justify-content: flex-end;
 }
 
-.reply-edit-actions .btn {
-    font-size: 0.85rem;
-    padding: 0.5rem 1rem;
-}
+/* Reply edit button styles moved to unified components/buttons.css */
 
 /* Edit History Button */
 .view-edit-history-btn {
@@ -1920,32 +1906,7 @@ input[type="radio"]:checked + .radio-custom::after {
     flex-wrap: wrap;
 }
 
-.proposal-card-actions .btn {
-    font-size: 0.8rem;
-    padding: 0.4rem 0.8rem;
-}
-
-.btn-success {
-    background: rgba(34, 197, 94, 0.2);
-    color: #22c55e;
-    border: 1px solid rgba(34, 197, 94, 0.4);
-}
-
-.btn-success:hover {
-    background: rgba(34, 197, 94, 0.3);
-    border-color: #22c55e;
-}
-
-.btn-danger {
-    background: rgba(239, 68, 68, 0.2);
-    color: #ef4444;
-    border: 1px solid rgba(239, 68, 68, 0.4);
-}
-
-.btn-danger:hover {
-    background: rgba(239, 68, 68, 0.3);
-    border-color: #ef4444;
-}
+/* Proposal and danger button styles moved to unified components/buttons.css */
 
 /* Mobile adjustments for governance interface */
 @media (max-width: 768px) {

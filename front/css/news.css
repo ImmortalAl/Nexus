@@ -717,53 +717,7 @@
     flex-wrap: wrap;
 }
 
-.btn {
-    padding: 0.8rem 1.8rem;
-    border-radius: 8px;
-    font-family: 'Crimson Text', serif;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: none;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.btn-primary {
-    background: linear-gradient(135deg, var(--immortal-gold), var(--immortal-deep-gold));
-    color: var(--primary);
-    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(212, 175, 55, 0.4);
-}
-
-.btn-outline {
-    background: transparent;
-    border: 2px solid var(--border);
-    color: var(--text);
-}
-
-.btn-outline:hover {
-    background: var(--border);
-    color: var(--text);
-}
-
-.btn-danger {
-    background: var(--error);
-    color: white;
-}
-
-.btn-danger:hover {
-    background: #c82333;
-    transform: translateY(-2px);
-}
+/* Button styles moved to unified components/buttons.css */
 
 /* ==========================================================================
    CHRONICLE DETAIL MODAL

@@ -145,14 +145,7 @@ h3 {
     justify-content: center;
 }
 
-.essence-actions .btn {
-    flex: 1;
-    max-width: 250px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-}
+/* Essence action button styles moved to unified components/buttons.css */
 
 /* Inscription Forge */
 .inscription-forge {
@@ -389,26 +382,7 @@ h3 {
     width: 100%;
 }
 
-.hub-card-actions .btn {
-    flex: 1;
-    min-width: 120px;
-    max-width: 100%;
-    text-align: center;
-    transition: var(--transition);
-    box-sizing: border-box;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    line-height: 1.2;
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.hub-card-actions .btn:active {
-    transform: scale(0.98);
-}
+/* Hub card action button styles moved to unified components/buttons.css */
 
 .quick-post-section {
     padding-bottom: 2rem;
@@ -455,16 +429,7 @@ h3 {
     margin-top: 1rem;
 }
 
-.form-actions .btn {
-    min-height: 44px;
-    padding: 1rem 1.4rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1.3;
-    font-size: 0.9rem;
-    letter-spacing: 0.5px;
-}
+/* Form action button styles moved to unified components/buttons.css */
 
 select {
     padding: 0.8rem;
@@ -524,35 +489,7 @@ footer {
     border-top: 3px solid var(--accent);
 }
 
-/* Button Styles */
-.btn {
-    padding: 0.8rem 1.4rem;
-    border-radius: var(--border-radius);
-    font-weight: 700;
-    cursor: pointer;
-    transition: var(--transition);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 0.85rem;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 42px;
-    line-height: 1.2;
-    box-sizing: border-box;
-}
-
-.btn-primary {
-    background: var(--gradient-accent);
-    color: var(--primary);
-    border: none;
-}
-
-.btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(255, 94, 120, 0.4);
-}
+/* Button styles moved to unified components/buttons.css */
 
 /* Enhanced Mobile Responsive Styles */
 @media (max-width: var(--bp-md)) {
@@ -603,10 +540,7 @@ footer {
         gap: 0.75rem;
     }
     
-    .essence-actions .btn {
-        max-width: 100%;
-        padding: 0.85rem;
-    }
+    /* Mobile essence button styles moved to unified components/buttons.css */
     
     /* Inscription Forge Mobile */
     .forge-header {
@@ -681,32 +615,7 @@ footer {
         width: 100%;
     }
     
-    .hub-card-actions.mobile-optimized .btn {
-        width: 100%;
-        max-width: 100%;
-        padding: 0.85rem 0.5rem;
-        font-size: 0.8rem;
-        min-height: 48px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-sizing: border-box;
-        white-space: normal;
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-        text-align: center;
-        line-height: 1.2;
-        cursor: pointer;
-        -webkit-tap-highlight-color: rgba(255, 94, 120, 0.2);
-        tap-highlight-color: rgba(255, 94, 120, 0.2);
-        touch-action: manipulation;
-        user-select: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        position: relative;
-        z-index: 1;
-    }
+    /* Mobile hub card button styles moved to unified components/buttons.css */
     
     .quick-post-container {
         padding: 1.25rem;
@@ -733,21 +642,7 @@ footer {
         align-items: stretch;
     }
     
-    .form-actions .btn {
-        width: 100%;
-        padding: 1.1rem 1rem !important;
-        min-height: 56px !important;
-        height: auto !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        line-height: 1.4 !important;
-        font-size: 0.9rem !important;
-        letter-spacing: 0.3px !important;
-        box-sizing: border-box !important;
-        white-space: nowrap !important;
-        overflow: visible !important;
-    }
+    /* Mobile form action button styles moved to unified components/buttons.css */
     
     select {
         width: 100%;
@@ -800,12 +695,7 @@ footer {
         font-size: 1.5rem;
     }
     
-    .hub-card-actions.mobile-optimized .btn {
-        padding: 0.75rem 0.25rem;
-        font-size: 0.75rem;
-        min-height: 44px;
-        max-width: 100%;
-    }
+    /* Mobile optimized hub card button styles moved to unified components/buttons.css */
     
     .quick-post-container {
         padding: 1rem;
@@ -828,24 +718,7 @@ footer {
         padding: 0.6rem 0;
     }
     
-    .form-actions .btn {
-        padding: 1.2rem 1rem !important;
-        min-height: 60px !important;
-        height: auto !important;
-        font-size: 0.95rem !important;
-        line-height: 1.5 !important;
-        letter-spacing: 0.2px !important;
-        box-sizing: border-box !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        overflow: visible !important;
-        white-space: nowrap !important;
-        color: #ffffff !important;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.8) !important;
-        position: relative !important;
-        z-index: 10 !important;
-    }
+    /* Small screen form action button styles moved to unified components/buttons.css */
 }
 
 /* Quill editor overrides */

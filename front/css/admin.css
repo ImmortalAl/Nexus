@@ -557,26 +557,7 @@
     align-items: center;
 }
 
-.cleanup-controls .btn {
-    padding: 0.8rem 1.5rem;
-    background: rgba(255, 193, 7, 0.2);
-    border: 1px solid rgba(255, 193, 7, 0.5);
-    border-radius: var(--border-radius);
-    color: #ffc107;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: var(--transition);
-}
-
-.cleanup-controls .btn:hover {
-    background: rgba(255, 193, 7, 0.3);
-    border-color: #ffc107;
-}
-
-.cleanup-controls .btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
+/* Button styles moved to unified components/buttons.css */
 
 /* Users Table */
 .users-table-wrapper {
@@ -1575,26 +1556,7 @@
     }
 }
 
-/* Enhanced button states */
-.btn.btn-ready {
-    background: linear-gradient(135deg, var(--accent), var(--warning));
-    border-color: var(--accent);
-    box-shadow: 0 4px 15px rgba(255, 94, 120, 0.4);
-    transform: translateY(-1px);
-}
-
-.btn.btn-ready:hover {
-    background: linear-gradient(135deg, var(--warning), var(--accent));
-    box-shadow: 0 6px 20px rgba(255, 94, 120, 0.6);
-    transform: translateY(-2px);
-}
-
-.btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
+/* Enhanced button states moved to unified components/buttons.css */
 
 /* Content item interaction feedback */
 .content-item:active {
