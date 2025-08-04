@@ -2327,17 +2327,10 @@
             const privacySettingsBtn = null; // No separate privacy button - unified in Soul Forge
             const closeSoulModal = document.getElementById('closeSoulModal');
             
-            console.log('Soul Sanctum Debug:', { 
-                viewProfileBtn: !!viewProfileBtn, 
-                editProfileBtn: !!editProfileBtn, 
-                closeSoulModal: !!closeSoulModal 
-            });
             
             if (viewProfileBtn) {
-                console.log('Setting up View Soul Essence button handler');
                 // View Soul Essence button found - opens public profile page
                 const viewHandler = (e) => {
-                    console.log('View Soul Essence clicked!');
                     e.preventDefault();
                     e.stopPropagation();
                     openSoulForgeModal('view');
@@ -2347,10 +2340,8 @@
             }
             
             if (editProfileBtn) {
-                console.log('Setting up Cultivate Essence button handler');
                 // Cultivate Essence button found - opens Soul Forge modal
                 const editHandler = (e) => {
-                    console.log('Cultivate Essence clicked!');
                     e.preventDefault();
                     e.stopPropagation();
                     e.target.setAttribute('data-recently-clicked', 'true');
@@ -2486,13 +2477,11 @@
                     if (!response.ok) {
                         console.error('Failed to save status to backend:', response.statusText);
                     } else {
-                        console.log('Soul whisper saved to backend successfully');
                     }
                 } else {
                     console.warn('No auth token found, status not saved to backend');
                 }
                 
-                console.log('Soul whisper saved:', whisper);
             } catch (e) {
                 console.error('Error saving soul whisper:', e);
             }
@@ -2604,7 +2593,6 @@
                         alert('Changes saved locally but failed to sync with server. Please try again.');
                         return;
                     } else {
-                        console.log('Soul forged and saved to backend successfully!');
                     }
                 } else {
                     console.warn('No auth token found, soul forge not saved to backend');
@@ -2619,7 +2607,6 @@
                 closeSoulManagementModal();
                 
                 // Show success message
-                console.log('Soul forged successfully!');
                 
             } catch (e) {
                 console.error('Error forging soul:', e);
@@ -2747,7 +2734,6 @@
         }
         
         function openSoulForgeModal(mode = 'edit') {
-            console.log('Opening Soul Forge modal in', mode, 'mode');
             const modal = document.getElementById('soulManagementModal');
             if (!modal) {
                 console.error('Soul Forge modal not found');
@@ -2933,10 +2919,8 @@
         }
         
         async function loadUserProfile() {
-            console.log('🔄 Loading user profile...');
             const token = localStorage.getItem('sessionToken');
             if (!token) {
-                console.log('❌ No session token found');
                 // Don't show alert if no token - just populate with defaults
                 populateProfileModal({
                     displayName: 'Eternal Seeker',

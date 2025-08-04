@@ -406,7 +406,6 @@
     };
 
     window.viewProposalDetails = function(proposalId) {
-        console.log('Viewing proposal details for:', proposalId);
         fetchProposalThread(proposalId);
     };
 
@@ -932,7 +931,7 @@
                             proposalInterface = await renderProposalInterface(proposal);
                         }
                     } catch (error) {
-                        console.error('Could not load proposal data for thread.');
+                        // Could not load proposal data for thread
                     }
                 }
 
@@ -1308,19 +1307,10 @@
             } catch (error) {
                 console.error('Thread creation error:', error);
                 if (error.response) {
-                    // The request was made and the server responded with a status code
-                    // that falls out of the range of 2xx
-                    console.error('Response data:', error.response.data);
-                    console.error('Response status:', error.response.status);
-                    console.error('Response headers:', error.response.headers);
                     alert(`Error: ${error.response.data?.error || 'Could not post thread. Please try again.'}`);
                 } else if (error.request) {
-                    // The request was made but no response was received
-                    console.error('No response received:', error.request);
                     alert('No response from server. Please check your connection and try again.');
                 } else {
-                    // Something happened in setting up the request that triggered an Error
-                    console.error('Request setup error:', error.message);
                     alert(`Error: ${error.message || 'Could not post thread.'}`);
                 }
             } finally {
@@ -1747,56 +1737,10 @@
         // Initialize Community Moderation System
         if (typeof CommunityModerationSystem !== 'undefined') {
             window.moderationSystem = new CommunityModerationSystem();
-            console.log('[messageboard] Community moderation system initialized');
             
             // Check for active moderation cases to display alerts
             window.moderationSystem.checkForModerationAlerts();
-        } else {
-            console.error('[messageboard] CommunityModerationSystem not loaded!');
         }
-        
-        // Debug function to manually test flag buttons
-        window.testFlagButtons = () => {
-            console.log('[Test] Manual flag button test...');
-            console.log('[Test] User displays found:', document.querySelectorAll('[data-user-id]').length);
-            console.log('[Test] Current user:', window.authManager?.getUser());
-            console.log('[Test] Is logged in:', window.authManager?.isLoggedIn());
-            
-            if (window.moderationSystem) {
-                window.moderationSystem.enhanceUserDisplays();
-            } else {
-                console.error('[Test] No moderation system available');
-            }
-        };
-        
-        // Function to clean up flag button parade
-        window.cleanupFlagButtons = () => {
-            console.log('[Cleanup] Removing ALL flag buttons...');
-            const allFlagButtons = document.querySelectorAll('.flag-user-btn');
-            console.log(`[Cleanup] Found ${allFlagButtons.length} flag buttons to remove`);
-            
-            allFlagButtons.forEach(btn => btn.remove());
-            
-            // Clear all enhancement markers
-            const allUserDisplays = document.querySelectorAll('[data-flag-enhanced]');
-            allUserDisplays.forEach(display => display.removeAttribute('data-flag-enhanced'));
-            
-            console.log(`[Cleanup] Removed all flag buttons and reset enhancement markers`);
-        };
-        
-        // Emergency function to check what's creating so many elements
-        window.debugUserDisplays = () => {
-            const all = document.querySelectorAll('[data-user-id]');
-            const specific = document.querySelectorAll('.thread-author-info [data-user-id], .reply-author-info [data-user-id], .user-display [data-user-id]');
-            
-            console.log(`[Debug] Total [data-user-id] elements: ${all.length}`);
-            console.log(`[Debug] Specific message board elements: ${specific.length}`);
-            
-            // Sample the first few to see what they are
-            console.log('[Debug] First 5 elements:', Array.from(all).slice(0, 5));
-        };
-        
-        console.log('[Debug] Type "testFlagButtons()" in console to manually test');
     });
     </script>
     

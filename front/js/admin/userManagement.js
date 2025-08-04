@@ -12,13 +12,9 @@ const UserManagement = {
 
     init() {
         try {
-            console.log('UserManagement: Starting initialization...');
             this.apiBaseUrl = window.NEXUS_CONFIG?.API_BASE_URL || 'https://nexus-ytrg.onrender.com/api';
-            console.log('UserManagement: API Base URL set to:', this.apiBaseUrl);
             this.setupEventListeners();
-            console.log('UserManagement: Event listeners set up');
             this.loadUsers();
-            console.log('UserManagement: Load users called');
         } catch (error) {
             console.error('UserManagement: Initialization failed:', error);
             this.showError('User Management initialization failed', error.message);
@@ -85,14 +81,11 @@ const UserManagement = {
 
     async loadUsers() {
         try {
-            console.log('UserManagement: Starting loadUsers...');
             const token = localStorage.getItem('sessionToken');
-            console.log('UserManagement: Token exists:', !!token);
             if (!token) throw new Error('No authentication token');
 
             const tbody = document.getElementById('usersTableBody');
             const mobileCards = document.getElementById('mobileUsersCards');
-            console.log('UserManagement: DOM elements found:', { tbody: !!tbody, mobileCards: !!mobileCards });
             
             if (tbody) {
                 tbody.innerHTML = '<tr><td colspan="7" class="loading">Summoning souls...</td></tr>';
@@ -101,18 +94,15 @@ const UserManagement = {
                 mobileCards.innerHTML = '<div class="loading">Summoning souls...</div>';
             }
 
-            console.log('UserManagement: Fetching from:', `${this.apiBaseUrl}/users`);
             const response = await fetch(`${this.apiBaseUrl}/users`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
 
-            console.log('UserManagement: Response status:', response.status);
             if (!response.ok) {
                 throw new Error(`Failed to load users: ${response.status} ${response.statusText}`);
             }
 
             const userData = await response.json();
-            console.log('UserManagement: Raw user data received:', userData);
             
             // Handle different response formats
             if (Array.isArray(userData)) {
@@ -123,19 +113,14 @@ const UserManagement = {
                 this.allUsers = userData.users;
             } else {
                 // Unexpected API response format
-                console.warn('UserManagement: Unexpected response format, using empty array');
                 this.allUsers = [];
             }
             
-            console.log('UserManagement: Processed users count:', this.allUsers.length);
             this.filteredUsers = [...this.allUsers];
             this.totalUsers = this.allUsers.length;
             
-            console.log('UserManagement: Calling renderUsersTable...');
             this.renderUsersTable();
-            console.log('UserManagement: Calling renderPagination...');
             this.renderPagination();
-            console.log('UserManagement: loadUsers completed successfully');
 
         } catch (error) {
             console.error('UserManagement: Error in loadUsers:', error);
@@ -788,7 +773,6 @@ const UserManagement = {
             
             if (result.cleaned > 0) {
                 this.showSuccess(`Successfully cleaned up ${result.cleaned} stale online users`);
-                console.log('Cleaned up users:', result.details);
                 // Reload the users table to show updated online statuses
                 await this.loadUsers();
             } else {

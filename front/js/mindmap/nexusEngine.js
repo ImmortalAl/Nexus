@@ -47,11 +47,7 @@ class NexusEngine {
     }
     
     initCytoscape() {
-        console.log('Initializing Cytoscape...');
-        console.log('cytoscape function available:', typeof cytoscape);
-        
         const container = document.getElementById('cy');
-        console.log('Container element:', container);
         
         if (!container) {
             throw new Error('Mindmap container element (#cy) not found');
@@ -153,9 +149,7 @@ class NexusEngine {
     
     async loadMindmap() {
         try {
-            console.log('Loading mindmap data...');
             const response = await this.apiClient.get('/mindmap');
-            console.log('Raw API response:', response);
             
             // Validate response structure
             if (!response) {
@@ -169,15 +163,12 @@ class NexusEngine {
                 // If response has a data wrapper
                 nodes = response.data.nodes || [];
                 edges = response.data.edges || [];
-                console.log('Using response.data structure');
             } else {
                 // Direct response structure
                 nodes = response.nodes || [];
                 edges = response.edges || [];
-                console.log('Using direct response structure');
             }
             
-            console.log(`Loading ${nodes.length} nodes and ${edges.length} edges`);
             
             // Add nodes to Cytoscape
             nodes.forEach(node => {
@@ -191,7 +182,6 @@ class NexusEngine {
             
             // Run layout
             this.cy.layout({ name: 'cose' }).run();
-            console.log('Mindmap loaded successfully');
         } catch (error) {
             console.error('Failed to load mindmap data:', error);
             console.error('Error details:', {
@@ -377,7 +367,6 @@ class NexusEngine {
         
         if (!nodeData) {
             console.error('Node data not found for node ID:', node.id());
-            console.log('Available nodes:', Array.from(this.nodes.keys()));
             this.showError('Node data not found. Please refresh the page.');
             return;
         }
@@ -932,7 +921,7 @@ class NexusEngine {
     
     showMessage(message) {
         // Simple message display - could be enhanced with a toast notification
-        console.log(message);
+        // Message: message
     }
     
     showError(message) {

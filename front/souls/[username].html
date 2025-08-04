@@ -754,7 +754,6 @@
             // Initialize Nexus Avatar System
             if (!window.NexusAvatars && window.NexusAvatarSystem) {
                 window.NexusAvatars = new window.NexusAvatarSystem();
-                console.log('[Profile] Nexus Avatar System initialized');
             }
             
             loadProfile();
@@ -775,19 +774,12 @@
                     username = username.slice(0, -5); // Remove last 5 characters (.html)
                 }
                 
-                console.log('[Profile] URL debug:', {
-                    pathname: window.location.pathname,
-                    pathParts: pathParts,
-                    extractedUsername: username,
-                    search: window.location.search
-                });
                 
                 // Handle both direct access and Netlify rewrite scenarios
                 if (!username || username === '[username].html' || username === 'index.html' || username === '') {
                     // Try to get from query parameters as fallback
                     const urlParams = new URLSearchParams(window.location.search);
                     username = urlParams.get('user');
-                    console.log('[Profile] Using fallback username from query:', username);
                 }
                 
                 if (!username) {
@@ -795,7 +787,6 @@
                     throw new Error('No username provided');
                 }
                 
-                console.log('[Profile] Loading profile for username:', username);
                 
                 // Show loading state
                 if (loadingState) loadingState.style.display = 'block';
@@ -814,10 +805,8 @@
                 
                 // Initialize profile comments
                 if (window.NEXUS && window.NEXUS.CommentsSystem) {
-                    console.log('[Profile] Initializing comments for profile:', username);
                     try {
                         const commentsInstance = new window.NEXUS.CommentsSystem('profile', username, 'profileComments');
-                        console.log('[Profile] Comments system initialized successfully');
                     } catch (error) {
                         console.error('[Profile] Failed to initialize comments:', error);
                     }
@@ -870,7 +859,6 @@
                 
                 // Add fallback handling
                 avatar.onerror = function() {
-                    console.log('[Profile] Avatar failed to load, using fallback');
                     // Use absolute path for fallback
                     this.src = '/assets/images/default.jpg';
                     this.onerror = null; // Prevent infinite loop
@@ -898,9 +886,7 @@
             const blogsList = document.querySelector('.user-blogs-list');
             
             try {
-                console.log('[Profile] Loading blogs for user:', username);
                 const response = await window.apiClient.get(`/blogs?author=${username}`);
-                console.log('[Profile] Blog API response:', response);
                 
                 // Handle different possible response structures
                 let blogs = [];
@@ -918,7 +904,6 @@
                     }
                 }
                 
-                console.log('[Profile] Processed blogs array:', blogs);
                 renderBlogs(blogs);
             } catch (error) {
                 console.error('[Profile] Error fetching user blogs:', error);

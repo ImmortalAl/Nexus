@@ -400,8 +400,6 @@
     <script>
         // Initialize everything when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('News page initializing...');
-            
             // Check if all required components are available
             const requiredComponents = ['ChroniclesFeed', 'SubmissionModal', 'CommentsSystem'];
             const missingComponents = requiredComponents.filter(comp => !window[comp]);
@@ -420,10 +418,7 @@
                 // Ensure chroniclesFeed is properly exposed (compatibility fix)
                 if (window.ChroniclesFeed && !window.chroniclesFeed) {
                     window.chroniclesFeed = window.ChroniclesFeed;
-                    console.log('[news.html] ChroniclesFeed exposed as chroniclesFeed for compatibility');
                 }
-                
-                console.log('All news page components initialized successfully');
                 
                 // Initialize Quill editor for chronicle content
                 if (typeof Quill !== 'undefined') {
@@ -452,7 +447,6 @@
 
                     // Store reference for access in submission modal
                     window.chronicleQuillEditor = chronicleEditor;
-                    console.log('Quill editor initialized for chronicle creation');
                 } else {
                     console.warn('Quill editor not available, falling back to textarea');
                 }
@@ -461,23 +455,14 @@
                 const urlParams = new URLSearchParams(window.location.search);
                 const openChronicleId = urlParams.get('openChronicle');
                 if (openChronicleId) {
-                    console.log('[news.html] Auto-opening chronicle modal for ID:', openChronicleId);
                     // Clear URL parameter for cleaner experience
                     window.history.replaceState({}, document.title, window.location.pathname);
                     
                     // Simple approach: wait a bit then try to open the modal
-                    console.log('[news.html] Waiting for ChroniclesFeed to be ready...');
-                    
                     const tryOpenModal = () => {
-                        console.log('[news.html] Checking for ChroniclesFeed...');
-                        console.log('[news.html] window.chroniclesFeed exists?', !!window.chroniclesFeed);
-                        console.log('[news.html] openChronicleModal method exists?', !!(window.chroniclesFeed && window.chroniclesFeed.openChronicleModal));
-                        
                         if (window.chroniclesFeed && window.chroniclesFeed.openChronicleModal) {
-                            console.log('[news.html] SUCCESS! Opening modal for chronicle:', openChronicleId);
                             window.chroniclesFeed.openChronicleModal(openChronicleId);
                         } else {
-                            console.log('[news.html] ChroniclesFeed not ready yet, trying again in 1 second...');
                             setTimeout(tryOpenModal, 1000);
                         }
                     };

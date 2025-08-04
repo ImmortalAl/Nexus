@@ -250,7 +250,6 @@ class MindmapSearch {
         
         if (document.getElementById('minCredibility')) {
             const minCred = parseInt(document.getElementById('minCredibility').value);
-            console.log('Credibility filter value:', minCred);
             if (minCred > 0) {
                 filters.minCredibility = minCred;
             }
@@ -258,7 +257,6 @@ class MindmapSearch {
         
         if (document.getElementById('filterTags')) {
             const tags = document.getElementById('filterTags').value.trim();
-            console.log('Tags filter value:', tags);
             if (tags) {
                 filters.tags = tags.split(',').map(tag => tag.trim()).filter(tag => tag);
             }
@@ -266,13 +264,10 @@ class MindmapSearch {
         
         if (document.getElementById('filterCreator')) {
             const creator = document.getElementById('filterCreator').value.trim();
-            console.log('Creator filter value:', creator);
             if (creator) {
                 filters.creator = creator;
             }
         }
-        
-        console.log('Active filters:', filters);
         return filters;
     }
     
@@ -301,38 +296,29 @@ class MindmapSearch {
             return;
         }
         
-        console.log('Applying visual filters:', filters);
         
         // Get all nodes
         const nodes = cy.nodes();
         let filteredCount = 0;
         let totalCount = nodes.length;
         
-        console.log(`Processing ${totalCount} nodes`);
         
         nodes.forEach(node => {
             let visible = true;
             const nodeData = node.data();
             
-            // Debug: Log first node data structure
-            if (filteredCount === 0) {
-                console.log('Sample node data:', nodeData);
-            }
             
             // Check credibility filter - handle different data structures
             if (filters.minCredibility) {
                 const credibility = nodeData.credibility?.score || nodeData.credibility || 50;
-                console.log(`Node ${nodeData.id} credibility: ${credibility}, required: ${filters.minCredibility}`);
                 if (credibility < filters.minCredibility) {
                     visible = false;
-                    console.log(`Filtering out node ${nodeData.id} due to low credibility`);
                 }
             }
             
             // Check tags filter
             if (filters.tags && filters.tags.length > 0) {
                 const nodeTags = nodeData.tags || [];
-                console.log(`Node ${nodeData.id} tags:`, nodeTags, 'Required tags:', filters.tags);
                 const hasMatchingTag = filters.tags.some(filterTag => 
                     nodeTags.some(nodeTag => 
                         nodeTag.toLowerCase().includes(filterTag.toLowerCase())
@@ -340,17 +326,14 @@ class MindmapSearch {
                 );
                 if (!hasMatchingTag) {
                     visible = false;
-                    console.log(`Filtering out node ${nodeData.id} due to tag mismatch`);
                 }
             }
             
             // Check creator filter
             if (filters.creator) {
                 const creator = nodeData.creator?.username || nodeData.creator || '';
-                console.log(`Node ${nodeData.id} creator: ${creator}, required: ${filters.creator}`);
                 if (!creator.toLowerCase().includes(filters.creator.toLowerCase())) {
                     visible = false;
-                    console.log(`Filtering out node ${nodeData.id} due to creator mismatch`);
                 }
             }
             
@@ -378,14 +361,7 @@ class MindmapSearch {
             }
         });
         
-        console.log(`Visual filters applied: ${filteredCount}/${totalCount} nodes filtered out`);
         
-        // Show feedback to user
-        if (filteredCount > 0) {
-            console.log(`Filter applied: ${totalCount - filteredCount} nodes visible, ${filteredCount} nodes hidden`);
-        } else {
-            console.log('No nodes were filtered out - all nodes remain visible');
-        }
     }
     
     clearFilters() {
@@ -408,20 +384,14 @@ class MindmapSearch {
             document.getElementById('filterCreator').value = '';
         }
         
-        console.log('Filters cleared');
     }
     
     // Test function to verify filtering works
     testFiltering() {
-        console.log('Testing filter functionality...');
         const cy = window.nexusEngine?.cy;
         if (!cy) {
-            console.log('Cytoscape not ready for testing');
             return;
         }
-        
-        const nodes = cy.nodes();
-        console.log(`Found ${nodes.length} nodes for testing`);
         
         // Test with high credibility to see if any nodes get hidden
         this.applyVisualFilters({ minCredibility: 80 });
