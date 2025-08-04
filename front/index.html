@@ -568,11 +568,8 @@
                 return;
             }
             
-            // Try news endpoint first, fallback to chronicles
-            let response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/news?limit=2`);
-            if (!response.ok) {
-                response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/chronicles?limit=2`);
-            }
+            // Fetch chronicles data (using blogs endpoint with news/chronicles filter)
+            let response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/blogs?limit=2&category=news&sort=createdAt`);
             if (!response.ok) {
                 console.error('Chronicles API failed:', response.status, response.statusText);
                 throw new Error(`Failed to fetch chronicles: ${response.status}`);
@@ -781,7 +778,7 @@
         excerpt.textContent = textContent.length > 100 ? textContent.substring(0, 100) + '...' : textContent;
         
         // Create unified user display
-        const userDisplay = window.ImmortalNexusAvatars.createUserDisplay({
+        const userDisplay = window.NexusAvatars.createUserDisplay({
             username: author.username || 'Anonymous',
             title: cardType === 'editorial' ? 'Featured Scroll Weaver' : 'Scroll Weaver',
             avatarSize: 'sm',
