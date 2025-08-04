@@ -562,17 +562,29 @@
     // Dynamic Chronicles Highlights
     async function loadChroniclesHighlights() {
         try {
-            // Wait for Immortal NexusAvatars to be available
-            if (!window.ImmortalNexusAvatars) {
+            // Wait for NexusAvatars to be available
+            if (!window.NexusAvatars) {
                 setTimeout(loadChroniclesHighlights, 200);
                 return;
             }
             
-            const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/chronicles?limit=2`);
-            if (!response.ok) throw new Error('Failed to fetch');
+            // Try news endpoint first, fallback to chronicles
+            let response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/news?limit=2`);
+            if (!response.ok) {
+                response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/chronicles?limit=2`);
+            }
+            if (!response.ok) {
+                console.error('Chronicles API failed:', response.status, response.statusText);
+                throw new Error(`Failed to fetch chronicles: ${response.status}`);
+            }
             
             const data = await response.json();
-            const chronicles = data.docs || data;
+            const chronicles = Array.isArray(data) ? data : (data.docs || data.data || []);
+            
+            if (!Array.isArray(chronicles)) {
+                console.error('Chronicles data is not an array:', data);
+                return;
+            }
             
             const highlightsContainer = document.getElementById('chroniclesHighlights');
             if (!highlightsContainer || chronicles.length === 0) return;
@@ -609,7 +621,7 @@
                 excerpt.textContent = post.content.substring(0, 120) + '...';
                 
                 // Create unified user display
-                const userDisplay = window.ImmortalNexusAvatars.createUserDisplay({
+                const userDisplay = window.NexusAvatars.createUserDisplay({
                     username: author.username || 'Anonymous',
                     title: 'Eternal Chronicler',
                     avatarSize: 'sm',
@@ -654,8 +666,8 @@
             sectionFooter.appendChild(readMoreBtn);
             
         } catch (error) {
-            // Failed to load chronicles
-            // Keep fallback content
+            console.error('Failed to load Chronicles highlights:', error);
+            // Keep fallback content in DOM
         }
     }
     
@@ -667,8 +679,8 @@
     // Dynamic Soul Scrolls Highlights
     async function loadScrollsHighlights() {
         try {
-            // Wait for Immortal NexusAvatars to be available
-            if (!window.ImmortalNexusAvatars) {
+            // Wait for NexusAvatars to be available
+            if (!window.NexusAvatars) {
                 setTimeout(loadScrollsHighlights, 200);
                 return;
             }
@@ -693,8 +705,8 @@
             }
             
         } catch (error) {
-            // Failed to load soul scrolls highlights
-            // Keep fallback content
+            console.error('Failed to load Soul Scrolls highlights:', error);
+            // Keep fallback content in DOM
         }
     }
     
@@ -808,17 +820,23 @@
     // Dynamic Echoes Unbound Highlights
     async function loadEchoesHighlights() {
         try {
-            // Wait for Immortal NexusAvatars to be available
-            if (!window.ImmortalNexusAvatars) {
+            // Wait for NexusAvatars to be available
+            if (!window.NexusAvatars) {
                 setTimeout(loadEchoesHighlights, 200);
                 return;
             }
             
+            // Try threads endpoint (should work for messageboard)
             const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/threads?limit=2`);
             if (!response.ok) throw new Error('Failed to fetch');
             
             const data = await response.json();
-            const messages = data.threads || data;
+            const messages = Array.isArray(data) ? data : (data.threads || data.docs || data.data || []);
+            
+            if (!Array.isArray(messages)) {
+                console.error('Threads data is not an array:', data);
+                return;
+            }
             
             const highlightsContainer = document.getElementById('echoesHighlights');
             if (!highlightsContainer || messages.length === 0) return;
@@ -857,7 +875,7 @@
                 excerpt.textContent = `"${textContent.length > 80 ? textContent.substring(0, 80) + '...' : textContent}"`;
                 
                 // Create unified user display
-                const userDisplay = window.ImmortalNexusAvatars.createUserDisplay({
+                const userDisplay = window.NexusAvatars.createUserDisplay({
                     username: author.username || 'Anonymous',
                     title: 'Echo Weaver',
                     avatarSize: 'sm',
@@ -907,8 +925,8 @@
             sectionFooter.appendChild(joinBtn);
             
         } catch (error) {
-            // Failed to load echoes
-            // Keep fallback content
+            console.error('Failed to load Echoes Unbound highlights:', error);
+            // Keep fallback content in DOM
         }
     }
     
