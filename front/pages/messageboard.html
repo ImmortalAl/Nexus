@@ -39,8 +39,8 @@
     <link rel="preload" href="../css/active-users.css?v=7.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="../css/active-users.css?v=7.0"></noscript>
     
-    <link rel="preload" href="../css/messageboard.css?v=2.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="../css/messageboard.css?v=2.0"></noscript>
+    <link rel="preload" href="../css/messageboard.css?v=2.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/messageboard.css?v=2.1"></noscript>
     
     <!-- Democracy 3.0 Styles -->
     <link rel="preload" href="../css/democracy.css?v=1.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -129,7 +129,7 @@
             <p>Engage in eternal discourse</p>
         </section>
         <div class="lyceum-grid">
-            <aside class="lyceum-column categories-column" aria-label="Message categories">
+            <aside class="lyceum-column categories-column" id="lyceum-categories" aria-label="Message categories">
                 <h3>Categories</h3>
                 <nav>
                     <ul>
@@ -143,7 +143,7 @@
                     </ul>
                 </nav>
             </aside>
-            <section class="lyceum-column threads-column" aria-label="Threads">
+            <section class="lyceum-column threads-column" id="lyceum-threads" aria-label="Threads">
                 <div class="thread-controls">
                     <div class="search-bar">
                         <input type="text" id="threadSearch" placeholder="Search echoes..." />
@@ -155,7 +155,7 @@
                     <!-- Threads will be loaded here -->
                 </div>
             </section>
-            <section class="lyceum-column details-column" aria-label="Thread details">
+            <section class="lyceum-column details-column" id="lyceum-active-thread" aria-label="Thread details">
                 <div class="active-thread-header">
                     <button class="btn btn-secondary btn-sm close-thread-btn" id="closeActiveThread">
                         <i class="fas fa-times"></i> Close
