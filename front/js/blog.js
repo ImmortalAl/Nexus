@@ -148,7 +148,7 @@ async function fetchBlogPosts(page = 1) {
                                 <i class="fas fa-heart"></i> <span class="like-count">${post.likes ? post.likes.length : 0}</span>
                             </button>
                             <button class="challenge-btn" data-post-id="${post._id}" onclick="event.stopPropagation(); challengePost('${post._id}')" title="Challenge this scroll">
-                                <i class="fas fa-swords"></i> <span class="challenge-count">${post.dislikes ? post.dislikes.length : 0}</span>
+                                <i class="fas fa-bolt"></i> <span class="challenge-count">${post.dislikes ? post.dislikes.length : 0}</span>
                             </button>
                         </div>
                         <div class="scroll-controls">
