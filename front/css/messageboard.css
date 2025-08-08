@@ -844,12 +844,18 @@ section {
 /* Search and Controls */
 .thread-controls {
     margin-bottom: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .search-bar {
     display: flex;
     gap: 0.5rem;
     align-items: center;
+    flex: 1;
+    min-width: 200px;
 }
 
 .search-bar input {
@@ -865,6 +871,28 @@ section {
 .search-bar input:focus {
     border-color: var(--accent);
     outline: none;
+}
+
+/* Create Thread Button */
+#newThreadBtn {
+    white-space: nowrap;
+}
+
+/* Mobile responsive for thread controls */
+@media (max-width: 768px) {
+    .thread-controls {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .search-bar {
+        width: 100%;
+    }
+    
+    #newThreadBtn {
+        width: 100%;
+        justify-content: center;
+    }
 }
 
 .search-bar .btn {
