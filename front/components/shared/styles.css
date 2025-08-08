@@ -232,18 +232,32 @@
         z-index: 2501; /* Above header z-index (2500) */
     }
     
+    .user-menu-btn {
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
+        touch-action: manipulation; /* Prevent zoom on double-tap */
+        user-select: none; /* Prevent text selection */
+        min-height: 44px; /* Minimum touch target size for mobile */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
     .user-dropdown {
         z-index: 10001; /* Increase z-index further for mobile */
         position: absolute;
         right: 0;
         top: calc(100% + 10px);
         width: 200px;
+        /* Force hardware acceleration */
+        will-change: opacity, visibility, transform;
+        backface-visibility: hidden;
     }
     
     .user-dropdown.active {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: translateY(0) !important;
     }
 }
 

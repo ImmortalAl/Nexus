@@ -143,17 +143,31 @@ function setupUserMenuEvents() {
   const userDropdown = document.getElementById('userDropdown'); // This might not exist if logged out
 
   if (userMenuBtn && userDropdown) {
-    userMenuBtn.addEventListener('click', () => {
+    // Add both click and touchstart events for mobile compatibility
+    const toggleDropdown = () => {
+      console.log('[userMenu.js] Dropdown toggle triggered');
       userDropdown.classList.toggle('active');
+      console.log('[userMenu.js] Dropdown active state:', userDropdown.classList.contains('active'));
+    };
+    
+    userMenuBtn.addEventListener('click', toggleDropdown);
+    userMenuBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault(); // Prevent double-firing
+      toggleDropdown();
     });
 
-    document.addEventListener('click', (event) => {
+    // Handle outside clicks/touches to close dropdown
+    const closeOnOutsideClick = (event) => {
       if (!userMenuBtn.contains(event.target) && !userDropdown.contains(event.target)) {
         if (userDropdown.classList.contains('active')) {
+          console.log('[userMenu.js] Closing dropdown due to outside click');
           userDropdown.classList.remove('active');
         }
       }
-    });
+    };
+    
+    document.addEventListener('click', closeOnOutsideClick);
+    document.addEventListener('touchstart', closeOnOutsideClick);
   }
   
   const logoutBtn = document.getElementById('logoutBtn');
