@@ -187,7 +187,8 @@ header {
     width: 100%;
     margin-left: 0;
     box-sizing: border-box;
-    overflow: hidden; /* Prevent horizontal overflow */
+    overflow-x: hidden; /* Prevent horizontal overflow only */
+    overflow-y: visible; /* Allow dropdowns to overflow vertically */
 }
 
 body.light-theme header {
@@ -382,7 +383,8 @@ nav.main-nav a.active span::after {
 @media (max-width: 768px) {
     header {
         min-height: 60px; /* Reduced height for smaller screens */
-        overflow: visible; /* Allow dropdown to show outside header bounds on mobile */
+        overflow-x: hidden; /* Prevent horizontal overflow only */
+        overflow-y: visible; /* Allow dropdowns to overflow vertically */
     }
     .logo {
         padding-left: 0.75rem; /* Further reduce padding */

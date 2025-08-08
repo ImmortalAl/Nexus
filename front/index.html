@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="css/base-theme.css?v=1.0">
     
     <!-- 2. CRITICAL CSS - Above-fold essentials loaded synchronously -->
-    <link rel="stylesheet" href="css/critical.css?v=5.8">
+    <link rel="stylesheet" href="css/critical.css?v=5.9">
     
     <!-- 3. GLOBAL STYLES - Site-wide styles loaded synchronously -->
     <link rel="stylesheet" href="css/styles.css?v=10.0">
@@ -929,6 +929,21 @@
     
     // Load on page ready
     document.addEventListener('DOMContentLoaded', loadEchoesHighlights);
+    
+    // Handle URL parameters for authentication
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const loginParam = urlParams.get('login');
+        
+        if (loginParam === 'admin') {
+            // Auto-open login modal for admin access
+            setTimeout(() => {
+                if (window.NEXUS && window.NEXUS.openSoulModal) {
+                    window.NEXUS.openSoulModal('login');
+                }
+            }, 500); // Small delay to ensure modal is initialized
+        }
+    });
     </script>
     
     <!-- Analytics Tracking System -->
