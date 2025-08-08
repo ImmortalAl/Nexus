@@ -382,12 +382,14 @@ nav.main-nav a.active span::after {
 @media (max-width: 768px) {
     header {
         min-height: 60px; /* Reduced height for smaller screens */
+        overflow: visible; /* Allow dropdown to show outside header bounds on mobile */
     }
     .logo {
         padding-left: 0.75rem; /* Further reduce padding */
     }
     .header-controls {
         padding-right: 0.75rem; /* Further reduce padding */
+        position: static; /* Reset position to allow dropdown overflow */
     }
     .header-auth-buttons .btn {
         padding: 0.35rem 0.7rem; /* Slightly smaller buttons on tablets */
