@@ -187,6 +187,7 @@ header {
     width: 100%;
     margin-left: 0;
     box-sizing: border-box;
+    overflow: hidden; /* Prevent horizontal overflow */
 }
 
 body.light-theme header {
@@ -403,17 +404,21 @@ nav.main-nav a.active span::after {
         margin-right: 0.5rem;
     }
     .header-controls {
-        padding-right: 0.5rem; /* Minimal padding for mobile */
-        gap: 0.5rem; /* Reduce gap on small screens */
+        padding-right: 0.75rem; /* Increased padding to prevent cutoff */
+        gap: 0.4rem; /* Slightly smaller gap on small screens */
     }
     .header-auth-buttons {
-        gap: 0.25rem; /* Even smaller gap between buttons */
+        gap: 0.3rem; /* Small gap between buttons */
         flex-direction: row; /* Keep buttons horizontal but smaller */
+        margin-right: 0; /* Ensure no negative margins */
     }
     .header-auth-buttons .btn {
-        padding: 0.25rem 0.5rem; /* Even smaller padding */
-        font-size: 0.65rem; /* Smaller font */
-        letter-spacing: -0.02em; /* Tighter letter spacing */
+        padding: 0.3rem 0.5rem; /* Balanced padding */
+        font-size: 0.62rem; /* Smaller font to fit better */
+        letter-spacing: -0.015em; /* Slight letter spacing adjustment */
+        min-width: 0; /* Remove any minimum width constraints */
+        overflow: hidden; /* Prevent overflow */
+        text-overflow: ellipsis; /* Add ellipsis if needed */
     }
 }
 
