@@ -166,25 +166,30 @@ function setupUserMenuEvents() {
       userDropdown.classList.toggle('active');
       const isActive = userDropdown.classList.contains('active');
       
-      // TEMPORARY DEBUG: Make dropdown SUPER visible with bright colors
+      // Apply working positioning with proper dropdown styling  
       if (isActive) {
+        const buttonRect = userMenuBtn.getBoundingClientRect();
         userDropdown.style.cssText = `
           position: fixed !important;
-          top: 80px !important;
-          right: 20px !important;
+          top: ${buttonRect.bottom + 5}px !important;
+          right: ${window.innerWidth - buttonRect.right}px !important;
           width: 200px !important;
-          height: 200px !important;
-          background: red !important;
-          border: 5px solid yellow !important;
+          background: var(--secondary, #1a1a33) !important;
+          border: 1px solid var(--accent, #ff5e78) !important;
+          border-radius: 12px !important;
+          padding: 0.5rem 0 !important;
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3) !important;
           z-index: 999999 !important;
           display: block !important;
           opacity: 1 !important;
           visibility: visible !important;
+          max-height: 300px !important;
+          overflow-y: auto !important;
         `;
-        console.log('[userMenu.js] DEBUG: Dropdown should be BRIGHT RED');
+        console.log('[userMenu.js] Dropdown positioned below button');
       } else {
-        userDropdown.style.cssText = '';
-        console.log('[userMenu.js] DEBUG: Dropdown hidden');
+        userDropdown.style.cssText = 'display: none !important;';
+        console.log('[userMenu.js] Dropdown hidden');
       }
     };
     

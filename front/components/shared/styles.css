@@ -253,12 +253,8 @@
     }
     
     .user-dropdown {
-        position: fixed !important; /* Fixed to viewport so it can spill beyond header */
-        /* Position will be calculated dynamically by JavaScript */
-        width: 200px !important;
-        min-width: 200px !important;
-        max-width: 200px !important;
-        z-index: 999999 !important; /* Higher than header z-index (2500) */
+        /* All positioning handled by JavaScript */
+        display: none; /* Hidden by default, JS will override when active */
         background: var(--secondary, #1a1a33) !important;
         border: 1px solid var(--accent, #ff5e78) !important;
         border-radius: var(--border-radius, 12px) !important;
