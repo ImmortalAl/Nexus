@@ -233,6 +233,13 @@
         overflow: visible !important;
     }
     
+    /* Ensure header-controls doesn't clip dropdown */
+    .header-controls {
+        position: relative !important;
+        overflow: visible !important;
+        z-index: 2501 !important;
+    }
+    
     .user-menu-btn {
         cursor: pointer !important;
         -webkit-tap-highlight-color: transparent !important; /* Remove tap highlight on iOS */

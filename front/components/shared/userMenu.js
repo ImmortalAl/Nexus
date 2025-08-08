@@ -156,74 +156,14 @@ function setupUserMenuEvents() {
   if (userMenuBtn && userDropdown) {
     console.log('[userMenu.js] Setting up event listeners for user dropdown');
     
-    // Add both click and touchstart events for mobile compatibility
+    // Simple dropdown toggle without JavaScript overrides - let CSS handle it
     const toggleDropdown = (event) => {
       console.log('[userMenu.js] Dropdown toggle triggered by:', event.type);
-      
-      // Visual debug indicator
-      const debugEl = document.getElementById('debug-indicator') || document.createElement('div');
-      debugEl.id = 'debug-indicator';
-      debugEl.style.cssText = `
-        position: fixed; top: 10px; left: 10px; 
-        background: red; color: white; padding: 5px; 
-        z-index: 99999; font-size: 12px;
-      `;
-      debugEl.textContent = `Tap detected: ${event.type}`;
-      if (!document.getElementById('debug-indicator')) {
-        document.body.appendChild(debugEl);
-      }
-      setTimeout(() => debugEl.remove(), 2000);
+      event.preventDefault();
+      event.stopPropagation();
       
       userDropdown.classList.toggle('active');
-      const isActive = userDropdown.classList.contains('active');
-      console.log('[userMenu.js] Dropdown active state:', isActive);
-      
-      // Visual debug for dropdown state
-      const stateEl = document.getElementById('dropdown-state') || document.createElement('div');
-      stateEl.id = 'dropdown-state';
-      stateEl.style.cssText = `
-        position: fixed; top: 50px; left: 10px; 
-        background: ${isActive ? 'green' : 'blue'}; color: white; padding: 5px; 
-        z-index: 99999; font-size: 12px;
-      `;
-      stateEl.textContent = `Dropdown: ${isActive ? 'OPEN' : 'CLOSED'}`;
-      if (!document.getElementById('dropdown-state')) {
-        document.body.appendChild(stateEl);
-      }
-      setTimeout(() => stateEl.remove(), 2000);
-      
-      // Force repaint and inline styles on mobile
-      if (isActive) {
-        // Force inline styles to override CSS issues with mobile-friendly z-index
-        userDropdown.style.cssText = `
-          position: absolute !important;
-          top: calc(100% + 5px) !important;
-          right: 0 !important;
-          width: 200px !important;
-          z-index: 999999 !important;
-          background: var(--secondary, #1a1a33) !important;
-          border: 1px solid var(--accent, #ff5e78) !important;
-          border-radius: 12px !important;
-          padding: 0.5rem 0 !important;
-          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3) !important;
-          opacity: 1 !important;
-          visibility: visible !important;
-          transform: translateY(0) translate3d(0,0,0) !important;
-          display: block !important;
-          pointer-events: auto !important;
-          color: var(--text, white) !important;
-        `;
-        userDropdown.offsetHeight; // Force reflow
-        
-      } else {
-        // Reset to hidden
-        userDropdown.style.cssText = `
-          opacity: 0 !important;
-          visibility: hidden !important;
-          transform: translateY(-10px) !important;
-          pointer-events: none !important;
-        `;
-      }
+      console.log('[userMenu.js] Dropdown active state:', userDropdown.classList.contains('active'));
     };
     
     // Remove any existing listeners first
