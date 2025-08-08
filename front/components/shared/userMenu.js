@@ -156,28 +156,36 @@ function setupUserMenuEvents() {
   if (userMenuBtn && userDropdown) {
     console.log('[userMenu.js] Setting up event listeners for user dropdown');
     
-    // Smart dropdown positioning to avoid scrollbars and spill into content
+    // MINIMAL DEBUG VERSION - Strip everything complex
     const toggleDropdown = (event) => {
-      console.log('[userMenu.js] Dropdown toggle triggered by:', event.type);
+      console.log('[userMenu.js] DEBUG: Toggle called');
       event.preventDefault();
       event.stopPropagation();
       
-      const wasActive = userDropdown.classList.contains('active');
+      // Simple toggle
       userDropdown.classList.toggle('active');
       const isActive = userDropdown.classList.contains('active');
       
-      if (isActive && !wasActive) {
-        // Calculate position relative to the button for proper spillover
-        const buttonRect = userMenuBtn.getBoundingClientRect();
-        const headerHeight = buttonRect.bottom; // Use button's bottom as dropdown top
-        
-        // Position dropdown below button, aligned to right edge
-        userDropdown.style.top = headerHeight + 5 + 'px'; // 5px gap
-        userDropdown.style.right = window.innerWidth - buttonRect.right + 'px'; // Align right edges
-        userDropdown.style.left = 'auto';
+      // TEMPORARY DEBUG: Make dropdown SUPER visible with bright colors
+      if (isActive) {
+        userDropdown.style.cssText = `
+          position: fixed !important;
+          top: 80px !important;
+          right: 20px !important;
+          width: 200px !important;
+          height: 200px !important;
+          background: red !important;
+          border: 5px solid yellow !important;
+          z-index: 999999 !important;
+          display: block !important;
+          opacity: 1 !important;
+          visibility: visible !important;
+        `;
+        console.log('[userMenu.js] DEBUG: Dropdown should be BRIGHT RED');
+      } else {
+        userDropdown.style.cssText = '';
+        console.log('[userMenu.js] DEBUG: Dropdown hidden');
       }
-      
-      console.log('[userMenu.js] Dropdown active state:', isActive);
     };
     
     // Remove any existing listeners first
