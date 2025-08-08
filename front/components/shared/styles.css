@@ -253,7 +253,7 @@
         width: 200px !important;
         min-width: 200px !important;
         max-width: 200px !important;
-        z-index: 99999 !important; /* Maximum z-index */
+        z-index: 999999 !important; /* Higher than header z-index (2500) */
         background: var(--secondary, #1a1a33) !important;
         border: 1px solid var(--accent, #ff5e78) !important;
         border-radius: var(--border-radius, 12px) !important;
