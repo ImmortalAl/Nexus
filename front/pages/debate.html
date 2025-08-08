@@ -74,7 +74,7 @@
     <!-- Floating Buttons -->
     <div class="floating-buttons">
         <button class="show-users-btn" id="showUsersBtn" aria-label="Show active users"><i class="fas fa-users"></i></button>
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"><i class="fas fa-moon"></i></button>
+        <button class="theme-toggle" data-theme-toggle="true" aria-label="Toggle theme"><i class="fas fa-moon"></i></button>
     </div>
 
     <!-- Message Modal -->
@@ -116,6 +116,10 @@
     <!-- Shared Immortal Nexus Scripts (Order is important) -->
     <!-- All paths are relative from the `/front/pages/` directory -->
     <script src="../components/shared/config.js?v=1.4"></script>
+    
+    <!-- Theme Manager - Load early for immediate theme application -->
+    <script src="../components/shared/themeManager.js?v=1.3"></script>
+    
     <script src="../components/shared/nexus-core.js?v=1.4"></script>
     <script src="../components/shared/authManager.js?v=1.3"></script>
     <script src="../components/shared/apiClient.js?v=1.3"></script>
