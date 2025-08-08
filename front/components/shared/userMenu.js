@@ -159,9 +159,38 @@ function setupUserMenuEvents() {
     // Add both click and touchstart events for mobile compatibility
     const toggleDropdown = (event) => {
       console.log('[userMenu.js] Dropdown toggle triggered by:', event.type);
+      
+      // Visual debug indicator
+      const debugEl = document.getElementById('debug-indicator') || document.createElement('div');
+      debugEl.id = 'debug-indicator';
+      debugEl.style.cssText = `
+        position: fixed; top: 10px; left: 10px; 
+        background: red; color: white; padding: 5px; 
+        z-index: 99999; font-size: 12px;
+      `;
+      debugEl.textContent = `Tap detected: ${event.type}`;
+      if (!document.getElementById('debug-indicator')) {
+        document.body.appendChild(debugEl);
+      }
+      setTimeout(() => debugEl.remove(), 2000);
+      
       userDropdown.classList.toggle('active');
       const isActive = userDropdown.classList.contains('active');
       console.log('[userMenu.js] Dropdown active state:', isActive);
+      
+      // Visual debug for dropdown state
+      const stateEl = document.getElementById('dropdown-state') || document.createElement('div');
+      stateEl.id = 'dropdown-state';
+      stateEl.style.cssText = `
+        position: fixed; top: 50px; left: 10px; 
+        background: ${isActive ? 'green' : 'blue'}; color: white; padding: 5px; 
+        z-index: 99999; font-size: 12px;
+      `;
+      stateEl.textContent = `Dropdown: ${isActive ? 'OPEN' : 'CLOSED'}`;
+      if (!document.getElementById('dropdown-state')) {
+        document.body.appendChild(stateEl);
+      }
+      setTimeout(() => stateEl.remove(), 2000);
       
       // Force repaint on mobile
       if (isActive) {
