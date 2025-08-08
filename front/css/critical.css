@@ -391,7 +391,7 @@ nav.main-nav a.active span::after {
     }
     .header-controls {
         padding-right: 0.75rem; /* Further reduce padding */
-        position: static; /* Reset position to allow dropdown overflow */
+        position: relative; /* Keep relative positioning for dropdown context */
     }
     .header-auth-buttons .btn {
         padding: 0.35rem 0.7rem; /* Slightly smaller buttons on tablets */
