@@ -345,6 +345,7 @@ nav.main-nav a.active span::after {
     font-size: 0.75rem;
     min-width: auto;
     animation: none;
+    white-space: nowrap;
 }
 
 .header-auth-buttons .btn-primary:hover,
@@ -387,14 +388,32 @@ nav.main-nav a.active span::after {
     .header-controls {
         padding-right: 0.75rem; /* Further reduce padding */
     }
+    .header-auth-buttons .btn {
+        padding: 0.35rem 0.7rem; /* Slightly smaller buttons on tablets */
+        font-size: 0.7rem;
+    }
 }
 
 @media (max-width: 480px) {
     .logo {
         padding-left: 0.5rem; /* Minimal padding for mobile */
     }
+    .logo i {
+        font-size: 1.5rem; /* Smaller infinity icon */
+        margin-right: 0.5rem;
+    }
     .header-controls {
         padding-right: 0.5rem; /* Minimal padding for mobile */
+        gap: 0.5rem; /* Reduce gap on small screens */
+    }
+    .header-auth-buttons {
+        gap: 0.25rem; /* Even smaller gap between buttons */
+        flex-direction: row; /* Keep buttons horizontal but smaller */
+    }
+    .header-auth-buttons .btn {
+        padding: 0.25rem 0.5rem; /* Even smaller padding */
+        font-size: 0.65rem; /* Smaller font */
+        letter-spacing: -0.02em; /* Tighter letter spacing */
     }
 }
 
