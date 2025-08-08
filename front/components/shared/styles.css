@@ -225,50 +225,96 @@
     margin: 0.5rem 0;
 }
 
-/* Mobile fixes for user dropdown */
+/* Mobile fixes for user dropdown - AGGRESSIVE OVERRIDES */
 @media (max-width: 768px) {
     .user-menu {
-        position: relative;
-        z-index: 2501; /* Above header z-index (2500) */
+        position: relative !important;
+        z-index: 2501 !important; /* Above header z-index (2500) */
+        overflow: visible !important;
     }
     
     .user-menu-btn {
-        cursor: pointer;
-        -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
-        touch-action: manipulation; /* Prevent zoom on double-tap */
-        user-select: none; /* Prevent text selection */
-        min-height: 44px; /* Minimum touch target size for mobile */
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        cursor: pointer !important;
+        -webkit-tap-highlight-color: transparent !important; /* Remove tap highlight on iOS */
+        touch-action: manipulation !important; /* Prevent zoom on double-tap */
+        user-select: none !important; /* Prevent text selection */
+        min-height: 44px !important; /* Minimum touch target size for mobile */
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        position: relative !important;
     }
     
     .user-dropdown {
-        z-index: 10001; /* Increase z-index further for mobile */
-        position: absolute;
-        right: 0;
-        top: calc(100% + 10px);
-        width: 200px;
+        position: absolute !important;
+        top: calc(100% + 5px) !important; /* Reduced gap */
+        right: 0 !important;
+        left: auto !important;
+        width: 200px !important;
+        min-width: 200px !important;
+        max-width: 200px !important;
+        z-index: 99999 !important; /* Maximum z-index */
+        background: var(--secondary, #1a1a33) !important;
+        border: 1px solid var(--accent, #ff5e78) !important;
+        border-radius: var(--border-radius, 12px) !important;
+        padding: 0.5rem 0 !important;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3) !important;
+        
+        /* Default hidden state */
+        opacity: 0 !important;
+        visibility: hidden !important;
+        transform: translateY(-10px) !important;
+        
         /* Force hardware acceleration */
-        will-change: opacity, visibility, transform;
-        backface-visibility: hidden;
+        will-change: opacity, visibility, transform !important;
+        backface-visibility: hidden !important;
+        
+        /* Ensure it's above everything */
+        transform-style: preserve-3d !important;
     }
     
+    /* ACTIVE STATE - MAXIMUM FORCE */
     .user-dropdown.active {
         opacity: 1 !important;
         visibility: visible !important;
-        transform: translateY(0) !important;
+        transform: translateY(0) translate3d(0, 0, 0) !important;
         display: block !important;
         pointer-events: auto !important;
+        
+        /* Force positioning */
+        position: absolute !important;
+        top: calc(100% + 5px) !important;
+        right: 0 !important;
+        
+        /* Ensure visibility */
+        clip: auto !important;
+        -webkit-clip-path: none !important;
+        clip-path: none !important;
+        
+        /* Force layer creation */
+        isolation: isolate !important;
     }
     
-    /* Ensure parent containers don't interfere */
+    /* Ensure all parent containers allow overflow */
     .header-controls {
         overflow: visible !important;
+        position: relative !important;
     }
     
-    .user-menu {
-        overflow: visible !important;
+    header {
+        overflow-y: visible !important;
+    }
+    
+    /* Force dropdown links to be visible */
+    .user-dropdown a {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.8rem !important;
+        padding: 0.8rem 1rem !important;
+        color: var(--text, #f0e6ff) !important;
+        text-decoration: none !important;
+        opacity: 1 !important;
+        visibility: visible !important;
     }
 }
 

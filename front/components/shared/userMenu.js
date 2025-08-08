@@ -192,11 +192,35 @@ function setupUserMenuEvents() {
       }
       setTimeout(() => stateEl.remove(), 2000);
       
-      // Force repaint on mobile
+      // Force repaint and inline styles on mobile
       if (isActive) {
-        userDropdown.style.display = 'block';
+        // Force inline styles to override CSS issues
+        userDropdown.style.cssText = `
+          position: absolute !important;
+          top: calc(100% + 5px) !important;
+          right: 0 !important;
+          width: 200px !important;
+          z-index: 99999 !important;
+          background: var(--secondary, #1a1a33) !important;
+          border: 1px solid var(--accent, #ff5e78) !important;
+          border-radius: 12px !important;
+          padding: 0.5rem 0 !important;
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3) !important;
+          opacity: 1 !important;
+          visibility: visible !important;
+          transform: translateY(0) !important;
+          display: block !important;
+          pointer-events: auto !important;
+        `;
         userDropdown.offsetHeight; // Force reflow
-        userDropdown.style.display = '';
+      } else {
+        // Reset to hidden
+        userDropdown.style.cssText = `
+          opacity: 0 !important;
+          visibility: hidden !important;
+          transform: translateY(-10px) !important;
+          pointer-events: none !important;
+        `;
       }
     };
     
