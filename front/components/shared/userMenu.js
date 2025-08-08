@@ -80,7 +80,10 @@ function updateUserMenu() {
     window.NEXUS.updateActiveUsersButtonVisibility();
   }
   
-  setupUserMenuEvents(); // Sets up dropdown toggle and logout
+  // Add a small delay to ensure elements are fully in DOM before setting up events
+  setTimeout(() => {
+    setupUserMenuEvents(); // Sets up dropdown toggle and logout
+  }, 50);
   // Event listeners for new header buttons are set in populateHeaderAuthButtons
 }
 
@@ -139,32 +142,71 @@ function updateThemeMenuText() {
 
 // Setup event listeners for user menu (dropdown toggle, logout)
 function setupUserMenuEvents() {
+  console.log('[userMenu.js] Setting up user menu events...');
   const userMenuBtn = document.getElementById('userMenuBtn'); // This might not exist if logged out
   const userDropdown = document.getElementById('userDropdown'); // This might not exist if logged out
 
+  console.log('[userMenu.js] Elements found:', {
+    userMenuBtn: !!userMenuBtn,
+    userDropdown: !!userDropdown,
+    userMenuBtnElement: userMenuBtn,
+    userDropdownElement: userDropdown
+  });
+
   if (userMenuBtn && userDropdown) {
+    console.log('[userMenu.js] Setting up event listeners for user dropdown');
+    
     // Add both click and touchstart events for mobile compatibility
-    const toggleDropdown = () => {
-      console.log('[userMenu.js] Dropdown toggle triggered');
+    const toggleDropdown = (event) => {
+      console.log('[userMenu.js] Dropdown toggle triggered by:', event.type);
       userDropdown.classList.toggle('active');
-      console.log('[userMenu.js] Dropdown active state:', userDropdown.classList.contains('active'));
+      const isActive = userDropdown.classList.contains('active');
+      console.log('[userMenu.js] Dropdown active state:', isActive);
+      
+      // Force repaint on mobile
+      if (isActive) {
+        userDropdown.style.display = 'block';
+        userDropdown.offsetHeight; // Force reflow
+        userDropdown.style.display = '';
+      }
     };
     
-    userMenuBtn.addEventListener('click', toggleDropdown);
-    userMenuBtn.addEventListener('touchstart', (e) => {
+    // Remove any existing listeners first
+    userMenuBtn.replaceWith(userMenuBtn.cloneNode(true));
+    const freshBtn = document.getElementById('userMenuBtn');
+    
+    freshBtn.addEventListener('click', toggleDropdown);
+    freshBtn.addEventListener('touchstart', (e) => {
       e.preventDefault(); // Prevent double-firing
-      toggleDropdown();
+      e.stopPropagation();
+      toggleDropdown(e);
+    });
+    
+    // Also try mousedown for additional compatibility
+    freshBtn.addEventListener('mousedown', (e) => {
+      if (e.button === 0) { // Left click only
+        toggleDropdown(e);
+      }
     });
 
     // Handle outside clicks/touches to close dropdown
     const closeOnOutsideClick = (event) => {
-      if (!userMenuBtn.contains(event.target) && !userDropdown.contains(event.target)) {
-        if (userDropdown.classList.contains('active')) {
+      const currentBtn = document.getElementById('userMenuBtn');
+      const currentDropdown = document.getElementById('userDropdown');
+      
+      if (currentBtn && currentDropdown && 
+          !currentBtn.contains(event.target) && 
+          !currentDropdown.contains(event.target)) {
+        if (currentDropdown.classList.contains('active')) {
           console.log('[userMenu.js] Closing dropdown due to outside click');
-          userDropdown.classList.remove('active');
+          currentDropdown.classList.remove('active');
         }
       }
     };
+    
+    // Remove existing listeners to avoid duplicates
+    document.removeEventListener('click', closeOnOutsideClick);
+    document.removeEventListener('touchstart', closeOnOutsideClick);
     
     document.addEventListener('click', closeOnOutsideClick);
     document.addEventListener('touchstart', closeOnOutsideClick);

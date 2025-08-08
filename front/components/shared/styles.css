@@ -258,6 +258,17 @@
         opacity: 1 !important;
         visibility: visible !important;
         transform: translateY(0) !important;
+        display: block !important;
+        pointer-events: auto !important;
+    }
+    
+    /* Ensure parent containers don't interfere */
+    .header-controls {
+        overflow: visible !important;
+    }
+    
+    .user-menu {
+        overflow: visible !important;
     }
 }
 
