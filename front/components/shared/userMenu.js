@@ -156,14 +156,28 @@ function setupUserMenuEvents() {
   if (userMenuBtn && userDropdown) {
     console.log('[userMenu.js] Setting up event listeners for user dropdown');
     
-    // Simple dropdown toggle without JavaScript overrides - let CSS handle it
+    // Smart dropdown positioning to avoid scrollbars and spill into content
     const toggleDropdown = (event) => {
       console.log('[userMenu.js] Dropdown toggle triggered by:', event.type);
       event.preventDefault();
       event.stopPropagation();
       
+      const wasActive = userDropdown.classList.contains('active');
       userDropdown.classList.toggle('active');
-      console.log('[userMenu.js] Dropdown active state:', userDropdown.classList.contains('active'));
+      const isActive = userDropdown.classList.contains('active');
+      
+      if (isActive && !wasActive) {
+        // Calculate position relative to the button for proper spillover
+        const buttonRect = userMenuBtn.getBoundingClientRect();
+        const headerHeight = buttonRect.bottom; // Use button's bottom as dropdown top
+        
+        // Position dropdown below button, aligned to right edge
+        userDropdown.style.top = headerHeight + 5 + 'px'; // 5px gap
+        userDropdown.style.right = window.innerWidth - buttonRect.right + 'px'; // Align right edges
+        userDropdown.style.left = 'auto';
+      }
+      
+      console.log('[userMenu.js] Dropdown active state:', isActive);
     };
     
     // Remove any existing listeners first
@@ -183,6 +197,23 @@ function setupUserMenuEvents() {
         toggleDropdown(e);
       }
     });
+
+    // Handle window resize to reposition dropdown
+    const repositionDropdown = () => {
+      const currentBtn = document.getElementById('userMenuBtn');
+      const currentDropdown = document.getElementById('userDropdown');
+      
+      if (currentBtn && currentDropdown && currentDropdown.classList.contains('active')) {
+        const buttonRect = currentBtn.getBoundingClientRect();
+        const headerHeight = buttonRect.bottom;
+        
+        currentDropdown.style.top = headerHeight + 5 + 'px';
+        currentDropdown.style.right = window.innerWidth - buttonRect.right + 'px';
+      }
+    };
+    
+    window.addEventListener('resize', repositionDropdown);
+    window.addEventListener('scroll', repositionDropdown);
 
     // Handle outside clicks/touches to close dropdown
     const closeOnOutsideClick = (event) => {

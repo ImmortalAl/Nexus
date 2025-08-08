@@ -253,10 +253,8 @@
     }
     
     .user-dropdown {
-        position: absolute !important;
-        top: calc(100% + 5px) !important; /* Reduced gap */
-        right: 0 !important;
-        left: auto !important;
+        position: fixed !important; /* Fixed to viewport so it can spill beyond header */
+        /* Position will be calculated dynamically by JavaScript */
         width: 200px !important;
         min-width: 200px !important;
         max-width: 200px !important;
