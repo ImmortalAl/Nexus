@@ -194,25 +194,39 @@ function setupUserMenuEvents() {
       
       // Force repaint and inline styles on mobile
       if (isActive) {
-        // Force inline styles to override CSS issues
+        // Force inline styles to override CSS issues with bright debugging background
         userDropdown.style.cssText = `
           position: absolute !important;
           top: calc(100% + 5px) !important;
           right: 0 !important;
           width: 200px !important;
           z-index: 99999 !important;
-          background: var(--secondary, #1a1a33) !important;
-          border: 1px solid var(--accent, #ff5e78) !important;
+          background: #ff0000 !important;
+          border: 3px solid #00ff00 !important;
           border-radius: 12px !important;
-          padding: 0.5rem 0 !important;
-          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3) !important;
+          padding: 1rem !important;
+          box-shadow: 0 10px 20px rgba(255, 0, 0, 0.8) !important;
           opacity: 1 !important;
           visibility: visible !important;
-          transform: translateY(0) !important;
+          transform: translateY(0) translate3d(0,0,0) !important;
           display: block !important;
           pointer-events: auto !important;
+          min-height: 100px !important;
+          color: white !important;
         `;
         userDropdown.offsetHeight; // Force reflow
+        
+        // Also add a temporary test message
+        const testDiv = document.createElement('div');
+        testDiv.innerHTML = 'TEST DROPDOWN VISIBLE';
+        testDiv.style.cssText = `
+          background: yellow !important;
+          color: black !important;
+          padding: 10px !important;
+          margin: 5px !important;
+        `;
+        userDropdown.appendChild(testDiv);
+        
       } else {
         // Reset to hidden
         userDropdown.style.cssText = `
