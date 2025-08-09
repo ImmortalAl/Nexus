@@ -109,9 +109,7 @@ function populateHeaderAuthButtons(container) {
   if (headerLoginButton) {
     headerLoginButton.addEventListener('click', (e) => {
       e.preventDefault();
-      console.log('[userMenu.js] Login button clicked');
       if (window.NEXUS && window.NEXUS.openSoulModal) {
-        console.log('[userMenu.js] Calling openSoulModal with login mode');
         window.NEXUS.openSoulModal('login');
       } else {
         console.error('[userMenu.js] openSoulModal function not available!');
@@ -142,55 +140,18 @@ function updateThemeMenuText() {
 
 // Setup event listeners for user menu (dropdown toggle, logout)
 function setupUserMenuEvents() {
-  console.log('[userMenu.js] Setting up user menu events...');
   const userMenuBtn = document.getElementById('userMenuBtn'); // This might not exist if logged out
   const userDropdown = document.getElementById('userDropdown'); // This might not exist if logged out
 
-  console.log('[userMenu.js] Elements found:', {
-    userMenuBtn: !!userMenuBtn,
-    userDropdown: !!userDropdown,
-    userMenuBtnElement: userMenuBtn,
-    userDropdownElement: userDropdown
-  });
-
   if (userMenuBtn && userDropdown) {
-    console.log('[userMenu.js] Setting up event listeners for user dropdown');
     
-    // MINIMAL DEBUG VERSION - Strip everything complex
+    // Clean toggle function - let CSS handle all styling
     const toggleDropdown = (event) => {
-      console.log('[userMenu.js] DEBUG: Toggle called');
       event.preventDefault();
       event.stopPropagation();
       
-      // Simple toggle
+      // Just toggle the active class and let CSS handle everything
       userDropdown.classList.toggle('active');
-      const isActive = userDropdown.classList.contains('active');
-      
-      // Apply working positioning with proper dropdown styling  
-      if (isActive) {
-        const buttonRect = userMenuBtn.getBoundingClientRect();
-        userDropdown.style.cssText = `
-          position: fixed !important;
-          top: ${buttonRect.bottom + 5}px !important;
-          right: ${window.innerWidth - buttonRect.right}px !important;
-          width: 200px !important;
-          background: var(--secondary, #1a1a33) !important;
-          border: 1px solid var(--accent, #ff5e78) !important;
-          border-radius: 12px !important;
-          padding: 0.5rem 0 !important;
-          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3) !important;
-          z-index: 999999 !important;
-          display: block !important;
-          opacity: 1 !important;
-          visibility: visible !important;
-          max-height: 300px !important;
-          overflow-y: auto !important;
-        `;
-        console.log('[userMenu.js] Dropdown positioned below button');
-      } else {
-        userDropdown.style.cssText = 'display: none !important;';
-        console.log('[userMenu.js] Dropdown hidden');
-      }
     };
     
     // Remove any existing listeners first
@@ -211,22 +172,7 @@ function setupUserMenuEvents() {
       }
     });
 
-    // Handle window resize to reposition dropdown
-    const repositionDropdown = () => {
-      const currentBtn = document.getElementById('userMenuBtn');
-      const currentDropdown = document.getElementById('userDropdown');
-      
-      if (currentBtn && currentDropdown && currentDropdown.classList.contains('active')) {
-        const buttonRect = currentBtn.getBoundingClientRect();
-        const headerHeight = buttonRect.bottom;
-        
-        currentDropdown.style.top = headerHeight + 5 + 'px';
-        currentDropdown.style.right = window.innerWidth - buttonRect.right + 'px';
-      }
-    };
-    
-    window.addEventListener('resize', repositionDropdown);
-    window.addEventListener('scroll', repositionDropdown);
+    // No need for repositioning since CSS handles absolute positioning relative to parent
 
     // Handle outside clicks/touches to close dropdown
     const closeOnOutsideClick = (event) => {
@@ -237,7 +183,6 @@ function setupUserMenuEvents() {
           !currentBtn.contains(event.target) && 
           !currentDropdown.contains(event.target)) {
         if (currentDropdown.classList.contains('active')) {
-          console.log('[userMenu.js] Closing dropdown due to outside click');
           currentDropdown.classList.remove('active');
         }
       }

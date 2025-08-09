@@ -253,47 +253,40 @@
     }
     
     .user-dropdown {
-        /* All positioning handled by JavaScript */
-        display: none; /* Hidden by default, JS will override when active */
+        /* Position absolutely relative to parent (.user-menu) */
+        position: absolute !important;
+        top: calc(100% + 10px) !important;
+        right: 0 !important;
+        width: 200px !important;
         background: var(--secondary, #1a1a33) !important;
         border: 1px solid var(--accent, #ff5e78) !important;
         border-radius: var(--border-radius, 12px) !important;
         padding: 0.5rem 0 !important;
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3) !important;
         
-        /* Default hidden state */
+        /* Hidden by default */
         opacity: 0 !important;
         visibility: hidden !important;
         transform: translateY(-10px) !important;
+        pointer-events: none !important;
+        
+        /* Smooth transitions */
+        transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease !important;
+        
+        /* High z-index to ensure visibility */
+        z-index: 999999 !important;
         
         /* Force hardware acceleration */
         will-change: opacity, visibility, transform !important;
         backface-visibility: hidden !important;
-        
-        /* Ensure it's above everything */
-        transform-style: preserve-3d !important;
     }
     
-    /* ACTIVE STATE - MAXIMUM FORCE */
+    /* ACTIVE STATE */
     .user-dropdown.active {
         opacity: 1 !important;
         visibility: visible !important;
-        transform: translateY(0) translate3d(0, 0, 0) !important;
-        display: block !important;
+        transform: translateY(0) !important;
         pointer-events: auto !important;
-        
-        /* Force positioning */
-        position: absolute !important;
-        top: calc(100% + 5px) !important;
-        right: 0 !important;
-        
-        /* Ensure visibility */
-        clip: auto !important;
-        -webkit-clip-path: none !important;
-        clip-path: none !important;
-        
-        /* Force layer creation */
-        isolation: isolate !important;
     }
     
     /* Ensure all parent containers allow overflow */
