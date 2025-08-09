@@ -247,7 +247,7 @@ const AdminFeedback = {
         
         if (isAnonymous) {
             this.showFeedbackModal(feedback);
-        } else if (typeof MLNF !== 'undefined' && typeof MLNF.openMessageModal === 'function') {
+        } else if (typeof window.NEXUS !== 'undefined' && typeof window.NEXUS.openMessageModal === 'function') {
             try {
                 // Get the actual username from the sender object
                 const username = feedback.sender?.username || feedback.username || feedback.email;
@@ -256,7 +256,7 @@ const AdminFeedback = {
                     return;
                 }
                 
-                MLNF.openMessageModal(username);
+                window.NEXUS.openMessageModal(username);
             } catch (error) {
                 console.error('Error opening message modal:', error);
                 this.showError('Failed to open message modal', error.message);
