@@ -334,6 +334,7 @@ nav.main-nav a.active span::after {
     align-items: center;
     gap: 1rem;
     padding-right: 1.5rem; /* Add padding to controls container for spacing from edge */
+    overflow: visible; /* Allow dropdowns to overflow */
 }
 
 /* Header Auth Buttons (for logged-out state) */

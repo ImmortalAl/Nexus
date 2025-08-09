@@ -148,6 +148,7 @@
 .user-menu {
     position: relative;
     z-index: 100;
+    overflow: visible; /* Allow dropdown to overflow */
     /* margin-left: auto; -- This might be handled by .header-controls gap now */
 }
 
@@ -191,7 +192,7 @@
     transform: translateY(-10px);
     pointer-events: none;
     transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
-    z-index: 10000; /* Increased z-index to be above other elements */
+    z-index: 99999; /* Ensure dropdown appears above everything */
 }
 
 .user-dropdown.active {
@@ -276,7 +277,7 @@
         transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease !important;
         
         /* High z-index to ensure visibility */
-        z-index: 999999 !important;
+        z-index: 99999 !important;
         
         /* Force hardware acceleration */
         will-change: opacity, visibility, transform !important;
