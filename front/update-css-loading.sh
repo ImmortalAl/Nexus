@@ -43,26 +43,18 @@ update_html_file() {
 # Note: Some files may need manual adjustments for relative paths
 
 files_to_update=(
+    "index.html"
     "lander.html"
     "admin/index.html"
     "pages/blog.html"
     "pages/celestial-commons.html"
-    "pages/profile-setup.html"
-    "pages/messaging.html"
     "pages/messageboard.html"
-    "pages/manifesto.html"
-    "pages/blogs.html"
     "pages/mindmap.html"
-    "pages/news-fixed.html"
-    "pages/messageboard_archive.html"
+    "pages/news.html"
     "pages/debate.html"
     "pages/archive.html"
-    "pages/eternal-hearth.html"
-    "profile/index.html"
-    "souls/eternally_yours/index.html"
-    "souls/[username].html"
-    "test-online-status.html"
-    "test-news-debug.html"
+    "souls/index.html"
+    "souls/profile.html"
 )
 
 # Process each file
