@@ -189,6 +189,8 @@ header {
     box-sizing: border-box;
     overflow-x: hidden; /* Prevent horizontal overflow */
     overflow-y: visible; /* Allow vertical overflow for dropdowns */
+    overflow: visible !important; /* Force visible overflow */
+    height: auto !important; /* Ensure height adjusts automatically */
 }
 
 body.light-theme header {
