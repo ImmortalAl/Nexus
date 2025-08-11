@@ -195,11 +195,12 @@
 
 /* When JS applies floating positioning, ensure it overlays all site content */
 .user-dropdown.floating {
-    position: fixed;
-    z-index: 10002;
+    position: fixed !important;
+    z-index: 99999 !important; /* Extremely high to overlay everything */
     max-height: min(60vh, 420px);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    pointer-events: auto !important;
 }
 
 .user-dropdown.active {
@@ -2539,4 +2540,20 @@ body.light-theme .user-dropdown .divider {
 .soul-modal .close-modal {
     z-index: 100001 !important;
     position: absolute !important;
+}
+
+// Ensure body allows overflow for fixed elements
+body {
+    overflow: visible !important;
+}
+
+// Mobile fixes
+@media (max-width: 768px) {
+    body {
+        overflow: visible !important;
+    }
+    
+    .user-dropdown {
+        z-index: 99999 !important;
+    }
 }

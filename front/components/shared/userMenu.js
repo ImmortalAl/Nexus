@@ -180,6 +180,9 @@ function handleToggleDropdown(event, button) {
 }
 
 function openDropdown(dropdown, button) {
+  // First, move dropdown to body to escape header constraints
+  document.body.appendChild(dropdown);
+  
   // Position the dropdown invisibly first
   positionDropdown(dropdown, button);
 
@@ -204,9 +207,16 @@ function closeDropdown(dropdown) {
   window.removeEventListener('scroll', handleViewportChange, { passive: true });
   document.removeEventListener('keydown', handleEscapeKey);
 
-  // After the transition ends, clean up inline styles
+  // After the transition ends, clean up inline styles and move back to original container
   const onTransitionEnd = () => {
     clearDropdownPosition(dropdown);
+    
+    // Move back to userMenuContainer
+    const userMenuContainer = document.getElementById('userMenuContainer');
+    if (userMenuContainer) {
+      userMenuContainer.appendChild(dropdown);
+    }
+    
     dropdown.removeEventListener('transitionend', onTransitionEnd);
   };
   dropdown.addEventListener('transitionend', onTransitionEnd);
