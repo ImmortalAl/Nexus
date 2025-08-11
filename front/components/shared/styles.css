@@ -147,9 +147,8 @@
 /* User Menu Styles */
 .user-menu {
     position: relative;
-    z-index: 100;
-    overflow: visible; /* Allow dropdown to overflow */
-    /* margin-left: auto; -- This might be handled by .header-controls gap now */
+    overflow: visible !important;
+    z-index: 10000 !important;
 }
 
 .user-menu-btn {
@@ -192,7 +191,13 @@
     transform: translateY(-10px);
     pointer-events: none;
     transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
-    z-index: 99999; /* Ensure dropdown appears above everything */
+    z-index: 10001 !important;
+}
+
+/* When JS applies floating positioning, ensure it overlays all site content */
+.user-dropdown.floating {
+    position: fixed !important;
+    z-index: 10002 !important;
 }
 
 .user-dropdown.active {
@@ -277,7 +282,7 @@
         transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease !important;
         
         /* High z-index to ensure visibility */
-        z-index: 99999 !important;
+        z-index: calc(var(--z-overlay, 10000) + 10) !important;
         
         /* Force hardware acceleration */
         will-change: opacity, visibility, transform !important;

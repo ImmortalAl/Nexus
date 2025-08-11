@@ -145,13 +145,70 @@ function setupUserMenuEvents() {
 
   if (userMenuBtn && userDropdown) {
     
-    // Clean toggle function - let CSS handle all styling
+    // Helpers to position dropdown as a floating overlay
+    const positionDropdown = () => {
+      // Add a class that allows fixed positioning via CSS override
+      userDropdown.classList.add('floating');
+      // Compute viewport coordinates relative to the button
+      const rect = userMenuBtn.getBoundingClientRect();
+      const dropdownWidth = userDropdown.offsetWidth || 200;
+      const gutter = 10;
+      let top = rect.bottom + gutter;
+      let left = rect.right - dropdownWidth; // right-align to button
+      // Clamp within viewport
+      const maxLeft = Math.max(0, window.innerWidth - dropdownWidth - gutter);
+      if (left < gutter) left = gutter;
+      if (left > maxLeft) left = maxLeft;
+      // Apply as fixed so it overlays content and ignores parent overflow
+      userDropdown.style.position = 'fixed';
+      userDropdown.style.top = `${Math.round(top)}px`;
+      userDropdown.style.left = `${Math.round(left)}px`;
+      userDropdown.style.right = 'auto';
+    };
+
+    const clearDropdownPosition = () => {
+      userDropdown.classList.remove('floating');
+      userDropdown.style.removeProperty('position');
+      userDropdown.style.removeProperty('top');
+      userDropdown.style.removeProperty('left');
+      userDropdown.style.removeProperty('right');
+    };
+
+    const handleViewportChange = () => {
+      if (userDropdown.classList.contains('active')) {
+        positionDropdown();
+      }
+    };
+
+    // Clean toggle function
     const toggleDropdown = (event) => {
       event.preventDefault();
       event.stopPropagation();
       
-      // Just toggle the active class and let CSS handle everything
+      const willActivate = !userDropdown.classList.contains('active');
+      
+      // Toggle immediately
       userDropdown.classList.toggle('active');
+      
+      if (willActivate) {
+        positionDropdown();
+        window.addEventListener('scroll', handleViewportChange, { passive: true });
+        window.addEventListener('resize', handleViewportChange);
+        
+        // Defer outside click listener to after current event loop
+        setTimeout(() => {
+          document.addEventListener('click', closeOnOutsideClick);
+          document.addEventListener('touchstart', closeOnOutsideClick);
+        }, 0);
+      } else {
+        clearDropdownPosition();
+        window.removeEventListener('scroll', handleViewportChange);
+        window.removeEventListener('resize', handleViewportChange);
+        
+        // Remove outside listeners immediately on close
+        document.removeEventListener('click', closeOnOutsideClick);
+        document.removeEventListener('touchstart', closeOnOutsideClick);
+      }
     };
     
     // Remove any existing listeners first
@@ -172,18 +229,16 @@ function setupUserMenuEvents() {
       }
     });
 
-    // No need for repositioning since CSS handles absolute positioning relative to parent
+    // Initial positioning if already active (edge cases)
+    if (userDropdown.classList.contains('active')) {
+      positionDropdown();
+    }
 
     // Handle outside clicks/touches to close dropdown
     const closeOnOutsideClick = (event) => {
-      const currentBtn = document.getElementById('userMenuBtn');
-      const currentDropdown = document.getElementById('userDropdown');
-      
-      if (currentBtn && currentDropdown && 
-          !currentBtn.contains(event.target) && 
-          !currentDropdown.contains(event.target)) {
-        if (currentDropdown.classList.contains('active')) {
-          currentDropdown.classList.remove('active');
+      if (!userMenuBtn.contains(event.target) && !userDropdown.contains(event.target)) {
+        if (userDropdown.classList.contains('active')) {
+          toggleDropdown(event); // Use toggle to properly clean up
         }
       }
     };
