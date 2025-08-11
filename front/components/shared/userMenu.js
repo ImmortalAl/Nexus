@@ -167,8 +167,8 @@ function setupUserMenuEvents() {
 }
 
 function handleToggleDropdown(event, button) {
-  event.preventDefault();
-  event.stopPropagation();
+      event.preventDefault();
+      event.stopPropagation();
   const dropdown = document.getElementById('userDropdown');
   if (!dropdown) return;
 
