@@ -140,125 +140,132 @@ function updateThemeMenuText() {
 
 // Setup event listeners for user menu (dropdown toggle, logout)
 function setupUserMenuEvents() {
-  const userMenuBtn = document.getElementById('userMenuBtn'); // This might not exist if logged out
-  const userDropdown = document.getElementById('userDropdown'); // This might not exist if logged out
+  const userMenuContainer = document.getElementById('userMenuContainer');
+  if (!userMenuContainer) return;
 
-  if (userMenuBtn && userDropdown) {
+  // Event delegation for all actions within the user menu
+  userMenuContainer.addEventListener('click', (event) => {
+    const userMenuBtn = event.target.closest('#userMenuBtn');
+    const logoutBtn = event.target.closest('#logoutBtn');
+    const themeToggleMenu = event.target.closest('#themeToggleMenu');
 
-    // Helpers to position dropdown as a floating overlay
-    const positionDropdown = () => {
-      // Add a class that allows fixed positioning via CSS override
-      userDropdown.classList.add('floating');
-      // Compute viewport coordinates relative to the button
-      const rect = (document.getElementById('userMenuBtn') || userMenuBtn).getBoundingClientRect();
-      const dropdownWidth = userDropdown.offsetWidth || 200;
-      const gutter = 10;
-      let top = rect.bottom + gutter;
-      let left = rect.right - dropdownWidth; // right-align to button
-      // Clamp within viewport
-      const maxLeft = Math.max(0, window.innerWidth - dropdownWidth - gutter);
-      if (left < gutter) left = gutter;
-      if (left > maxLeft) left = maxLeft;
-      // Apply as fixed so it overlays content and ignores parent overflow
-      userDropdown.style.position = 'fixed';
-      userDropdown.style.top = `${Math.round(top)}px`;
-      userDropdown.style.left = `${Math.round(left)}px`;
-      userDropdown.style.right = 'auto';
-    };
-
-    const clearDropdownPosition = () => {
-      userDropdown.classList.remove('floating');
-      userDropdown.style.removeProperty('position');
-      userDropdown.style.removeProperty('top');
-      userDropdown.style.removeProperty('left');
-      userDropdown.style.removeProperty('right');
-    };
-
-    const handleViewportChange = () => {
-      if (userDropdown.classList.contains('active')) {
-        positionDropdown();
-      }
-    };
-
-    const openDropdown = () => {
-      positionDropdown();
-      userDropdown.classList.add('active');
-      window.addEventListener('scroll', handleViewportChange, { passive: true });
-      window.addEventListener('resize', handleViewportChange);
-      setTimeout(() => {
-        document.addEventListener('click', closeOnOutsideClick, true);
-        document.addEventListener('touchstart', closeOnOutsideClick, true);
-        document.addEventListener('keydown', closeOnEscape, true);
-      }, 0);
-    };
-
-    const closeDropdown = () => {
-      userDropdown.classList.remove('active');
-      clearDropdownPosition();
-      window.removeEventListener('scroll', handleViewportChange);
-      window.removeEventListener('resize', handleViewportChange);
-      document.removeEventListener('click', closeOnOutsideClick, true);
-      document.removeEventListener('touchstart', closeOnOutsideClick, true);
-      document.removeEventListener('keydown', closeOnEscape, true);
-    };
-
-    // Clean toggle function
-    const toggleDropdown = (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      if (userDropdown.classList.contains('active')) {
-        closeDropdown();
-      } else {
-        openDropdown();
-      }
-    };
-
-    // Bind events once to the current button (no cloning)
-    const currentBtn = document.getElementById('userMenuBtn') || userMenuBtn;
-    currentBtn.addEventListener('click', toggleDropdown, { passive: false });
-
-    // Initial positioning if already active (edge cases)
-    if (userDropdown.classList.contains('active')) {
-      positionDropdown();
+    if (userMenuBtn) {
+      handleToggleDropdown(event, userMenuBtn);
     }
-
-    // Handle outside clicks/touches and escape to close dropdown
-    const closeOnOutsideClick = (event) => {
-      const liveBtn = document.getElementById('userMenuBtn');
-      if (userDropdown.classList.contains('active')) {
-        if (liveBtn && (liveBtn.contains(event.target) || userDropdown.contains(event.target))) {
-          return; // click inside button or dropdown → ignore
-        }
-        closeDropdown();
-      }
-    };
-
-    const closeOnEscape = (event) => {
-      if (event.key === 'Escape' && userDropdown.classList.contains('active')) {
-        closeDropdown();
-      }
-    };
-  }
-  
-  const logoutBtn = document.getElementById('logoutBtn');
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', handleLogout);
-  }
-  
-  // Theme toggle menu item
-  const themeToggleMenu = document.getElementById('themeToggleMenu');
-  if (themeToggleMenu) {
-    themeToggleMenu.addEventListener('click', (e) => {
-      e.preventDefault();
+    if (logoutBtn) {
+      event.preventDefault();
+      handleLogout();
+    }
+    if (themeToggleMenu) {
+      event.preventDefault();
       if (window.NEXUSTheme) {
         window.NEXUSTheme.toggleTheme();
         updateThemeMenuText();
       }
-    });
-    
-    // Update initial text based on current theme
-    updateThemeMenuText();
+    }
+  });
+}
+
+function handleToggleDropdown(event, button) {
+  event.preventDefault();
+  event.stopPropagation();
+  const dropdown = document.getElementById('userDropdown');
+  if (!dropdown) return;
+
+  if (dropdown.classList.contains('active')) {
+    closeDropdown(dropdown);
+  } else {
+    openDropdown(dropdown, button);
   }
+}
+
+function openDropdown(dropdown, button) {
+  // Position the dropdown invisibly first
+  positionDropdown(dropdown, button);
+
+  // Use rAF to apply the 'active' class after the browser has painted the new position
+  requestAnimationFrame(() => {
+    dropdown.classList.add('active');
+    
+    // Add all closing event listeners
+    document.addEventListener('click', handleOutsideClick, true);
+    window.addEventListener('resize', handleViewportChange);
+    window.addEventListener('scroll', handleViewportChange, { passive: true });
+    document.addEventListener('keydown', handleEscapeKey);
+  });
+}
+
+function closeDropdown(dropdown) {
+  dropdown.classList.remove('active');
+
+  // Immediately remove listeners to prevent them from firing during the closing transition
+  document.removeEventListener('click', handleOutsideClick, true);
+  window.removeEventListener('resize', handleViewportChange);
+  window.removeEventListener('scroll', handleViewportChange, { passive: true });
+  document.removeEventListener('keydown', handleEscapeKey);
+
+  // After the transition ends, clean up inline styles
+  const onTransitionEnd = () => {
+    clearDropdownPosition(dropdown);
+    dropdown.removeEventListener('transitionend', onTransitionEnd);
+  };
+  dropdown.addEventListener('transitionend', onTransitionEnd);
+}
+
+// These handlers need to be named so they can be removed
+function handleOutsideClick(event) {
+  const dropdown = document.getElementById('userDropdown');
+  const button = document.getElementById('userMenuBtn');
+  // If the dropdown exists, is active, and the click was outside both the button and dropdown
+  if (dropdown && dropdown.classList.contains('active')) {
+      if (button && !button.contains(event.target) && !dropdown.contains(event.target)) {
+          closeDropdown(dropdown);
+      }
+  }
+}
+
+function handleEscapeKey(event) {
+  const dropdown = document.getElementById('userDropdown');
+  if (event.key === 'Escape' && dropdown && dropdown.classList.contains('active')) {
+    closeDropdown(dropdown);
+  }
+}
+
+function handleViewportChange() {
+  const dropdown = document.getElementById('userDropdown');
+  const button = document.getElementById('userMenuBtn');
+  if (dropdown && button && dropdown.classList.contains('active')) {
+    positionDropdown(dropdown, button);
+  }
+}
+
+function positionDropdown(dropdown, button) {
+  if (!dropdown || !button) return;
+  dropdown.classList.add('floating');
+  const rect = button.getBoundingClientRect();
+  const dropdownWidth = dropdown.offsetWidth || 200;
+  const gutter = 10;
+  
+  let top = rect.bottom + gutter;
+  let left = rect.right - dropdownWidth;
+
+  const maxLeft = Math.max(0, window.innerWidth - dropdownWidth - gutter);
+  if (left < gutter) left = gutter;
+  if (left > maxLeft) left = maxLeft;
+
+  dropdown.style.position = 'fixed';
+  dropdown.style.top = `${Math.round(top)}px`;
+  dropdown.style.left = `${Math.round(left)}px`;
+  dropdown.style.right = 'auto';
+}
+
+function clearDropdownPosition(dropdown) {
+    if (!dropdown) return;
+    dropdown.classList.remove('floating');
+    dropdown.style.removeProperty('position');
+    dropdown.style.removeProperty('top');
+    dropdown.style.removeProperty('left');
+    dropdown.style.removeProperty('right');
 }
 
 // Handle user logout
@@ -306,7 +313,7 @@ async function validateUserSession() {
 // Initialize user menu
 function initUserMenu() {
   validateUserSession(); // Validate and then update UI
-  // updateUserMenu(); // This is now called by validateUserSession
+  setupUserMenuEvents(); // Setup event delegation ONCE
   
   // Listen for theme changes to update menu text
   window.addEventListener('nexus-theme-changed', updateThemeMenuText);

@@ -147,8 +147,6 @@
 /* User Menu Styles */
 .user-menu {
     position: relative;
-    overflow: visible !important;
-    z-index: 10000 !important;
 }
 
 .user-menu-btn {
@@ -162,6 +160,7 @@
     color: var(--text, #f0e6ff);
     cursor: pointer;
     transition: var(--transition, all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1));
+    z-index: 10001;
 }
 
 .user-menu-btn:hover {
@@ -191,13 +190,13 @@
     transform: translateY(-10px);
     pointer-events: none;
     transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
-    z-index: 10001 !important;
+    z-index: 10001;
 }
 
 /* When JS applies floating positioning, ensure it overlays all site content */
 .user-dropdown.floating {
-    position: fixed !important;
-    z-index: 10002 !important;
+    position: fixed;
+    z-index: 10002;
     max-height: min(60vh, 420px);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
@@ -239,87 +238,79 @@
 /* Mobile fixes for user dropdown - AGGRESSIVE OVERRIDES */
 @media (max-width: 768px) {
     .user-menu {
-        position: relative !important;
-        z-index: 2501 !important; /* Above header z-index (2500) */
-        overflow: visible !important;
+        position: relative;
+        z-index: 2501; /* Keep this high to be above header */
+        overflow: visible;
     }
     
     /* Ensure header-controls doesn't clip dropdown */
     .header-controls {
-        position: relative !important;
-        overflow: visible !important;
-        z-index: 2501 !important;
+        position: relative;
+        overflow: visible;
+        z-index: auto; /* Reset z-index */
     }
     
     .user-menu-btn {
-        cursor: pointer !important;
-        -webkit-tap-highlight-color: transparent !important; /* Remove tap highlight on iOS */
-        touch-action: manipulation !important; /* Prevent zoom on double-tap */
-        user-select: none !important; /* Prevent text selection */
-        min-height: 44px !important; /* Minimum touch target size for mobile */
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        position: relative !important;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+        user-select: none;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
     }
     
     .user-dropdown {
-        /* Position absolutely relative to parent (.user-menu) */
-        position: absolute !important;
-        top: calc(100% + 10px) !important;
-        right: 0 !important;
-        width: 200px !important;
-        background: var(--secondary, #1a1a33) !important;
-        border: 1px solid var(--accent, #ff5e78) !important;
-        border-radius: var(--border-radius, 12px) !important;
-        padding: 0.5rem 0 !important;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3) !important;
-        
-        /* Hidden by default */
-        opacity: 0 !important;
-        visibility: hidden !important;
-        transform: translateY(-10px) !important;
-        pointer-events: none !important;
-        
-        /* Smooth transitions */
-        transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease !important;
-        
-        /* High z-index to ensure visibility */
-        z-index: calc(var(--z-overlay, 10000) + 10) !important;
-        
-        /* Force hardware acceleration */
-        will-change: opacity, visibility, transform !important;
-        backface-visibility: hidden !important;
+        /* Revert to base styles and let the 'floating' class handle fixed positioning */
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        width: 200px;
+        background: var(--secondary, #1a1a33);
+        border: 1px solid var(--accent, #ff5e78);
+        border-radius: var(--border-radius, 12px);
+        padding: 0.5rem 0;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        pointer-events: none;
+        transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+        z-index: calc(var(--z-overlay, 10000) + 10);
+        will-change: opacity, visibility, transform;
+        backface-visibility: hidden;
     }
     
     /* ACTIVE STATE */
     .user-dropdown.active {
-        opacity: 1 !important;
-        visibility: visible !important;
-        transform: translateY(0) !important;
-        pointer-events: auto !important;
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        pointer-events: auto;
     }
     
     /* Ensure all parent containers allow overflow */
     .header-controls {
-        overflow: visible !important;
-        position: relative !important;
+        overflow: visible;
+        position: relative;
     }
     
     header {
-        overflow-y: visible !important;
+        overflow-y: visible;
     }
     
     /* Force dropdown links to be visible */
     .user-dropdown a {
-        display: flex !important;
-        align-items: center !important;
-        gap: 0.8rem !important;
-        padding: 0.8rem 1rem !important;
-        color: var(--text, #f0e6ff) !important;
-        text-decoration: none !important;
-        opacity: 1 !important;
-        visibility: visible !important;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 0.8rem 1rem;
+        color: var(--text, #f0e6ff);
+        text-decoration: none;
+        opacity: 1;
+        visibility: visible;
     }
 }
 
