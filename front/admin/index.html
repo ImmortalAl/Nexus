@@ -48,8 +48,8 @@
     <link rel="preload" href="../css/active-users.css?v=7.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="../css/active-users.css?v=7.1"></noscript>
     
-    <link rel="preload" href="../css/admin.css?v=6.5" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="../css/admin.css?v=6.5"></noscript>
+    <link rel="preload" href="../css/admin.css?v=6.6" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/admin.css?v=6.6"></noscript>
     
     <!-- 7. EXTERNAL RESOURCES (lazy loaded) -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer">
@@ -1242,7 +1242,116 @@
 
     <!-- Initialize Immortal Nexus -->
     <script>
+        // Core Admin Navigation Function (independent of AdminDashboard)
+        function initAdminNavigation() {
+            console.log('Initializing core admin navigation...');
+            
+            // Handle all admin navigation links
+            const adminNavLinks = document.querySelectorAll('.admin-nav a[href^="#"], .mobile-nav-link[href^="#"], .mobile-tab-btn[data-section]');
+            
+            adminNavLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetSection = link.getAttribute('href')?.substring(1) || link.dataset.section;
+                    
+                    if (targetSection && targetSection !== '/') {
+                        switchAdminSection(targetSection);
+                        updateActiveNavStates(targetSection);
+                        
+                        // Update URL hash
+                        window.history.replaceState(null, null, `#${targetSection}`);
+                        
+                        // Close mobile nav if open
+                        toggleMobileNav(false);
+                    } else if (link.getAttribute('href') === '/lander.html') {
+                        // Handle home link
+                        window.location.href = '/lander.html';
+                    }
+                });
+            });
+            
+            // Handle initial section based on URL hash
+            const initialSection = window.location.hash.substring(1) || 'dashboard';
+            switchAdminSection(initialSection);
+            updateActiveNavStates(initialSection);
+        }
+        
+        function switchAdminSection(sectionName) {
+            console.log('Switching to section:', sectionName);
+            
+            // Hide all sections
+            const allSections = document.querySelectorAll('.admin-section');
+            allSections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show target section
+            const targetSection = document.getElementById(sectionName);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                
+                // Load section-specific data
+                loadSectionData(sectionName);
+            } else {
+                console.error(`Admin section not found: ${sectionName}`);
+                // Fallback to dashboard
+                const dashboardSection = document.getElementById('dashboard');
+                if (dashboardSection) {
+                    dashboardSection.classList.add('active');
+                    loadSectionData('dashboard');
+                }
+            }
+        }
+        
+        function updateActiveNavStates(activeSection) {
+            // Update desktop navigation
+            const desktopNavLinks = document.querySelectorAll('.admin-nav a[href^="#"]');
+            desktopNavLinks.forEach(link => {
+                const section = link.getAttribute('href').substring(1);
+                link.classList.toggle('active', section === activeSection);
+            });
+
+            // Update mobile navigation
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav-link[href^="#"]');
+            mobileNavLinks.forEach(link => {
+                const section = link.getAttribute('href').substring(1);
+                link.classList.toggle('active', section === activeSection);
+            });
+
+            // Update mobile tab buttons
+            const mobileTabBtns = document.querySelectorAll('.mobile-tab-btn[data-section]');
+            mobileTabBtns.forEach(btn => {
+                const section = btn.dataset.section;
+                btn.classList.toggle('active', section === activeSection);
+            });
+        }
+        
+        function loadSectionData(sectionName) {
+            console.log('Loading data for section:', sectionName);
+            
+            switch(sectionName) {
+                case 'dashboard':
+                    loadDashboardData();
+                    break;
+                case 'users':
+                    loadUsersData();
+                    break;
+                case 'analytics':
+                    loadAnalyticsData();
+                    break;
+                case 'feedback':
+                    loadFeedbackData();
+                    break;
+                case 'curation':
+                    loadCurationData();
+                    break;
+            }
+        }
+        
         document.addEventListener('DOMContentLoaded', () => {
+            // Initialize core admin navigation first
+            initAdminNavigation();
+            
             // Initialize Immortal Nexus core components (gracefully handle missing elements on admin page)
             
             // Ensure ImmortalNexus object exists
@@ -1447,6 +1556,361 @@
                 const section = link.getAttribute('href').substring(1);
                 link.classList.toggle('active', section === activeSection);
             });
+        }
+        
+        // Data loading functions for each section
+        function loadDashboardData() {
+            console.log('Loading dashboard data...');
+            
+            // Load sample data or use AdminDashboard if available
+            if (typeof AdminDashboard !== 'undefined' && AdminDashboard.loadDashboardData) {
+                AdminDashboard.loadDashboardData();
+            } else {
+                // Fallback with sample data
+                loadSampleDashboardData();
+            }
+        }
+        
+        function loadSampleDashboardData() {
+            // Update stats with sample data
+            const elements = {
+                onlineUsers: document.getElementById('onlineUsers'),
+                dailyActiveUsers: document.getElementById('dailyActiveUsers'),
+                serverResponseTime: document.getElementById('serverResponseTime'),
+                failedLogins: document.getElementById('failedLogins'),
+                peakHours: document.getElementById('peakHours')
+            };
+            
+            // Sample data
+            if (elements.onlineUsers) elements.onlineUsers.textContent = '42';
+            if (elements.dailyActiveUsers) elements.dailyActiveUsers.textContent = '127';
+            if (elements.serverResponseTime) elements.serverResponseTime.textContent = '85ms';
+            if (elements.failedLogins) elements.failedLogins.textContent = '3';
+            if (elements.peakHours) elements.peakHours.textContent = '2-4 PM EST';
+            
+            // Load sample activity feed
+            const activityFeed = document.getElementById('activityFeed');
+            if (activityFeed) {
+                activityFeed.innerHTML = `
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p class="activity-message">EternalSeeker joined the eternal realm</p>
+                            <span class="activity-time">2m ago</span>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-scroll"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p class="activity-message">MysticSoul published "The Path to Enlightenment"</p>
+                            <span class="activity-time">15m ago</span>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p class="activity-message">CosmicWisdom started "Ancient Mysteries Unveiled"</p>
+                            <span class="activity-time">32m ago</span>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="activity-content">
+                            <p class="activity-message">Content highlighted: "Digital Transcendence"</p>
+                            <span class="activity-time">1h ago</span>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+        
+        function loadUsersData() {
+            console.log('Loading users data...');
+            
+            if (typeof UserManagement !== 'undefined' && UserManagement.loadUsers) {
+                if (!UserManagement.apiBaseUrl) {
+                    UserManagement.init();
+                } else {
+                    UserManagement.loadUsers();
+                }
+            } else {
+                loadSampleUsersData();
+            }
+        }
+        
+        function loadSampleUsersData() {
+            const usersTableBody = document.getElementById('usersTableBody');
+            if (usersTableBody) {
+                usersTableBody.innerHTML = `
+                    <tr>
+                        <td><div class="user-avatar" style="background: linear-gradient(45deg, #667eea, #764ba2);">ES</div></td>
+                        <td>EternalSeeker</td>
+                        <td>The Eternal Seeker</td>
+                        <td><span class="status-badge online">Online</span></td>
+                        <td>2 days ago</td>
+                        <td>2 minutes ago</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline" title="View Profile">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-warning" title="Send Message">
+                                <i class="fas fa-envelope"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><div class="user-avatar" style="background: linear-gradient(45deg, #f093fb, #f5576c);">MS</div></td>
+                        <td>MysticSoul</td>
+                        <td>Mystic Soul</td>
+                        <td><span class="status-badge online">Online</span></td>
+                        <td>1 week ago</td>
+                        <td>15 minutes ago</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline" title="View Profile">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-warning" title="Send Message">
+                                <i class="fas fa-envelope"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><div class="user-avatar" style="background: linear-gradient(45deg, #4facfe, #00f2fe);">CW</div></td>
+                        <td>CosmicWisdom</td>
+                        <td>Cosmic Wisdom</td>
+                        <td><span class="status-badge offline">Offline</span></td>
+                        <td>3 weeks ago</td>
+                        <td>2 hours ago</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline" title="View Profile">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-warning" title="Send Message">
+                                <i class="fas fa-envelope"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+        
+        function loadAnalyticsData() {
+            console.log('Loading analytics data...');
+            
+            if (typeof AdminAnalytics !== 'undefined' && AdminAnalytics.loadAnalytics) {
+                AdminAnalytics.loadAnalytics();
+            } else {
+                loadSampleAnalyticsData();
+            }
+        }
+        
+        function loadSampleAnalyticsData() {
+            // Update analytics with sample data
+            const analyticsElements = {
+                uniqueVisitors: document.getElementById('uniqueVisitors'),
+                totalVisits: document.getElementById('totalVisits'),
+                totalPages: document.getElementById('totalPages'),
+                totalHits: document.getElementById('totalHits')
+            };
+            
+            if (analyticsElements.uniqueVisitors) analyticsElements.uniqueVisitors.textContent = '2,847';
+            if (analyticsElements.totalVisits) analyticsElements.totalVisits.textContent = '4,291';
+            if (analyticsElements.totalPages) analyticsElements.totalPages.textContent = '12,384';
+            if (analyticsElements.totalHits) analyticsElements.totalHits.textContent = '47,592';
+        }
+        
+        function loadFeedbackData() {
+            console.log('Loading feedback data...');
+            
+            if (typeof AdminFeedback !== 'undefined' && AdminFeedback.loadFeedback) {
+                AdminFeedback.loadFeedback();
+            } else {
+                loadSampleFeedbackData();
+            }
+        }
+        
+        function loadSampleFeedbackData() {
+            const feedbackTableBody = document.getElementById('feedbackTableBody');
+            if (feedbackTableBody) {
+                feedbackTableBody.innerHTML = `
+                    <tr class="feedback-unread">
+                        <td>2 hours ago</td>
+                        <td class="feedback-content">
+                            <div class="feedback-text">"The new mindmap feature is incredible! It's helped me visualize my spiritual journey in ways I never thought possible. Thank you for creating such a meaningful platform."</div>
+                            <div class="feedback-meta">
+                                <span class="feedback-type">Feature Appreciation</span>
+                                <span class="feedback-urgency normal">Normal</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="sender-info">
+                                <div class="sender-avatar" style="background: linear-gradient(45deg, #667eea, #764ba2);">ES</div>
+                                <div class="sender-details">
+                                    <div class="sender-name">EternalSeeker</div>
+                                    <div class="sender-email">seeker@eternal.com</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-primary reply-btn" title="Reply to feedback">
+                                <i class="fas fa-reply"></i> Reply
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-danger delete-btn" title="Delete feedback">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="feedback-read">
+                        <td>1 day ago</td>
+                        <td class="feedback-content">
+                            <div class="feedback-text">"I've been experiencing some issues with the comment system. Sometimes my comments don't appear immediately. Could you look into this?"</div>
+                            <div class="feedback-meta">
+                                <span class="feedback-type">Bug Report</span>
+                                <span class="feedback-urgency high">High Priority</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="sender-info">
+                                <div class="sender-avatar" style="background: linear-gradient(45deg, #f093fb, #f5576c);">MS</div>
+                                <div class="sender-details">
+                                    <div class="sender-name">MysticSoul</div>
+                                    <div class="sender-email">mystic@cosmos.net</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-outline replied-btn" title="Already replied">
+                                <i class="fas fa-check"></i> Replied
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-danger delete-btn" title="Delete feedback">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="feedback-urgent">
+                        <td>3 days ago</td>
+                        <td class="feedback-content">
+                            <div class="feedback-text">"I love the concept of Nexus, but I think we need more discussion categories. Perhaps sections for different philosophical schools or spiritual practices?"</div>
+                            <div class="feedback-meta">
+                                <span class="feedback-type">Suggestion</span>
+                                <span class="feedback-urgency normal">Normal</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="sender-info">
+                                <div class="sender-avatar" style="background: linear-gradient(45deg, #4facfe, #00f2fe);">CW</div>
+                                <div class="sender-details">
+                                    <div class="sender-name">CosmicWisdom</div>
+                                    <div class="sender-email">wisdom@universe.org</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-primary reply-btn" title="Reply to feedback">
+                                <i class="fas fa-reply"></i> Reply
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-danger delete-btn" title="Delete feedback">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="feedback-read">
+                        <td>1 week ago</td>
+                        <td class="feedback-content">
+                            <div class="feedback-text">"The mobile experience could use some improvements. The navigation menu sometimes doesn't respond properly on my phone."</div>
+                            <div class="feedback-meta">
+                                <span class="feedback-type">UX Feedback</span>
+                                <span class="feedback-urgency high">High Priority</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="sender-info">
+                                <div class="sender-avatar" style="background: linear-gradient(45deg, #fa709a, #fee140);">DT</div>
+                                <div class="sender-details">
+                                    <div class="sender-name">DigitalTranscendence</div>
+                                    <div class="sender-email">digital@nexus.soul</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-outline replied-btn" title="Already replied">
+                                <i class="fas fa-check"></i> Replied
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-danger delete-btn" title="Delete feedback">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }
+            
+            // Update mobile feedback cards
+            const mobileFeedbackCards = document.getElementById('mobileFeedbackCards');
+            if (mobileFeedbackCards) {
+                mobileFeedbackCards.innerHTML = `
+                    <div class="mobile-card feedback-unread">
+                        <div class="card-header">
+                            <div class="sender-info">
+                                <div class="sender-avatar" style="background: linear-gradient(45deg, #667eea, #764ba2);">ES</div>
+                                <div class="sender-details">
+                                    <div class="sender-name">EternalSeeker</div>
+                                    <div class="feedback-time">2 hours ago</div>
+                                </div>
+                            </div>
+                            <span class="feedback-urgency normal">Normal</span>
+                        </div>
+                        <div class="card-content">
+                            <div class="feedback-type">Feature Appreciation</div>
+                            <div class="feedback-text">"The new mindmap feature is incredible! It's helped me visualize my spiritual journey in ways I never thought possible."</div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-sm btn-primary">Reply</button>
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </div>
+                    </div>
+                    <div class="mobile-card feedback-read">
+                        <div class="card-header">
+                            <div class="sender-info">
+                                <div class="sender-avatar" style="background: linear-gradient(45deg, #f093fb, #f5576c);">MS</div>
+                                <div class="sender-details">
+                                    <div class="sender-name">MysticSoul</div>
+                                    <div class="feedback-time">1 day ago</div>
+                                </div>
+                            </div>
+                            <span class="feedback-urgency high">High Priority</span>
+                        </div>
+                        <div class="card-content">
+                            <div class="feedback-type">Bug Report</div>
+                            <div class="feedback-text">"I've been experiencing some issues with the comment system. Sometimes my comments don't appear immediately."</div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-sm btn-outline replied-btn">Replied</button>
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+        
+        function loadCurationData() {
+            console.log('Loading curation data...');
+            loadCurrentHighlights();
         }
     </script>
 </body>
