@@ -144,13 +144,13 @@ function setupUserMenuEvents() {
   const userDropdown = document.getElementById('userDropdown'); // This might not exist if logged out
 
   if (userMenuBtn && userDropdown) {
-    
+
     // Helpers to position dropdown as a floating overlay
     const positionDropdown = () => {
       // Add a class that allows fixed positioning via CSS override
       userDropdown.classList.add('floating');
       // Compute viewport coordinates relative to the button
-      const rect = userMenuBtn.getBoundingClientRect();
+      const rect = (document.getElementById('userMenuBtn') || userMenuBtn).getBoundingClientRect();
       const dropdownWidth = userDropdown.offsetWidth || 200;
       const gutter = 10;
       let top = rect.bottom + gutter;
@@ -180,75 +180,64 @@ function setupUserMenuEvents() {
       }
     };
 
+    const openDropdown = () => {
+      positionDropdown();
+      userDropdown.classList.add('active');
+      window.addEventListener('scroll', handleViewportChange, { passive: true });
+      window.addEventListener('resize', handleViewportChange);
+      setTimeout(() => {
+        document.addEventListener('click', closeOnOutsideClick, true);
+        document.addEventListener('touchstart', closeOnOutsideClick, true);
+        document.addEventListener('keydown', closeOnEscape, true);
+      }, 0);
+    };
+
+    const closeDropdown = () => {
+      userDropdown.classList.remove('active');
+      clearDropdownPosition();
+      window.removeEventListener('scroll', handleViewportChange);
+      window.removeEventListener('resize', handleViewportChange);
+      document.removeEventListener('click', closeOnOutsideClick, true);
+      document.removeEventListener('touchstart', closeOnOutsideClick, true);
+      document.removeEventListener('keydown', closeOnEscape, true);
+    };
+
     // Clean toggle function
     const toggleDropdown = (event) => {
       event.preventDefault();
       event.stopPropagation();
-      
-      const willActivate = !userDropdown.classList.contains('active');
-      
-      // Toggle immediately
-      userDropdown.classList.toggle('active');
-      
-      if (willActivate) {
-        positionDropdown();
-        window.addEventListener('scroll', handleViewportChange, { passive: true });
-        window.addEventListener('resize', handleViewportChange);
-        
-        // Defer outside click listener to after current event loop
-        setTimeout(() => {
-          document.addEventListener('click', closeOnOutsideClick);
-          document.addEventListener('touchstart', closeOnOutsideClick);
-        }, 0);
+      if (userDropdown.classList.contains('active')) {
+        closeDropdown();
       } else {
-        clearDropdownPosition();
-        window.removeEventListener('scroll', handleViewportChange);
-        window.removeEventListener('resize', handleViewportChange);
-        
-        // Remove outside listeners immediately on close
-        document.removeEventListener('click', closeOnOutsideClick);
-        document.removeEventListener('touchstart', closeOnOutsideClick);
+        openDropdown();
       }
     };
-    
-    // Remove any existing listeners first
-    userMenuBtn.replaceWith(userMenuBtn.cloneNode(true));
-    const freshBtn = document.getElementById('userMenuBtn');
-    
-    freshBtn.addEventListener('click', toggleDropdown);
-    freshBtn.addEventListener('touchstart', (e) => {
-      e.preventDefault(); // Prevent double-firing
-      e.stopPropagation();
-      toggleDropdown(e);
-    });
-    
-    // Also try mousedown for additional compatibility
-    freshBtn.addEventListener('mousedown', (e) => {
-      if (e.button === 0) { // Left click only
-        toggleDropdown(e);
-      }
-    });
+
+    // Bind events once to the current button (no cloning)
+    const currentBtn = document.getElementById('userMenuBtn') || userMenuBtn;
+    currentBtn.addEventListener('click', toggleDropdown, { passive: false });
 
     // Initial positioning if already active (edge cases)
     if (userDropdown.classList.contains('active')) {
       positionDropdown();
     }
 
-    // Handle outside clicks/touches to close dropdown
+    // Handle outside clicks/touches and escape to close dropdown
     const closeOnOutsideClick = (event) => {
-      if (!userMenuBtn.contains(event.target) && !userDropdown.contains(event.target)) {
-        if (userDropdown.classList.contains('active')) {
-          toggleDropdown(event); // Use toggle to properly clean up
+      const liveBtn = document.getElementById('userMenuBtn');
+      if (userDropdown.classList.contains('active')) {
+        if (liveBtn && (liveBtn.contains(event.target) || userDropdown.contains(event.target))) {
+          return; // click inside button or dropdown → ignore
         }
+        closeDropdown();
       }
     };
-    
-    // Remove existing listeners to avoid duplicates
-    document.removeEventListener('click', closeOnOutsideClick);
-    document.removeEventListener('touchstart', closeOnOutsideClick);
-    
-    document.addEventListener('click', closeOnOutsideClick);
-    document.addEventListener('touchstart', closeOnOutsideClick);
+
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape' && userDropdown.classList.contains('active')) {
+        closeDropdown();
+      }
+    };
   }
   
   const logoutBtn = document.getElementById('logoutBtn');
