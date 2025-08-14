@@ -730,8 +730,20 @@
             const messageBtn = document.getElementById('messageBtn');
             if (!messageBtn) return;
             
+            // Get current user from localStorage (consistent with other components)
+            const token = localStorage.getItem('sessionToken');
+            const currentUserData = localStorage.getItem('user');
+            let currentUser = null;
+            
+            if (currentUserData) {
+                try {
+                    currentUser = JSON.parse(currentUserData);
+                } catch (e) {
+                    console.error('Failed to parse user data:', e);
+                }
+            }
+            
             // Don't show message button for viewing your own profile
-            const currentUser = window.NEXUS?.currentUser;
             if (currentUser && currentUser.username === username) {
                 messageBtn.style.display = 'none';
                 return;
@@ -739,10 +751,12 @@
             
             messageBtn.addEventListener('click', () => {
                 // Check if user is logged in
-                if (!currentUser) {
+                if (!token || !currentUser) {
                     // Show login prompt or redirect to auth
-                    if (window.NEXUS?.AuthManager?.showLoginModal) {
-                        window.NEXUS.AuthManager.showLoginModal();
+                    if (window.NEXUS?.openSoulModal) {
+                        window.NEXUS.openSoulModal('login');
+                    } else if (window.NEXUS?.AuthManager?.showLogin) {
+                        window.NEXUS.AuthManager.showLogin();
                     } else {
                         alert('Please log in to send messages.');
                     }

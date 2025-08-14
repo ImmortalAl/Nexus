@@ -150,4 +150,15 @@ class AuthManager {
 }
 
 // Make a single instance globally available
-window.authManager = new AuthManager(); 
+window.authManager = new AuthManager();
+
+// Also expose to NEXUS namespace for consistency
+window.NEXUS = window.NEXUS || {};
+window.NEXUS.AuthManager = window.authManager;
+
+// Expose currentUser as a getter for easier access
+Object.defineProperty(window.NEXUS, 'currentUser', {
+    get: function() {
+        return window.authManager.currentUser;
+    }
+}); 
