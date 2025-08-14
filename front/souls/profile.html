@@ -58,8 +58,7 @@
     <!-- Google Fonts -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Lato:wght@300;400;700&family=Cinzel:wght@400;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Lato:wght@300;400;700&family=Cinzel:wght@400;600&display=swap"></noscript>
-    <script src="/components/shared/messageModal.js"></script>
-    <script src="/components/shared/nexus-core.js"></script>
+    <script src="../components/shared/nexus-core.js"></script>
     <style>
         /* Profile-specific styles - extends site-wide styles */
         .profile-container {
@@ -453,25 +452,25 @@
     </footer>
 
     <!-- Config MUST be loaded first -->
-    <script src="/components/shared/config.js?v=1.4"></script>
+    <script src="../components/shared/config.js?v=1.4"></script>
     
     <!-- Theme Manager - Load early for immediate theme application -->
-    <script src="/components/shared/themeManager.js?v=1.3"></script>
+    <script src="../components/shared/themeManager.js?v=1.3"></script>
     
     <!-- Core Immortal Nexus Components -->
-    <script src="/components/shared/nexus-core.js?v=1.4"></script>
-    <script src="/components/shared/authManager.js?v=1.2"></script>
-    <script src="/components/shared/apiClient.js?v=1.2"></script>
-    <script src="/components/shared/navigation.js?v=1.7"></script>
-    <script src="/components/shared/userMenu.js?v=6.6"></script>
-    <script src="/components/shared/activeUsers.js?v=1.8"></script>
-    <script src="/components/shared/messageModal.js?v=2.5"></script>
+    <script src="../components/shared/nexus-core.js?v=1.4"></script>
+    <script src="../components/shared/authManager.js?v=1.2"></script>
+    <script src="../components/shared/apiClient.js?v=1.2"></script>
+    <script src="../components/shared/navigation.js?v=1.7"></script>
+    <script src="../components/shared/userMenu.js?v=6.6"></script>
+    <script src="../components/shared/activeUsers.js?v=1.8"></script>
+    <script src="../components/shared/messageModal.js?v=2.6"></script>
     
     <!-- Avatar System -->
-    <script src="/js/nexus-avatar-system.js?v=2.2"></script>
+    <script src="../js/nexus-avatar-system.js?v=2.2"></script>
     
     <!-- Comments System -->
-    <script src="/components/shared/comments.js?v=1.0"></script>
+    <script src="../components/shared/comments.js?v=1.0"></script>
     
     <!-- Initialize Immortal Nexus -->
     <script>
@@ -763,26 +762,23 @@
                     return;
                 }
                 
-                // Open message modal if available
-                if (window.openMessageModal) {
-                    window.openMessageModal(username, userData.displayName || username);
-                } else if (window.MessageModal?.open) {
-                    window.MessageModal.open(username, userData.displayName || username);
+                // Open message modal using the standard NEXUS system
+                if (window.NEXUS && typeof window.NEXUS.openMessageModal === 'function') {
+                    window.NEXUS.openMessageModal(username);
                 } else {
-                    // Load message modal script if not available yet
-                    const script = document.createElement('script');
-                    script.src = '../js/messageModal.js?v=2.0';
-                    script.onload = () => {
-                        if (window.openMessageModal) {
-                            window.openMessageModal(username, userData.displayName || username);
-                        } else {
-                            alert('Messaging system is temporarily unavailable. Please try again later.');
-                        }
-                    };
-                    script.onerror = () => {
-                        alert('Failed to load messaging system. Please refresh the page and try again.');
-                    };
-                    document.head.appendChild(script);
+                    // Try to initialize NEXUS message modal if not available
+                    if (window.NEXUS && typeof window.NEXUS.initMessageModal === 'function') {
+                        window.NEXUS.initMessageModal();
+                        setTimeout(() => {
+                            if (window.NEXUS && typeof window.NEXUS.openMessageModal === 'function') {
+                                window.NEXUS.openMessageModal(username);
+                            } else {
+                                alert('Messaging system is temporarily unavailable. Please try again later.');
+                            }
+                        }, 100);
+                    } else {
+                        alert('Messaging system is not available on this page. Please use the active users sidebar for messaging.');
+                    }
                 }
             });
             
