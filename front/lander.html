@@ -43,8 +43,8 @@
     <link rel="preload" href="css/active-users.css?v=7.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="css/active-users.css?v=7.0"></noscript>
     
-    <link rel="preload" href="css/lander.css?v=2.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="css/lander.css?v=2.1"></noscript>
+    <link rel="preload" href="css/lander.css?v=2.2" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/lander.css?v=2.2"></noscript>
     
     <!-- Soul Management Modal Styles -->
     <style>
@@ -2071,8 +2071,8 @@
                 const selectedDraftId = draftsSelector.value;
                 
                 let response;
-                if (selectedDraftId && !isChronicle) {
-                    // Update existing draft to published (only for blogs, not chronicles)
+                if (selectedDraftId) {
+                    // Update existing draft to published
                     response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/${endpoint}/${selectedDraftId}`, {
                         method: 'PUT',
                         headers: {
@@ -2086,7 +2086,7 @@
                         })
                     });
                 } else {
-                    // Create new post (always new for chronicles)
+                    // Create new post
                     response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/${endpoint}`, {
                         method: 'POST',
                         headers: {
@@ -2141,8 +2141,14 @@
             const title = document.getElementById('postTitle').value.trim();
             const content = quill.root.innerHTML;
             
+            // Check which tab is active
+            const activeTab = document.querySelector('.forge-tab.active');
+            const isChronicle = activeTab && activeTab.dataset.type === 'chronicle';
+            const endpoint = isChronicle ? 'news' : 'blogs';
+            
             if (!title) {
-                alert('Please enter a title for your draft');
+                const itemType = isChronicle ? 'chronicle draft' : 'draft';
+                alert(`Please enter a title for your ${itemType}`);
                 return;
             }
             
@@ -2165,7 +2171,7 @@
                 let response;
                 if (selectedDraftId) {
                     // Update existing draft
-                    response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/blogs/${selectedDraftId}`, {
+                    response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/${endpoint}/${selectedDraftId}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
@@ -2179,7 +2185,7 @@
                     });
                 } else {
                     // Create new draft
-                    response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/blogs`, {
+                    response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/${endpoint}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -2225,8 +2231,13 @@
             const token = localStorage.getItem('sessionToken');
             if (!token) return;
             
+            // Check which tab is active
+            const activeTab = document.querySelector('.forge-tab.active');
+            const isChronicle = activeTab && activeTab.dataset.type === 'chronicle';
+            const endpoint = isChronicle ? 'news' : 'blogs';
+            
             try {
-                const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/blogs/my/drafts`, {
+                const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/${endpoint}/my/drafts`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -2237,8 +2248,9 @@
                 const drafts = await response.json();
                 const draftsSelector = document.getElementById('draftsSelector');
                 
-                // Clear existing options except the first one
-                draftsSelector.innerHTML = '<option value="" disabled selected>Slumbering Scrolls</option>';
+                // Clear existing options and set appropriate placeholder
+                const placeholder = isChronicle ? 'Dormant Chronicles' : 'Slumbering Scrolls';
+                draftsSelector.innerHTML = `<option value="" disabled selected>${placeholder}</option>`;
                 
                 // Add draft options
                 drafts.forEach(draft => {
@@ -2248,7 +2260,7 @@
                     draftsSelector.appendChild(option);
                 });
             } catch (error) {
-                // Error loading drafts
+                // Error loading drafts - silently fail
             }
         }
         
@@ -2257,16 +2269,21 @@
             const selectedDraftId = draftsSelector.value;
             
             if (!selectedDraftId) {
-                // Clear form for new scroll
+                // Clear form for new item
                 clearForm();
                 return;
             }
+            
+            // Check which tab is active
+            const activeTab = document.querySelector('.forge-tab.active');
+            const isChronicle = activeTab && activeTab.dataset.type === 'chronicle';
+            const endpoint = isChronicle ? 'news' : 'blogs';
             
             const token = localStorage.getItem('sessionToken');
             if (!token) return;
             
             try {
-                const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/blogs/${selectedDraftId}`, {
+                const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/${endpoint}/${selectedDraftId}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -2565,16 +2582,17 @@
                 }
             }
             
-            // Show/hide draft functionality based on type
-            if (type === 'chronicle') {
-                // Hide drafts for chronicles
-                if (draftsSelector) draftsSelector.style.display = 'none';
-                if (saveDraftButton) saveDraftButton.style.display = 'none';
-            } else {
-                // Show drafts for scrolls
-                if (draftsSelector) draftsSelector.style.display = 'block';
-                if (saveDraftButton) saveDraftButton.style.display = 'block';
+            // Update draft selector placeholder based on type
+            if (draftsSelector) {
+                if (type === 'chronicle') {
+                    draftsSelector.innerHTML = '<option value="" disabled selected>Dormant Chronicles</option>';
+                } else {
+                    draftsSelector.innerHTML = '<option value="" disabled selected>Slumbering Scrolls</option>';
+                }
             }
+            
+            // Reload drafts for the current type
+            loadDrafts();
         }
         
         function setupSoulForgeSubmission() {
