@@ -188,52 +188,131 @@ h3 {
 }
 
 .toggle-forge-btn {
-    background: rgba(255, 94, 120, 0.1);
+    background: linear-gradient(90deg, 
+        rgba(255, 94, 120, 0.05) 0%,
+        rgba(255, 94, 120, 0.1) 50%,
+        rgba(255, 94, 120, 0.15) 100%);
     border: 1px solid rgba(255, 94, 120, 0.3);
     border-radius: 6px;
     color: var(--accent);
     font-size: 1.2rem;
     cursor: pointer;
-    padding: 0.75rem 1rem;
-    transition: var(--transition);
+    padding: 0.75rem 2rem;
+    transition: all 0.3s ease;
     position: relative;
     z-index: 2;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    min-width: 100px;
+    min-width: 200px;
     justify-content: center;
+    flex: 1;
+    max-width: 300px;
 }
 
 .toggle-forge-btn:hover {
-    background: rgba(255, 94, 120, 0.2);
+    background: linear-gradient(90deg,
+        rgba(255, 94, 120, 0.1) 0%,
+        rgba(255, 94, 120, 0.2) 50%,
+        rgba(255, 94, 120, 0.25) 100%);
     border-color: var(--accent);
     transform: translateY(-1px);
+    box-shadow: 0 2px 10px rgba(255, 94, 120, 0.2);
 }
 
 .toggle-forge-btn:active {
     transform: translateY(0);
+    box-shadow: 0 1px 5px rgba(255, 94, 120, 0.2);
 }
 
-/* Expanded clickable area for toggle button */
-.toggle-forge-btn::before {
+/* Visual indicator for expanded clickable area */
+.toggle-forge-btn::after {
     content: '';
     position: absolute;
-    top: -1.5rem;
-    right: -3rem;
-    bottom: -1.5rem;
-    left: -6rem;
-    background: transparent;
-    cursor: pointer;
-    z-index: -1;
+    top: 50%;
+    left: 1rem;
+    right: 1rem;
+    height: 1px;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(255, 94, 120, 0.2) 20%,
+        rgba(255, 94, 120, 0.2) 80%,
+        transparent 100%);
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.toggle-forge-btn:hover::after {
+    opacity: 1;
 }
 
 .toggle-forge-btn i {
-    transition: transform 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    display: inline-block;
 }
 
+/* Collapsed state - chevron points down with bounce */
 .inscription-forge.collapsed .toggle-forge-btn i {
+    transform: rotate(0deg);
+    animation: pulseDown 2s ease-in-out infinite;
+}
+
+/* Expanded state - chevron points up with subtle rotation */
+.inscription-forge:not(.collapsed) .toggle-forge-btn i {
     transform: rotate(180deg);
+    animation: pulseUp 2s ease-in-out infinite;
+}
+
+/* Pulse animation for collapsed state */
+@keyframes pulseDown {
+    0%, 100% {
+        transform: rotate(0deg) translateY(0);
+    }
+    50% {
+        transform: rotate(0deg) translateY(3px);
+    }
+}
+
+/* Pulse animation for expanded state */
+@keyframes pulseUp {
+    0%, 100% {
+        transform: rotate(180deg) translateY(0);
+    }
+    50% {
+        transform: rotate(180deg) translateY(-3px);
+    }
+}
+
+/* On hover, intensify the animation */
+.toggle-forge-btn:hover i {
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+
+/* Add a subtle glow to indicate interactivity */
+.toggle-forge-btn {
+    box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 1px 3px rgba(255, 94, 120, 0.1);
+}
+
+.inscription-forge.collapsed .toggle-forge-btn {
+    animation: subtleGlow 3s ease-in-out infinite;
+}
+
+@keyframes subtleGlow {
+    0%, 100% {
+        box-shadow: 
+            inset 0 1px 0 rgba(255, 255, 255, 0.1),
+            0 1px 3px rgba(255, 94, 120, 0.1);
+    }
+    50% {
+        box-shadow: 
+            inset 0 1px 0 rgba(255, 255, 255, 0.15),
+            0 1px 8px rgba(255, 94, 120, 0.3);
+    }
 }
 
 .forge-content {
@@ -902,8 +981,10 @@ body.light-theme .ql-snow .ql-picker-options {
 @media (max-width: 768px) {
     /* Optimize toggle button for mobile */
     .toggle-forge-btn {
-        min-width: 60px;
-        padding: 0.75rem 0.5rem;
+        min-width: 80px;
+        max-width: none;
+        padding: 0.75rem 1rem;
+        flex: 0 0 auto;
     }
     
     .toggle-forge-btn .toggle-text {
@@ -911,18 +992,32 @@ body.light-theme .ql-snow .ql-picker-options {
     }
     
     .forge-header {
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
         gap: 1rem;
+        text-align: left;
+    }
+    
+    .forge-header h2 {
+        flex: 1 1 100%;
         text-align: center;
+        margin-bottom: 0.5rem;
     }
     
     .forge-tabs {
-        justify-content: center;
-        flex-wrap: wrap;
+        flex: 1;
+        justify-content: flex-start;
+        gap: 0.5rem;
     }
     
     .forge-tab {
-        flex: 1;
-        min-width: 120px;
+        flex: 0 1 auto;
+        min-width: 100px;
+        padding: 0.5rem 0.8rem;
+        font-size: 0.9rem;
+    }
+    
+    .forge-tab i {
+        display: none;
     }
 }

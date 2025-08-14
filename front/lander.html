@@ -43,8 +43,8 @@
     <link rel="preload" href="css/active-users.css?v=7.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="css/active-users.css?v=7.0"></noscript>
     
-    <link rel="preload" href="css/lander.css?v=2.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="css/lander.css?v=2.0"></noscript>
+    <link rel="preload" href="css/lander.css?v=2.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/lander.css?v=2.1"></noscript>
     
     <!-- Soul Management Modal Styles -->
     <style>
@@ -2037,13 +2037,20 @@
             const title = document.getElementById('postTitle').value.trim();
             const content = quill.root.innerHTML;
             
+            // Check which tab is active
+            const activeTab = document.querySelector('.forge-tab.active');
+            const isChronicle = activeTab && activeTab.dataset.type === 'chronicle';
+            const endpoint = isChronicle ? 'news' : 'blogs';
+            
             if (!title) {
-                alert('Please enter a title for your eternal thought');
+                const itemType = isChronicle ? 'chronicle' : 'eternal thought';
+                alert(`Please enter a title for your ${itemType}`);
                 return;
             }
             
             if (quill.getText().trim().length < 10) {
-                alert('Please share more of your eternal wisdom (at least 10 characters)');
+                const wisdomType = isChronicle ? 'chronicle' : 'eternal wisdom';
+                alert(`Please share more of your ${wisdomType} (at least 10 characters)`);
                 return;
             }
             
@@ -2064,9 +2071,9 @@
                 const selectedDraftId = draftsSelector.value;
                 
                 let response;
-                if (selectedDraftId) {
-                    // Update existing draft to published
-                    response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/blogs/${selectedDraftId}`, {
+                if (selectedDraftId && !isChronicle) {
+                    // Update existing draft to published (only for blogs, not chronicles)
+                    response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/${endpoint}/${selectedDraftId}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
@@ -2079,8 +2086,8 @@
                         })
                     });
                 } else {
-                    // Create new post
-                    response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/blogs`, {
+                    // Create new post (always new for chronicles)
+                    response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/${endpoint}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -2110,13 +2117,19 @@
                 // Refresh drafts list
                 await loadDrafts();
                 
-                // Show success and redirect to blog
-                alert('Your eternal wisdom has been shared with the sanctuary!');
-                window.location.href = '/pages/blog.html';
+                // Show success and redirect to appropriate page
+                if (isChronicle) {
+                    alert('Your chronicle has been inscribed in the Boundless Chronicles!');
+                    window.location.href = '/pages/news.html';
+                } else {
+                    alert('Your eternal wisdom has been shared with the sanctuary!');
+                    window.location.href = '/pages/blog.html';
+                }
                 
             } catch (error) {
                 // Error publishing post
-                alert('Failed to publish your eternal thought: ' + error.message);
+                const itemType = isChronicle ? 'chronicle' : 'eternal thought';
+                alert(`Failed to publish your ${itemType}: ` + error.message);
                 
                 const publishButton = document.getElementById('publishButton');
                 publishButton.textContent = 'Eternalize';
@@ -2541,12 +2554,26 @@
         
         function updateForgeEditor(type) {
             const titleInput = document.getElementById('postTitle');
+            const draftsSelector = document.getElementById('draftsSelector');
+            const saveDraftButton = document.getElementById('saveDraftButton');
+            
             if (titleInput) {
                 if (type === 'scroll') {
                     titleInput.placeholder = 'Name your eternal thought...';
                 } else if (type === 'chronicle') {
                     titleInput.placeholder = 'Title your chronicle...';
                 }
+            }
+            
+            // Show/hide draft functionality based on type
+            if (type === 'chronicle') {
+                // Hide drafts for chronicles
+                if (draftsSelector) draftsSelector.style.display = 'none';
+                if (saveDraftButton) saveDraftButton.style.display = 'none';
+            } else {
+                // Show drafts for scrolls
+                if (draftsSelector) draftsSelector.style.display = 'block';
+                if (saveDraftButton) saveDraftButton.style.display = 'block';
             }
         }
         
