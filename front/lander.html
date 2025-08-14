@@ -43,8 +43,8 @@
     <link rel="preload" href="css/active-users.css?v=7.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="css/active-users.css?v=7.0"></noscript>
     
-    <link rel="preload" href="css/lander.css?v=4.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="css/lander.css?v=4.0"></noscript>
+    <link rel="preload" href="css/lander.css?v=2.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/lander.css?v=2.0"></noscript>
     
     <!-- Soul Management Modal Styles -->
     <style>
@@ -1946,7 +1946,8 @@
                         Chronicle News
                     </button>
                 </div>
-                <button id="toggleForgeBtn" class="toggle-forge-btn">
+                <button id="toggleForgeBtn" class="toggle-forge-btn" title="Expand/Collapse Editor">
+                    <span class="toggle-text">Editor</span>
                     <i class="fas fa-chevron-down"></i>
                 </button>
             </div>
@@ -2498,7 +2499,11 @@
             
             if (!toggleBtn || !forge) return;
             
-            let isCollapsed = true; // Start collapsed
+            // Check if we should auto-expand the editor (e.g., coming from "Inscribe a Scroll")
+            const urlParams = new URLSearchParams(window.location.search);
+            const shouldExpand = urlParams.get('expand') === 'editor';
+            
+            let isCollapsed = !shouldExpand; // Start expanded if coming from inscribe scroll, collapsed otherwise
             
             toggleBtn.addEventListener('click', () => {
                 isCollapsed = !isCollapsed;
@@ -2510,6 +2515,13 @@
                     icon.className = isCollapsed ? 'fas fa-chevron-down' : 'fas fa-chevron-up';
                 }
             });
+            
+            // Set initial state
+            forge.classList.toggle('collapsed', isCollapsed);
+            const icon = toggleBtn.querySelector('i');
+            if (icon) {
+                icon.className = isCollapsed ? 'fas fa-chevron-down' : 'fas fa-chevron-up';
+            }
             
             // Initialize forge tabs
             const tabs = document.querySelectorAll('.forge-tab');

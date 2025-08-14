@@ -151,6 +151,7 @@ h3 {
     padding: 1.5rem;
     background: rgba(255, 255, 255, 0.03);
     border-bottom: 1px solid rgba(255, 94, 120, 0.1);
+    position: relative;
 }
 
 .forge-header h2 {
@@ -187,13 +188,44 @@ h3 {
 }
 
 .toggle-forge-btn {
-    background: transparent;
-    border: none;
+    background: rgba(255, 94, 120, 0.1);
+    border: 1px solid rgba(255, 94, 120, 0.3);
+    border-radius: 6px;
     color: var(--accent);
     font-size: 1.2rem;
     cursor: pointer;
-    padding: 0.5rem;
+    padding: 0.75rem 1rem;
     transition: var(--transition);
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 100px;
+    justify-content: center;
+}
+
+.toggle-forge-btn:hover {
+    background: rgba(255, 94, 120, 0.2);
+    border-color: var(--accent);
+    transform: translateY(-1px);
+}
+
+.toggle-forge-btn:active {
+    transform: translateY(0);
+}
+
+/* Expanded clickable area for toggle button */
+.toggle-forge-btn::before {
+    content: '';
+    position: absolute;
+    top: -1.5rem;
+    right: -3rem;
+    bottom: -1.5rem;
+    left: -6rem;
+    background: transparent;
+    cursor: pointer;
+    z-index: -1;
 }
 
 .toggle-forge-btn i {
@@ -864,4 +896,33 @@ body.light-theme .ql-snow .ql-picker-options {
     background-color: rgba(255, 255, 255, 0.95) !important;
     border-color: rgba(214, 45, 77, 0.2) !important;
     color: var(--light-text) !important;
+}
+
+/* Mobile responsive improvements */
+@media (max-width: 768px) {
+    /* Optimize toggle button for mobile */
+    .toggle-forge-btn {
+        min-width: 60px;
+        padding: 0.75rem 0.5rem;
+    }
+    
+    .toggle-forge-btn .toggle-text {
+        display: none;
+    }
+    
+    .forge-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .forge-tabs {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .forge-tab {
+        flex: 1;
+        min-width: 120px;
+    }
 }
