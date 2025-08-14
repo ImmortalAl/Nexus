@@ -54,7 +54,6 @@ class CommentsSystem {
         if (!listContainer) return;
         
         try {
-            console.log(`[Comments] Loading comments for ${this.targetType}/${this.targetId}`);
             
             const headers = {
                 'Content-Type': 'application/json'
@@ -70,12 +69,11 @@ class CommentsSystem {
                 { headers }
             );
             
-            console.log(`[Comments] Response status: ${response.status}`);
             
             if (!response.ok) {
                 if (response.status === 404) {
                     // Comments endpoint doesn't exist for this type, show empty state
-                    console.log('[Comments] 404 - No comments endpoint for this type');
+                    // Comments endpoint doesn't exist for this type, show empty state
                     this.comments = [];
                     this.renderComments();
                     return;
@@ -84,7 +82,6 @@ class CommentsSystem {
             }
             
             const data = await response.json();
-            console.log('[Comments] Loaded comments:', data);
             
             // Handle different response formats
             if (Array.isArray(data)) {

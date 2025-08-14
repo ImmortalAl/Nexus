@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 populateForm(userData);
             }
         } catch (error) {
-            console.log('Could not load existing profile:', error);
+            // Silently fail if profile can't be loaded
         }
     }
 

@@ -57,7 +57,7 @@
     function setupNavigation() {
         // Navigation is now handled by AdminDashboard.setupAdminNavigation()
         // This function is kept for compatibility but delegates to the main module
-        console.log('Legacy navigation setup - delegating to AdminDashboard');
+        // Legacy navigation setup - delegating to AdminDashboard
     }
     
     function showSection(sectionId) {

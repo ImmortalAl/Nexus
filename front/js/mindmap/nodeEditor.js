@@ -137,7 +137,6 @@ class NodeEditor {
                     tags
                 });
                 
-                console.log('Node update response:', response);
                 
                 if (!response) {
                     this.showError('Malformed response from server (no node object)');
@@ -153,7 +152,6 @@ class NodeEditor {
                     ...response
                 };
                 
-                console.log('Updated node data:', updatedNodeData);
                 
                 // Update node in graph
                 const node = window.nexusEngine.cy.getElementById(this.currentNode._id);
@@ -231,7 +229,6 @@ class NodeEditor {
     
     showMessage(message) {
         // Could be enhanced with a toast notification
-        console.log(message);
     }
     
     showError(message) {

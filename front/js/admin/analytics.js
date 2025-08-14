@@ -508,11 +508,6 @@ const AdminAnalytics = {
                 ]
             });
             
-            console.log('Analytics loaded from existing endpoints:', {
-                users: users.length,
-                blogs: blogs.length, 
-                threads: threads.length
-            });
                 
         } catch (error) {
             console.error('Error loading from existing endpoints:', error);

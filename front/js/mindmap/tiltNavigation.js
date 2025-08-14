@@ -161,7 +161,6 @@ class TiltNavigation {
     
     showMessage(message) {
         // Could be enhanced with a toast notification
-        console.log(message);
     }
     
     showError(message) {

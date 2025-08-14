@@ -34,7 +34,8 @@ class MLNFWebSocket {
 
         try {
             // Convert HTTP URL to WebSocket URL
-            const wsUrl = NEXUS_CONFIG.API_BASE_URL.replace('https://', 'wss://').replace('http://', 'ws://').replace('/api', '');
+            const apiBaseUrl = window.NEXUS_CONFIG?.API_BASE_URL || 'https://nexus-ytrg.onrender.com/api';
+            const wsUrl = apiBaseUrl.replace('https://', 'wss://').replace('http://', 'ws://').replace('/api', '');
             const fullUrl = `${wsUrl}?token=${encodeURIComponent(token)}`;
             
             
