@@ -769,8 +769,20 @@
                 } else if (window.MessageModal?.open) {
                     window.MessageModal.open(username, userData.displayName || username);
                 } else {
-                    // Fallback to direct messaging page
-                    window.location.href = `/pages/messaging.html?to=${encodeURIComponent(username)}`;
+                    // Load message modal script if not available yet
+                    const script = document.createElement('script');
+                    script.src = '../js/messageModal.js?v=2.0';
+                    script.onload = () => {
+                        if (window.openMessageModal) {
+                            window.openMessageModal(username, userData.displayName || username);
+                        } else {
+                            alert('Messaging system is temporarily unavailable. Please try again later.');
+                        }
+                    };
+                    script.onerror = () => {
+                        alert('Failed to load messaging system. Please refresh the page and try again.');
+                    };
+                    document.head.appendChild(script);
                 }
             });
             
