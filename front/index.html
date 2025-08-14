@@ -857,4 +857,57 @@
                 // Add click handler to open specific thread
                 highlightCard.addEventListener('click', function(e) {
                     e.preventDefault();
-                    window.location.href = `pages/messageboard.html?openThread=${message._id}`
+                    window.location.href = `pages/messageboard.html?openThread=${message._id}`;
+                });
+                
+                // Create content
+                const title = document.createElement('h3');
+                title.textContent = message.title || 'Untitled Echo';
+                
+                const content = document.createElement('p');
+                content.className = 'echo-content';
+                content.textContent = message.content || 'No content';
+                
+                // Create user display with avatar
+                const userDisplay = document.createElement('div');
+                userDisplay.className = 'echo-user-display';
+                
+                const avatarEl = window.NexusAvatars.createAvatarElement(author);
+                const userName = document.createElement('span');
+                userName.className = 'echo-author';
+                userName.textContent = author.displayName || author.username || 'Anonymous';
+                
+                userDisplay.appendChild(avatarEl);
+                userDisplay.appendChild(userName);
+                
+                // Create meta info
+                const metaDiv = document.createElement('div');
+                metaDiv.className = 'echo-meta';
+                metaDiv.innerHTML = `
+                    <span class="echo-date">${date}</span>
+                    <span class="echo-replies">${replyCount} replies</span>
+                `;
+                
+                // Assemble card
+                highlightCard.appendChild(title);
+                highlightCard.appendChild(content);
+                highlightCard.appendChild(userDisplay);
+                highlightCard.appendChild(metaDiv);
+                
+                highlightsContainer.appendChild(highlightCard);
+            });
+            
+        } catch (error) {
+            console.error('Error loading echoes highlights:', error);
+        }
+    }
+    
+    // Load echoes on page ready
+    document.addEventListener('DOMContentLoaded', loadEchoesHighlights);
+    </script>
+    
+    <!-- Analytics Tracking System -->
+    <script src="js/analytics-tracker.js?v=2.0" async></script>
+    
+</body>
+</html>
