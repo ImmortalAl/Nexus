@@ -211,77 +211,13 @@ body.light-theme .no-comments i {
     color: #dc2626;
 }
 
-/* Soul Comments Title */
+/* Soul Comments Title - Clean consistent styling */
 .soul-comments h3 {
-    color: var(--text);
-    margin-bottom: 2.5rem;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
-    gap: 1rem;
-    font-size: 1.5rem;
-    font-family: 'Cinzel', serif;
-    font-weight: 700;
-    text-shadow: 
-        0 0 15px rgba(255, 94, 120, 0.6),
-        0 0 30px rgba(255, 202, 40, 0.4),
-        0 2px 6px rgba(0, 0, 0, 0.7);
-    justify-content: center;
-    letter-spacing: 1px;
-    background: linear-gradient(135deg, 
-        var(--text) 0%,
-        rgba(255, 94, 120, 0.95) 30%,
-        rgba(255, 202, 40, 0.9) 50%,
-        rgba(138, 43, 226, 0.8) 70%,
-        var(--text) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: titleShimmer 4s ease-in-out infinite;
-}
-
-@keyframes titleShimmer {
-    0%, 100% { 
-        background-position: 0% 50%;
-        filter: brightness(1);
-    }
-    50% { 
-        background-position: 100% 50%;
-        filter: brightness(1.2);
-    }
-}
-
-.soul-comments h3 i {
-    color: var(--accent);
-    font-size: 1.3rem;
-    text-shadow: 
-        0 0 12px rgba(255, 94, 120, 0.8),
-        0 0 24px rgba(255, 202, 40, 0.5),
-        0 0 36px rgba(138, 43, 226, 0.3);
-    animation: soulIconPulse 2.5s ease-in-out infinite;
-    -webkit-text-fill-color: initial;
-}
-
-@keyframes soulIconPulse {
-    0%, 100% { 
-        opacity: 0.9; 
-        transform: scale(1) rotate(0deg); 
-        filter: hue-rotate(0deg);
-    }
-    25% { 
-        opacity: 1; 
-        transform: scale(1.1) rotate(2deg); 
-        filter: hue-rotate(30deg);
-    }
-    50% { 
-        opacity: 0.95; 
-        transform: scale(1.05) rotate(0deg); 
-        filter: hue-rotate(60deg);
-    }
-    75% { 
-        opacity: 1; 
-        transform: scale(1.1) rotate(-2deg); 
-        filter: hue-rotate(30deg);
-    }
+    gap: 0.5rem;
 }
 
 /* Enhanced Soul Comments Container */
