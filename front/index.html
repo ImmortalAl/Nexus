@@ -846,7 +846,7 @@
                 return;
             }
             
-            console.log(`Loading ${messages.length} echoes threads for highlights`);
+            console.log(`Loading ${messages.length} echoes threads for highlights:`, messages.map(m => ({ id: m._id, title: m.title, author: m.author?.username })));
             
             // Clear existing content and build with unified avatar system
             highlightsContainer.innerHTML = '';
@@ -881,17 +881,19 @@
                     message.content.replace(/<[^>]*>/g, '') : 'No content';
                 content.textContent = textContent;
                 
-                // Create user display with avatar
-                const userDisplay = document.createElement('div');
-                userDisplay.className = 'echo-user-display';
-                
-                const avatarEl = window.NexusAvatars.createAvatarElement(author);
-                const userName = document.createElement('span');
-                userName.className = 'echo-author';
-                userName.textContent = author.displayName || author.username || 'Anonymous';
-                
-                userDisplay.appendChild(avatarEl);
-                userDisplay.appendChild(userName);
+                // Create user display with avatar using unified avatar system
+                const userDisplay = window.NexusAvatars.createUserDisplay({
+                    username: author.username || 'Anonymous',
+                    title: author.displayName || 'Echo Weaver',
+                    avatarSize: 'sm',
+                    displaySize: 'sm',
+                    compact: true,
+                    mystical: author.isVIP || author.role === 'admin',
+                    online: author.online,
+                    customAvatar: author.avatar,
+                    usernameStyle: 'immortal',
+                    enableUnifiedNavigation: true
+                });
                 
                 // Create meta info
                 const metaDiv = document.createElement('div');
