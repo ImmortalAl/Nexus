@@ -568,11 +568,11 @@
                 return;
             }
             
-            // Fetch chronicles data from the dedicated news endpoint
-            let response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/news?limit=2&sort=createdAt`);
+            // Fetch chronicles data from the chronicles endpoint
+            let response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/chronicles?limit=2&sort=createdAt`);
             if (!response.ok) {
                 console.error('Chronicles API failed:', response.status, response.statusText);
-                throw new Error(`Failed to fetch chronicles from news endpoint: ${response.status}`);
+                throw new Error(`Failed to fetch chronicles from chronicles endpoint: ${response.status}`);
             }
             
             const data = await response.json();
