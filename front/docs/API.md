@@ -502,11 +502,20 @@ GET /api/blogs?page={page}&limit={limit}&sort={sort}&author={username}
             },
             "createdAt": "string",
             "updatedAt": "string",
-            "isDraft": "boolean"
+            "status": "published" | "draft"
         }
     ]
 }
 ```
+
+##### Get Blog Drafts
+```http
+GET /api/blogs/my/drafts
+```
+
+**Headers:** Requires Authorization Bearer token
+
+**Response:** Array of draft blog posts with same structure as above
 
 ##### Create Blog Post
 ```http
@@ -520,7 +529,7 @@ POST /api/blogs
 {
     "title": "string",
     "content": "string",
-    "isDraft": "boolean"
+    "status": "published" | "draft"
 }
 ```
 
@@ -531,9 +540,102 @@ PUT /api/blogs/:id
 
 **Headers:** Requires Authorization Bearer token
 
+**Request Body:**
+```json
+{
+    "title": "string",
+    "content": "string",
+    "status": "published" | "draft"
+}
+```
+
 ##### Delete Blog Post
 ```http
 DELETE /api/blogs/:id
+```
+
+**Headers:** Requires Authorization Bearer token
+
+### News Articles (Boundless Chronicles)
+
+##### Get News Articles
+```http
+GET /api/news?page={page}&limit={limit}&sort={sort}&author={username}
+```
+
+**Query Parameters:**
+- `page`: Page number
+- `limit`: Items per page
+- `sort`: Sort order (`createdAt`, etc.)
+- `author`: Filter by author username
+
+**Response:**
+```json
+{
+    "docs": [
+        {
+            "_id": "string",
+            "title": "string",
+            "content": "string",
+            "author": {
+                "_id": "string",
+                "username": "string",
+                "displayName": "string",
+                "avatar": "string",
+                "online": "boolean"
+            },
+            "createdAt": "string",
+            "updatedAt": "string",
+            "status": "published" | "draft"
+        }
+    ]
+}
+```
+
+##### Get News Drafts
+```http
+GET /api/news/my/drafts
+```
+
+**Headers:** Requires Authorization Bearer token
+
+**Response:** Array of draft news articles with same structure as above
+
+##### Create News Article
+```http
+POST /api/news
+```
+
+**Headers:** Requires Authorization Bearer token
+
+**Request Body:**
+```json
+{
+    "title": "string",
+    "content": "string",
+    "status": "published" | "draft"
+}
+```
+
+##### Update News Article
+```http
+PUT /api/news/:id
+```
+
+**Headers:** Requires Authorization Bearer token
+
+**Request Body:**
+```json
+{
+    "title": "string",
+    "content": "string",
+    "status": "published" | "draft"
+}
+```
+
+##### Delete News Article
+```http
+DELETE /api/news/:id
 ```
 
 **Headers:** Requires Authorization Bearer token

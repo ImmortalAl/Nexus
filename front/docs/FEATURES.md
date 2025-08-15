@@ -32,8 +32,9 @@
 
 ### 🎨 Creative Expression Channels
 - **Soul Scrolls**: Personal blogging platform for sharing eternal wisdom ✅
-- **Rich Text Magic**: Beautiful editor for crafting immortal prose ✅
-- **Draft Meditation**: Save and contemplate before sharing with the universe ✅
+- **Boundless Chronicles**: News and community announcements platform ✅
+- **Unified Inscription Forge**: Rich text editor for crafting immortal prose ✅
+- **Dual Draft System**: Separate draft storage for Scrolls and Chronicles ✅
 - **Soul Interaction Energy**: Like and comment systems for positive vibrations ✅
 
 ### 🌟 Design Harmony
@@ -93,6 +94,7 @@ EMAIL_FROM=Eternal Scrolls <noreply@immortal.nexus>
 ### 📜 Soul Scrolls (`/pages/blog.html`)
 *Long-form wisdom sharing platform*
 - Rich text editor for crafting eternal prose
+- Independent draft system with "Slumbering Scrolls" storage
 - Editorial choices highlighting cosmic wisdom
 - Recent whispers from the community consciousness  
 - Comment threads that span across eternity
@@ -108,6 +110,7 @@ EMAIL_FROM=Eternal Scrolls <noreply@immortal.nexus>
 ### 📰 Boundless Chronicles (`/pages/news.html`)
 *News and stories that transcend mortal media*
 - Community-submitted eternal truths and happenings
+- Separate draft system with "Dormant Chronicles" storage
 - Chronicles of our realm's beautiful evolution
 - Stories preserved in collective memory
 - Editorial curation with love and wisdom
@@ -132,6 +135,47 @@ EMAIL_FROM=Eternal Scrolls <noreply@immortal.nexus>
 - Upload and safeguard eternal knowledge
 - Protection against censorship and erasure
 - Historical documentation of our community's growth
+
+---
+
+## ✍️ Unified Inscription Forge System
+
+### Dual Content Publishing Platform ✅
+*The mystical workshop where all eternal wisdom is crafted*
+
+The **Inscription Forge** located at `/lander.html` serves as the unified content creation platform, intelligently routing content to the appropriate realm based on content type selection.
+
+#### Two Sacred Content Types
+- **Soul Scrolls**: Personal reflections and eternal wisdom → Published to `/pages/blog.html`
+- **Boundless Chronicles**: News, announcements, and community happenings → Published to `/pages/news.html`
+
+#### Intelligent Draft Management ✅
+- **Separate Draft Storage**: Scrolls and Chronicles maintain independent draft systems
+- **Contextual Placeholders**: 
+  - "Slumbering Scrolls" for blog draft storage
+  - "Dormant Chronicles" for news draft storage
+- **Tab-Aware Functionality**: Draft operations automatically route to correct API endpoints
+- **Seamless Tab Switching**: Draft lists update dynamically when switching content types
+
+#### Enhanced UX Features ✅
+- **Smart Editor Expansion**: Auto-expands when arriving from "Inscribe a Scroll" button
+- **Extended Toggle Area**: Right portion of header is fully clickable for editor toggle
+- **Animated State Indicators**: Different chevron animations for collapsed/expanded states
+- **Mobile Optimized**: Responsive design with touch-friendly controls
+
+#### Technical Implementation
+```javascript
+// Dynamic endpoint routing based on active tab
+const endpoint = isChronicle ? 'news' : 'blogs';
+
+// Separate draft endpoints
+GET /api/news/my/drafts     // Chronicle drafts
+GET /api/blogs/my/drafts    // Scroll drafts
+
+// Publishing to appropriate destination
+POST /api/news              // Chronicle publishing
+POST /api/blogs             // Scroll publishing
+```
 
 ---
 
