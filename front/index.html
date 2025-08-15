@@ -836,7 +836,17 @@
             }
             
             const highlightsContainer = document.getElementById('echoesHighlights');
-            if (!highlightsContainer || messages.length === 0) return;
+            if (!highlightsContainer) {
+                console.error('Echoes highlights container not found');
+                return;
+            }
+            if (messages.length === 0) {
+                console.log('No echoes threads found to display');
+                highlightsContainer.innerHTML = '<div class="highlight-item"><h4>No Echoes Available</h4><p>No threads found in the eternal tapestry...</p></div>';
+                return;
+            }
+            
+            console.log(`Loading ${messages.length} echoes threads for highlights`);
             
             // Clear existing content and build with unified avatar system
             highlightsContainer.innerHTML = '';
@@ -866,7 +876,10 @@
                 
                 const content = document.createElement('p');
                 content.className = 'echo-content';
-                content.textContent = message.content || 'No content';
+                // Handle HTML content properly
+                const textContent = message.content ? 
+                    message.content.replace(/<[^>]*>/g, '') : 'No content';
+                content.textContent = textContent;
                 
                 // Create user display with avatar
                 const userDisplay = document.createElement('div');
@@ -896,6 +909,8 @@
                 
                 highlightsContainer.appendChild(highlightCard);
             });
+            
+            console.log('Successfully loaded echoes highlights');
             
         } catch (error) {
             console.error('Error loading echoes highlights:', error);
