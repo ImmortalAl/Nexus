@@ -67,6 +67,26 @@
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Lato:wght@300;400;700&family=Cinzel:wght@400;600&display=swap"></noscript>
     
     <!-- Inline styles moved to optimized external CSS for better caching and performance -->
+    
+    <style>
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+        }
+        .beta-badge {
+            display: inline-flex;
+            align-items: center;
+        }
+        @media (max-width: 768px) {
+            .beta-badge {
+                position: absolute;
+                top: 10px;
+                right: 60px;
+                font-size: 0.65rem;
+                padding: 3px 8px;
+            }
+        }
+    </style>
 </head>
 <body>
     <aside class="active-users" id="activeUsers" aria-label="Active users panel">
@@ -110,6 +130,9 @@
                     <span class="short-title">IN</span>
                 </div>
             </a>
+        </div>
+        <div class="beta-badge" style="position: relative; margin-left: 10px; padding: 4px 12px; background: linear-gradient(135deg, #8a2be2, #ff1493); border-radius: 20px; font-size: 0.75rem; font-weight: bold; color: white; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 2px 8px rgba(138, 43, 226, 0.4); animation: pulse 2s infinite;">
+            Beta
         </div>
         <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation">
             <i class="fas fa-bars"></i>
