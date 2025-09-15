@@ -193,8 +193,10 @@
     
     function displayUsers() {
         const tbody = document.getElementById('usersTableBody');
-        const filterStatus = document.getElementById('filterStatus').value;
-        const searchTerm = document.getElementById('userSearch').value.toLowerCase();
+        const filterStatusEl = document.getElementById('filterStatus');
+        const searchEl = document.getElementById('userSearch');
+        const filterStatus = filterStatusEl ? filterStatusEl.value : 'all';
+        const searchTerm = searchEl ? searchEl.value.toLowerCase() : '';
         
         // Filter users
         let filteredUsers = allUsers;
@@ -463,15 +465,22 @@
         });
         
         // Search
-        document.getElementById('userSearch').addEventListener('input', displayUsers);
-        document.getElementById('filterStatus').addEventListener('change', displayUsers);
+        const userSearchEl = document.getElementById('userSearch');
+        const filterStatusEl = document.getElementById('filterStatus');
+        if (userSearchEl) userSearchEl.addEventListener('input', displayUsers);
+        if (filterStatusEl) filterStatusEl.addEventListener('change', displayUsers);
         
         // Modal close
-        document.getElementById('closeModal').addEventListener('click', () => {
-            const modal = document.getElementById('userModal');
-            modal.classList.remove('active');
-            modal.style.display = 'none';
-        });
+        const closeModalEl = document.getElementById('closeModal');
+        if (closeModalEl) {
+            closeModalEl.addEventListener('click', () => {
+                const modal = document.getElementById('userModal');
+                if (modal) {
+                    modal.classList.remove('active');
+                    modal.style.display = 'none';
+                }
+            });
+        }
 
         // Message Modal Listeners - Only set up if messageModal.js component is not available
         if (!window.NEXUS || !window.NEXUS.initMessageModal) {

@@ -691,15 +691,20 @@ function createAnonymousMessageModal(recipientUsername, recipientTitle) {
 
     // Focus on textarea
     setTimeout(() => {
-        document.getElementById('anonymousMessageContent').focus();
+        const contentEl = document.getElementById('anonymousMessageContent');
+        if (contentEl) contentEl.focus();
     }, 100);
 
     // Handle form submission
-    document.getElementById('anonymousMessageForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const senderName = document.getElementById('senderName').value.trim() || 'Anonymous Soul';
-        const content = document.getElementById('anonymousMessageContent').value.trim();
+    const anonymousForm = document.getElementById('anonymousMessageForm');
+    if (anonymousForm) {
+        anonymousForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const senderNameEl = document.getElementById('senderName');
+            const contentEl = document.getElementById('anonymousMessageContent');
+            const senderName = senderNameEl ? senderNameEl.value.trim() || 'Anonymous Soul' : 'Anonymous Soul';
+            const content = contentEl ? contentEl.value.trim() : '';
         
         if (!content) {
             alert('Please enter a message');
@@ -738,6 +743,8 @@ function closeAnonymousMessageModal() {
         }
         
         modal.remove();
+    }
+        });
     }
 }
 
