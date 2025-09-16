@@ -633,18 +633,6 @@
         threadList.innerHTML = threads.map(thread => {
             const currentUser = window.authManager.getUser();
             const isAuthor = isAuthenticated && currentUser && thread.author && currentUser._id === thread.author._id;
-
-            // Debug logging for first thread
-            if (threads.indexOf(thread) === 0) {
-                console.log('[Debug] Delete button check:', {
-                    isAuthenticated,
-                    currentUserId: currentUser?._id,
-                    threadAuthorId: thread.author?._id,
-                    isAuthor,
-                    isAnonymous: thread.isAnonymous
-                });
-            }
-
             const createdDate = new Date(thread.createdAt).toLocaleDateString();
             const lastActive = thread.updatedAt ? new Date(thread.updatedAt).toLocaleDateString() : createdDate;
             
