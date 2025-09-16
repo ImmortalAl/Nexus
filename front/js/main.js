@@ -398,19 +398,22 @@ class EternalSoulsHighlight {
             // This is expected on pages without the featured soul display element
             return;
         }
+
+        // Wait for NexusAvatars if not available yet
         if (!window.NexusAvatars) {
-            // Avatar System not available for featured soul display
+            console.log('[EternalSouls] Waiting for NexusAvatars system...');
+            setTimeout(() => this.populateFeaturedSoul(), 500);
             return;
         }
 
         try {
             // Fetch users and select first one (or based on criteria)
             const token = localStorage.getItem('sessionToken');
-            const headers = token ? 
-                { 'Authorization': `Bearer ${token}` } : 
+            const headers = token ?
+                { 'Authorization': `Bearer ${token}` } :
                 {};
 
-            const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/users?limit=5`, {
+            const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/users?limit=10`, {
                 headers: headers
             });
 
@@ -428,20 +431,32 @@ class EternalSoulsHighlight {
                 users = responseData.users;
             } else if (responseData.data && Array.isArray(responseData.data)) {
                 users = responseData.data;
+            } else if (responseData.docs && Array.isArray(responseData.docs)) {
+                users = responseData.docs;
             }
 
+            console.log('[EternalSouls] Fetched users:', users.length);
+
             // Filter out ImmortalAl and select first available user
-            const availableUsers = users.filter(user => 
+            const availableUsers = users.filter(user =>
                 user.username && user.username.toLowerCase() !== 'immortalal'
             );
 
             if (availableUsers.length === 0) {
-                throw new Error('No featured souls available');
+                // If no regular users, show any user (including ImmortalAl if necessary)
+                if (users.length > 0) {
+                    this.featuredSoulData = users[0];
+                } else {
+                    throw new Error('No featured souls available');
+                }
+            } else {
+                // Select random user as featured soul for variety
+                const randomIndex = Math.floor(Math.random() * availableUsers.length);
+                this.featuredSoulData = availableUsers[randomIndex];
             }
 
-            // Select first user as featured soul
-            this.featuredSoulData = availableUsers[0];
             const featuredSoul = this.featuredSoulData;
+            console.log('[EternalSouls] Displaying featured soul:', featuredSoul.username);
 
             // Create featured soul display
             const featuredUserDisplay = window.NexusAvatars.createUserDisplay({
@@ -463,7 +478,7 @@ class EternalSoulsHighlight {
 
             // Update profile link
             if (featuredProfileLink) {
-                featuredProfileLink.href = `/souls/${featuredSoul.username}.html`;
+                featuredProfileLink.href = `/souls/profile.html?username=${encodeURIComponent(featuredSoul.username)}`;
                 featuredProfileLink.setAttribute('aria-label', `View ${featuredSoul.username}'s profile`);
             }
 
@@ -474,11 +489,12 @@ class EternalSoulsHighlight {
 
 
         } catch (error) {
-            // Error populating featured soul
+            console.error('[EternalSouls] Error populating featured soul:', error);
             featuredDisplay.innerHTML = `
                 <div class="error-soul">
                     <i class="fas fa-exclamation-triangle"></i>
                     <p>Unable to summon featured soul</p>
+                    <small>Please check connection</small>
                 </div>
             `;
         }
