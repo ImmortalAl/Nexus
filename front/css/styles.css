@@ -28,6 +28,39 @@
 
 /* Note: CSS reset, body styles, and light theme overrides are in critical.css */
 
+/* === BETA BADGE === */
+.beta-badge {
+    position: absolute;
+    top: -8px;
+    right: -35px;
+    background: linear-gradient(135deg, #b19cd9, #9580c4);
+    color: #0a0a0a;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    animation: pulse-glow 2s ease-in-out infinite;
+    box-shadow: 0 2px 8px rgba(177, 156, 217, 0.4);
+    z-index: 10;
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 2px 8px rgba(177, 156, 217, 0.4);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(177, 156, 217, 0.6);
+    }
+}
+
+.logo {
+    position: relative;
+}
+
 /* === 2. LOADING SPINNERS AND ANIMATIONS === */
 .spinner {
     display: inline-block;
