@@ -138,6 +138,11 @@ class SubmissionModal {
         if (form) {
             form.reset();
         }
+
+        // Clear Quill editor content if it exists
+        if (window.chronicleQuillEditor) {
+            window.chronicleQuillEditor.setText('');
+        }
     }
 
     async handleSubmission(e) {
