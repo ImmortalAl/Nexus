@@ -1423,6 +1423,16 @@ if (document.readyState === 'loading') {
 // Backup check after window load
 window.addEventListener('load', checkAutoOpen);
 
+// Handle hash changes for direct navigation
+window.addEventListener('hashchange', () => {
+    if (window.location.hash && window.location.hash.startsWith('#scroll-')) {
+        const postId = window.location.hash.replace('#scroll-', '');
+        if (postId) {
+            openBlogModal(postId);
+        }
+    }
+});
+
 // Auto-initialization disabled for pages like profile where blog is not the main feature
 
 if (!window.location.pathname.includes('/souls/') && !window.location.pathname.includes('/profile/')) {
@@ -1439,23 +1449,29 @@ if (!window.location.pathname.includes('/souls/') && !window.location.pathname.i
 
 // Separate function to handle auto-opening from highlights
 function checkAutoOpen() {
-    // Check for URL parameter first (from profile links)
+    // Check for hash fragment first (from shared links like #scroll-123)
+    let hashPostId = null;
+    if (window.location.hash && window.location.hash.startsWith('#scroll-')) {
+        hashPostId = window.location.hash.replace('#scroll-', '');
+    }
+
+    // Check for URL parameter (from profile links)
     const urlParams = new URLSearchParams(window.location.search);
     const urlPostId = urlParams.get('id');
-    
+
     // Check for sessionStorage (from internal navigation)
     const sessionPostId = sessionStorage.getItem('openScrollId');
-    
-    // Use URL parameter if present, otherwise use session storage
-    const autoOpenScrollId = urlPostId || sessionPostId;
-    
+
+    // Use hash if present, then URL parameter, then session storage
+    const autoOpenScrollId = hashPostId || urlPostId || sessionPostId;
+
     if (autoOpenScrollId) {
         // Clear session storage if we used it
         if (sessionPostId) {
             sessionStorage.removeItem('openScrollId');
         }
-        
-        
+
+
         // Wait for all systems to be ready
         const attemptAutoOpen = (attempts = 0) => {
             if (!window.NexusAvatars) {
@@ -1464,7 +1480,7 @@ function checkAutoOpen() {
                 }
                 return;
             }
-            
+
             // Check if modal exists
             const modal = document.getElementById('blogModal');
             if (!modal) {
@@ -1473,14 +1489,14 @@ function checkAutoOpen() {
                 }
                 return;
             }
-            
+
             try {
                 openBlogModal(autoOpenScrollId);
-                
-                // Clean up URL if we used URL parameter
-                if (urlPostId) {
+
+                // Clean up URL if we used URL parameter (but keep hash for sharing)
+                if (urlPostId && !hashPostId) {
                     // Remove the ?id= parameter from URL without page reload
-                    const newUrl = window.location.pathname;
+                    const newUrl = window.location.pathname + window.location.hash;
                     window.history.replaceState({}, document.title, newUrl);
                 }
             } catch (error) {
