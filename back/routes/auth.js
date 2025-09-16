@@ -1,12 +1,37 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const rateLimit = require('express-rate-limit');
 const router = express.Router();
 const User = require('../models/User');
 const LoginAttempt = require('../models/LoginAttempt');
 const auth = require('../middleware/auth');
 
-router.post('/login', async (req, res) => {
+// Rate limiting for authentication endpoints
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5, // 5 attempts per window
+    message: {
+        error: 'Too many authentication attempts. Please try again in 15 minutes.',
+        code: 'RATE_LIMIT_EXCEEDED'
+    },
+    standardHeaders: true,
+    legacyHeaders: false
+});
+
+// More restrictive rate limiting for login specifically
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 3, // 3 login attempts per window
+    message: {
+        error: 'Too many login attempts. Please try again in 15 minutes.',
+        code: 'LOGIN_RATE_LIMIT_EXCEEDED'
+    },
+    standardHeaders: true,
+    legacyHeaders: false
+});
+
+router.post('/login', loginLimiter, async (req, res) => {
     const { username, password } = req.body;
     const ip = req.ip;
     try {
@@ -21,8 +46,13 @@ router.post('/login', async (req, res) => {
             }).catch(err => console.error('Failed to log login attempt:', err));
             return res.status(400).json({ error: 'Username and password are required' });
         }
-        // Use a case-insensitive regex to find the user
-        const user = await User.findOne({ username: new RegExp('^' + username + '$', 'i') });
+        // Use case-insensitive search with sanitized input to prevent NoSQL injection
+        const user = await User.findOne({
+            username: {
+                $regex: `^${username.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`,
+                $options: 'i'
+            }
+        });
         if (!user) {
             console.log(`[LOGIN ATTEMPT] Failed: User not found for username: ${username} from ${ip}`);
             // Track failed attempt
@@ -94,7 +124,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
-router.post('/signup', async (req, res) => {
+router.post('/signup', authLimiter, async (req, res) => {
     const { username, password } = req.body;
     try {
         if (!username || !password) {
