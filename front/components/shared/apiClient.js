@@ -92,16 +92,33 @@ const apiClient = {
             // Handle cases where the response is not OK
             if (!response.ok) {
                 let errorData;
+
+                // Clone the response to allow reading the body multiple times if needed
+                const clonedResponse = response.clone();
+
                 try {
-                    // Try to parse the error response from the server
+                    // Try to parse the error response from the server as JSON
                     errorData = await response.json();
                     console.error(`[API Client] Error Response (${response.status}):`, errorData);
                 } catch (e) {
-                    // If the error response isn't valid JSON
-                    errorData = { error: `HTTP error! Status: ${response.status}`, details: await response.text() };
-                     console.error(`[API Client] Non-JSON Error Response (${response.status}):`, errorData.details);
+                    // If the error response isn't valid JSON, read as text
+                    try {
+                        const errorText = await clonedResponse.text();
+                        errorData = {
+                            error: `HTTP error! Status: ${response.status}`,
+                            details: errorText || response.statusText
+                        };
+                        console.error(`[API Client] Non-JSON Error Response (${response.status}):`, errorData.details);
+                    } catch (textError) {
+                        // Fallback if we can't read the response at all
+                        errorData = {
+                            error: `HTTP error! Status: ${response.status}`,
+                            details: response.statusText
+                        };
+                        console.error(`[API Client] Failed to read error response (${response.status})`);
+                    }
                 }
-                
+
                 // Specific handling for 401 Unauthorized
                 if (response.status === 401 && window.authManager) {
                      console.warn('[API Client] Unauthorized access detected. Requesting login.');
@@ -116,7 +133,7 @@ const apiClient = {
                     statusText: response.statusText,
                     headers: Object.fromEntries(response.headers.entries())
                 };
-                
+
                 // Reject the promise with the enhanced error
                 return Promise.reject(error);
             }
