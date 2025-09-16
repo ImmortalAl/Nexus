@@ -36,8 +36,8 @@
     </noscript>
     
     <!-- 6. PAGE-SPECIFIC (lazy loaded) -->
-    <link rel="preload" href="../css/active-users.css?v=7.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="../css/active-users.css?v=7.0"></noscript>
+    <link rel="preload" href="../css/active-users.css?v=7.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/active-users.css?v=7.1"></noscript>
     
     <link rel="preload" href="../css/messageboard.css?v=2.2" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="../css/messageboard.css?v=2.2"></noscript>
@@ -319,13 +319,28 @@
         </div>
     </div>
 
+    <!-- Edit History Modal -->
+    <div id="editHistoryModal" class="modal" aria-hidden="true">
+        <div class="modal-content edit-history-modal" role="dialog" aria-labelledby="editHistoryTitle">
+            <div class="modal-header">
+                <h3 id="editHistoryTitle">Edit History</h3>
+                <button id="closeEditHistory" class="close-modal" aria-label="Close edit history">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="editHistoryContent">
+                <!-- Edit history will be populated here -->
+            </div>
+        </div>
+    </div>
+
     <!-- Core Immortal Nexus Components -->
-    <script src="../components/shared/config.js?v=1.4"></script>
+    <script src="../components/shared/config.js?v=2.0"></script>
     <script src="../components/shared/apiClient.js?v=1.2"></script>
     <script src="../components/shared/authManager.js?v=1.2"></script>
-    <script src="../components/shared/nexus-core.js?v=1.4"></script>
+    <script src="../components/shared/nexus-core.js?v=1.5"></script>
     <script src="../components/shared/navigation.js?v=1.7"></script>
-    <script src="../components/shared/userMenu.js?v=6.6"></script>
+    <script src="../components/shared/userMenu.js?v=6.7"></script>
     <script src="../components/shared/authModal.js?v=4.2"></script>
     <script src="../components/shared/activeUsers.js?v=1.8"></script>
     <script src="../components/shared/messageModal.js?v=1.4"></script>
@@ -1096,6 +1111,13 @@
                 const replyId = e.target.dataset.replyId;
                 cancelReplyEdit(replyId);
             }
+
+            // Handle delete reply button
+            if (e.target.matches('[data-action="delete-reply"]')) {
+                const replyId = e.target.dataset.replyId;
+                const threadId = e.target.dataset.threadId;
+                await deleteReply(replyId, threadId);
+            }
         });
 
         function enhanceReplies(replies) {
@@ -1173,6 +1195,7 @@
                         </div>
                         <div class="reply-actions">
                             ${canEdit ? `<button class="btn btn-secondary btn-xs edit-reply-btn" data-action="edit-reply" data-reply-id="${reply._id}" data-thread-id="${threadId}"><i class="fas fa-edit"></i> Edit</button>` : ''}
+                            ${isAuthor && !reply.isAnonymous ? `<button class="btn btn-danger btn-xs delete-reply-btn" data-action="delete-reply" data-reply-id="${reply._id}" data-thread-id="${threadId}"><i class="fas fa-trash"></i> Delete</button>` : ''}
                             ${reply.editHistory && reply.editHistory.length > 0 ? `<button class="btn btn-secondary btn-xs view-edit-history-btn" data-action="view-edit-history" data-reply-id="${reply._id}"><i class="fas fa-history"></i> History (${reply.editHistory.length})</button>` : ''}
                         </div>
                         ${reply.author && reply.author.status && !reply.isAnonymous ? `<div class="user-status-signature"><i class="fas fa-comment-dots"></i> ${escapeHTML(reply.author.status)}</div>` : ''}
@@ -1590,6 +1613,40 @@
 
         // All governance functions now in global scope (duplicates removed)
 
+        // Reply deletion function
+        async function deleteReply(replyId, threadId) {
+            if (!confirm('Are you sure you want to delete this reply? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                const deleteButton = document.querySelector(`[data-action="delete-reply"][data-reply-id="${replyId}"]`);
+                if (deleteButton) {
+                    deleteButton.disabled = true;
+                    deleteButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+                }
+
+                await window.apiClient.delete(`/threads/${threadId}/replies/${replyId}`);
+
+                // Show success message
+                showNotification('Reply deleted successfully', 'success');
+
+                // Reload the active thread view to reflect the deletion
+                await loadAndDisplayActiveThread(threadId, document.getElementById('lyceum-active-thread'));
+
+            } catch (error) {
+                console.error('Error deleting reply:', error);
+                showNotification(`Error: ${error.error || 'Could not delete reply'}`, 'error');
+
+                // Re-enable button on error
+                const deleteButton = document.querySelector(`[data-action="delete-reply"][data-reply-id="${replyId}"]`);
+                if (deleteButton) {
+                    deleteButton.disabled = false;
+                    deleteButton.innerHTML = '<i class="fas fa-trash"></i> Delete';
+                }
+            }
+        }
+
         // Reply editing functions
         function openReplyEditor(replyId, threadId) {
             const replyContentElement = document.getElementById(`reply-content-${replyId}`);
@@ -1698,10 +1755,68 @@
             delete replyContentElement.dataset.quillId;
         }
 
-        function showEditHistory(replyId) {
-            // This would show a modal with edit history - for now, just alert
-            // TODO: Implement full edit history modal
-            alert('Edit history feature - coming soon!');
+        async function showEditHistory(replyId) {
+            const modal = document.getElementById('editHistoryModal');
+            const content = document.getElementById('editHistoryContent');
+
+            // Show loading state
+            content.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading edit history...</div>';
+            modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
+
+            try {
+                // Get the thread ID from the reply element
+                const replyElement = document.querySelector(`[data-id="${replyId}"]`);
+                const threadId = replyElement?.querySelector('.reply-main')?.dataset.threadId;
+
+                if (!threadId) {
+                    throw new Error('Thread ID not found');
+                }
+
+                // Fetch edit history from API
+                const response = await window.apiClient.get(`/threads/${threadId}/replies/${replyId}/edit-history`);
+                const editHistory = response.editHistory || [];
+
+                if (editHistory.length === 0) {
+                    content.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-history"></i>
+                            <h4>No Edit History</h4>
+                            <p>This reply has not been edited.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Render edit history
+                content.innerHTML = `
+                    <div class="edit-history-list">
+                        ${editHistory.map((edit, index) => `
+                            <div class="edit-history-item">
+                                <div class="edit-history-date">
+                                    <i class="fas fa-clock"></i>
+                                    ${index === 0 ? 'Original' : `Edit ${index}`} -
+                                    ${new Date(edit.editedAt).toLocaleString()}
+                                    ${edit.reason ? `<span class="edit-reason">Reason: ${escapeHTML(edit.reason)}</span>` : ''}
+                                </div>
+                                <div class="edit-history-content">
+                                    ${DOMPurify.sanitize(edit.content)}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+
+            } catch (error) {
+                console.error('Error loading edit history:', error);
+                content.innerHTML = `
+                    <div class="error-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h4>Failed to Load Edit History</h4>
+                        <p>${error.error || error.message || 'Please try again later.'}</p>
+                    </div>
+                `;
+            }
         }
 
         // Event delegation for voting
@@ -1760,10 +1875,24 @@
         // Initialize Community Moderation System
         if (typeof CommunityModerationSystem !== 'undefined') {
             window.moderationSystem = new CommunityModerationSystem();
-            
+
             // Check for active moderation cases to display alerts
             window.moderationSystem.checkForModerationAlerts();
         }
+
+        // Edit History Modal Controls
+        document.getElementById('closeEditHistory').addEventListener('click', () => {
+            const modal = document.getElementById('editHistoryModal');
+            modal.classList.remove('active');
+            modal.setAttribute('aria-hidden', 'true');
+        });
+
+        // Close edit history modal when clicking outside
+        document.getElementById('editHistoryModal').addEventListener('click', (e) => {
+            if (e.target.id === 'editHistoryModal') {
+                document.getElementById('closeEditHistory').click();
+            }
+        });
     });
     </script>
     

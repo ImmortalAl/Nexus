@@ -148,6 +148,29 @@ After completing any task involving file changes, Claude must:
 
 This ensures continuous deployment and prevents work loss.
 
+## Available Tooling & Scripts
+
+### Version Management
+- **`./bump-versions.sh`** - Automatically updates CSS/JS version numbers across all HTML files
+  - Usage: `./bump-versions.sh` (updates all files)
+  - Usage: `./bump-versions.sh styles.css` (updates specific file)
+  - Located at: `/home/immortalal/sites/Nexus/bump-versions.sh`
+
+### Performance Monitoring
+- **`performance-audit.html`** - Real-time performance monitoring dashboard
+  - Tracks Core Web Vitals (LCP, FID, CLS, TTFB, FCP)
+  - Browser compatibility testing
+  - Network performance analysis
+  - Located at: `/home/immortalal/sites/Nexus/front/performance-audit.html`
+  - Access via: `https://immortalnexus.netlify.app/performance-audit.html`
+
+### Launch Planning
+- **`LAUNCH-PLAN.md`** - Comprehensive beta and official launch checklist
+  - Phase 0-5 roadmap with go/no-go criteria
+  - Risk mitigation strategies
+  - Success metrics and KPIs
+  - Located at: `/home/immortalal/sites/Nexus/LAUNCH-PLAN.md`
+
 ## Monorepo Structure
 
 **The Immortal Nexus now dwells in a monorepo tomb:**
