@@ -155,13 +155,39 @@
                 <p><strong>Server:</strong> irc.libera.chat</p>
                 <p><strong>Channel:</strong> #mlnf</p>
                 <p><strong>Simple IRC chat</strong> - just pick a nickname and start chatting with fellow souls!</p>
+                <div id="connection-status" style="margin-top: 1rem; padding: 1rem; border-radius: 4px; display: none;">
+                    <p id="status-message"></p>
+                </div>
             </div>
-            
-            <iframe 
-                src="https://kiwiirc.com/nextclient/#irc://irc.libera.chat:+6697/#mlnf"
-                class="chat-embed"
-                title="Immortal Nexus Celestial Commons IRC Chat">
-            </iframe>
+
+            <div id="chat-container-wrapper">
+                <iframe
+                    id="chat-iframe"
+                    src="https://kiwiirc.com/nextclient/#irc://irc.libera.chat:+6697/#mlnf"
+                    class="chat-embed"
+                    title="Immortal Nexus Celestial Commons IRC Chat"
+                    sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
+                    loading="lazy">
+                </iframe>
+
+                <!-- Fallback options -->
+                <div id="chat-fallback" style="display: none; text-align: center; padding: 2rem;">
+                    <h4>Having trouble connecting? Try these alternatives:</h4>
+                    <div style="margin: 1rem 0;">
+                        <a href="https://web.libera.chat/#mlnf" target="_blank" class="btn btn-primary" style="margin: 0.5rem;">
+                            <i class="fas fa-external-link-alt"></i> Libera.Chat Web Client
+                        </a>
+                        <a href="https://kiwiirc.com/nextclient/#irc://irc.libera.chat:+6697/#mlnf" target="_blank" class="btn btn-secondary" style="margin: 0.5rem;">
+                            <i class="fas fa-external-link-alt"></i> Open KiwiIRC in New Tab
+                        </a>
+                    </div>
+                    <p style="margin-top: 1rem; color: var(--text-secondary);">
+                        <strong>Manual Connection:</strong><br>
+                        Server: irc.libera.chat:6697 (SSL)<br>
+                        Channel: #mlnf
+                    </p>
+                </div>
+            </div>
         </div>
         
     </main>
@@ -242,6 +268,62 @@
         document.addEventListener('DOMContentLoaded', () => {
             // nexus-core.js handles component initialization automatically
             // Page-specific initialization can go here
+
+            // Chat connection monitoring
+            const iframe = document.getElementById('chat-iframe');
+            const fallback = document.getElementById('chat-fallback');
+            const statusDiv = document.getElementById('connection-status');
+            const statusMessage = document.getElementById('status-message');
+            let connectionTimeout;
+
+            function showStatus(message, type = 'info') {
+                statusMessage.textContent = message;
+                statusDiv.className = type === 'error' ? 'error' : 'info';
+                statusDiv.style.display = 'block';
+                statusDiv.style.backgroundColor = type === 'error' ? 'rgba(220, 53, 69, 0.1)' : 'rgba(13, 202, 240, 0.1)';
+                statusDiv.style.border = type === 'error' ? '1px solid rgba(220, 53, 69, 0.3)' : '1px solid rgba(13, 202, 240, 0.3)';
+                statusDiv.style.color = type === 'error' ? '#dc3545' : '#0dcaf0';
+            }
+
+            function showFallback() {
+                console.log('[Celestial Commons] Showing fallback options');
+                fallback.style.display = 'block';
+                showStatus('Chat connection issues detected. Please try the alternative options below.', 'error');
+            }
+
+            // Show loading status
+            showStatus('Connecting to Celestial Commons...', 'info');
+
+            // Set a timeout to show fallback if iframe doesn't load
+            connectionTimeout = setTimeout(() => {
+                console.log('[Celestial Commons] Connection timeout, showing fallback');
+                showFallback();
+            }, 10000); // 10 seconds
+
+            // Monitor iframe load
+            iframe.addEventListener('load', function() {
+                console.log('[Celestial Commons] Iframe loaded successfully');
+                clearTimeout(connectionTimeout);
+                statusDiv.style.display = 'none';
+            });
+
+            iframe.addEventListener('error', function() {
+                console.log('[Celestial Commons] Iframe load error');
+                clearTimeout(connectionTimeout);
+                showFallback();
+            });
+
+            // Manual fallback trigger
+            setTimeout(() => {
+                if (statusDiv.style.display !== 'none') {
+                    const showFallbackBtn = document.createElement('button');
+                    showFallbackBtn.textContent = 'Show Alternative Options';
+                    showFallbackBtn.className = 'btn btn-outline';
+                    showFallbackBtn.style.marginTop = '0.5rem';
+                    showFallbackBtn.onclick = showFallback;
+                    statusDiv.appendChild(showFallbackBtn);
+                }
+            }, 5000);
         });
     </script>
 </body>
