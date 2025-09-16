@@ -449,4 +449,41 @@ router.put('/:id', auth, async (req, res) => {
     }
 });
 
+// Delete a thread
+router.delete('/:id', auth, async (req, res) => {
+    try {
+        const threadId = req.params.id;
+
+        // Find the thread
+        const thread = await Thread.findById(threadId);
+
+        if (!thread) {
+            console.log(`Thread not found: ${threadId} from ${req.ip}`);
+            return res.status(404).json({ error: 'Thread not found' });
+        }
+
+        // Check if user is the author or has admin privileges
+        const isAuthor = thread.author && thread.author.toString() === req.user.id;
+        const isAdmin = req.user.role === 'admin';
+
+        if (!isAuthor && !isAdmin) {
+            console.log(`Unauthorized delete attempt for thread ${threadId} by user ${req.user.id} from ${req.ip}`);
+            return res.status(403).json({ error: 'You can only delete your own threads' });
+        }
+
+        // Delete the thread
+        await Thread.findByIdAndDelete(threadId);
+
+        console.log(`Thread ${threadId} deleted by user ${req.user.id} from ${req.ip}`);
+        res.json({
+            message: 'Thread deleted successfully',
+            threadId: threadId
+        });
+
+    } catch (error) {
+        console.error(`Error deleting thread ${req.params.id} from ${req.ip}:`, error.message, error.stack);
+        res.status(500).json({ error: 'Failed to delete thread' });
+    }
+});
+
 module.exports = router;
