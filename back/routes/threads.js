@@ -349,16 +349,69 @@ router.put('/:threadId/replies/:replyId', auth, async (req, res) => {
 router.post('/:threadId/replies/:replyId/vote', auth, async (req, res) => {
     try {
         const { vote } = req.body; // 'upvote' or 'downvote'
-        
+
         // TODO: Implement actual voting logic with user tracking
         // For now, just return a mock response
         const newScore = Math.floor(Math.random() * 15) - 3; // Random score for demo
-        
+
         console.log(`Vote ${vote} on reply ${req.params.replyId} by user ${req.user.id} from ${req.ip}`);
         res.json({ message: 'Vote recorded', newScore });
     } catch (error) {
         console.error(`Error voting on reply ${req.params.replyId} from ${req.ip}:`, error.message, error.stack);
         res.status(500).json({ error: 'Failed to record vote' });
+    }
+});
+
+// Delete a reply
+router.delete('/:threadId/replies/:replyId', auth, async (req, res) => {
+    try {
+        const { threadId, replyId } = req.params;
+
+        // Find the thread
+        const thread = await Thread.findById(threadId);
+
+        if (!thread) {
+            console.log(`Thread not found: ${threadId} from ${req.ip}`);
+            return res.status(404).json({ error: 'Thread not found' });
+        }
+
+        // Find the reply
+        const replyIndex = thread.replies.findIndex(r => r._id.toString() === replyId);
+
+        if (replyIndex === -1) {
+            console.log(`Reply not found: ${replyId} in thread ${threadId} from ${req.ip}`);
+            return res.status(404).json({ error: 'Reply not found' });
+        }
+
+        const reply = thread.replies[replyIndex];
+
+        // Check if user is the author or has admin privileges
+        const isAuthor = reply.author && reply.author.toString() === req.user.id;
+        const isAdmin = req.user.role === 'admin';
+
+        if (!isAuthor && !isAdmin) {
+            console.log(`Unauthorized delete attempt for reply ${replyId} by user ${req.user.id} from ${req.ip}`);
+            return res.status(403).json({ error: 'You can only delete your own replies' });
+        }
+
+        // Remove the reply from the thread
+        thread.replies.splice(replyIndex, 1);
+
+        // Update reply count
+        thread.replyCount = thread.replies.length;
+
+        // Save the thread
+        await thread.save();
+
+        console.log(`Reply ${replyId} deleted from thread ${threadId} by user ${req.user.id} from ${req.ip}`);
+        res.json({
+            message: 'Reply deleted successfully',
+            thread: thread
+        });
+
+    } catch (error) {
+        console.error(`Error deleting reply ${req.params.replyId} from ${req.ip}:`, error.message, error.stack);
+        res.status(500).json({ error: 'Failed to delete reply' });
     }
 });
 
