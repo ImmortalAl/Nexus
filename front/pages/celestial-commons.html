@@ -161,31 +161,48 @@
             </div>
 
             <div id="chat-container-wrapper">
+                <!-- Primary chat option - Libera.Chat web client -->
                 <iframe
                     id="chat-iframe"
-                    src="https://kiwiirc.com/nextclient/#irc://irc.libera.chat:+6697/#mlnf"
+                    src="https://web.libera.chat/#mlnf"
                     class="chat-embed"
                     title="Immortal Nexus Celestial Commons IRC Chat"
-                    sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
+                    sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation"
                     loading="lazy">
                 </iframe>
 
-                <!-- Fallback options -->
-                <div id="chat-fallback" style="display: none; text-align: center; padding: 2rem;">
-                    <h4>Having trouble connecting? Try these alternatives:</h4>
+                <!-- Alternative options -->
+                <div id="chat-alternatives" style="text-align: center; padding: 1rem; margin-top: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                    <h4 style="margin-bottom: 1rem; color: var(--accent);">Alternative Chat Options</h4>
                     <div style="margin: 1rem 0;">
                         <a href="https://web.libera.chat/#mlnf" target="_blank" class="btn btn-primary" style="margin: 0.5rem;">
-                            <i class="fas fa-external-link-alt"></i> Libera.Chat Web Client
+                            <i class="fas fa-external-link-alt"></i> Open in New Tab
                         </a>
                         <a href="https://kiwiirc.com/nextclient/#irc://irc.libera.chat:+6697/#mlnf" target="_blank" class="btn btn-secondary" style="margin: 0.5rem;">
-                            <i class="fas fa-external-link-alt"></i> Open KiwiIRC in New Tab
+                            <i class="fas fa-external-link-alt"></i> KiwiIRC Alternative
+                        </a>
+                        <a href="https://thelounge.chat/demo/" target="_blank" class="btn btn-outline" style="margin: 0.5rem;">
+                            <i class="fas fa-external-link-alt"></i> The Lounge Demo
                         </a>
                     </div>
-                    <p style="margin-top: 1rem; color: var(--text-secondary);">
-                        <strong>Manual Connection:</strong><br>
-                        Server: irc.libera.chat:6697 (SSL)<br>
-                        Channel: #mlnf
-                    </p>
+                    <details style="margin-top: 1rem; text-align: left;">
+                        <summary style="cursor: pointer; color: var(--accent); margin-bottom: 0.5rem;">Manual Connection Details</summary>
+                        <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 4px; font-family: monospace;">
+                            <strong>Server:</strong> irc.libera.chat<br>
+                            <strong>Port:</strong> 6697 (SSL) or 6667 (Plain)<br>
+                            <strong>Channel:</strong> #mlnf<br>
+                            <strong>Nickname:</strong> Choose any name you like
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Connection help -->
+                <div id="chat-fallback" style="display: none; text-align: center; padding: 2rem;">
+                    <h4 style="color: #dc3545;">Connection Issues Detected</h4>
+                    <p>The embedded chat client is having trouble connecting. Please try one of the alternative options above.</p>
+                    <button id="retry-connection" class="btn btn-primary" style="margin-top: 1rem;">
+                        <i class="fas fa-redo"></i> Retry Connection
+                    </button>
                 </div>
             </div>
         </div>
@@ -288,7 +305,27 @@
             function showFallback() {
                 console.log('[Celestial Commons] Showing fallback options');
                 fallback.style.display = 'block';
-                showStatus('Chat connection issues detected. Please try the alternative options below.', 'error');
+                showStatus('Chat connection issues detected. Please try the alternative options above.', 'error');
+            }
+
+            function retryConnection() {
+                console.log('[Celestial Commons] Retrying connection');
+                fallback.style.display = 'none';
+                statusDiv.style.display = 'none';
+
+                // Reload the iframe
+                const currentSrc = iframe.src;
+                iframe.src = '';
+                setTimeout(() => {
+                    iframe.src = currentSrc;
+                    showStatus('Reconnecting to Celestial Commons...', 'info');
+
+                    // Reset timeout
+                    connectionTimeout = setTimeout(() => {
+                        console.log('[Celestial Commons] Retry timeout, showing fallback');
+                        showFallback();
+                    }, 10000);
+                }, 500);
             }
 
             // Show loading status
@@ -324,6 +361,12 @@
                     statusDiv.appendChild(showFallbackBtn);
                 }
             }, 5000);
+
+            // Retry button event listener
+            const retryBtn = document.getElementById('retry-connection');
+            if (retryBtn) {
+                retryBtn.addEventListener('click', retryConnection);
+            }
         });
     </script>
 </body>
