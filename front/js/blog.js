@@ -1176,12 +1176,14 @@ function updateLikeButtons(postId, result) {
     if (!postElement) return;
 
     const likeBtn = postElement.querySelector('.like-btn');
-    const dislikeBtn = postElement.querySelector('.dislike-btn');
+    // Look for challenge-btn (new) or dislike-btn (legacy)
+    const challengeBtn = postElement.querySelector('.challenge-btn') || postElement.querySelector('.dislike-btn');
     const likeCount = postElement.querySelector('.like-count');
-    const dislikeCount = postElement.querySelector('.dislike-count');
+    // Look for challenge-count (new) or dislike-count (legacy)
+    const challengeCount = postElement.querySelector('.challenge-count') || postElement.querySelector('.dislike-count');
 
     if (likeCount) likeCount.textContent = result.likes;
-    if (dislikeCount) dislikeCount.textContent = result.dislikes;
+    if (challengeCount) challengeCount.textContent = result.dislikes;
 
     // Update button states
     if (likeBtn) {
@@ -1192,11 +1194,11 @@ function updateLikeButtons(postId, result) {
         }
     }
 
-    if (dislikeBtn) {
+    if (challengeBtn) {
         if (result.userDisliked) {
-            dislikeBtn.classList.add('active');
+            challengeBtn.classList.add('active');
         } else {
-            dislikeBtn.classList.remove('active');
+            challengeBtn.classList.remove('active');
         }
     }
 }
