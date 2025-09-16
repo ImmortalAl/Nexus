@@ -1,5 +1,66 @@
 // navigation.js - Handles the consistent navigation bar across the site
 
+function getRelativePath(currentPath) {
+    // Determine the relative path prefix based on current page location
+    if (currentPath === '/' || currentPath.endsWith('/index.html') || !currentPath.includes('/')) {
+        return './'; // Root level
+    } else if (currentPath.startsWith('/souls/')) {
+        return '../'; // souls directory
+    } else if (currentPath.startsWith('/pages/')) {
+        return '../'; // pages directory
+    } else if (currentPath.startsWith('/admin/')) {
+        return '../'; // admin directory
+    }
+    return './'; // fallback
+}
+
+function generateCompleteHeaderHTML(currentPath) {
+    const relativePath = getRelativePath(currentPath);
+    const mainNavHTML = generateNavLinksHTML(currentPath, 'main');
+    const mobileNavHTML = generateNavLinksHTML(currentPath, 'mobile');
+
+    return `
+        <div class="logo">
+            <a href="/">
+                <i class="fas fa-infinity"></i>
+                <div class="title-stack">
+                    <div class="full-title">
+                        <span class="title-line-one">Immortal</span>
+                        <span class="title-line-two">Nexus</span>
+                    </div>
+                    <h1 class="short-title">IN</h1>
+                </div>
+            </a>
+        </div>
+        <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+        <nav class="main-nav">
+            <ul>
+                ${mainNavHTML}
+            </ul>
+        </nav>
+        <div class="header-controls">
+            <div class="user-menu" id="userMenuContainer"></div>
+            <div class="header-auth-buttons" id="headerAuthButtonsContainer" style="display: none;"></div>
+        </div>
+
+        <!-- Mobile Navigation -->
+        <div class="mobile-overlay" id="mobileOverlay"></div>
+        <nav class="mobile-nav" id="mobileNav">
+            <div class="sidebar-header">
+                <h2>Eternal Navigation</h2>
+                <button class="close-sidebar" id="closeMobileNav" aria-label="Close mobile navigation">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <ul class="mobile-nav-list">
+                ${mobileNavHTML}
+            </ul>
+        </nav>
+    `;
+}
+
 function generateNavLinksHTML(currentPath, navType = 'main') {
     // Normalize currentPath for local file testing (ends with / or /index.html)
     const isHomePageLocal = currentPath.endsWith('/index.html') || currentPath.endsWith('/');
@@ -69,7 +130,30 @@ function generateNavLinksHTML(currentPath, navType = 'main') {
     return finalHTML;
 }
 
+function injectCompleteHeader() {
+    const headerElement = document.querySelector('header');
+    const currentPath = window.location.pathname;
+
+    if (headerElement) {
+        const headerHTML = generateCompleteHeaderHTML(currentPath);
+        headerElement.innerHTML = headerHTML;
+        // Re-setup mobile navigation events after injecting new HTML
+        setupMobileNavEvents();
+    }
+}
+
 function injectNavigation() {
+    // Check if we should inject complete header or just nav links
+    const headerElement = document.querySelector('header');
+    const hasHeaderContent = headerElement && headerElement.innerHTML.trim().length > 0;
+
+    // If header is empty or has placeholder content, inject complete header
+    if (!hasHeaderContent || headerElement.innerHTML.includes('<!-- SHARED_HEADER -->')) {
+        injectCompleteHeader();
+        return;
+    }
+
+    // Otherwise, fall back to old behavior (just inject nav links)
     const mainNavUls = document.querySelectorAll('nav.main-nav ul');
     const mobileNavList = document.querySelector('.mobile-nav-list'); // Target for mobile links
     const currentPath = window.location.pathname;
@@ -163,11 +247,13 @@ function initNavigation() {
     setupMobileNavEvents();
 }
 
-// Expose to global MLNF object
+// Expose to global NEXUS object
 window.NEXUS = window.NEXUS || {};
 window.NEXUS.initNavigation = initNavigation;
 // Expose injectNavigation if other scripts need to refresh it, e.g., after login/logout
 window.NEXUS.injectNavigation = injectNavigation;
+// Expose injectCompleteHeader for direct header injection
+window.NEXUS.injectCompleteHeader = injectCompleteHeader;
 // Expose setupMobileNavLinkHandlers so it can be called after auth links are updated
 window.NEXUS.setupMobileNavLinkHandlers = setupMobileNavLinkHandlers;
 
