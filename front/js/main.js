@@ -729,7 +729,8 @@ function createAnonymousMessageModal(recipientUsername, recipientTitle) {
         }
 
         await sendAnonymousMessage(recipientUsername, content, senderName);
-    });
+        });
+    }
 
     // Handle backdrop click
     modal.addEventListener('click', (e) => {
@@ -753,15 +754,13 @@ function closeAnonymousMessageModal() {
         modal.style.display = 'none';
         modal.setAttribute('aria-hidden', 'true');
         document.body.style.removeProperty('overflow');
-        
+
         // Cleanup mobile keyboard detection
         if (modal.keyboardCleanup) {
             modal.keyboardCleanup();
         }
-        
+
         modal.remove();
-    }
-        });
     }
 }
 
