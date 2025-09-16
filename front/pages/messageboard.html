@@ -631,7 +631,20 @@
         
         const isAuthenticated = window.authManager.isLoggedIn();
         threadList.innerHTML = threads.map(thread => {
-            const isAuthor = isAuthenticated && window.authManager.getUser()?._id === thread.author?._id;
+            const currentUser = window.authManager.getUser();
+            const isAuthor = isAuthenticated && currentUser && thread.author && currentUser._id === thread.author._id;
+
+            // Debug logging for first thread
+            if (threads.indexOf(thread) === 0) {
+                console.log('[Debug] Delete button check:', {
+                    isAuthenticated,
+                    currentUserId: currentUser?._id,
+                    threadAuthorId: thread.author?._id,
+                    isAuthor,
+                    isAnonymous: thread.isAnonymous
+                });
+            }
+
             const createdDate = new Date(thread.createdAt).toLocaleDateString();
             const lastActive = thread.updatedAt ? new Date(thread.updatedAt).toLocaleDateString() : createdDate;
             
@@ -662,7 +675,10 @@
                         </span>
                     </div>
                     <div class="thread-actions">
-                        ${isAuthor && !thread.isAnonymous ? '<button class="btn btn-secondary btn-sm edit-thread-btn" data-action="edit-thread"><i class="fas fa-edit"></i> Edit</button>' : ''}
+                        ${isAuthor && !thread.isAnonymous ? `
+                            <button class="btn btn-secondary btn-sm edit-thread-btn" data-action="edit-thread"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="btn btn-danger btn-sm delete-thread-btn" data-action="delete-thread" data-thread-id="${thread._id}"><i class="fas fa-trash"></i> Delete</button>
+                        ` : ''}
                         ${thread.tags && thread.tags.length > 0 ? `
                             <div class="thread-tags">
                                 ${thread.tags.map(tag => `<span class="tag">${escapeHTML(tag)}</span>`).join('')}
@@ -927,11 +943,19 @@
             const toggleBtn = e.target.closest('[data-action="toggle-replies"]');
             const threadElement = e.target.closest('.thread');
             const editButton = e.target.closest('.edit-thread-btn');
+            const deleteButton = e.target.closest('.delete-thread-btn');
 
             if (editButton) {
                 e.stopPropagation(); // Prevent opening the thread view
                 const threadId = editButton.closest('.thread').dataset.id;
                 openComposerForEdit(threadId);
+                return;
+            }
+
+            if (deleteButton) {
+                e.stopPropagation(); // Prevent opening the thread view
+                const threadId = deleteButton.dataset.threadId;
+                await deleteThread(threadId);
                 return;
             }
 
@@ -1612,6 +1636,58 @@
         }
 
         // All governance functions now in global scope (duplicates removed)
+
+        // Thread deletion function
+        async function deleteThread(threadId) {
+            if (!confirm('Are you sure you want to delete this thread? This will also delete all replies. This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                const deleteButton = document.querySelector(`[data-action="delete-thread"][data-thread-id="${threadId}"]`);
+                if (deleteButton) {
+                    deleteButton.disabled = true;
+                    deleteButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+                }
+
+                await window.apiClient.delete(`/threads/${threadId}`);
+
+                // Show success message
+                showNotification('Thread deleted successfully', 'success');
+
+                // Remove the thread from the list
+                const threadElement = document.querySelector(`.thread[data-id="${threadId}"]`);
+                if (threadElement) {
+                    threadElement.remove();
+                }
+
+                // Clear the active thread view if this thread was being viewed
+                const activeThreadContainer = document.getElementById('lyceum-active-thread');
+                if (activeThreadContainer && activeThreadContainer.dataset.threadId === threadId) {
+                    activeThreadContainer.innerHTML = `
+                        <div class="active-thread-header">
+                            <button class="btn btn-secondary btn-sm close-thread-btn" id="closeActiveThread">
+                                <i class="fas fa-times"></i> Close
+                            </button>
+                        </div>
+                        <div class="empty-state">
+                            <p>Select a thread to view its details</p>
+                        </div>
+                    `;
+                }
+
+            } catch (error) {
+                console.error('Error deleting thread:', error);
+                showNotification(`Error: ${error.error || 'Could not delete thread'}`, 'error');
+
+                // Re-enable the button on error
+                const deleteButton = document.querySelector(`[data-action="delete-thread"][data-thread-id="${threadId}"]`);
+                if (deleteButton) {
+                    deleteButton.disabled = false;
+                    deleteButton.innerHTML = '<i class="fas fa-trash"></i> Delete';
+                }
+            }
+        }
 
         // Reply deletion function
         async function deleteReply(replyId, threadId) {
