@@ -94,8 +94,7 @@ class FeedbackSystem {
         if (this.form) this.form.reset();
         this.clearMessages();
         this.updateUserInfo();
-        this.modal.style.setProperty('display', 'flex', 'important');
-        this.modal.style.opacity = '1';
+        this.modal.classList.add('active');
         this.modal.setAttribute('aria-hidden', 'false');
         setTimeout(() => {
             if (this.contentTextarea) this.contentTextarea.focus();
@@ -104,7 +103,7 @@ class FeedbackSystem {
     }
     closeModal() {
         if (!this.modal) return;
-        this.modal.style.display = 'none';
+        this.modal.classList.remove('active');
         this.modal.setAttribute('aria-hidden', 'true');
         this.modal.classList.remove('keyboard-open');
         document.body.style.removeProperty('overflow');
