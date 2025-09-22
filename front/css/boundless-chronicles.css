@@ -239,21 +239,21 @@
 /* ==========================================================================
    NEWSPAPER ARTICLE CARDS
    ========================================================================== */
-.chronicle-card {
-    background: var(--newspaper-white);
-    border: var(--border-thin);
-    border-radius: 0;
-    padding: 2.5rem 2rem 2rem 2rem;
-    transition: var(--transition);
+.chronicles-feed .chronicle-card {
+    background: var(--newspaper-white) !important;
+    border: var(--border-thin) !important;
+    border-radius: 0 !important;
+    padding: 2.5rem 2rem 2rem 2rem !important;
+    transition: var(--transition) !important;
     cursor: pointer;
     position: relative;
     break-inside: avoid;
     page-break-inside: avoid;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.05) !important;
     overflow: hidden;
 }
 
-.chronicle-card::before {
+.chronicles-feed .chronicle-card::before {
     content: '✦';
     position: absolute;
     top: 1.5rem;
@@ -266,7 +266,7 @@
     z-index: 2;
 }
 
-.chronicle-card::after {
+.chronicles-feed .chronicle-card::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -278,17 +278,17 @@
     transition: opacity var(--transition);
 }
 
-.chronicle-card:hover {
-    border-color: var(--newspaper-gray-6);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1);
-    transform: translateY(-2px);
+.chronicles-feed .chronicle-card:hover {
+    border-color: var(--newspaper-gray-6) !important;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1) !important;
+    transform: translateY(-2px) !important;
 }
 
-.chronicle-card:hover::before {
+.chronicles-feed .chronicle-card:hover::before {
     opacity: 0.6;
 }
 
-.chronicle-card:hover::after {
+.chronicles-feed .chronicle-card:hover::after {
     opacity: 1;
 }
 
@@ -460,30 +460,31 @@
     flex-wrap: wrap;
 }
 
-.chronicle-action {
-    color: var(--newspaper-gray-6);
-    text-decoration: none;
-    font-size: var(--small-size);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: var(--transition);
-    font-family: 'Times New Roman', serif;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 0.5rem 1rem;
-    border: var(--border-thin);
-    border-radius: 0;
-    background: var(--newspaper-white);
-    font-weight: 600;
+.chronicles-feed .action-btn {
+    color: var(--newspaper-gray-6) !important;
+    text-decoration: none !important;
+    font-size: var(--small-size) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    transition: var(--transition) !important;
+    font-family: 'Times New Roman', serif !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    padding: 0.5rem 1rem !important;
+    border: var(--border-thin) !important;
+    border-radius: 0 !important;
+    background: var(--newspaper-white) !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
 }
 
-.chronicle-action:hover {
-    color: var(--newspaper-black);
-    background: var(--newspaper-gray-2);
-    border-color: var(--newspaper-gray-6);
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+.chronicles-feed .action-btn:hover {
+    color: var(--newspaper-black) !important;
+    background: var(--newspaper-gray-2) !important;
+    border-color: var(--newspaper-gray-6) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
 }
 
 .chronicle-action i {

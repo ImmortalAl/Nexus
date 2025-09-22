@@ -268,37 +268,8 @@
 /* ==========================================================================
    CHRONICLE CARDS - NEWSPAPER ARTICLE STYLE
    ========================================================================== */
-.chronicle-card {
-    background: var(--background-tertiary);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    position: relative;
-}
-
-.chronicle-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--immortal-gold), var(--immortal-crimson));
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.chronicle-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    border-color: var(--immortal-gold);
-}
-
-.chronicle-card:hover::before {
-    opacity: 1;
-}
+/* NOTE: Chronicle card styles are now handled by boundless-chronicles.css */
+/* This section has been moved to prevent conflicts with the newspaper theme */
 
 .chronicle-header {
     padding: 2rem 2rem 1rem 2rem;
@@ -1147,14 +1118,4 @@
     }
 }
 
-.chronicle-card {
-    animation: fadeInUp 0.6s ease-out;
-}
-
-.chronicle-card:nth-child(even) {
-    animation-delay: 0.1s;
-}
-
-.chronicle-card:nth-child(odd) {
-    animation-delay: 0.2s;
-}
+/* Chronicle card animations moved to boundless-chronicles.css */
