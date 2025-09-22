@@ -49,10 +49,10 @@
    BASE LAYOUT & CONTAINER
    ========================================================================== */
 .chronicles-main {
-    background: var(--news-paper);
+    background: var(--news-paper) !important;
     min-height: 100vh;
-    color: var(--news-text);
-    font-family: 'Crimson Text', Georgia, serif;
+    color: var(--news-text) !important;
+    font-family: 'Times New Roman', Georgia, serif !important;
     line-height: 1.6;
 }
 
@@ -66,11 +66,11 @@
    NEWSPAPER MASTHEAD
    ========================================================================== */
 .newspaper-header {
-    background: var(--news-paper);
-    border-bottom: 4px double var(--news-black);
-    border-top: 2px solid var(--news-black);
-    padding: 3rem 0 2rem;
-    margin-bottom: 2rem;
+    background: var(--news-paper) !important;
+    border-bottom: 4px double var(--news-black) !important;
+    border-top: 2px solid var(--news-black) !important;
+    padding: 3rem 0 2rem !important;
+    margin-bottom: 2rem !important;
     position: relative;
 }
 
@@ -95,24 +95,27 @@
 }
 
 .newspaper-title {
-    font-family: 'Old English Text MT', 'Blackletter', 'Times New Roman', serif;
-    font-size: var(--masthead-size);
-    font-weight: 900;
-    color: var(--news-black);
-    margin: 0 0 0.75rem 0;
-    text-shadow: none;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    font-family: 'Old English Text MT', 'Blackletter', 'Times New Roman', serif !important;
+    font-size: var(--masthead-size) !important;
+    font-weight: 900 !important;
+    color: var(--news-black) !important;
+    margin: 0 0 0.75rem 0 !important;
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.1) !important;
+    letter-spacing: 0.3em !important;
+    text-transform: uppercase !important;
     position: relative;
+    border-bottom: 6px double var(--news-black) !important;
+    padding-bottom: 1rem !important;
 }
 
 .newspaper-title::after {
-    content: '•••';
+    content: '★ IMMORTAL NEXUS ★';
     display: block;
-    font-size: 0.5rem;
+    font-size: 0.75rem;
     letter-spacing: 0.5em;
-    margin-top: 0.25rem;
-    opacity: 0.7;
+    margin-top: 0.5rem;
+    font-weight: 700;
+    font-family: 'Arial Black', sans-serif !important;
 }
 
 .newspaper-subtitle {
@@ -174,60 +177,63 @@
 }
 
 .view-btn {
-    background: var(--news-paper);
-    border: 1px solid var(--news-border);
-    color: var(--news-text);
-    padding: 0.625rem 1.25rem;
-    font-family: 'Old Standard TT', serif;
-    font-size: var(--byline-size);
-    font-weight: 400;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-transform: uppercase;
-    letter-spacing: 0.025em;
+    background: var(--news-paper) !important;
+    border: 2px solid var(--news-black) !important;
+    color: var(--news-black) !important;
+    padding: 0.625rem 1.25rem !important;
+    font-family: 'Arial', sans-serif !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: none !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    border-radius: 0 !important;
 }
 
 .view-btn:hover {
-    background: var(--immortal-gold);
-    color: var(--news-paper);
-    border-color: var(--immortal-deep-gold);
+    background: var(--news-black) !important;
+    color: var(--news-paper) !important;
+    border-color: var(--news-black) !important;
 }
 
 .view-btn.active {
-    background: var(--immortal-burgundy);
-    color: var(--news-paper);
-    border-color: var(--immortal-burgundy);
+    background: var(--news-black) !important;
+    color: var(--news-paper) !important;
+    border-color: var(--news-black) !important;
+    font-weight: 900 !important;
 }
 
 .submit-chronicle-btn {
-    background: var(--immortal-gold);
-    color: var(--news-ink);
-    border: 2px solid var(--immortal-deep-gold);
-    padding: 0.75rem 1.5rem;
-    font-family: 'Playfair Display', serif;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-transform: uppercase;
-    letter-spacing: 0.025em;
+    background: var(--news-black) !important;
+    color: var(--news-paper) !important;
+    border: 3px solid var(--news-black) !important;
+    padding: 0.75rem 1.5rem !important;
+    font-family: 'Arial Black', sans-serif !important;
+    font-size: 0.875rem !important;
+    font-weight: 900 !important;
+    cursor: pointer !important;
+    transition: none !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    border-radius: 0 !important;
 }
 
 .submit-chronicle-btn:hover {
-    background: var(--immortal-deep-gold);
-    color: var(--news-paper);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    background: var(--news-paper) !important;
+    color: var(--news-black) !important;
+    transform: none !important;
+    box-shadow: none !important;
 }
 
 /* ==========================================================================
    NEWSPAPER COLUMN LAYOUT
    ========================================================================== */
 .chronicles-feed {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    gap: var(--column-gap);
-    align-items: start;
+    display: grid !important;
+    grid-template-columns: 2fr 1fr 1fr !important;
+    gap: var(--column-gap) !important;
+    align-items: start !important;
     position: relative;
 }
 
@@ -243,14 +249,14 @@
    NEWS ARTICLE CARDS
    ========================================================================== */
 .chronicle-item {
-    background: var(--news-paper);
-    border: none;
-    border-bottom: 1px solid var(--news-border);
-    margin-bottom: 2rem;
-    padding: 0 0 1.5rem 0;
-    border-radius: 0;
-    box-shadow: none;
-    transition: none;
+    background: var(--news-paper) !important;
+    border: none !important;
+    border-bottom: 1px solid var(--news-black) !important;
+    margin-bottom: 2rem !important;
+    padding: 0 0 1.5rem 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    transition: none !important;
     position: relative;
     break-inside: avoid;
 }
@@ -412,13 +418,13 @@
 
 /* Chronicle Content */
 .chronicle-excerpt {
-    font-family: 'Times New Roman', Times, serif;
-    font-size: var(--body-size);
-    line-height: 1.6;
-    color: var(--news-text);
-    margin-bottom: 1rem;
-    text-align: justify;
-    hyphens: auto;
+    font-family: 'Times New Roman', Times, serif !important;
+    font-size: var(--body-size) !important;
+    line-height: 1.6 !important;
+    color: var(--news-black) !important;
+    margin-bottom: 1rem !important;
+    text-align: justify !important;
+    hyphens: auto !important;
 }
 
 .chronicle-excerpt p {
@@ -590,40 +596,170 @@
    FORM STYLING (for submission modal)
    ========================================================================== */
 .chronicle-form .form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.5rem !important;
 }
 
 .chronicle-form label {
-    display: block;
-    font-family: 'Playfair Display', serif;
-    font-weight: 600;
-    color: var(--news-ink);
-    margin-bottom: 0.5rem;
-    font-size: var(--body-size);
+    display: block !important;
+    font-family: 'Arial Black', sans-serif !important;
+    font-weight: 900 !important;
+    color: var(--news-black) !important;
+    margin-bottom: 0.5rem !important;
+    font-size: var(--body-size) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
 }
 
 .chronicle-form input,
 .chronicle-form textarea {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid var(--news-border);
-    background: var(--news-paper);
-    color: var(--news-text);
-    font-family: 'Crimson Text', serif;
-    font-size: var(--body-size);
-    transition: border-color 0.2s ease;
+    width: 100% !important;
+    padding: 0.75rem !important;
+    border: 2px solid var(--news-black) !important;
+    background: var(--news-paper) !important;
+    color: var(--news-text) !important;
+    font-family: 'Georgia', serif !important;
+    font-size: var(--body-size) !important;
+    transition: none !important;
+    border-radius: 0 !important;
 }
 
 .chronicle-form input:focus,
 .chronicle-form textarea:focus {
-    outline: none;
-    border-color: var(--immortal-gold);
-    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+    outline: none !important;
+    border-color: var(--news-black) !important;
+    border-width: 2px !important;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1) !important;
 }
 
 .chronicle-form small {
-    color: var(--news-gray);
-    font-size: var(--caption-size);
-    margin-top: 0.25rem;
-    display: block;
+    color: var(--news-gray) !important;
+    font-size: var(--caption-size) !important;
+    margin-top: 0.25rem !important;
+    display: block !important;
+    font-family: 'Arial', sans-serif !important;
+    font-style: italic !important;
+}
+
+/* ==========================================================================
+   PASS 3: DECORATIVE NEWSPAPER ELEMENTS
+   ========================================================================== */
+
+/* Weather widget style element (top corner) */
+.newspaper-header::before {
+    content: "TODAY: PARTLY IMMORTAL" !important;
+    position: absolute !important;
+    top: 1rem !important;
+    right: 1rem !important;
+    font-size: 0.75rem !important;
+    font-family: 'Arial', sans-serif !important;
+    font-weight: 700 !important;
+    color: var(--news-black) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    padding: 0.25rem 0.5rem !important;
+    border: 2px solid var(--news-black) !important;
+}
+
+/* Date/Edition box styling */
+.newspaper-date-box {
+    text-align: center !important;
+    padding: 0.5rem !important;
+    border-top: 3px solid var(--news-black) !important;
+    border-bottom: 3px solid var(--news-black) !important;
+    margin: 1rem 0 !important;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        var(--news-black) 25%,
+        transparent 50%,
+        var(--news-black) 75%,
+        transparent 100%) !important;
+    background-size: 8px 1px !important;
+    background-repeat: repeat-x !important;
+    background-position: center !important;
+}
+
+/* Breaking news banner style */
+.breaking-news-banner {
+    background: var(--news-black) !important;
+    color: var(--news-paper) !important;
+    padding: 0.75rem !important;
+    text-align: center !important;
+    font-family: 'Arial Black', sans-serif !important;
+    font-size: 0.875rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.2em !important;
+    position: relative !important;
+    margin: 1rem 0 !important;
+}
+
+.breaking-news-banner::before,
+.breaking-news-banner::after {
+    content: "★" !important;
+    margin: 0 1rem !important;
+    font-size: 1.25rem !important;
+}
+
+/* Vintage newspaper ornaments */
+.section-divider {
+    text-align: center !important;
+    margin: 2rem 0 !important;
+    position: relative !important;
+}
+
+.section-divider::before {
+    content: "❖ ❖ ❖" !important;
+    font-size: 1.5rem !important;
+    color: var(--news-black) !important;
+    letter-spacing: 1rem !important;
+}
+
+/* Article category tags */
+.article-category {
+    display: inline-block !important;
+    background: var(--news-black) !important;
+    color: var(--news-paper) !important;
+    padding: 0.25rem 0.75rem !important;
+    font-family: 'Arial Black', sans-serif !important;
+    font-size: 0.625rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.15em !important;
+    margin-bottom: 0.5rem !important;
+    border: none !important;
+}
+
+/* Drop caps for first paragraph */
+.chronicle-content p:first-of-type::first-letter {
+    font-size: 4rem !important;
+    font-weight: 900 !important;
+    font-family: 'Old English Text MT', serif !important;
+    line-height: 0.8 !important;
+    float: left !important;
+    margin: 0.1rem 0.2rem 0 0 !important;
+    color: var(--news-black) !important;
+    background: var(--news-paper) !important;
+    padding: 0.1rem 0.2rem !important;
+    border: 3px double var(--news-black) !important;
+}
+
+/* Print-friendly styles */
+@media print {
+    .newspaper-container {
+        background: white !important;
+        color: black !important;
+    }
+
+    .vote-btn,
+    .submit-chronicle-btn,
+    .voting-section {
+        display: none !important;
+    }
+
+    .chronicle-article {
+        page-break-inside: avoid !important;
+        border: 1px solid black !important;
+    }
+
+    .newspaper-title {
+        font-size: 3rem !important;
+    }
 }
