@@ -1,6 +1,7 @@
 /* ==========================================================================
-   BOUNDLESS CHRONICLES - IMMORTAL NEWSPAPER DESIGN
-   Classic newspaper aesthetic with immortal theming and modern functionality
+   BOUNDLESS CHRONICLES - CLASSIC NEWSPAPER DESIGN
+   Authentic black & white newspaper aesthetic inspired by NYT, WSJ, and The Times
+   Multiple refinement passes for professional newspaper appearance
    ========================================================================== */
 
 /* ==========================================================================
@@ -21,13 +22,22 @@
     /* Remove all colored accents - pure newspaper */
     --accent-none: transparent;
     
-    /* Typography Scale */
-    --masthead-size: 4rem;
-    --headline-size: 2.25rem;
-    --subhead-size: 1.5rem;
+    /* Newspaper Typography Scale */
+    --masthead-size: 4.5rem;
+    --headline-size: 2.5rem;
+    --subhead-size: 1.75rem;
+    --lead-headline-size: 3rem;
     --body-size: 1rem;
     --byline-size: 0.875rem;
     --caption-size: 0.8125rem;
+    --kicker-size: 0.75rem;
+
+    /* Typography Weights */
+    --headline-weight: 900;
+    --subhead-weight: 700;
+    --body-weight: 400;
+    --byline-weight: 500;
+    --caption-weight: 400;
     
     /* Layout */
     --column-width: 300px;
@@ -85,19 +95,34 @@
 }
 
 .newspaper-title {
-    font-family: 'Old English Text MT', 'Playfair Display', 'Times New Roman', serif;
+    font-family: 'Old English Text MT', 'Blackletter', 'Times New Roman', serif;
     font-size: var(--masthead-size);
     font-weight: 900;
     color: var(--news-black);
-    margin: 0 0 0.5rem 0;
+    margin: 0 0 0.75rem 0;
     text-shadow: none;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
+    position: relative;
+}
+
+.newspaper-title::after {
+    content: '•••';
+    display: block;
+    font-size: 0.5rem;
+    letter-spacing: 0.5em;
+    margin-top: 0.25rem;
+    opacity: 0.7;
 }
 
 .newspaper-subtitle {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--news-black);
+    border-bottom: 1px solid var(--news-black);
+    padding: 0.5rem 0;
+    margin-bottom: 1rem;
     align-items: center;
     margin-bottom: 1rem;
     padding: 0 2rem;
@@ -200,9 +225,18 @@
    ========================================================================== */
 .chronicles-feed {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(var(--column-width), 1fr));
+    grid-template-columns: 2fr 1fr 1fr;
     gap: var(--column-gap);
     align-items: start;
+    position: relative;
+}
+
+/* Lead article gets prominent positioning */
+.chronicle-item:first-child {
+    grid-column: 1;
+    border-right: 1px solid var(--news-black);
+    padding-right: var(--column-gap);
+    margin-right: var(--column-gap);
 }
 
 /* ==========================================================================
@@ -210,14 +244,25 @@
    ========================================================================== */
 .chronicle-item {
     background: var(--news-paper);
-    border: 1px solid var(--news-border-dark);
-    margin-bottom: 1.5rem;
-    padding: 1.5rem;
+    border: none;
+    border-bottom: 1px solid var(--news-border);
+    margin-bottom: 2rem;
+    padding: 0 0 1.5rem 0;
     border-radius: 0;
     box-shadow: none;
     transition: none;
     position: relative;
     break-inside: avoid;
+}
+
+/* Add decorative initial for special articles */
+.chronicle-item.featured::before {
+    content: '★';
+    position: absolute;
+    top: 0;
+    left: -1.5rem;
+    font-size: 1.5rem;
+    color: var(--news-black);
 }
 
 .chronicle-item:hover {
@@ -257,23 +302,107 @@
     color: var(--news-gray);
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
     border-bottom: 1px solid var(--news-black);
     padding-bottom: 0.25rem;
     font-weight: 700;
+    position: relative;
+}
+
+.chronicle-date::before {
+    content: '■';
+    margin-right: 0.5em;
+    color: var(--news-black);
+}
+
+/* Byline styling */
+.chronicle-byline {
+    font-family: 'Arial', 'Helvetica', sans-serif;
+    font-size: var(--byline-size);
+    font-weight: var(--byline-weight);
+    color: var(--news-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0.5rem 0;
+    font-style: normal;
+}
+
+.chronicle-byline::before {
+    content: 'BY ';
+    font-weight: 700;
+}
+
+/* Location dateline */
+.chronicle-dateline {
+    font-family: 'Arial', 'Helvetica', sans-serif;
+    font-size: var(--byline-size);
+    font-weight: 700;
+    color: var(--news-text);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.1em;
+}
+
+.chronicle-dateline::after {
+    content: ' — ';
+    font-weight: 400;
 }
 
 .chronicle-title {
-    font-family: 'Arial Black', 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Arial Black', 'Franklin Gothic Heavy', 'Helvetica Neue', Arial, sans-serif;
     font-size: var(--headline-size);
-    font-weight: 900;
+    font-weight: var(--headline-weight);
     color: var(--news-black);
     line-height: 1.1;
-    margin: 0 0 1rem 0;
+    margin: 0 0 0.5rem 0;
     cursor: pointer;
     transition: none;
     text-transform: uppercase;
     letter-spacing: -0.5px;
+}
+
+/* Lead article styling */
+.chronicle-item:first-child {
+    position: relative;
+}
+
+.chronicle-item:first-child::before {
+    content: 'LEAD STORY';
+    position: absolute;
+    top: -0.5rem;
+    left: 0;
+    font-family: 'Arial', sans-serif;
+    font-size: var(--kicker-size);
+    font-weight: 700;
+    color: var(--news-black);
+    background: var(--news-paper);
+    padding: 0 0.5rem;
+    letter-spacing: 0.1em;
+}
+
+.chronicle-item:first-child .chronicle-title {
+    font-size: var(--lead-headline-size);
+    line-height: 1.05;
+    margin-bottom: 0.75rem;
+    border-bottom: 2px solid var(--news-black);
+    padding-bottom: 0.5rem;
+    margin-top: 1rem;
+}
+
+.chronicle-item:first-child .chronicle-excerpt {
+    column-count: 2;
+    column-gap: 2rem;
+    column-rule: 1px solid var(--news-border);
+    margin-top: 1rem;
+}
+
+.chronicle-item:first-child .chronicle-excerpt p:first-child::first-letter {
+    font-size: 4em;
+    line-height: 0.8;
+    float: left;
+    margin: 0.1em 0.1em 0 0;
+    font-weight: 900;
+    font-family: 'Times New Roman', serif;
 }
 
 .chronicle-title:hover {
@@ -298,6 +427,29 @@
 
 .chronicle-excerpt p:last-child {
     margin-bottom: 0;
+}
+
+/* Chronicle Metadata */
+.chronicle-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0.75rem 0;
+    font-size: var(--caption-size);
+    color: var(--news-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.chronicle-meta span {
+    position: relative;
+}
+
+.chronicle-meta span:not(:last-child)::after {
+    content: '•';
+    position: absolute;
+    right: -0.75rem;
+    color: var(--news-black);
 }
 
 /* Chronicle Footer */
@@ -327,12 +479,29 @@
    ========================================================================== */
 @media (max-width: 1200px) {
     :root {
-        --masthead-size: 3rem;
+        --masthead-size: 3.5rem;
         --column-gap: 1.5rem;
+        --lead-headline-size: 2.5rem;
     }
-    
+
     .chronicles-feed {
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+
+    .chronicle-item:first-child {
+        grid-column: 1 / -1;
+        border-right: none;
+        padding-right: 0;
+        margin-right: 0;
+        border-bottom: 3px double var(--news-black);
+        margin-bottom: 2rem;
+        padding-bottom: 2rem;
+    }
+
+    .chronicle-item:first-child .chronicle-excerpt {
+        column-count: 2;
+        column-gap: 1.5rem;
     }
 }
 
