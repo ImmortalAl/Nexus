@@ -22,22 +22,22 @@
     /* Remove all colored accents - pure newspaper */
     --accent-none: transparent;
     
-    /* Newspaper Typography Scale */
-    --masthead-size: 4.5rem;
-    --headline-size: 2.5rem;
-    --subhead-size: 1.75rem;
-    --lead-headline-size: 3rem;
+    /* Newspaper Typography Scale - PASS 4 MAXIMUM IMPACT */
+    --masthead-size: 6rem;
+    --headline-size: 3.25rem;
+    --subhead-size: 2.25rem;
+    --lead-headline-size: 4rem;
     --body-size: 1rem;
     --byline-size: 0.875rem;
     --caption-size: 0.8125rem;
     --kicker-size: 0.75rem;
 
-    /* Typography Weights */
+    /* Typography Weights - PASS 4 MAXIMUM BOLDNESS */
     --headline-weight: 900;
-    --subhead-weight: 700;
-    --body-weight: 400;
-    --byline-weight: 500;
-    --caption-weight: 400;
+    --subhead-weight: 800;
+    --body-weight: 500;
+    --byline-weight: 700;
+    --caption-weight: 600;
     
     /* Layout */
     --column-width: 300px;
@@ -646,7 +646,7 @@
 
 /* Weather widget style element (top corner) */
 .newspaper-header::before {
-    content: "TODAY: PARTLY IMMORTAL" !important;
+    content: "EDITION: ETERNAL" !important;
     position: absolute !important;
     top: 1rem !important;
     right: 1rem !important;
@@ -762,4 +762,146 @@
     .newspaper-title {
         font-size: 3rem !important;
     }
+}
+
+/* ==========================================================================
+   PASS 4: FINAL POLISH - ULTIMATE NEWSPAPER AUTHENTICITY
+   ========================================================================== */
+
+/* Classic newspaper column rules */
+.chronicles-feed {
+    position: relative !important;
+}
+
+.chronicles-feed::before {
+    content: "" !important;
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 33.33% !important;
+    width: 1px !important;
+    background: repeating-linear-gradient(
+        to bottom,
+        var(--news-black) 0px,
+        var(--news-black) 5px,
+        transparent 5px,
+        transparent 10px
+    ) !important;
+}
+
+.chronicles-feed::after {
+    content: "" !important;
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 66.66% !important;
+    width: 1px !important;
+    background: repeating-linear-gradient(
+        to bottom,
+        var(--news-black) 0px,
+        var(--news-black) 5px,
+        transparent 5px,
+        transparent 10px
+    ) !important;
+}
+
+/* Newspaper footer with publication info */
+.newspaper-footer {
+    margin-top: 3rem !important;
+    padding: 2rem 0 !important;
+    border-top: 6px double var(--news-black) !important;
+    text-align: center !important;
+    font-family: 'Arial', sans-serif !important;
+    font-size: 0.75rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.2em !important;
+    color: var(--news-black) !important;
+    background: linear-gradient(to bottom,
+        var(--news-paper) 0%,
+        rgba(0,0,0,0.02) 100%) !important;
+}
+
+/* Stock ticker style element */
+.ticker-tape {
+    background: var(--news-black) !important;
+    color: var(--news-paper) !important;
+    padding: 0.5rem !important;
+    font-family: 'Courier New', monospace !important;
+    font-size: 0.875rem !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    position: relative !important;
+    margin: 1rem 0 !important;
+}
+
+.ticker-tape::before {
+    content: "LATEST: Chronicles incoming • Souls ascending • Echoes reverberating • " !important;
+    animation: ticker 20s linear infinite !important;
+    position: absolute !important;
+    white-space: nowrap !important;
+}
+
+@keyframes ticker {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+/* Authentic newspaper quote styling */
+blockquote {
+    font-family: 'Georgia', serif !important;
+    font-size: 1.125rem !important;
+    font-style: italic !important;
+    border-left: 5px solid var(--news-black) !important;
+    padding-left: 1.5rem !important;
+    margin: 1.5rem 0 !important;
+    color: var(--news-text) !important;
+    position: relative !important;
+}
+
+blockquote::before {
+    content: "❝" !important;
+    font-size: 3rem !important;
+    position: absolute !important;
+    left: -0.5rem !important;
+    top: -1rem !important;
+    color: var(--news-black) !important;
+    opacity: 0.3 !important;
+}
+
+/* Newspaper credibility badges */
+.credibility-badge {
+    display: inline-block !important;
+    background: var(--news-black) !important;
+    color: var(--news-paper) !important;
+    padding: 0.2rem 0.5rem !important;
+    font-size: 0.625rem !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    border: 1px solid var(--news-paper) !important;
+    margin-right: 0.5rem !important;
+}
+
+.verified::after {
+    content: " ✓" !important;
+}
+
+/* Final polish: Subtle paper grain texture */
+.newspaper-container {
+    background-image:
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 35px,
+            rgba(0,0,0,.01) 35px,
+            rgba(0,0,0,.01) 70px
+        ),
+        repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 35px,
+            rgba(0,0,0,.01) 35px,
+            rgba(0,0,0,.01) 70px
+        ) !important;
+    background-color: var(--news-paper) !important;
 }
