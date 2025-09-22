@@ -1,26 +1,54 @@
-/* Import modular CSS files */
-@import 'base-theme.css';
-@import 'utilities.css';
+/* ==========================================================================
+   MAIN STYLESHEET - IMMORTAL NEXUS
+   ========================================================================== */
 
-/* Layout */
-/* Body background is now handled in critical.css - removing duplicate definitions */
+/*
+ * This file acts as the single entry point for all CSS in the project.
+ * Styles are imported in a specific order to ensure a predictable cascade.
+ *
+ * ORDER OF IMPORTS:
+ * 1. Base/Reset Styles (Theme variables, basic element styling)
+ * 2. Core Layout (Major page structure, grids)
+ * 3. Global Components (Buttons, modals, shared styles)
+ * 4. Page-Specific Styles (Styles for individual pages like news, blogs, etc.)
+ * 5. Utility Classes (Overrides and helper classes)
+ */
 
-/* Main Layout */
-main {
-    flex: 1;
-    position: relative;
-    z-index: 1;
-}
+/* 1. BASE STYLES */
+@import url('base-theme.css');
+@import url('critical.css'); /* Contains critical, above-the-fold styles */
+@import url('styles.css'); /* Contains global styles */
 
-/* Animations */
-@keyframes pulseBtn {
-    0%, 100% { box-shadow: 0 0 10px rgba(255, 94, 120, 0.3); }
-    50% { box-shadow: 0 0 15px rgba(255, 94, 120, 0.5); }
-}
+/* 2. CORE LAYOUT */
+@import url('layout.css');
 
-/* Print Styles */
-@media print {
-    .no-print { display: none !important; }
-    body { background: none !important; }
-    .btn { display: none !important; }
-}
+/* 3. GLOBAL COMPONENTS */
+@import url('components.css');
+@import url('features.css');
+@import url('../components/shared/styles.css');
+@import url('unified-modals.css');
+@import url('components/buttons.css');
+
+/* 4. PAGE-SPECIFIC STYLES */
+@import url('active-users.css');
+@import url('lander.css');
+@import url('news.css');
+@import url('boundless-chronicles.css');
+@import url('blog-cards.css');
+@import url('blog-comments.css');
+@import url('blog-critical.css');
+@import url('blog-forms.css');
+@import url('blog-modal.css');
+@import url('blog-responsive.css');
+@import url('blog.css');
+@import url('democracy.css');
+@import url('messageboard.css');
+@import url('mindmap.css');
+@import rrl('profile-setup.css');
+@import url('sidebar.css');
+@import url('soul-comments.css');
+@import url('souls-listing.css');
+@import url('souls.css');
+
+/* 5. UTILITY CLASSES */
+@import url('utilities.css');

@@ -1,5 +1,5 @@
 // MLNF Service Worker - PWA Core Functionality
-const CACHE_VERSION = 'nexus-v1.2.0';
+const CACHE_VERSION = 'nexus-v1.2.1'; // Incremented version to bust cache
 const STATIC_CACHE = `nexus-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `nexus-dynamic-${CACHE_VERSION}`;
 const API_CACHE = `nexus-api-${CACHE_VERSION}`;
@@ -14,11 +14,7 @@ const STATIC_ASSETS = [
   '/pages/news.html',
   '/pages/messageboard.html',
   '/souls/index.html',
-  '/css/base-theme.css',
-  '/css/styles.css',
-  '/css/critical.css',
-  '/css/lander.css',
-  '/components/shared/styles.css',
+  '/css/main.css', // Consolidated stylesheet
   '/components/shared/config.js',
   '/components/shared/nexus-core.js',
   '/js/nexus-avatar-system.js',
