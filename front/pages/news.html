@@ -55,8 +55,8 @@
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous"></noscript>
     
     <!-- 7. FONTS (lazy loaded) -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap"></noscript>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=UnifrakturMaguntia&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=UnifrakturMaguntia&display=swap"></noscript>
 
     <!-- 8. QUILL EDITOR (for rich text chronicle creation) -->
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -103,40 +103,39 @@
     </header>
 
     <main class="chronicles-main">
-        <!-- Newspaper Header -->
-        <div class="newspaper-header">
-            <div class="newspaper-masthead">
-                <h1 class="newspaper-title">The Boundless Chronicles</h1>
-                <div class="newspaper-subtitle">
-                    <span class="motto">"Eternal Truths Beyond Mortal Lies"</span>
-                    <span class="established">Est. Eternity</span>
+        <!-- Newspaper Masthead -->
+        <header class="chronicles-header">
+            <div class="chronicles-header-content">
+                <h1 class="chronicles-title">The Boundless Chronicles</h1>
+                <div class="chronicles-meta">
+                    <div class="chronicles-date" id="currentDate"></div>
+                    <div class="chronicles-count">Vol. ∞, No. ∞</div>
                 </div>
-                <div class="newspaper-date" id="currentDate"></div>
             </div>
-        </div>
+        </header>
 
-        <!-- Chronicles Controls -->
+        <!-- Newspaper Controls -->
         <div class="chronicles-controls">
-        <div class="view-controls">
+            <div class="view-controls">
                 <button class="view-btn active" data-view="recent" data-sort="submission">
-                    <i class="fas fa-clock"></i> Latest Submissions
+                    Latest News
                 </button>
                 <button class="view-btn" data-view="chronological" data-sort="event">
-                    <i class="fas fa-history"></i> Historical Order
+                    By Date
                 </button>
             </div>
-            
+
             <button class="submit-chronicle-btn" id="openSubmissionModal">
-                <i class="fas fa-feather-alt"></i> Submit Chronicle
+                <i class="fas fa-pen-nib"></i> Submit Story
             </button>
         </div>
 
-        <!-- Chronicles Feed -->
+        <!-- Newspaper Columns -->
         <div class="chronicles-container">
             <div id="chroniclesFeed" class="chronicles-feed">
                 <div class="loading-chronicles">
                     <div class="chronicle-spinner"></div>
-                    <p>Gathering eternal chronicles...</p>
+                    <p>Setting the presses...</p>
                 </div>
             </div>
         </div>
@@ -146,39 +145,39 @@
     <div id="submissionModal" class="modal" aria-hidden="true">
         <div class="modal-content chronicle-modal">
             <div class="modal-header">
-                <h3><i class="fas fa-scroll"></i> Submit Chronicle to Eternity</h3>
+                <h3><i class="fas fa-newspaper"></i> Submit News Story</h3>
                 <button class="close-modal" id="closeSubmissionModal" aria-label="Close modal">×</button>
-    </div>
+            </div>
 
             <form id="submissionForm" class="chronicle-form">
                 <div class="form-group">
-                    <label for="chronicleTitle">Chronicle Title *</label>
-                    <input type="text" id="chronicleTitle" name="title" required 
-                           placeholder="Enter the title of your eternal chronicle">
+                    <label for="chronicleTitle">Headline *</label>
+                    <input type="text" id="chronicleTitle" name="title" required
+                           placeholder="Write a compelling headline">
                 </div>
-                
+
                 <div class="form-group">
-                    <label for="eventDate">Event Date *</label>
+                    <label for="eventDate">Date of Event *</label>
                     <input type="date" id="eventDate" name="eventDate" required>
-                    <small>When did this event occur?</small>
+                    <small>When did this story take place?</small>
                 </div>
-                
+
                 <div class="form-group">
-                    <label for="chronicleContent">Chronicle Content *</label>
+                    <label for="chronicleContent">Story Content *</label>
                     <div id="chronicleEditor" class="quill-editor"></div>
                     <textarea id="chronicleContent" name="content" required style="display: none;"></textarea>
                 </div>
-                
+
                 <div class="form-group">
-                    <label for="chronicleSources">Sources & References</label>
+                    <label for="chronicleSources">Sources & Citations</label>
                     <textarea id="chronicleSources" name="sources" rows="4"
-                              placeholder="List your sources (one per line)"></textarea>
-                    <small>Help others verify your chronicle's accuracy</small>
+                              placeholder="Cite your sources for credibility"></textarea>
+                    <small>Build trust with verified information</small>
                 </div>
-                
+
                 <div class="modal-actions">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-scroll"></i> Immortalize Chronicle
+                        <i class="fas fa-newspaper"></i> Publish Story
                     </button>
                     <button type="button" class="btn btn-outline" id="cancelSubmissionModal">
                         Cancel
@@ -192,36 +191,36 @@
     <div id="editModal" class="modal" aria-hidden="true">
         <div class="modal-content chronicle-modal">
             <div class="modal-header">
-                <h3><i class="fas fa-edit"></i> Edit Chronicle</h3>
+                <h3><i class="fas fa-edit"></i> Edit Story</h3>
                 <button class="close-modal" id="closeEditModal" aria-label="Close modal">×</button>
             </div>
             
             <form id="editForm" class="chronicle-form">
                 <input type="hidden" id="editChronicleId" name="chronicleId">
-                
+
                 <div class="form-group">
-                    <label for="editTitle">Chronicle Title *</label>
+                    <label for="editTitle">Headline *</label>
                     <input type="text" id="editTitle" name="title" required>
                 </div>
-                
+
                 <div class="form-group">
-                    <label for="editEventDate">Event Date *</label>
+                    <label for="editEventDate">Date of Event *</label>
                     <input type="date" id="editEventDate" name="eventDate" required>
                 </div>
-                
+
                 <div class="form-group">
-                    <label for="editContent">Chronicle Content *</label>
+                    <label for="editContent">Story Content *</label>
                     <textarea id="editContent" name="content" required rows="10"></textarea>
                 </div>
-                
+
                 <div class="form-group">
-                    <label for="editSources">Sources & References</label>
+                    <label for="editSources">Sources & Citations</label>
                     <textarea id="editSources" name="sources" rows="4"></textarea>
                 </div>
-                
+
                 <div class="modal-actions">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Save Changes
+                        <i class="fas fa-save"></i> Update Story
                     </button>
                     <button type="button" class="btn btn-danger" id="deleteChronicle">
                         <i class="fas fa-trash"></i> Delete
@@ -304,7 +303,7 @@
     <div id="commentsModal" class="modal" aria-hidden="true">
         <div class="modal-content comments-modal">
             <div class="modal-header">
-                <h3 id="commentsModalTitle">Chronicle Comments</h3>
+                <h3 id="commentsModalTitle">Reader Letters</h3>
                 <button class="close-modal" id="closeCommentsModal" aria-label="Close modal">×</button>
             </div>
             
@@ -314,13 +313,13 @@
                 <!-- Comment Input Form -->
                 <div class="comment-input-section">
                     <div class="comment-form">
-                        <textarea id="newCommentText" 
-                                  placeholder="Share your thoughts on this chronicle..." 
-                                  rows="3" 
+                        <textarea id="newCommentText"
+                                  placeholder="Write a letter to the editor..."
+                                  rows="3"
                                   maxlength="1000"></textarea>
                         <div class="comment-actions">
                             <button type="button" id="submitCommentBtn" class="btn btn-primary">
-                                <i class="fas fa-comment"></i> Post Comment
+                                <i class="fas fa-envelope"></i> Send Letter
                             </button>
                             <div class="character-count">
                                 <span id="commentCharCount">0</span>/1000
