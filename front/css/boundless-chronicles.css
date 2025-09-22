@@ -1,293 +1,457 @@
 /* ==========================================================================
-   BOUNDLESS CHRONICLES - CLASSIC NEWSPAPER DESIGN
-   Authentic black & white newspaper aesthetic inspired by NYT, WSJ, and The Times
-   Multiple refinement passes for professional newspaper appearance
+   BOUNDLESS CHRONICLES - REFINED PREMIUM NEWSPAPER DESIGN
+   Sophisticated modern newspaper aesthetic with enhanced visual hierarchy
+   Inspired by The Guardian, Financial Times, and modern digital journalism
    ========================================================================== */
 
 /* ==========================================================================
-   NEWSPAPER TYPOGRAPHY & COLORS
+   REFINED TYPOGRAPHY & COLORS
    ========================================================================== */
 :root {
-    /* Pure Black & White Newspaper Colors */
-    --news-black: #000000;
-    --news-ink: #000000;
-    --news-text: #1a1a1a;
-    --news-gray: #666666;
-    --news-light-gray: #999999;
-    --news-border: #cccccc;
-    --news-border-dark: #000000;
-    --news-paper: #ffffff;
-    --news-cream: #fdfbf7;
+    /* Sophisticated Color Palette with Depth */
+    --news-black: #0a0a0a;
+    --news-ink: #1a1a1a;
+    --news-text: #2d2d2d;
+    --news-text-light: #484848;
+    --news-gray: #757575;
+    --news-light-gray: #a8a8a8;
+    --news-border: #e0e0e0;
+    --news-border-light: #f0f0f0;
+    --news-border-dark: #1a1a1a;
+    --news-paper: #fefefe;
+    --news-cream: #faf8f4;
+    --news-accent: #8b0000;
+    --news-gold: #d4af37;
+    --news-shadow: rgba(0, 0, 0, 0.08);
+    --news-shadow-dark: rgba(0, 0, 0, 0.15);
 
-    /* Remove all colored accents - pure newspaper */
-    --accent-none: transparent;
-    
-    /* Newspaper Typography Scale - PASS 4 MAXIMUM IMPACT */
-    --masthead-size: 6rem;
-    --headline-size: 3.25rem;
-    --subhead-size: 2.25rem;
-    --lead-headline-size: 4rem;
-    --body-size: 1rem;
-    --byline-size: 0.875rem;
-    --caption-size: 0.8125rem;
-    --kicker-size: 0.75rem;
+    /* Refined Typography Scale */
+    --masthead-size: clamp(3rem, 7vw, 5.5rem);
+    --headline-size: clamp(2rem, 4vw, 3rem);
+    --subhead-size: clamp(1.5rem, 3vw, 2rem);
+    --lead-headline-size: clamp(2.5rem, 5vw, 3.5rem);
+    --body-size: 1.0625rem;
+    --body-lead: 1.25rem;
+    --byline-size: 0.9375rem;
+    --caption-size: 0.875rem;
+    --kicker-size: 0.8125rem;
+    --meta-size: 0.75rem;
 
-    /* Typography Weights - PASS 4 MAXIMUM BOLDNESS */
-    --headline-weight: 900;
-    --subhead-weight: 800;
-    --body-weight: 500;
-    --byline-weight: 700;
-    --caption-weight: 600;
-    
-    /* Layout */
-    --column-width: 300px;
-    --column-gap: 2rem;
-    --content-max-width: 1400px;
+    /* Typography Weights */
+    --headline-weight: 800;
+    --subhead-weight: 700;
+    --body-weight: 400;
+    --body-bold: 600;
+    --byline-weight: 600;
+    --caption-weight: 500;
+
+    /* Layout & Spacing */
+    --column-width: 320px;
+    --column-gap: 2.5rem;
+    --content-max-width: 1440px;
+    --section-spacing: 3rem;
+    --card-spacing: 2rem;
+
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-medium: 0.3s ease;
 }
 
 /* ==========================================================================
    BASE LAYOUT & CONTAINER
    ========================================================================== */
 .chronicles-main {
-    background: var(--news-paper) !important;
+    background: linear-gradient(180deg, var(--news-paper) 0%, var(--news-cream) 100%);
     min-height: 100vh;
-    color: var(--news-text) !important;
-    font-family: 'Times New Roman', Georgia, serif !important;
-    line-height: 1.6;
+    color: var(--news-text);
+    font-family: 'Crimson Text', 'Georgia', serif;
+    line-height: 1.7;
+    font-size: var(--body-size);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .chronicles-container {
     max-width: var(--content-max-width);
     margin: 0 auto;
-    padding: 0 2rem;
-}
-
-/* ==========================================================================
-   NEWSPAPER MASTHEAD
-   ========================================================================== */
-.newspaper-header {
-    background: var(--news-paper) !important;
-    border-bottom: 4px double var(--news-black) !important;
-    border-top: 2px solid var(--news-black) !important;
-    padding: 3rem 0 2rem !important;
-    margin-bottom: 2rem !important;
+    padding: 0 clamp(1rem, 4vw, 3rem);
     position: relative;
 }
 
-.newspaper-header::before,
+/* ==========================================================================
+   NEWSPAPER MASTHEAD - REFINED
+   ========================================================================== */
+.newspaper-header {
+    background: linear-gradient(180deg, var(--news-paper) 0%, var(--news-cream) 100%);
+    border-bottom: 1px solid var(--news-border-dark);
+    padding: clamp(2rem, 5vw, 4rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+    margin-bottom: var(--section-spacing);
+    position: relative;
+    box-shadow: 0 4px 20px var(--news-shadow);
+}
+
+.newspaper-header::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    right: 10%;
+    height: 3px;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        var(--news-accent) 20%,
+        var(--news-gold) 50%,
+        var(--news-accent) 80%,
+        transparent 100%);
+    opacity: 0.8;
+}
+
 .newspaper-header::after {
     content: '';
     position: absolute;
+    bottom: -1px;
     left: 0;
     right: 0;
     height: 1px;
-    background: var(--news-black);
+    background: var(--news-border);
 }
-
-.newspaper-header::before { top: 2px; }
-.newspaper-header::after { bottom: 4px; }
 
 .newspaper-masthead {
     text-align: center;
     max-width: var(--content-max-width);
     margin: 0 auto;
     padding: 0 2rem;
+    position: relative;
 }
 
 .newspaper-title {
-    font-family: 'Old English Text MT', 'Blackletter', 'Times New Roman', serif !important;
-    font-size: var(--masthead-size) !important;
-    font-weight: 900 !important;
-    color: var(--news-black) !important;
-    margin: 0 0 0.75rem 0 !important;
-    text-shadow: 2px 2px 0px rgba(0,0,0,0.1) !important;
-    letter-spacing: 0.3em !important;
-    text-transform: uppercase !important;
+    font-family: 'Playfair Display', 'Didot', 'Georgia', serif;
+    font-size: var(--masthead-size);
+    font-weight: 900;
+    color: var(--news-black);
+    margin: 0 0 1rem 0;
+    text-shadow: 2px 3px 4px var(--news-shadow);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
     position: relative;
-    border-bottom: 6px double var(--news-black) !important;
-    padding-bottom: 1rem !important;
+    padding-bottom: 1.5rem;
+    background: linear-gradient(90deg,
+        var(--news-black) 0%,
+        var(--news-accent) 50%,
+        var(--news-black) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 8s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.85; }
 }
 
 .newspaper-title::after {
-    content: '★ IMMORTAL NEXUS ★';
+    content: 'EST. 2025 • ETERNAL TRUTHS • TIMELESS STORIES';
     display: block;
-    font-size: 0.75rem;
-    letter-spacing: 0.5em;
-    margin-top: 0.5rem;
-    font-weight: 700;
-    font-family: 'Arial Black', sans-serif !important;
+    font-size: var(--meta-size);
+    letter-spacing: 0.3em;
+    margin-top: 1rem;
+    font-weight: 600;
+    font-family: 'Arial', sans-serif;
+    color: var(--news-gray);
+    text-transform: uppercase;
+    -webkit-text-fill-color: initial;
 }
 
 .newspaper-subtitle {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 1px solid var(--news-black);
-    border-bottom: 1px solid var(--news-black);
-    padding: 0.5rem 0;
-    margin-bottom: 1rem;
-    align-items: center;
-    margin-bottom: 1rem;
-    padding: 0 2rem;
-    font-family: 'Old Standard TT', serif;
+    border-top: 2px solid var(--news-border-dark);
+    border-bottom: 1px solid var(--news-border);
+    padding: 1rem 2rem;
+    margin: 1.5rem 0;
+    font-family: 'Crimson Text', serif;
+    background: var(--news-cream);
+    box-shadow: inset 0 1px 3px var(--news-shadow);
 }
 
 .motto {
     font-style: italic;
-    color: var(--immortal-burgundy);
+    color: var(--news-accent);
     font-size: 1.125rem;
-    font-weight: 400;
+    font-weight: 600;
+    letter-spacing: 0.02em;
 }
 
 .established {
-    color: var(--news-gray);
-    font-size: 0.9375rem;
-    font-weight: 400;
+    color: var(--news-text-light);
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
 }
 
 .newspaper-date {
-    font-family: 'Old Standard TT', serif;
-    color: var(--news-gray);
-    font-size: var(--byline-size);
+    font-family: 'Arial', sans-serif;
+    color: var(--news-text);
+    font-size: var(--caption-size);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border-top: 1px solid var(--news-border);
-    padding-top: 0.75rem;
-    margin-top: 1rem;
+    letter-spacing: 0.1em;
+    text-align: center;
+    padding: 0.75rem;
+    margin: 1rem 0;
+    background: linear-gradient(90deg, transparent, var(--news-border), transparent);
+    background-size: 100% 1px;
+    background-position: center;
+    background-repeat: no-repeat;
+    font-weight: 600;
 }
 
 /* ==========================================================================
-   CHRONICLES CONTROLS
+   CHRONICLES CONTROLS - REFINED
    ========================================================================== */
 .chronicles-controls {
-    background: var(--news-cream);
+    background: linear-gradient(135deg, var(--news-paper) 0%, var(--news-cream) 100%);
     border: 1px solid var(--news-border);
-    border-radius: 0;
-    padding: 1.5rem 2rem;
-    margin-bottom: 2rem;
+    border-radius: 8px;
+    padding: 1.75rem 2rem;
+    margin-bottom: var(--section-spacing);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px var(--news-shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+.chronicles-controls::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg,
+        var(--news-accent) 0%,
+        var(--news-gold) 25%,
+        var(--news-accent) 50%,
+        var(--news-gold) 75%,
+        var(--news-accent) 100%);
+    opacity: 0.7;
 }
 
 .view-controls {
     display: flex;
-    gap: 1rem;
+    gap: 0.75rem;
 }
 
 .view-btn {
-    background: var(--news-paper) !important;
-    border: 2px solid var(--news-black) !important;
-    color: var(--news-black) !important;
-    padding: 0.625rem 1.25rem !important;
-    font-family: 'Arial', sans-serif !important;
-    font-size: 0.75rem !important;
-    font-weight: 700 !important;
-    cursor: pointer !important;
-    transition: none !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.1em !important;
-    border-radius: 0 !important;
+    background: var(--news-paper);
+    border: 2px solid var(--news-border-dark);
+    color: var(--news-text);
+    padding: 0.75rem 1.5rem;
+    font-family: 'Arial', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+}
+
+.view-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
+    transition: left var(--transition-medium);
 }
 
 .view-btn:hover {
-    background: var(--news-black) !important;
-    color: var(--news-paper) !important;
-    border-color: var(--news-black) !important;
+    background: var(--news-ink);
+    color: var(--news-paper);
+    border-color: var(--news-ink);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--news-shadow-dark);
+}
+
+.view-btn:hover::before {
+    left: 100%;
 }
 
 .view-btn.active {
-    background: var(--news-black) !important;
-    color: var(--news-paper) !important;
-    border-color: var(--news-black) !important;
-    font-weight: 900 !important;
+    background: linear-gradient(135deg, var(--news-accent) 0%, var(--news-ink) 100%);
+    color: var(--news-paper);
+    border-color: var(--news-accent);
+    font-weight: 700;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .submit-chronicle-btn {
-    background: var(--news-black) !important;
-    color: var(--news-paper) !important;
-    border: 3px solid var(--news-black) !important;
-    padding: 0.75rem 1.5rem !important;
-    font-family: 'Arial Black', sans-serif !important;
-    font-size: 0.875rem !important;
-    font-weight: 900 !important;
-    cursor: pointer !important;
-    transition: none !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.1em !important;
-    border-radius: 0 !important;
+    background: linear-gradient(135deg, var(--news-accent) 0%, var(--news-ink) 100%);
+    color: var(--news-paper);
+    border: none;
+    padding: 1rem 2rem;
+    font-family: 'Arial', sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 6px;
+    position: relative;
+    box-shadow: 0 4px 12px var(--news-shadow-dark);
+    overflow: hidden;
+}
+
+.submit-chronicle-btn::before {
+    content: '✍';
+    margin-right: 0.5rem;
+    font-size: 1.1rem;
+    vertical-align: middle;
+}
+
+.submit-chronicle-btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
 }
 
 .submit-chronicle-btn:hover {
-    background: var(--news-paper) !important;
-    color: var(--news-black) !important;
-    transform: none !important;
-    box-shadow: none !important;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px var(--news-shadow-dark);
+}
+
+.submit-chronicle-btn:hover::after {
+    width: 300px;
+    height: 300px;
 }
 
 /* ==========================================================================
-   NEWSPAPER COLUMN LAYOUT
+   NEWSPAPER COLUMN LAYOUT - REFINED GRID
    ========================================================================== */
 .chronicles-feed {
-    display: grid !important;
-    grid-template-columns: 2fr 1fr 1fr !important;
-    gap: var(--column-gap) !important;
-    align-items: start !important;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+    gap: var(--column-gap);
+    align-items: start;
+    position: relative;
+    margin-bottom: var(--section-spacing);
+}
+
+/* Lead article gets full width prominence */
+.chronicle-item:first-child {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, var(--news-paper) 0%, var(--news-cream) 100%);
+    border: 2px solid var(--news-border-dark);
+    padding: var(--card-spacing);
+    margin-bottom: var(--section-spacing);
+    box-shadow: 0 8px 24px var(--news-shadow-dark);
     position: relative;
 }
 
-/* Lead article gets prominent positioning */
-.chronicle-item:first-child {
-    grid-column: 1;
-    border-right: 1px solid var(--news-black);
-    padding-right: var(--column-gap);
-    margin-right: var(--column-gap);
+.chronicle-item:first-child::before {
+    content: 'FEATURED STORY';
+    position: absolute;
+    top: -12px;
+    left: 2rem;
+    background: linear-gradient(90deg, var(--news-accent), var(--news-gold));
+    color: var(--news-paper);
+    padding: 0.25rem 1rem;
+    font-size: var(--meta-size);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px var(--news-shadow-dark);
 }
 
 /* ==========================================================================
-   NEWS ARTICLE CARDS
+   NEWS ARTICLE CARDS - REFINED DESIGN
    ========================================================================== */
 .chronicle-item {
-    background: var(--news-paper) !important;
-    border: none !important;
-    border-bottom: 1px solid var(--news-black) !important;
-    margin-bottom: 2rem !important;
-    padding: 0 0 1.5rem 0 !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    transition: none !important;
+    background: var(--news-paper);
+    border: 1px solid var(--news-border);
+    border-radius: 8px;
+    margin-bottom: var(--card-spacing);
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px var(--news-shadow);
+    transition: all var(--transition-medium);
     position: relative;
     break-inside: avoid;
+    overflow: hidden;
 }
 
-/* Add decorative initial for special articles */
-.chronicle-item.featured::before {
-    content: '★';
+.chronicle-item::after {
+    content: '';
     position: absolute;
     top: 0;
-    left: -1.5rem;
-    font-size: 1.5rem;
-    color: var(--news-black);
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--news-accent) 0%, var(--news-gold) 100%);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
 }
 
 .chronicle-item:hover {
     background: var(--news-cream);
-    border-color: var(--news-black);
-    transform: none;
+    box-shadow: 0 6px 20px var(--news-shadow-dark);
+    transform: translateY(-4px);
+    border-color: var(--news-border-dark);
 }
 
-/* Country Flag Indicator */
-.chronicle-flag {
+.chronicle-item:hover::after {
+    opacity: 1;
+}
+
+/* Special featured article styling */
+.chronicle-item.featured {
+    border: 2px solid var(--news-gold);
+    background: linear-gradient(135deg, var(--news-paper) 0%, rgba(212, 175, 55, 0.05) 100%);
+}
+
+.chronicle-item.featured::before {
+    content: '⭐';
     position: absolute;
     top: 1rem;
     right: 1rem;
-    width: 32px;
-    height: 24px;
-    border: 1px solid var(--news-black);
-    border-radius: 0;
+    font-size: 1.5rem;
+    color: var(--news-gold);
+    filter: drop-shadow(0 2px 4px rgba(212, 175, 55, 0.3));
+}
+
+/* Country Flag Indicator - Refined */
+.chronicle-flag {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    width: 36px;
+    height: 27px;
+    border: 2px solid var(--news-border);
+    border-radius: 4px;
     overflow: hidden;
-    box-shadow: none;
+    box-shadow: 0 2px 6px var(--news-shadow);
+    transition: all var(--transition-fast);
+}
+
+.chronicle-flag:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px var(--news-shadow-dark);
+    border-color: var(--news-gold);
 }
 
 .chronicle-flag img {
@@ -303,39 +467,53 @@
 }
 
 .chronicle-date {
-    font-family: 'Arial', 'Helvetica', sans-serif;
+    font-family: 'Arial', sans-serif;
     font-size: var(--caption-size);
-    color: var(--news-gray);
+    color: var(--news-text-light);
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 0.75rem;
-    border-bottom: 1px solid var(--news-black);
-    padding-bottom: 0.25rem;
-    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0;
+    font-weight: 600;
     position: relative;
+    display: inline-block;
 }
 
 .chronicle-date::before {
-    content: '■';
-    margin-right: 0.5em;
-    color: var(--news-black);
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--news-accent), transparent);
 }
 
-/* Byline styling */
+.chronicle-date::after {
+    content: attr(data-time);
+    margin-left: 1rem;
+    color: var(--news-gray);
+    font-weight: 400;
+}
+
+/* Byline styling - Enhanced */
 .chronicle-byline {
-    font-family: 'Arial', 'Helvetica', sans-serif;
+    font-family: 'Crimson Text', serif;
     font-size: var(--byline-size);
     font-weight: var(--byline-weight);
-    color: var(--news-gray);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin: 0.5rem 0;
-    font-style: normal;
+    color: var(--news-text-light);
+    letter-spacing: 0.02em;
+    margin: 0.75rem 0;
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .chronicle-byline::before {
-    content: 'BY ';
-    font-weight: 700;
+    content: '—';
+    font-weight: 400;
+    color: var(--news-accent);
 }
 
 /* Location dateline */
@@ -355,44 +533,46 @@
 }
 
 .chronicle-title {
-    font-family: 'Arial Black', 'Franklin Gothic Heavy', 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Playfair Display', 'Georgia', serif;
     font-size: var(--headline-size);
     font-weight: var(--headline-weight);
-    color: var(--news-black);
-    line-height: 1.1;
-    margin: 0 0 0.5rem 0;
+    color: var(--news-ink);
+    line-height: 1.2;
+    margin: 0.5rem 0 1rem 0;
     cursor: pointer;
-    transition: none;
-    text-transform: uppercase;
-    letter-spacing: -0.5px;
+    transition: color var(--transition-fast);
+    letter-spacing: -0.02em;
 }
 
-/* Lead article styling */
-.chronicle-item:first-child {
-    position: relative;
+.chronicle-title:hover {
+    color: var(--news-accent);
+    text-decoration: none;
 }
 
-.chronicle-item:first-child::before {
-    content: 'LEAD STORY';
-    position: absolute;
-    top: -0.5rem;
-    left: 0;
-    font-family: 'Arial', sans-serif;
-    font-size: var(--kicker-size);
-    font-weight: 700;
-    color: var(--news-black);
-    background: var(--news-paper);
-    padding: 0 0.5rem;
-    letter-spacing: 0.1em;
-}
-
+/* Lead article enhanced title */
 .chronicle-item:first-child .chronicle-title {
     font-size: var(--lead-headline-size);
-    line-height: 1.05;
-    margin-bottom: 0.75rem;
-    border-bottom: 2px solid var(--news-black);
-    padding-bottom: 0.5rem;
-    margin-top: 1rem;
+    line-height: 1.15;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 3px solid transparent;
+    border-image: linear-gradient(90deg,
+        transparent 0%,
+        var(--news-accent) 20%,
+        var(--news-gold) 50%,
+        var(--news-accent) 80%,
+        transparent 100%) 1;
+    background: linear-gradient(90deg,
+        var(--news-ink) 0%,
+        var(--news-accent) 50%,
+        var(--news-ink) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.chronicle-item:first-child .chronicle-title:hover {
+    opacity: 0.85;
 }
 
 .chronicle-item:first-child .chronicle-excerpt {
@@ -416,248 +596,335 @@
     text-decoration: underline;
 }
 
-/* Chronicle Content */
+/* Chronicle Content - Enhanced Typography */
 .chronicle-excerpt {
-    font-family: 'Times New Roman', Times, serif !important;
-    font-size: var(--body-size) !important;
-    line-height: 1.6 !important;
-    color: var(--news-black) !important;
-    margin-bottom: 1rem !important;
-    text-align: justify !important;
-    hyphens: auto !important;
+    font-family: 'Crimson Text', 'Georgia', serif;
+    font-size: var(--body-size);
+    line-height: 1.75;
+    color: var(--news-text);
+    margin-bottom: 1.25rem;
+    text-align: left;
+    hyphens: auto;
 }
 
 .chronicle-excerpt p {
     margin-bottom: 1rem;
+    text-indent: 0;
+}
+
+.chronicle-excerpt p:first-child {
+    margin-top: 0;
 }
 
 .chronicle-excerpt p:last-child {
     margin-bottom: 0;
 }
 
-/* Chronicle Metadata */
+/* Lead article with drop cap */
+.chronicle-item:first-child .chronicle-excerpt {
+    font-size: var(--body-lead);
+    line-height: 1.8;
+    column-count: 2;
+    column-gap: 2.5rem;
+    column-rule: 1px solid var(--news-border-light);
+}
+
+.chronicle-item:first-child .chronicle-excerpt p:first-child::first-letter {
+    font-size: 4.5em;
+    line-height: 0.8;
+    float: left;
+    margin: 0.05em 0.1em -0.1em 0;
+    font-weight: 900;
+    font-family: 'Playfair Display', serif;
+    color: var(--news-accent);
+    text-shadow: 2px 2px 4px var(--news-shadow);
+}
+
+/* Chronicle Metadata - Refined */
 .chronicle-meta {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 1rem;
-    margin: 0.75rem 0;
+    margin: 1rem 0;
     font-size: var(--caption-size);
     color: var(--news-gray);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    font-family: 'Arial', sans-serif;
 }
 
 .chronicle-meta span {
     position: relative;
+    padding: 0.25rem 0.75rem;
+    background: var(--news-cream);
+    border-radius: 4px;
+    font-weight: 500;
+    transition: all var(--transition-fast);
+}
+
+.chronicle-meta span:hover {
+    background: var(--news-border-light);
+    color: var(--news-text);
 }
 
 .chronicle-meta span:not(:last-child)::after {
-    content: '•';
+    content: '';
     position: absolute;
-    right: -0.75rem;
-    color: var(--news-black);
+    right: -0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 4px;
+    background: var(--news-accent);
+    border-radius: 50%;
 }
 
-/* Chronicle Footer */
+/* Chronicle Footer - Enhanced */
 .chronicle-footer {
-    border-top: 1px solid var(--news-border);
-    padding-top: 1rem;
-    margin-top: 1rem;
+    border-top: 2px solid var(--news-border-light);
+    padding-top: 1.25rem;
+    margin-top: 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
     font-size: var(--byline-size);
 }
 
 .chronicle-author {
-    color: var(--immortal-burgundy);
+    color: var(--news-accent);
     font-weight: 600;
+    font-family: 'Crimson Text', serif;
     font-style: italic;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.chronicle-author::before {
+    content: '✍';
+    font-style: normal;
+    opacity: 0.7;
 }
 
 .chronicle-source {
-    color: var(--news-gray);
+    color: var(--news-text-light);
     font-size: var(--caption-size);
+    padding: 0.25rem 0.75rem;
+    background: var(--news-cream);
+    border-radius: 4px;
+    font-family: 'Arial', sans-serif;
 }
 
 /* ==========================================================================
-   RESPONSIVE DESIGN
+   RESPONSIVE DESIGN - ENHANCED
    ========================================================================== */
 @media (max-width: 1200px) {
-    :root {
-        --masthead-size: 3.5rem;
-        --column-gap: 1.5rem;
-        --lead-headline-size: 2.5rem;
-    }
-
     .chronicles-feed {
-        grid-template-columns: 1fr 1fr;
-        gap: 1.5rem;
-    }
-
-    .chronicle-item:first-child {
-        grid-column: 1 / -1;
-        border-right: none;
-        padding-right: 0;
-        margin-right: 0;
-        border-bottom: 3px double var(--news-black);
-        margin-bottom: 2rem;
-        padding-bottom: 2rem;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
+        gap: 2rem;
     }
 
     .chronicle-item:first-child .chronicle-excerpt {
-        column-count: 2;
-        column-gap: 1.5rem;
+        column-count: 1;
+        column-gap: 0;
     }
 }
 
 @media (max-width: 768px) {
-    :root {
-        --masthead-size: 2.5rem;
-        --headline-size: 1.75rem;
-        --column-gap: 1rem;
-    }
-    
-    .chronicles-container {
-        padding: 0 1rem;
-    }
-    
-    .newspaper-masthead {
-        padding: 0 1rem;
-    }
-    
     .newspaper-subtitle {
         flex-direction: column;
-        gap: 0.5rem;
-        padding: 0;
-    }
-    
-    .chronicles-controls {
+        gap: 0.75rem;
         padding: 1rem;
+        text-align: center;
+    }
+
+    .chronicles-controls {
+        padding: 1.25rem;
         flex-direction: column;
         gap: 1rem;
+        text-align: center;
     }
-    
+
+    .view-controls {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .submit-chronicle-btn {
+        width: 100%;
+        max-width: 300px;
+    }
+
     .chronicles-feed {
         grid-template-columns: 1fr;
+        gap: 1.5rem;
     }
-    
+
+    .chronicle-item:first-child {
+        padding: 1.5rem;
+    }
+
     .chronicle-flag {
-        width: 28px;
-        height: 20px;
+        width: 30px;
+        height: 22px;
     }
 }
 
 @media (max-width: 480px) {
-    :root {
-        --masthead-size: 2rem;
-        --headline-size: 1.5rem;
+    .newspaper-title {
+        letter-spacing: 0.02em;
     }
-    
-    .chronicles-container {
-        padding: 0 0.75rem;
-    }
-    
+
     .chronicle-item {
-        padding: 1rem;
+        padding: 1.25rem;
+        border-radius: 6px;
     }
-    
+
+    .chronicle-item:first-child {
+        padding: 1.25rem;
+    }
+
     .chronicle-header {
-        padding-right: 2.5rem;
+        padding-right: 3rem;
+    }
+
+    .view-btn {
+        padding: 0.625rem 1rem;
+        font-size: 0.8125rem;
+    }
+
+    .chronicle-meta {
+        gap: 0.5rem;
+    }
+
+    .chronicle-meta span {
+        padding: 0.2rem 0.5rem;
+        font-size: 0.75rem;
     }
 }
 
 /* ==========================================================================
-   LOADING STATES
+   LOADING STATES - REFINED
    ========================================================================== */
 .loading-chronicles {
     text-align: center;
     padding: 4rem 2rem;
-    color: var(--news-gray);
-    font-style: italic;
+    color: var(--news-text-light);
+    font-family: 'Crimson Text', serif;
+    font-size: 1.125rem;
 }
 
 .chronicle-spinner {
-    width: 32px;
-    height: 32px;
-    border: 2px solid var(--news-border);
-    border-top: 2px solid var(--immortal-gold);
+    width: 48px;
+    height: 48px;
+    border: 3px solid var(--news-border-light);
+    border-top: 3px solid var(--news-accent);
+    border-right: 3px solid var(--news-gold);
     border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 1rem;
+    animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+    margin: 0 auto 1.5rem;
+    box-shadow: 0 2px 8px var(--news-shadow);
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(0.95); }
+    100% { transform: rotate(360deg) scale(1); }
 }
 
 /* ==========================================================================
-   FORM STYLING (for submission modal)
+   FORM STYLING - REFINED MODAL FORMS
    ========================================================================== */
 .chronicle-form .form-group {
-    margin-bottom: 1.5rem !important;
+    margin-bottom: 1.75rem;
 }
 
 .chronicle-form label {
-    display: block !important;
-    font-family: 'Arial Black', sans-serif !important;
-    font-weight: 900 !important;
-    color: var(--news-black) !important;
-    margin-bottom: 0.5rem !important;
-    font-size: var(--body-size) !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.05em !important;
+    display: block;
+    font-family: 'Arial', sans-serif;
+    font-weight: 700;
+    color: var(--news-ink);
+    margin-bottom: 0.5rem;
+    font-size: var(--byline-size);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    position: relative;
+    padding-left: 1rem;
+}
+
+.chronicle-form label::before {
+    content: '▶';
+    position: absolute;
+    left: 0;
+    color: var(--news-accent);
+    font-size: 0.75rem;
 }
 
 .chronicle-form input,
 .chronicle-form textarea {
-    width: 100% !important;
-    padding: 0.75rem !important;
-    border: 2px solid var(--news-black) !important;
-    background: var(--news-paper) !important;
-    color: var(--news-text) !important;
-    font-family: 'Georgia', serif !important;
-    font-size: var(--body-size) !important;
-    transition: none !important;
-    border-radius: 0 !important;
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 2px solid var(--news-border);
+    background: var(--news-paper);
+    color: var(--news-text);
+    font-family: 'Crimson Text', serif;
+    font-size: var(--body-size);
+    transition: all var(--transition-fast);
+    border-radius: 6px;
 }
 
 .chronicle-form input:focus,
 .chronicle-form textarea:focus {
-    outline: none !important;
-    border-color: var(--news-black) !important;
-    border-width: 2px !important;
-    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1) !important;
+    outline: none;
+    border-color: var(--news-accent);
+    background: var(--news-cream);
+    box-shadow: 0 0 0 4px rgba(139, 0, 0, 0.1);
+}
+
+.chronicle-form textarea {
+    min-height: 150px;
+    resize: vertical;
 }
 
 .chronicle-form small {
-    color: var(--news-gray) !important;
-    font-size: var(--caption-size) !important;
-    margin-top: 0.25rem !important;
-    display: block !important;
-    font-family: 'Arial', sans-serif !important;
-    font-style: italic !important;
+    color: var(--news-text-light);
+    font-size: var(--caption-size);
+    margin-top: 0.5rem;
+    display: block;
+    font-family: 'Arial', sans-serif;
+    padding-left: 1rem;
+    opacity: 0.9;
 }
 
 /* ==========================================================================
-   PASS 3: DECORATIVE NEWSPAPER ELEMENTS
+   ENHANCED DECORATIVE ELEMENTS
    ========================================================================== */
 
-/* Weather widget style element (top corner) */
-.newspaper-header::before {
-    content: "EDITION: ETERNAL" !important;
-    position: absolute !important;
-    top: 1rem !important;
-    right: 1rem !important;
-    font-size: 0.75rem !important;
-    font-family: 'Arial', sans-serif !important;
-    font-weight: 700 !important;
-    color: var(--news-black) !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.1em !important;
-    padding: 0.25rem 0.5rem !important;
-    border: 2px solid var(--news-black) !important;
+/* Edition Badge - Premium Style */
+.edition-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: linear-gradient(135deg, var(--news-accent) 0%, var(--news-ink) 100%);
+    color: var(--news-paper);
+    padding: 0.5rem 1rem;
+    font-size: var(--meta-size);
+    font-family: 'Arial', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px var(--news-shadow-dark);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.edition-badge::before {
+    content: '∞';
+    font-size: 1.2rem;
+    opacity: 0.9;
 }
 
 /* Date/Edition box styling */
@@ -678,25 +945,43 @@
     background-position: center !important;
 }
 
-/* Breaking news banner style */
+/* Breaking news banner - Modern Style */
 .breaking-news-banner {
-    background: var(--news-black) !important;
-    color: var(--news-paper) !important;
-    padding: 0.75rem !important;
-    text-align: center !important;
-    font-family: 'Arial Black', sans-serif !important;
-    font-size: 0.875rem !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.2em !important;
-    position: relative !important;
-    margin: 1rem 0 !important;
+    background: linear-gradient(90deg,
+        var(--news-accent) 0%,
+        var(--news-ink) 50%,
+        var(--news-accent) 100%);
+    color: var(--news-paper);
+    padding: 1rem;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    position: relative;
+    margin: var(--section-spacing) 0;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px var(--news-shadow-dark);
+    overflow: hidden;
+    animation: pulse 2s ease-in-out infinite;
 }
 
-.breaking-news-banner::before,
-.breaking-news-banner::after {
-    content: "★" !important;
-    margin: 0 1rem !important;
-    font-size: 1.25rem !important;
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.95; }
+}
+
+.breaking-news-banner::before {
+    content: 'BREAKING';
+    position: absolute;
+    left: 2rem;
+    background: var(--news-gold);
+    color: var(--news-ink);
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 900;
 }
 
 /* Vintage newspaper ornaments */
@@ -713,112 +998,218 @@
     letter-spacing: 1rem !important;
 }
 
-/* Article category tags */
+/* Article category tags - Enhanced */
 .article-category {
-    display: inline-block !important;
-    background: var(--news-black) !important;
-    color: var(--news-paper) !important;
-    padding: 0.25rem 0.75rem !important;
-    font-family: 'Arial Black', sans-serif !important;
-    font-size: 0.625rem !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.15em !important;
-    margin-bottom: 0.5rem !important;
-    border: none !important;
+    display: inline-block;
+    background: linear-gradient(135deg, var(--news-accent) 0%, var(--news-ink) 100%);
+    color: var(--news-paper);
+    padding: 0.375rem 1rem;
+    font-family: 'Arial', sans-serif;
+    font-size: var(--meta-size);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+    border-radius: 20px;
+    box-shadow: 0 2px 6px var(--news-shadow);
+    position: relative;
+    overflow: hidden;
 }
 
-/* Drop caps for first paragraph */
-.chronicle-content p:first-of-type::first-letter {
-    font-size: 4rem !important;
-    font-weight: 900 !important;
-    font-family: 'Old English Text MT', serif !important;
-    line-height: 0.8 !important;
-    float: left !important;
-    margin: 0.1rem 0.2rem 0 0 !important;
-    color: var(--news-black) !important;
-    background: var(--news-paper) !important;
-    padding: 0.1rem 0.2rem !important;
-    border: 3px double var(--news-black) !important;
+.article-category::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: shine 3s infinite;
 }
 
-/* Print-friendly styles */
+@keyframes shine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* Interactive Elements & Engagement */
+.chronicle-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--news-border-light);
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--news-cream);
+    border: 1px solid var(--news-border);
+    border-radius: 20px;
+    color: var(--news-text);
+    font-size: var(--caption-size);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.action-btn:hover {
+    background: var(--news-accent);
+    color: var(--news-paper);
+    border-color: var(--news-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--news-shadow);
+}
+
+.action-btn i {
+    font-size: 1rem;
+}
+
+/* Print-friendly styles - Enhanced */
 @media print {
-    .newspaper-container {
-        background: white !important;
-        color: black !important;
+    .chronicles-main {
+        background: white;
+        color: black;
     }
 
-    .vote-btn,
+    .chronicles-controls,
+    .action-btn,
     .submit-chronicle-btn,
-    .voting-section {
-        display: none !important;
+    .floating-buttons,
+    .active-users {
+        display: none;
     }
 
-    .chronicle-article {
-        page-break-inside: avoid !important;
-        border: 1px solid black !important;
+    .chronicle-item {
+        page-break-inside: avoid;
+        border: 1px solid #000;
+        box-shadow: none;
     }
 
     .newspaper-title {
-        font-size: 3rem !important;
+        font-size: 2.5rem;
+        color: black;
+        -webkit-text-fill-color: black;
+    }
+
+    .chronicle-title {
+        color: black;
+        -webkit-text-fill-color: black;
     }
 }
 
 /* ==========================================================================
-   PASS 4: FINAL POLISH - ULTIMATE NEWSPAPER AUTHENTICITY
+   ADDITIONAL VISUAL ENHANCEMENTS
    ========================================================================== */
 
-/* Classic newspaper column rules */
-.chronicles-feed {
-    position: relative !important;
+/* Reading progress indicator */
+.reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--news-accent) 0%, var(--news-gold) 100%);
+    transform-origin: left;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    z-index: 1000;
 }
 
-.chronicles-feed::before {
-    content: "" !important;
-    position: absolute !important;
-    top: 0 !important;
-    bottom: 0 !important;
-    left: 33.33% !important;
-    width: 1px !important;
-    background: repeating-linear-gradient(
-        to bottom,
-        var(--news-black) 0px,
-        var(--news-black) 5px,
-        transparent 5px,
-        transparent 10px
-    ) !important;
+/* Article quality indicators */
+.quality-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.75rem;
+    background: var(--news-gold);
+    color: var(--news-ink);
+    font-size: var(--meta-size);
+    font-weight: 700;
+    border-radius: 4px;
+    margin-left: 0.5rem;
 }
 
-.chronicles-feed::after {
-    content: "" !important;
-    position: absolute !important;
-    top: 0 !important;
-    bottom: 0 !important;
-    left: 66.66% !important;
-    width: 1px !important;
-    background: repeating-linear-gradient(
-        to bottom,
-        var(--news-black) 0px,
-        var(--news-black) 5px,
-        transparent 5px,
-        transparent 10px
-    ) !important;
+.quality-badge i {
+    font-size: 0.875rem;
 }
 
-/* Newspaper footer with publication info */
+/* Trending indicator */
+.trending-badge {
+    position: absolute;
+    top: -10px;
+    left: 1rem;
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+
+.trending-badge i {
+    font-size: 0.75rem;
+}
+
+/* Newspaper footer - Refined */
 .newspaper-footer {
-    margin-top: 3rem !important;
-    padding: 2rem 0 !important;
-    border-top: 6px double var(--news-black) !important;
-    text-align: center !important;
-    font-family: 'Arial', sans-serif !important;
-    font-size: 0.75rem !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.2em !important;
-    color: var(--news-black) !important;
-    background: linear-gradient(to bottom,
-        var(--news-paper) 0%,
-        rgba(0,0,0,0.02) 100%) !important;
+    margin-top: var(--section-spacing);
+    padding: 2.5rem 0;
+    border-top: 3px solid var(--news-border-dark);
+    text-align: center;
+    font-family: 'Crimson Text', serif;
+    background: linear-gradient(180deg,
+        var(--news-cream) 0%,
+        var(--news-paper) 100%);
+    position: relative;
+}
+
+.newspaper-footer::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--news-gold);
+    opacity: 0.5;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.footer-item {
+    color: var(--news-text-light);
+    font-size: var(--caption-size);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+}
+
+.footer-divider {
+    width: 1px;
+    height: 20px;
+    background: var(--news-border);
 }
 
 /* Stock ticker style element */
@@ -886,22 +1277,51 @@ blockquote::before {
     content: " ✓" !important;
 }
 
-/* Final polish: Subtle paper grain texture */
-.newspaper-container {
-    background-image:
-        repeating-linear-gradient(
-            45deg,
-            transparent,
-            transparent 35px,
-            rgba(0,0,0,.01) 35px,
-            rgba(0,0,0,.01) 70px
-        ),
-        repeating-linear-gradient(
-            -45deg,
-            transparent,
-            transparent 35px,
-            rgba(0,0,0,.01) 35px,
-            rgba(0,0,0,.01) 70px
-        ) !important;
-    background-color: var(--news-paper) !important;
+/* Smooth Scrolling & Performance */
+html {
+    scroll-behavior: smooth;
+}
+
+.chronicles-main * {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Accessibility Improvements */
+.chronicle-item:focus-within {
+    outline: 2px solid var(--news-accent);
+    outline-offset: 4px;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --news-paper: #1a1a1a;
+        --news-cream: #2d2d2d;
+        --news-text: #e0e0e0;
+        --news-text-light: #b0b0b0;
+        --news-border: #404040;
+        --news-border-light: #333333;
+        --news-shadow: rgba(0, 0, 0, 0.3);
+        --news-shadow-dark: rgba(0, 0, 0, 0.5);
+    }
+
+    .chronicle-item {
+        background: #242424;
+    }
+
+    .chronicle-item:hover {
+        background: #2a2a2a;
+    }
 }
