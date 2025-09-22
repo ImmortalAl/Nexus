@@ -35,19 +35,30 @@
    NEWSPAPER MASTHEAD
    ============================================ */
 .lyceum-header {
+    border-top: 1px solid var(--newspaper-black);
     border-bottom: 4px double var(--newspaper-black);
-    padding: 20px 0;
+    padding: 25px 0;
     margin-bottom: 20px;
     background: var(--newspaper-white);
     text-align: center;
+    position: relative;
+}
+
+.lyceum-header::after {
+    content: '★ ★ ★';
+    display: block;
+    font-size: 10px;
+    color: var(--newspaper-gray);
+    margin-top: 5px;
+    letter-spacing: 10px;
 }
 
 .lyceum-header h2 {
-    font-family: var(--font-headline);
-    font-size: 48px;
+    font-family: 'Old English Text MT', 'Playfair Display', var(--font-headline);
+    font-size: 56px;
     font-weight: 900;
     text-transform: uppercase;
-    letter-spacing: -2px;
+    letter-spacing: 3px;
     color: var(--newspaper-black);
     margin: 0;
     text-shadow: none;
@@ -55,12 +66,13 @@
 
 .lyceum-header p {
     font-family: var(--font-meta);
-    font-size: 12px;
+    font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 4px;
     color: var(--newspaper-gray);
-    margin: 5px 0 0 0;
+    margin: 8px 0 0 0;
     opacity: 1;
+    font-weight: 400;
 }
 
 /* Add date/edition info */
@@ -242,6 +254,16 @@
     position: relative;
 }
 
+.thread:first-child {
+    border-top: 3px solid var(--newspaper-black);
+    padding-top: 20px;
+}
+
+.thread:first-child .thread-title {
+    font-size: 24px;
+    line-height: 1.1;
+}
+
 .thread:hover {
     background: var(--newspaper-bg-gray);
     transform: none;
@@ -280,6 +302,8 @@
     line-height: 1.4;
     color: var(--newspaper-gray-dark);
     margin: 8px 0;
+    text-align: justify;
+    hyphens: auto;
 }
 
 /* ============================================
@@ -583,6 +607,19 @@
     letter-spacing: 0.5px;
 }
 
+.thread-meta span {
+    display: inline-block;
+    margin-right: 15px;
+    position: relative;
+}
+
+.thread-meta span:not(:last-child)::after {
+    content: '•';
+    position: absolute;
+    right: -10px;
+    color: var(--newspaper-gray);
+}
+
 /* ============================================
    ANONYMOUS POSTING - NEWSPAPER STYLE
    ============================================ */
@@ -645,6 +682,39 @@ input[type="checkbox"]:checked + .toggle-slider {
     background: var(--newspaper-white);
     color: var(--newspaper-black);
     border: 1px solid var(--newspaper-black);
+}
+
+/* ============================================
+   ACTIVE USERS SIDEBAR - NEWSPAPER STYLE
+   ============================================ */
+.active-users {
+    background: var(--newspaper-white);
+    border-right: 2px solid var(--newspaper-black);
+    box-shadow: none;
+}
+
+.sidebar-header {
+    border-bottom: 2px solid var(--newspaper-black);
+    background: var(--newspaper-bg-gray);
+    padding: 10px 15px;
+}
+
+.sidebar-header h2 {
+    font-family: var(--font-headline);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--newspaper-black);
+    font-weight: 700;
+}
+
+.user-list .user-item {
+    border-bottom: 1px dotted var(--newspaper-border);
+    padding: 8px 10px;
+}
+
+.user-item:hover {
+    background: var(--newspaper-bg-gray);
 }
 
 /* ============================================
