@@ -89,15 +89,16 @@
 
 .chronicles-title {
     font-family: 'Cinzel', 'Times New Roman', serif;
-    font-size: var(--masthead-size);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
     font-weight: 700;
     color: var(--newspaper-black);
     margin: 0;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
     text-decoration: none;
-    line-height: 0.9;
+    line-height: 1;
+    white-space: nowrap;
 }
 
 .chronicles-title:hover {
@@ -242,29 +243,53 @@
     background: var(--newspaper-white);
     border: var(--border-thin);
     border-radius: 0;
-    padding: 2rem;
+    padding: 2.5rem 2rem 2rem 2rem;
     transition: var(--transition);
     cursor: pointer;
     position: relative;
     break-inside: avoid;
     page-break-inside: avoid;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.05);
+    overflow: hidden;
 }
 
 .chronicle-item::before {
-    content: '❧';
+    content: '✦';
     position: absolute;
-    top: 1rem;
-    right: 1rem;
-    font-size: 1.5rem;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 1.2rem;
     color: var(--newspaper-gray-4);
-    opacity: 0.3;
+    opacity: 0.4;
     font-family: serif;
+    transform: rotate(15deg);
+    z-index: 2;
+}
+
+.chronicle-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--newspaper-gray-3), transparent);
+    opacity: 0;
+    transition: opacity var(--transition);
 }
 
 .chronicle-item:hover {
     border-color: var(--newspaper-gray-6);
-    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.chronicle-item:hover::before {
+    opacity: 0.6;
+}
+
+.chronicle-item:hover::after {
+    opacity: 1;
 }
 
 .chronicle-header {
@@ -294,10 +319,11 @@
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
     font-size: var(--caption-size);
     color: var(--newspaper-gray-6);
     font-family: 'Times New Roman', serif;
+    font-style: italic;
 }
 
 .chronicle-date {
@@ -318,21 +344,39 @@
 }
 
 .chronicle-title {
-    font-family: 'Times New Roman', serif;
+    font-family: 'Cinzel', 'Times New Roman', serif;
     font-size: var(--headline-size);
-    font-weight: 700;
+    font-weight: 600;
     color: var(--newspaper-black);
     line-height: 1.2;
-    margin: 0 0 0.75rem 0;
+    margin: 0 0 1rem 0;
     cursor: pointer;
-    transition: var(--transition);
+    transition: all var(--transition);
     text-decoration: none;
     display: block;
     text-transform: none;
+    letter-spacing: -0.005em;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    position: relative;
+}
+
+.chronicle-title::after {
+    content: '';
+    position: absolute;
+    bottom: -0.25rem;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--newspaper-gray-4);
+    transition: width var(--transition);
 }
 
 .chronicle-title:hover {
     color: var(--newspaper-gray-6);
+}
+
+.chronicle-title:hover::after {
+    width: 100%;
 }
 
 /* Chronicle Content */
@@ -352,13 +396,16 @@
 
 .chronicle-excerpt p:first-child::first-letter {
     font-family: 'Cinzel', serif;
-    font-size: 3.5em;
+    font-size: 3em;
     font-weight: 700;
     float: left;
-    line-height: 0.8;
-    margin: 0.1em 0.1em 0.1em 0;
+    line-height: 0.85;
+    margin: 0.15em 0.15em 0.1em 0;
     color: var(--newspaper-black);
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.15);
+    border: 1px solid var(--newspaper-gray-3);
+    padding: 0.1em 0.15em;
+    background: var(--newspaper-gray-1);
 }
 
 .chronicle-excerpt p:last-child {
