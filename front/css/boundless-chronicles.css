@@ -239,7 +239,7 @@
 /* ==========================================================================
    NEWSPAPER ARTICLE CARDS
    ========================================================================== */
-.chronicle-item {
+.chronicle-card {
     background: var(--newspaper-white);
     border: var(--border-thin);
     border-radius: 0;
@@ -253,7 +253,7 @@
     overflow: hidden;
 }
 
-.chronicle-item::before {
+.chronicle-card::before {
     content: '✦';
     position: absolute;
     top: 1.5rem;
@@ -266,7 +266,7 @@
     z-index: 2;
 }
 
-.chronicle-item::after {
+.chronicle-card::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -278,17 +278,17 @@
     transition: opacity var(--transition);
 }
 
-.chronicle-item:hover {
+.chronicle-card:hover {
     border-color: var(--newspaper-gray-6);
     box-shadow: 0 8px 20px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1);
     transform: translateY(-2px);
 }
 
-.chronicle-item:hover::before {
+.chronicle-card:hover::before {
     opacity: 0.6;
 }
 
-.chronicle-item:hover::after {
+.chronicle-card:hover::after {
     opacity: 1;
 }
 
@@ -529,7 +529,7 @@
         gap: 1.5rem;
     }
 
-    .chronicle-item {
+    .chronicle-card {
         padding: 1rem;
     }
 
@@ -549,7 +549,7 @@
         padding: 0 0.75rem;
     }
 
-    .chronicle-item {
+    .chronicle-card {
         padding: 1rem;
     }
 
@@ -712,7 +712,7 @@
 /* ==========================================================================
    ACCESSIBILITY & PRINT STYLES
    ========================================================================== */
-.chronicle-item:focus-within {
+.chronicle-card:focus-within {
     outline: 2px solid var(--newspaper-black);
     outline-offset: 2px;
 }
@@ -739,7 +739,7 @@
         display: none;
     }
 
-    .chronicle-item {
+    .chronicle-card {
         page-break-inside: avoid;
         border: 1px solid #000;
         break-inside: avoid;
@@ -749,7 +749,7 @@
         display: block;
     }
 
-    .chronicle-item {
+    .chronicle-card {
         margin-bottom: 2rem;
         page-break-inside: avoid;
     }
@@ -790,13 +790,13 @@
     }
 }
 
-.chronicle-item {
+.chronicle-card {
     animation: fadeInUp 0.6s ease-out both;
 }
 
-.chronicle-item:nth-child(1) { animation-delay: 0.1s; }
-.chronicle-item:nth-child(2) { animation-delay: 0.2s; }
-.chronicle-item:nth-child(3) { animation-delay: 0.3s; }
-.chronicle-item:nth-child(4) { animation-delay: 0.4s; }
-.chronicle-item:nth-child(5) { animation-delay: 0.5s; }
-.chronicle-item:nth-child(6) { animation-delay: 0.6s; }
+.chronicle-card:nth-child(1) { animation-delay: 0.1s; }
+.chronicle-card:nth-child(2) { animation-delay: 0.2s; }
+.chronicle-card:nth-child(3) { animation-delay: 0.3s; }
+.chronicle-card:nth-child(4) { animation-delay: 0.4s; }
+.chronicle-card:nth-child(5) { animation-delay: 0.5s; }
+.chronicle-card:nth-child(6) { animation-delay: 0.6s; }
