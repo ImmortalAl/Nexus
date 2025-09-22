@@ -38,7 +38,10 @@
     <!-- 6. PAGE-SPECIFIC (lazy loaded) -->
     <link rel="preload" href="../css/active-users.css?v=7.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="../css/active-users.css?v=7.1"></noscript>
-    
+
+    <!-- Classic Newspaper Design for Chronicles Unbound -->
+    <link rel="stylesheet" href="../css/chronicles-newspaper.css?v=1.0">
+
     <link rel="preload" href="../css/messageboard.css?v=2.2" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="../css/messageboard.css?v=2.2"></noscript>
     
@@ -56,6 +59,19 @@
     <!-- External Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.6/purify.min.js"></script>
+
+    <!-- Set newspaper date -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateElement = document.querySelector('.lyceum-header');
+            if (dateElement) {
+                const today = new Date();
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                const dateString = today.toLocaleDateString('en-US', options).toUpperCase();
+                dateElement.setAttribute('data-date', dateString + ' • EDITION ' + Math.floor(Math.random() * 1000 + 1));
+            }
+        });
+    </script>
 </head>
 <body>
     <!-- Shared Components -->
@@ -98,8 +114,8 @@
     </header>
 
     <main class="messageboard-container container">
-        <section class="lyceum-header">
-            <h2>Echoes Unbound</h2>
+        <section class="lyceum-header" data-date="">
+            <h2>Chronicles Unbound</h2>
             <p>Engage in eternal discourse</p>
         </section>
         <div class="lyceum-grid">
