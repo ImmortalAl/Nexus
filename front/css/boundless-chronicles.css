@@ -1330,14 +1330,22 @@ html {
 .chronicle-modal,
 .chronicle-detail-modal,
 .comments-modal {
-    background: linear-gradient(135deg, var(--background-tertiary), var(--background-secondary));
-    border: 3px solid var(--immortal-gold);
-    border-radius: 12px;
+    background: linear-gradient(135deg,
+        var(--background-tertiary) 0%,
+        rgba(255, 94, 120, 0.08) 25%,
+        var(--background-secondary) 75%,
+        rgba(255, 94, 120, 0.05) 100%);
+    border: 3px solid var(--accent);
+    border-radius: 20px;
     max-width: 900px;
     width: 90%;
     max-height: 90vh;
     overflow-y: auto;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    box-shadow:
+        0 25px 60px rgba(255, 94, 120, 0.2),
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
     animation: modalSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -1383,8 +1391,18 @@ html {
 
     .chronicle-modal .modal-header {
         padding: 1rem;
-        border-bottom: 2px solid var(--immortal-gold);
-        background: var(--background-secondary);
+        border-bottom: 2px solid var(--accent);
+        background: linear-gradient(135deg,
+            var(--background-secondary) 0%,
+            rgba(255, 94, 120, 0.1) 100%);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 2px 20px rgba(255, 94, 120, 0.1);
+    }
+
+    .chronicle-modal .modal-header h3 {
+        color: var(--accent);
+        text-shadow: 0 0 20px rgba(255, 94, 120, 0.3);
+        font-weight: 700;
     }
 
     .chronicle-modal .chronicle-form {
@@ -1393,10 +1411,14 @@ html {
     }
 
     .chronicle-modal .modal-actions {
-        background: var(--background-tertiary);
+        background: linear-gradient(135deg,
+            var(--background-tertiary) 0%,
+            rgba(255, 94, 120, 0.05) 100%);
         padding: 1.5rem;
-        border-top: 2px solid var(--immortal-gold);
+        border-top: 2px solid var(--accent);
         margin-bottom: 2rem; /* Extra bottom space for comfortable scrolling */
+        backdrop-filter: blur(10px);
+        box-shadow: 0 -4px 20px rgba(255, 94, 120, 0.1);
     }
 
     .chronicle-modal .modal-actions .btn {
@@ -1417,28 +1439,85 @@ html {
     }
 
     .chronicle-modal .modal-actions .btn-primary {
-        background: linear-gradient(135deg, var(--immortal-gold), #b8941f);
+        background: linear-gradient(135deg,
+            var(--accent) 0%,
+            #ff7a94 25%,
+            #ff8f00 75%,
+            #ffab40 100%);
         color: var(--background);
         border: none;
-        box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        box-shadow:
+            0 8px 32px rgba(255, 94, 120, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2),
+            0 1px 3px rgba(0, 0, 0, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .chronicle-modal .modal-actions .btn-primary::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.2),
+            transparent);
+        transition: left 0.5s ease;
     }
 
     .chronicle-modal .modal-actions .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(212, 175, 55, 0.4);
+        transform: translateY(-3px);
+        box-shadow:
+            0 12px 40px rgba(255, 94, 120, 0.5),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3),
+            0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    .chronicle-modal .modal-actions .btn-primary:hover::before {
+        left: 100%;
     }
 
     .chronicle-modal .modal-actions .btn-danger {
-        background: linear-gradient(135deg, #dc3545, #c82333);
-        color: white;
+        background: linear-gradient(135deg,
+            #ff1744 0%,
+            #f50057 50%,
+            #c51162 100%);
+        color: #ffffff;
         border: none;
-        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+        box-shadow:
+            0 8px 32px rgba(255, 23, 68, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1),
+            0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    .chronicle-modal .modal-actions .btn-danger:hover {
+        transform: translateY(-3px);
+        box-shadow:
+            0 12px 40px rgba(255, 23, 68, 0.5),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2),
+            0 2px 8px rgba(0, 0, 0, 0.4);
     }
 
     .chronicle-modal .modal-actions .btn-outline {
-        background: transparent;
-        color: var(--text-secondary);
-        border: 2px solid var(--border);
+        background: rgba(var(--accent-rgb, 255, 94, 120), 0.1);
+        color: var(--accent);
+        border: 2px solid var(--accent);
+        backdrop-filter: blur(10px);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 94, 120, 0.1),
+            0 4px 16px rgba(255, 94, 120, 0.1);
+    }
+
+    .chronicle-modal .modal-actions .btn-outline:hover {
+        background: rgba(var(--accent-rgb, 255, 94, 120), 0.2);
+        border-color: #ff7a94;
+        transform: translateY(-2px);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 94, 120, 0.2),
+            0 8px 24px rgba(255, 94, 120, 0.2);
     }
 
     /* Optimize form fields for mobile */
@@ -1449,9 +1528,10 @@ html {
     .chronicle-modal .form-group label {
         font-size: 1rem;
         font-weight: 600;
-        color: var(--immortal-gold);
+        color: var(--accent);
         margin-bottom: 0.75rem;
         display: block;
+        text-shadow: 0 0 10px rgba(255, 94, 120, 0.2);
     }
 
     .chronicle-modal .form-group input,
@@ -1459,20 +1539,33 @@ html {
         width: 100%;
         font-size: 16px; /* Prevent zoom on iOS */
         padding: 1rem;
-        border: 2px solid var(--border);
-        border-radius: 8px;
-        background: var(--background);
+        border: 2px solid rgba(255, 94, 120, 0.3);
+        border-radius: 12px;
+        background: linear-gradient(135deg,
+            var(--background) 0%,
+            rgba(255, 94, 120, 0.02) 100%);
         color: var(--text);
         font-family: 'Crimson Text', serif;
         box-sizing: border-box;
-        transition: border-color 0.2s ease;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        backdrop-filter: blur(5px);
+        box-shadow:
+            inset 0 1px 3px rgba(0, 0, 0, 0.1),
+            0 1px 3px rgba(255, 94, 120, 0.1);
     }
 
     .chronicle-modal .form-group input:focus,
     .chronicle-modal .form-group textarea:focus {
         outline: none;
-        border-color: var(--immortal-gold);
-        box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+        border-color: var(--accent);
+        background: linear-gradient(135deg,
+            var(--background) 0%,
+            rgba(255, 94, 120, 0.05) 100%);
+        box-shadow:
+            inset 0 1px 3px rgba(0, 0, 0, 0.1),
+            0 0 0 4px rgba(255, 94, 120, 0.2),
+            0 4px 20px rgba(255, 94, 120, 0.1);
+        transform: translateY(-1px);
     }
 
     .chronicle-modal .form-group textarea {
@@ -1483,12 +1576,29 @@ html {
 
     /* Close button optimization */
     .chronicle-modal .close-modal {
-        width: 40px;
-        height: 40px;
-        font-size: 1.5rem;
-        border-radius: 8px;
+        width: 44px;
+        height: 44px;
+        font-size: 1.4rem;
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
+        background: rgba(255, 94, 120, 0.1);
+        border: 2px solid rgba(255, 94, 120, 0.3);
+        color: var(--accent);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        backdrop-filter: blur(10px);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.1),
+            0 2px 8px rgba(255, 94, 120, 0.1);
+    }
+
+    .chronicle-modal .close-modal:hover {
+        background: rgba(255, 94, 120, 0.2);
+        border-color: var(--accent);
+        transform: scale(1.1) rotate(90deg);
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.2),
+            0 4px 16px rgba(255, 94, 120, 0.3);
     }
 }
