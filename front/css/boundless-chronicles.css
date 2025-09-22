@@ -1362,7 +1362,7 @@ html {
     }
 }
 
-/* Mobile Responsive - Clean accessible design */
+/* Mobile Responsive - Simple scrollable design */
 @media (max-width: 480px) {
     .chronicle-modal {
         width: 100vw;
@@ -1370,43 +1370,33 @@ html {
         max-height: 100vh;
         margin: 0;
         border-radius: 0;
-        overflow: hidden;
         border: none;
+        overflow-y: auto; /* Allow scrolling on the modal itself */
+        -webkit-overflow-scrolling: touch; /* Smooth iOS scrolling */
     }
 
     .chronicle-modal .modal-content {
-        height: 100vh;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch; /* Smooth iOS scrolling */
+        min-height: 100vh; /* Ensure content fills screen but can exceed */
         padding: 0;
+        overflow: visible; /* Don't cut off content */
     }
 
     .chronicle-modal .modal-header {
-        position: sticky;
-        top: 0;
-        background: var(--background-secondary);
-        z-index: 5;
-        border-bottom: 2px solid var(--immortal-gold);
         padding: 1rem;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-bottom: 2px solid var(--immortal-gold);
+        background: var(--background-secondary);
     }
 
     .chronicle-modal .chronicle-form {
         padding: 1.5rem;
-        padding-bottom: 200px; /* Generous space for natural scrolling past form end */
-        min-height: calc(100vh - 120px); /* Ensure form fills remaining space */
+        padding-bottom: 2rem; /* Normal spacing */
     }
 
     .chronicle-modal .modal-actions {
-        /* Remove sticky positioning - use natural document flow */
-        position: static;
         background: var(--background-tertiary);
         padding: 1.5rem;
         border-top: 2px solid var(--immortal-gold);
-        margin-top: 2rem;
-        box-shadow: none;
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
+        margin-bottom: 2rem; /* Extra bottom space for comfortable scrolling */
     }
 
     .chronicle-modal .modal-actions .btn {
