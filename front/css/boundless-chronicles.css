@@ -140,18 +140,7 @@
 
 /* Shimmer animation removed for cleaner header */
 
-.newspaper-title::after {
-    content: 'EST. 2025 • ETERNAL TRUTHS • TIMELESS STORIES';
-    display: block;
-    font-size: var(--meta-size);
-    letter-spacing: 0.3em;
-    margin-top: 1rem;
-    font-weight: 600;
-    font-family: 'Arial', sans-serif;
-    color: var(--news-gray);
-    text-transform: uppercase;
-    -webkit-text-fill-color: initial;
-}
+/* Removed subtitle per user request */
 
 .newspaper-subtitle {
     display: flex;
