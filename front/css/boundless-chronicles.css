@@ -135,20 +135,10 @@
     text-transform: uppercase;
     position: relative;
     padding-bottom: 1.5rem;
-    background: linear-gradient(90deg,
-        var(--news-black) 0%,
-        var(--news-accent) 50%,
-        var(--news-black) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: shimmer 8s ease-in-out infinite;
+    color: var(--news-black);
 }
 
-@keyframes shimmer {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.85; }
-}
+/* Shimmer animation removed for cleaner header */
 
 .newspaper-title::after {
     content: 'EST. 2025 • ETERNAL TRUTHS • TIMELESS STORIES';
@@ -537,16 +527,33 @@
     font-size: var(--headline-size);
     font-weight: var(--headline-weight);
     color: var(--news-ink);
-    line-height: 1.2;
-    margin: 0.5rem 0 1rem 0;
+    line-height: 1.25;
+    margin: 0.5rem 0 0.75rem 0;
     cursor: pointer;
-    transition: color var(--transition-fast);
-    letter-spacing: -0.02em;
+    transition: all var(--transition-fast);
+    letter-spacing: -0.01em;
+    position: relative;
+    display: inline-block;
+}
+
+.chronicle-title::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--news-accent), var(--news-gold));
+    transition: width var(--transition-medium);
 }
 
 .chronicle-title:hover {
     color: var(--news-accent);
-    text-decoration: none;
+    transform: translateY(-1px);
+}
+
+.chronicle-title:hover::after {
+    width: 100%;
 }
 
 /* Lead article enhanced title */
