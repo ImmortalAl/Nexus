@@ -54,6 +54,8 @@ app.use(cors({
         const allowedOrigins = [
             'https://immortalnexus.netlify.app',
             'http://immortalnexus.netlify.app',  // Added HTTP version
+            'https://dashing-belekoy-7a0095.netlify.app',  // Actual live site
+            'http://dashing-belekoy-7a0095.netlify.app',
             'https://nexus-ytrg.onrender.com',
             'http://localhost:3000',
             'http://localhost:3001',

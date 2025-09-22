@@ -1083,23 +1083,89 @@
         font-size: 2rem;
         letter-spacing: 1px;
     }
-    
+
     .chronicle-header,
     .chronicle-content,
     .chronicle-actions {
         padding: 1rem;
     }
-    
+
     .chronicle-form {
         padding: 1rem;
+        padding-bottom: 120px; /* Add space for sticky buttons */
     }
-    
+
     .modal-header {
         padding: 1rem;
     }
-    
+
     .modal-header h3 {
         font-size: 1.2rem;
+    }
+
+    /* CRITICAL FIX: Chronicle Edit Modal Mobile Accessibility */
+    .chronicle-modal {
+        height: 100vh;
+        max-height: 100vh;
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chronicle-modal .modal-content {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .chronicle-modal .chronicle-form {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1rem;
+        padding-bottom: 140px; /* Space for sticky buttons */
+    }
+
+    .chronicle-modal .modal-actions {
+        position: sticky;
+        bottom: 0;
+        background: var(--background-secondary);
+        padding: 1rem;
+        border-top: 2px solid var(--immortal-gold);
+        flex-shrink: 0;
+        z-index: 10;
+        margin-top: 0;
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .chronicle-modal .modal-actions .btn {
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 8px;
+        min-height: 48px; /* Touch-friendly */
+    }
+
+    /* Optimize form fields for mobile */
+    .chronicle-modal .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .chronicle-modal .form-group label {
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .chronicle-modal .form-group input,
+    .chronicle-modal .form-group textarea {
+        font-size: 16px; /* Prevent zoom on iOS */
+        padding: 0.8rem;
+    }
+
+    .chronicle-modal .form-group textarea {
+        min-height: 120px;
+        resize: vertical;
     }
 }
 

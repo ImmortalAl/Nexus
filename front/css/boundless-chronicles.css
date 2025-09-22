@@ -1321,3 +1321,110 @@ html {
         background: #2a2a2a;
     }
 }
+
+/* ==========================================================================
+   CHRONICLE MODALS
+   ========================================================================== */
+
+/* Base Chronicle Modal Styles */
+.chronicle-modal,
+.chronicle-detail-modal,
+.comments-modal {
+    background: linear-gradient(135deg, var(--background-tertiary), var(--background-secondary));
+    border: 3px solid var(--immortal-gold);
+    border-radius: 12px;
+    max-width: 900px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    animation: modalSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Tablet Responsive */
+@media (max-width: 768px) {
+    .chronicle-modal,
+    .chronicle-detail-modal,
+    .comments-modal {
+        width: 95%;
+        margin: 2rem auto;
+    }
+}
+
+/* Mobile Responsive - CRITICAL FIX for Save Button Accessibility */
+@media (max-width: 480px) {
+    .chronicle-modal {
+        height: 100vh;
+        max-height: 100vh;
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chronicle-modal .modal-content {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .chronicle-modal .chronicle-form {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1rem;
+        padding-bottom: 140px; /* Space for sticky buttons */
+    }
+
+    .chronicle-modal .modal-actions {
+        position: sticky;
+        bottom: 0;
+        background: var(--background-secondary);
+        padding: 1rem;
+        border-top: 2px solid var(--immortal-gold);
+        flex-shrink: 0;
+        z-index: 10;
+        margin-top: 0;
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .chronicle-modal .modal-actions .btn {
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 8px;
+        min-height: 48px; /* Touch-friendly */
+    }
+
+    /* Optimize form fields for mobile */
+    .chronicle-modal .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .chronicle-modal .form-group label {
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .chronicle-modal .form-group input,
+    .chronicle-modal .form-group textarea {
+        font-size: 16px; /* Prevent zoom on iOS */
+        padding: 0.8rem;
+    }
+
+    .chronicle-modal .form-group textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+}
