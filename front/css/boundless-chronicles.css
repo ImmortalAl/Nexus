@@ -7,20 +7,19 @@
    NEWSPAPER TYPOGRAPHY & COLORS
    ========================================================================== */
 :root {
-    /* Classic Newspaper Colors */
-    --news-ink: #1a1a1a;
-    --news-text: #2a2a2a;
+    /* Pure Black & White Newspaper Colors */
+    --news-black: #000000;
+    --news-ink: #000000;
+    --news-text: #1a1a1a;
     --news-gray: #666666;
     --news-light-gray: #999999;
-    --news-border: #ddd;
-    --news-paper: #fefefe;
-    --news-cream: #faf9f7;
-    
-    /* Immortal Accents */
-    --immortal-gold: #d4af37;
-    --immortal-deep-gold: #b8941f;
-    --immortal-burgundy: #722f37;
-    --immortal-purple: #6a1b9a;
+    --news-border: #cccccc;
+    --news-border-dark: #000000;
+    --news-paper: #ffffff;
+    --news-cream: #fdfbf7;
+
+    /* Remove all colored accents - pure newspaper */
+    --accent-none: transparent;
     
     /* Typography Scale */
     --masthead-size: 4rem;
@@ -57,9 +56,9 @@
    NEWSPAPER MASTHEAD
    ========================================================================== */
 .newspaper-header {
-    background: linear-gradient(135deg, var(--news-paper) 0%, var(--news-cream) 100%);
-    border-bottom: 4px double var(--immortal-gold);
-    border-top: 2px solid var(--immortal-gold);
+    background: var(--news-paper);
+    border-bottom: 4px double var(--news-black);
+    border-top: 2px solid var(--news-black);
     padding: 3rem 0 2rem;
     margin-bottom: 2rem;
     position: relative;
@@ -72,7 +71,7 @@
     left: 0;
     right: 0;
     height: 1px;
-    background: var(--immortal-deep-gold);
+    background: var(--news-black);
 }
 
 .newspaper-header::before { top: 2px; }
@@ -86,13 +85,14 @@
 }
 
 .newspaper-title {
-    font-family: 'Playfair Display', 'Times New Roman', serif;
+    font-family: 'Old English Text MT', 'Playfair Display', 'Times New Roman', serif;
     font-size: var(--masthead-size);
     font-weight: 900;
-    color: var(--news-ink);
+    color: var(--news-black);
     margin: 0 0 0.5rem 0;
-    text-shadow: 2px 2px 0px rgba(212, 175, 55, 0.1);
+    text-shadow: none;
     letter-spacing: 0.02em;
+    text-transform: uppercase;
 }
 
 .newspaper-subtitle {
@@ -210,18 +210,20 @@
    ========================================================================== */
 .chronicle-item {
     background: var(--news-paper);
-    border: 1px solid var(--news-border);
+    border: 1px solid var(--news-border-dark);
     margin-bottom: 1.5rem;
     padding: 1.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: all 0.2s ease;
+    border-radius: 0;
+    box-shadow: none;
+    transition: none;
     position: relative;
     break-inside: avoid;
 }
 
 .chronicle-item:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transform: translateY(-1px);
+    background: var(--news-cream);
+    border-color: var(--news-black);
+    transform: none;
 }
 
 /* Country Flag Indicator */
@@ -231,10 +233,10 @@
     right: 1rem;
     width: 32px;
     height: 24px;
-    border: 1px solid var(--news-border);
-    border-radius: 2px;
+    border: 1px solid var(--news-black);
+    border-radius: 0;
     overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: none;
 }
 
 .chronicle-flag img {
@@ -250,38 +252,44 @@
 }
 
 .chronicle-date {
-    font-family: 'Old Standard TT', serif;
+    font-family: 'Arial', 'Helvetica', sans-serif;
     font-size: var(--caption-size);
     color: var(--news-gray);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
     margin-bottom: 0.5rem;
-    border-bottom: 1px solid var(--news-border);
+    border-bottom: 1px solid var(--news-black);
     padding-bottom: 0.25rem;
+    font-weight: 700;
 }
 
 .chronicle-title {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Arial Black', 'Helvetica Neue', Arial, sans-serif;
     font-size: var(--headline-size);
-    font-weight: 700;
-    color: var(--news-ink);
-    line-height: 1.2;
+    font-weight: 900;
+    color: var(--news-black);
+    line-height: 1.1;
     margin: 0 0 1rem 0;
     cursor: pointer;
-    transition: color 0.2s ease;
+    transition: none;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
 }
 
 .chronicle-title:hover {
-    color: var(--immortal-burgundy);
+    color: var(--news-text);
+    text-decoration: underline;
 }
 
 /* Chronicle Content */
 .chronicle-excerpt {
+    font-family: 'Times New Roman', Times, serif;
     font-size: var(--body-size);
-    line-height: 1.7;
+    line-height: 1.6;
     color: var(--news-text);
     margin-bottom: 1rem;
     text-align: justify;
+    hyphens: auto;
 }
 
 .chronicle-excerpt p {
