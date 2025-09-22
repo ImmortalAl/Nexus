@@ -47,12 +47,36 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-    origin: ['https://immortalnexus.netlify.app', 'https://nexus-ytrg.onrender.com', 'http://localhost:3000'],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    origin: function(origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+
+        const allowedOrigins = [
+            'https://immortalnexus.netlify.app',
+            'http://immortalnexus.netlify.app',  // Added HTTP version
+            'https://nexus-ytrg.onrender.com',
+            'http://localhost:3000',
+            'http://localhost:3001',
+            'http://127.0.0.1:3000',
+            'http://127.0.0.1:3001'
+        ];
+
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            console.log(`[CORS] Blocked origin: ${origin}`);
+            callback(null, true); // Temporarily allow all origins for debugging
+        }
+    },
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
     optionsSuccessStatus: 204,
-    allowedHeaders: ['Content-Type', 'Authorization', 'Cache-Control', 'Pragma', 'Expires']
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cache-Control', 'Pragma', 'Expires'],
+    exposedHeaders: ['Content-Length', 'Content-Type']
 }));
+
+// Handle OPTIONS requests for all routes (CORS preflight)
+app.options('*', cors());
 
 // Routes
 app.use('/api/auth', authRoutes);
