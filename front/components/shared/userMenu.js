@@ -78,6 +78,16 @@ function updateUserMenu() {
               updateThemeMenuText();
             } else {
               console.error('NEXUSTheme not available in direct listener');
+              // Fallback manual theme toggle
+              console.log('Attempting manual theme toggle...');
+              const currentTheme = document.body.classList.contains('dark-theme') ? 'dark' : 'light';
+              const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+              console.log('Manual toggle from', currentTheme, 'to', newTheme);
+              
+              document.body.classList.remove('light-theme', 'dark-theme');
+              document.body.classList.add(newTheme + '-theme');
+              localStorage.setItem('nexus-theme', newTheme);
+              updateThemeMenuText();
             }
           });
           console.log('Direct theme toggle event listener added');
