@@ -43,8 +43,8 @@
     <link rel="preload" href="css/components/spinners.css?v=1.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="css/components/spinners.css?v=1.0"></noscript>
     
-    <link rel="preload" href="css/features.css?v=6.6" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="css/features.css?v=6.6"></noscript>
+    <link rel="preload" href="css/features.css?v=6.7" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/features.css?v=6.7"></noscript>
     
     <!-- 5. UNIFIED MODAL SYSTEM -->
     <link rel="preload" href="css/unified-modals.css?v=2.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -837,6 +837,7 @@
                 
                 // Create content
                 const title = document.createElement('h3');
+                title.className = 'echo-title-prominent';
                 title.textContent = message.title || 'Untitled Echo';
                 
                 const content = document.createElement('p');

@@ -1,5 +1,5 @@
 /* MLNF Features CSS - Page-specific features loaded last */
-/* Version: 6.6.0 - Refined Echoes Unbound cards with subtle elegance and clear typography */
+/* Version: 6.7.0 - Enhanced Echoes Unbound titles with gradient styling and proper hierarchy */
 /* Last Updated: 2025-09-23 */
 /* Performance: Asynchronously loaded after core styles for enhanced UI features */
 
@@ -274,8 +274,8 @@ body.light-theme .debate-position h4 {
     }
 
     .echo-title-prominent {
-        font-size: 1.3rem !important;
-        margin-bottom: 0.75rem !important;
+        font-size: 1.5rem !important;
+        margin-bottom: 1rem !important;
     }
 
     .echo-excerpt {
@@ -299,7 +299,7 @@ body.light-theme .debate-position h4 {
     }
 
     .echo-title-prominent {
-        font-size: 1.2rem !important;
+        font-size: 1.3rem !important;
     }
 }
 
@@ -342,24 +342,39 @@ body.light-theme .debate-position h4 {
     }
 }
 
-/* Echo Title - Clear Hierarchy */
+/* Echo Title - Enhanced Visual Hierarchy */
 .echo-title-prominent {
     font-family: 'Montserrat', sans-serif !important;
-    font-size: 1.5rem !important;
+    font-size: 1.75rem !important;
     font-weight: 700 !important;
-    color: rgba(255, 255, 255, 0.95) !important;
-    margin-bottom: 1rem !important;
+    background: linear-gradient(135deg,
+        var(--accent) 0%,
+        rgba(255, 202, 40, 0.9) 50%,
+        var(--accent) 100%) !important;
+    background-size: 200% 200% !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    color: transparent !important;
+    margin-bottom: 1.25rem !important;
     line-height: 1.3 !important;
     letter-spacing: 0.02em !important;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
     text-decoration: none !important;
     position: relative;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    animation: titleShimmer 8s ease-in-out infinite;
+}
+
+/* Fallback for browsers that don't support background-clip */
+@supports not (background-clip: text) {
+    .echo-title-prominent {
+        color: var(--accent) !important;
+        background: none !important;
+    }
 }
 
 .echo-highlight-card:hover .echo-title-prominent {
-    color: rgba(255, 202, 40, 0.95) !important;
-    text-shadow: 0 0 8px rgba(255, 202, 40, 0.3);
+    animation-duration: 4s;
+    text-shadow: 0 0 12px rgba(255, 202, 40, 0.3);
 }
 
 /* Echo Excerpt - Readable Content */
