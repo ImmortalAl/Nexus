@@ -771,6 +771,79 @@
 }
 
 /* ==========================================================================
+   LIGHT THEME ENHANCEMENTS
+   Explicit overrides to ensure perfect light mode display
+   ========================================================================== */
+body.light-theme .chronicles-main,
+body.light-theme .chronicles-container,
+body.light-theme .chronicles-header,
+body.light-theme .chronicle-card,
+body.light-theme .chronicle-detail,
+body.light-theme .modal-content {
+    background: #ffffff;
+    color: #0f172a;
+}
+
+body.light-theme .chronicles-header::before {
+    background: #0f172a;
+}
+
+body.light-theme .chronicles-title,
+body.light-theme .chronicle-title,
+body.light-theme .chronicle-headline {
+    color: #0f172a;
+}
+
+body.light-theme .chronicles-meta,
+body.light-theme .chronicle-meta,
+body.light-theme .chronicle-byline {
+    color: #64748b;
+}
+
+body.light-theme .view-btn,
+body.light-theme .submit-chronicle-btn,
+body.light-theme .btn.btn-primary {
+    background: #0f172a;
+    color: #ffffff;
+    border-color: #0f172a;
+}
+
+body.light-theme .view-btn:hover,
+body.light-theme .submit-chronicle-btn:hover,
+body.light-theme .btn.btn-primary:hover {
+    background: #1e293b;
+    border-color: #1e293b;
+}
+
+body.light-theme .chronicle-card {
+    border-color: #cbd5e1;
+}
+
+body.light-theme .chronicle-card:hover {
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
+    border-color: #94a3b8;
+}
+
+body.light-theme .close-modal {
+    color: #0f172a;
+}
+
+body.light-theme .close-modal:hover {
+    color: #64748b;
+}
+
+body.light-theme .modal-header {
+    background: #f8fafc;
+    color: #0f172a;
+    border-bottom-color: #cbd5e1;
+}
+
+body.light-theme .loading-chronicles,
+body.light-theme .chronicle-spinner {
+    color: #0f172a;
+}
+
+/* ==========================================================================
    UTILITY CLASSES
    ========================================================================== */
 .text-center {
