@@ -1,7 +1,7 @@
 /* ==========================================================================
    THE BOUNDLESS CHRONICLES - TRADITIONAL NEWSPAPER DESIGN
    Classic print newspaper aesthetic with medieval typography
-   Version: 2.1 - Fixed light theme display and CSS specificity issues
+   Version: 2.2 - Fixed dark theme display and removed conflicting theme overrides
    ========================================================================== */
 
 :root {
@@ -74,16 +74,7 @@ body.dark-theme {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Explicit theme overrides for main container */
-body.light-theme .chronicles-main {
-    background: var(--newspaper-white) !important;
-    color: var(--newspaper-black) !important;
-}
-
-body.dark-theme .chronicles-main {
-    background: var(--newspaper-white) !important;
-    color: var(--newspaper-black) !important;
-}
+/* Theme variables handle this automatically - no explicit overrides needed */
 
 .chronicles-container {
     max-width: var(--content-max-width);
@@ -103,16 +94,7 @@ body.dark-theme .chronicles-main {
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Explicit theme overrides for header */
-body.light-theme .chronicles-header {
-    background: var(--newspaper-white) !important;
-    border-bottom: var(--border-double) !important;
-}
-
-body.dark-theme .chronicles-header {
-    background: var(--newspaper-white) !important;
-    border-bottom: var(--border-double) !important;
-}
+/* Theme variables handle this automatically - no explicit overrides needed */
 
 .chronicles-header::before {
     content: '';
