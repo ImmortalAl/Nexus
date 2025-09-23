@@ -23,11 +23,15 @@ document.addEventListener('DOMContentLoaded', () => {
   components.forEach(component => {
     if (typeof window.NEXUS[component.name] === 'function') {
       try {
+        console.log(`Initializing ${component.desc}...`);
         window.NEXUS[component.name]();
+        console.log(`Successfully initialized ${component.desc}`);
         successfulInits++;
       } catch (error) {
         console.error(`Failed to initialize ${component.desc}:`, error);
       }
+    } else {
+      console.warn(`${component.desc} (${component.name}) not available in window.NEXUS`);
     }
   });
 

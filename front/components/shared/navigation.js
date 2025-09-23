@@ -176,6 +176,14 @@ function injectCompleteHeader() {
         
         // Re-setup mobile navigation events after injecting new HTML
         setupMobileNavEvents();
+        
+        // Ensure user menu is initialized after header injection
+        setTimeout(() => {
+            if (window.NEXUS && window.NEXUS.initUserMenu) {
+                console.log('Initializing user menu after header injection...');
+                window.NEXUS.initUserMenu();
+            }
+        }, 100);
     } else {
         console.error('No header element found!');
     }
