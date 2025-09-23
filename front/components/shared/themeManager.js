@@ -112,6 +112,12 @@ class NexusThemeManager {
             }
             button.setAttribute('aria-label', `Switch to ${theme === 'light' ? 'dark' : 'light'} mode`);
         });
+
+        // Update mobile theme toggle text specifically
+        const mobileThemeToggleText = document.getElementById('mobileThemeToggleText');
+        if (mobileThemeToggleText) {
+            mobileThemeToggleText.textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+        }
     }
 
     createThemeToggle() {
