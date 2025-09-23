@@ -69,31 +69,45 @@ class NexusThemeManager {
     }
 
     applyTheme(theme) {
-        
+        console.log(`Applying theme: ${theme}`);
+
         // Remove existing theme classes
         document.body.classList.remove('light-theme', 'dark-theme');
-        
+
         // Add new theme class
         if (theme === 'light') {
             document.body.classList.add('light-theme');
+            console.log('Added light-theme class to body');
         } else {
             document.body.classList.add('dark-theme');
+            console.log('Added dark-theme class to body');
         }
-        
+
+        // Debug: Check what CSS variables are actually set
+        const computedStyle = getComputedStyle(document.body);
+        console.log('Theme applied - CSS Variables check:', {
+            '--background': computedStyle.getPropertyValue('--background'),
+            '--text': computedStyle.getPropertyValue('--text'),
+            '--newspaper-black': computedStyle.getPropertyValue('--newspaper-black'),
+            '--newspaper-white': computedStyle.getPropertyValue('--newspaper-white')
+        });
+
         // Update theme color meta tag
         const themeColor = theme === 'light' ? '#ffffff' : '#0d0d1a';
         const metaThemeColor = document.querySelector('meta[name="theme-color"]');
         if (metaThemeColor) {
             metaThemeColor.content = themeColor;
         }
-        
+
         // Update all theme toggle buttons
         this.updateThemeToggles(theme);
-        
+
         // Dispatch custom event for other components
-        window.dispatchEvent(new CustomEvent('nexus-theme-changed', { 
-            detail: { theme } 
+        window.dispatchEvent(new CustomEvent('nexus-theme-changed', {
+            detail: { theme }
         }));
+
+        console.log(`Theme application complete: ${theme}`);
     }
 
     setTheme(theme) {
