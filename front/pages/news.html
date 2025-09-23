@@ -337,8 +337,13 @@
         // Initialize everything when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
             // Ensure navigation is initialized (fallback if nexus-core didn't do it)
+            console.log('Checking navigation initialization...');
             if (window.NEXUS && window.NEXUS.initNavigation) {
+                console.log('Calling navigation initialization...');
                 window.NEXUS.initNavigation();
+                console.log('Navigation initialization called');
+            } else {
+                console.error('NEXUS or initNavigation not available:', window.NEXUS);
             }
             
             // Check if all required components are available

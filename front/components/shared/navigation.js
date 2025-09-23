@@ -131,24 +131,40 @@ function generateNavLinksHTML(currentPath, navType = 'main') {
 }
 
 function injectCompleteHeader() {
+    console.log('injectCompleteHeader called');
     const headerElement = document.querySelector('header');
     const currentPath = window.location.pathname;
+    
+    console.log('Header element found:', headerElement);
+    console.log('Current path:', currentPath);
 
     if (headerElement) {
         const headerHTML = generateCompleteHeaderHTML(currentPath);
+        console.log('Generated header HTML:', headerHTML.substring(0, 200) + '...');
         headerElement.innerHTML = headerHTML;
+        console.log('Header HTML injected');
         // Re-setup mobile navigation events after injecting new HTML
         setupMobileNavEvents();
+    } else {
+        console.error('No header element found!');
     }
 }
 
 function injectNavigation() {
+    console.log('injectNavigation called');
     // Check if we should inject complete header or just nav links
     const headerElement = document.querySelector('header');
     const hasHeaderContent = headerElement && headerElement.innerHTML.trim().length > 0;
+    
+    console.log('Header element:', headerElement);
+    console.log('Header has content:', hasHeaderContent);
+    if (headerElement) {
+        console.log('Header innerHTML:', headerElement.innerHTML);
+    }
 
     // If header is empty or has placeholder content, inject complete header
     if (!hasHeaderContent || headerElement.innerHTML.includes('<!-- SHARED_HEADER -->')) {
+        console.log('Injecting complete header...');
         injectCompleteHeader();
         return;
     }
