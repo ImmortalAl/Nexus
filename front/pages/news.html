@@ -343,6 +343,16 @@
                 console.log('Main stylesheet loaded:', !mainStylesheet.sheet || mainStylesheet.sheet.cssRules.length > 0);
             }
             
+            // Ensure user menu is initialized first (fallback if nexus-core didn't do it)
+            console.log('Checking user menu initialization...');
+            if (window.NEXUS && window.NEXUS.initUserMenu) {
+                console.log('Calling user menu initialization...');
+                window.NEXUS.initUserMenu();
+                console.log('User menu initialization called');
+            } else {
+                console.error('NEXUS or initUserMenu not available:', window.NEXUS);
+            }
+            
             // Ensure navigation is initialized (fallback if nexus-core didn't do it)
             console.log('Checking navigation initialization...');
             if (window.NEXUS && window.NEXUS.initNavigation) {
