@@ -92,15 +92,17 @@ body.dark-theme {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* DEBUG: Force theme visibility for testing */
+/* DEBUG: Force theme visibility for testing - EXTREME TEST */
 body.dark-theme .chronicles-main {
-    background: var(--newspaper-white) !important;
-    color: var(--newspaper-black) !important;
+    background: #000000 !important;  /* Force black background */
+    color: #ffffff !important;       /* Force white text */
+    border: 5px solid red !important; /* Red border to confirm it's working */
 }
 
 body.light-theme .chronicles-main {
-    background: var(--newspaper-white) !important;
-    color: var(--newspaper-black) !important;
+    background: #ffffff !important;  /* Force white background */
+    color: #000000 !important;       /* Force black text */
+    border: 5px solid blue !important; /* Blue border to confirm it's working */
 }
 
 
