@@ -488,28 +488,45 @@ body.light-theme {
 
 .chronicle-actions {
     display: flex;
-    gap: 1rem;
+    gap: 0.5rem;
     align-items: center;
     flex-wrap: wrap;
+    margin-top: 1rem;
 }
 
 .chronicles-feed .action-btn {
     color: var(--newspaper-gray-6);
     text-decoration: none;
-    font-size: var(--small-size);
-    display: flex;
+    font-size: var(--caption-size);
+    display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
+    justify-content: center;
+    gap: 0.35rem;
     transition: var(--transition);
     font-family: 'Times New Roman', serif;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 0.5rem 1rem;
+    letter-spacing: 0.03em;
+    padding: 0.4rem 0.65rem;
     border: var(--border-thin);
     border-radius: 0;
     background: var(--newspaper-white);
     font-weight: 600;
     cursor: pointer;
+    white-space: nowrap;
+    flex: 0 0 auto;
+}
+
+.chronicles-feed .action-btn i {
+    font-size: 0.7rem;
+}
+
+.chronicles-feed .action-btn .count {
+    font-size: 0.65rem;
+    opacity: 0.7;
+}
+
+.chronicles-feed .action-btn span:not(.count) {
+    display: inline;
 }
 
 .chronicles-feed .action-btn:hover {
@@ -565,6 +582,24 @@ body.light-theme {
 
     .chronicle-card {
         padding: 1rem;
+    }
+
+    /* Make buttons more compact on mobile */
+    .chronicles-feed .action-btn,
+    .chronicles-feed .chronicle-card .action-btn {
+        padding: 0.35rem 0.5rem !important;
+        font-size: 0.65rem !important;
+        gap: 0.25rem !important;
+    }
+
+    .chronicles-feed .action-btn i,
+    .chronicles-feed .chronicle-card .action-btn i {
+        font-size: 0.65rem !important;
+    }
+
+    .chronicles-feed .action-btn .count,
+    .chronicles-feed .chronicle-card .action-btn .count {
+        font-size: 0.6rem !important;
     }
 
     .chronicle-footer {
@@ -1162,17 +1197,35 @@ body.light-theme .action-btn:hover {
 }
 
 .chronicles-feed .chronicle-card .chronicle-actions {
-    background: transparent !important;
+    display: flex !important;
+    gap: 0.5rem !important;
+    flex-wrap: wrap !important;
+    margin-top: 1rem !important;
+    padding-top: 1rem !important;
     border-top: var(--border-thin) !important;
+    background: transparent !important;
 }
 
 .chronicles-feed .chronicle-card .action-btn {
     background: transparent !important;
     border: var(--border-thin) !important;
     color: var(--newspaper-gray-6) !important;
-    padding: 0.5rem 1rem !important;
+    padding: 0.4rem 0.65rem !important;
+    font-size: var(--caption-size) !important;
     text-transform: uppercase !important;
     font-family: 'Times New Roman', serif;
+    white-space: nowrap !important;
+    flex: 0 0 auto !important;
+    gap: 0.35rem !important;
+}
+
+.chronicles-feed .chronicle-card .action-btn i {
+    font-size: 0.7rem !important;
+}
+
+.chronicles-feed .chronicle-card .action-btn .count {
+    font-size: 0.65rem !important;
+    opacity: 0.7 !important;
 }
 
 .chronicles-feed .chronicle-card .action-btn:hover {
