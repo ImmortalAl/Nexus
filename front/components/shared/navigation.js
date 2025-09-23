@@ -144,19 +144,36 @@ function injectCompleteHeader() {
         headerElement.innerHTML = headerHTML;
         console.log('Header HTML injected');
         
-        // Debug: Check computed styles
-        const computedStyle = window.getComputedStyle(headerElement);
-        console.log('Header computed styles:', {
-            display: computedStyle.display,
-            visibility: computedStyle.visibility,
-            opacity: computedStyle.opacity,
-            height: computedStyle.height,
-            width: computedStyle.width,
-            position: computedStyle.position,
-            top: computedStyle.top,
-            zIndex: computedStyle.zIndex,
-            background: computedStyle.background
-        });
+        // Debug: Check computed styles (with delay to ensure CSS is loaded)
+        setTimeout(() => {
+            const computedStyle = window.getComputedStyle(headerElement);
+            console.log('Header computed styles:', {
+                display: computedStyle.display,
+                visibility: computedStyle.visibility,
+                opacity: computedStyle.opacity,
+                height: computedStyle.height,
+                width: computedStyle.width,
+                position: computedStyle.position,
+                top: computedStyle.top,
+                zIndex: computedStyle.zIndex,
+                background: computedStyle.background,
+                minHeight: computedStyle.minHeight
+            });
+            
+            // Force a re-render if header appears to have no height
+            if (computedStyle.height === '0px' || computedStyle.display === 'none') {
+                console.warn('Header appears to be hidden! Forcing visibility...');
+                headerElement.style.display = 'flex';
+                headerElement.style.visibility = 'visible';
+                headerElement.style.minHeight = '60px';
+                headerElement.style.background = 'linear-gradient(135deg, #1a1a2e, #16213e)';
+                headerElement.style.borderBottom = '2px solid #ff5e78';
+                headerElement.style.position = 'sticky';
+                headerElement.style.top = '0';
+                headerElement.style.zIndex = '2500';
+            }
+        }, 500);
+        
         // Re-setup mobile navigation events after injecting new HTML
         setupMobileNavEvents();
     } else {
