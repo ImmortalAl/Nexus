@@ -220,8 +220,13 @@ body.dark-theme header,
 html body.dark-theme header,
 body.dark-theme header.main-header,
 body.dark-theme > header {
-    background: linear-gradient(135deg, rgba(26, 27, 78, 0.92), rgba(22, 33, 62, 0.92)) !important;
+    background: red !important; /* OBVIOUS TEST COLOR */
     border-color: rgba(255, 94, 120, 0.4) !important;
+}
+
+/* Additional test - force dark theme on body */
+body.dark-theme {
+    background: black !important; /* OBVIOUS TEST COLOR */
 }
 
 .logo {
