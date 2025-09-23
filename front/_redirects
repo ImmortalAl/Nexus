@@ -1,5 +1,6 @@
 # Vanity URLs for main sections
 /profile     /profile/index.html   200
+/news        /pages/news.html      200
 
 # IMPORTANT: More specific rules must come before general rules
 # Vanity URL for individual soul profiles - route to dynamic template
