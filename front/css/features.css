@@ -1,5 +1,5 @@
 /* MLNF Features CSS - Page-specific features loaded last */
-/* Version: 6.7.0 - Enhanced Echoes Unbound titles with gradient styling and proper hierarchy */
+/* Version: 6.8.0 - Fixed vibrant gradient colors for Echoes Unbound titles */
 /* Last Updated: 2025-09-23 */
 /* Performance: Asynchronously loaded after core styles for enhanced UI features */
 
@@ -308,12 +308,17 @@ body.light-theme .debate-position h4 {
 .echo-highlight-card p,
 .echo-highlight-card h1,
 .echo-highlight-card h2,
-.echo-highlight-card h3,
 .echo-highlight-card h4,
 .echo-highlight-card h5,
 .echo-highlight-card h6,
 .echo-highlight-card span,
 .echo-highlight-card div {
+    color: rgba(255, 255, 255, 0.95) !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Exception for titles - allow gradient styling */
+.echo-highlight-card h3:not(.echo-title-prominent) {
     color: rgba(255, 255, 255, 0.95) !important;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
 }
@@ -342,16 +347,18 @@ body.light-theme .debate-position h4 {
     }
 }
 
-/* Echo Title - Enhanced Visual Hierarchy */
+/* Echo Title - Vibrant Visual Hierarchy */
 .echo-title-prominent {
     font-family: 'Montserrat', sans-serif !important;
     font-size: 1.75rem !important;
     font-weight: 700 !important;
     background: linear-gradient(135deg,
-        var(--accent) 0%,
-        rgba(255, 202, 40, 0.9) 50%,
-        var(--accent) 100%) !important;
-    background-size: 200% 200% !important;
+        #ff5e78 0%,
+        #ffca28 25%,
+        #ff8fa3 50%,
+        #ffca28 75%,
+        #ff5e78 100%) !important;
+    background-size: 300% 300% !important;
     -webkit-background-clip: text !important;
     background-clip: text !important;
     color: transparent !important;
@@ -362,19 +369,34 @@ body.light-theme .debate-position h4 {
     text-decoration: none !important;
     position: relative;
     animation: titleShimmer 8s ease-in-out infinite;
+    text-shadow: none !important; /* Ensure no interference */
 }
 
-/* Fallback for browsers that don't support background-clip */
+/* Enhanced fallback for browsers that don't support background-clip */
 @supports not (background-clip: text) {
     .echo-title-prominent {
-        color: var(--accent) !important;
+        color: #ff5e78 !important;
         background: none !important;
+        text-shadow: 0 0 8px rgba(255, 94, 120, 0.4) !important;
     }
 }
 
 .echo-highlight-card:hover .echo-title-prominent {
     animation-duration: 4s;
-    text-shadow: 0 0 12px rgba(255, 202, 40, 0.3);
+    background-size: 400% 400% !important;
+}
+
+/* Additional specificity to override any conflicting styles */
+.echo-highlight-card .echo-title-prominent {
+    background: linear-gradient(135deg,
+        #ff5e78 0%,
+        #ffca28 25%,
+        #ff8fa3 50%,
+        #ffca28 75%,
+        #ff5e78 100%) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    color: transparent !important;
 }
 
 /* Echo Excerpt - Readable Content */
