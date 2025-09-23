@@ -139,6 +139,37 @@ function initThemeManager() {
     if (!window.NEXUSTheme) {
         window.NEXUSTheme = new NexusThemeManager();
     }
+    
+    // Add theme toggle event listener as a backup/fallback
+    const attachThemeToggleListener = () => {
+        const themeToggle = document.getElementById('themeToggleMenu');
+        if (themeToggle && !themeToggle.hasAttribute('data-theme-listener-attached')) {
+            console.log('Theme manager: Adding fallback event listener to theme toggle');
+            themeToggle.addEventListener('click', (e) => {
+                console.log('Theme manager: Theme toggle clicked');
+                e.preventDefault();
+                e.stopPropagation();
+                
+                if (window.NEXUSTheme) {
+                    window.NEXUSTheme.toggleTheme();
+                    // Update theme menu text
+                    if (typeof window.updateThemeMenuText === 'function') {
+                        window.updateThemeMenuText();
+                    }
+                }
+            });
+            themeToggle.setAttribute('data-theme-listener-attached', 'true');
+            console.log('Theme manager: Fallback event listener attached to theme toggle');
+            return true;
+        }
+        return false;
+    };
+    
+    // Try multiple times with different delays to handle timing issues
+    setTimeout(attachThemeToggleListener, 500);
+    setTimeout(attachThemeToggleListener, 1000);
+    setTimeout(attachThemeToggleListener, 2000);
+    
     return window.NEXUSTheme;
 }
 

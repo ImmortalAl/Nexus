@@ -415,6 +415,9 @@ window.NEXUS.initUserMenu = initUserMenu;
 window.NEXUS.updateUserMenu = updateUserMenu; // Expose for nexus-core.js storage listener
 window.NEXUS.handleLogout = handleLogout; // Expose if needed by other components, e.g. mobile menu
 
+// Expose updateThemeMenuText globally so theme manager can access it
+window.updateThemeMenuText = updateThemeMenuText;
+
 // Function to update mobile auth links - DISABLED: Mobile nav should only contain navigation links
 function updateMobileAuthLinks() {
     // Mobile navigation should only contain navigation links, not user auth functions

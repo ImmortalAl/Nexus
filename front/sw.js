@@ -1,5 +1,5 @@
 // MLNF Service Worker - PWA Core Functionality
-const CACHE_VERSION = 'nexus-v1.2.2'; // Incremented version to bust cache
+const CACHE_VERSION = 'nexus-v1.2.3'; // Incremented version to bust cache
 const STATIC_CACHE = `nexus-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `nexus-dynamic-${CACHE_VERSION}`;
 const API_CACHE = `nexus-api-${CACHE_VERSION}`;
