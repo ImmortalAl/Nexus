@@ -24,6 +24,36 @@
     <!-- 1. THEME FOUNDATION (MUST BE FIRST) -->
     <link rel="stylesheet" href="css/base-theme.css?v=1.0">
     
+    <!-- EMERGENCY INLINE DARK THEME - BYPASS CSS LOADING ISSUES -->
+    <style>
+    body.dark-theme {
+        background: linear-gradient(180deg, rgba(26, 26, 51, 0.3), #0d0d1a) !important;
+        background-color: #0d0d1a !important;
+        color: #f0e6ff !important;
+    }
+    
+    body.dark-theme header {
+        background: linear-gradient(135deg, rgba(26, 27, 78, 0.92), rgba(22, 33, 62, 0.92)) !important;
+        border-color: rgba(255, 94, 120, 0.4) !important;
+    }
+    
+    body.dark-theme .feature-card,
+    body.dark-theme .debate-arena,
+    body.dark-theme footer {
+        background: linear-gradient(to bottom, rgba(13, 13, 26, 0.92), rgba(26, 26, 51, 0.92)) !important;
+        border-color: rgba(255, 94, 120, 0.4) !important;
+        color: #f0e6ff !important;
+    }
+    
+    body.dark-theme nav.main-nav a {
+        color: #f0e6ff !important;
+    }
+    
+    body.dark-theme nav.main-nav a:hover {
+        background: rgba(255, 94, 120, 0.2) !important;
+    }
+    </style>
+    
     <!-- 2. CRITICAL CSS - Above-fold essentials loaded synchronously -->
     <link rel="stylesheet" href="css/critical.css?v=7.1">
     
