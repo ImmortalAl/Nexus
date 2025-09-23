@@ -46,8 +46,13 @@ class NexusThemeManager {
 
             toggleButtons.forEach((button, index) => {
                 console.log(`Setting up toggle button ${index}:`, button);
-                // Remove any existing click listeners to avoid duplicates
-                button.removeEventListener('click', this.handleToggleClick);
+
+                // Remove any existing handler to prevent duplicates
+                if (button._themeToggleHandler) {
+                    button.removeEventListener('click', button._themeToggleHandler);
+                    console.log(`Removed existing handler from button ${index}`);
+                }
+
                 // Add new click listener with proper binding
                 const boundToggle = (e) => {
                     console.log('Theme toggle button clicked, current theme:', this.currentTheme);
@@ -58,12 +63,12 @@ class NexusThemeManager {
                 };
                 button.addEventListener('click', boundToggle);
 
-                // Store reference for cleanup if needed
+                // Store reference for cleanup
                 button._themeToggleHandler = boundToggle;
 
                 // Update initial button state
                 this.updateSingleToggle(button, this.currentTheme);
-                console.log(`Toggle button ${index} setup complete`);
+                console.log(`Toggle button ${index} setup complete with theme:`, this.currentTheme);
             });
         }, 100);
     }
@@ -117,8 +122,11 @@ class NexusThemeManager {
     }
 
     toggleTheme() {
+        console.log('toggleTheme called, current theme:', this.currentTheme);
         const newTheme = this.currentTheme === 'dark' ? 'light' : 'dark';
+        console.log('toggleTheme switching to:', newTheme);
         this.setTheme(newTheme);
+        console.log('toggleTheme complete, new theme:', this.currentTheme);
     }
 
     getTheme() {
@@ -168,6 +176,9 @@ function initThemeManager() {
     if (!window.NEXUSTheme) {
         console.log('Initializing NexusThemeManager');
         window.NEXUSTheme = new NexusThemeManager();
+    } else {
+        console.log('NexusThemeManager already exists, re-connecting toggles');
+        window.NEXUSTheme.connectExistingToggles();
     }
     return window.NEXUSTheme;
 }
