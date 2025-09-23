@@ -336,6 +336,11 @@
     <script>
         // Initialize everything when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
+            // Ensure navigation is initialized (fallback if nexus-core didn't do it)
+            if (window.NEXUS && window.NEXUS.initNavigation) {
+                window.NEXUS.initNavigation();
+            }
+            
             // Check if all required components are available
             const requiredComponents = ['ChroniclesFeed', 'SubmissionModal', 'CommentsSystem'];
             const missingComponents = requiredComponents.filter(comp => !window[comp]);
