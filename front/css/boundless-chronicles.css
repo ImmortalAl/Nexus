@@ -922,3 +922,126 @@
     justify-content: flex-end;
     gap: 1rem;
 }
+
+/* Chronicle Detail Modal Specifics */
+.chronicle-detail-header {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: var(--border-medium);
+    position: relative;
+}
+
+.chronicle-detail-header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: repeating-linear-gradient(
+        90deg,
+        var(--newspaper-black) 0px,
+        var(--newspaper-black) 3px,
+        transparent 3px,
+        transparent 6px
+    );
+}
+
+.chronicle-detail .chronicle-sources li {
+    margin-bottom: 0.5rem;
+}
+
+
+/* ==========================================================================
+   NEWSPAPER STYLE OVERRIDES
+   These rules are intentionally specific to override other stylesheets.
+   ========================================================================== */
+
+/*
+ * 1. Card Overrides
+ * Ensures cards have the correct newspaper background, border, and actions styling.
+ */
+.chronicles-feed .chronicle-card {
+    background: var(--newspaper-white) !important;
+    border: var(--border-thin) !important;
+}
+
+.chronicles-feed .chronicle-card .chronicle-actions {
+    background: transparent !important;
+    border-top: var(--border-thin) !important;
+    padding: 1.5rem 2rem !important;
+}
+
+.chronicles-feed .chronicle-card .action-btn {
+    background: transparent !important;
+    border: var(--border-thin) !important;
+    color: var(--newspaper-gray-6) !important;
+    padding: 0.5rem 1rem !important;
+    text-transform: uppercase !important;
+    font-family: 'Times New Roman', serif;
+}
+
+.chronicles-feed .chronicle-card .action-btn:hover {
+    background: var(--newspaper-gray-2) !important;
+    color: var(--newspaper-black) !important;
+    border-color: var(--newspaper-gray-6) !important;
+}
+
+/* Remove colored borders from specific action buttons on cards */
+.chronicles-feed .chronicle-card .action-btn.consecrate,
+.chronicles-feed .chronicle-card .action-btn.investigate,
+.chronicles-feed .chronicle-card .action-btn.edit,
+.chronicles-feed .chronicle-card .action-btn.comments {
+    border-color: var(--newspaper-gray-4) !important;
+    color: var(--newspaper-gray-6) !important;
+}
+
+.chronicles-feed .chronicle-card .action-btn.consecrate:hover,
+.chronicles-feed .chronicle-card .action-btn.investigate:hover,
+.chronicles-feed .chronicle-card .action-btn.edit:hover,
+.chronicles-feed .chronicle-card .action-btn.comments:hover {
+    background: var(--newspaper-gray-2) !important;
+    color: var(--newspaper-black) !important;
+    border-color: var(--newspaper-gray-6) !important;
+}
+
+/*
+ * 2. Modal Overrides
+ * Ensures modal titles and buttons use the correct newspaper styling.
+ */
+.modal .chronicle-detail-modal .modal-header h2,
+.modal .chronicle-modal .modal-header h3 {
+    font-family: 'Cinzel', serif !important;
+}
+
+.modal .modal-actions .btn {
+    background: var(--newspaper-white) !important;
+    border: var(--border-thin) !important;
+    color: var(--newspaper-gray-6) !important;
+    border-radius: 0 !important;
+    font-family: 'Times New Roman', serif !important;
+    text-transform: uppercase !important;
+    box-shadow: none !important;
+}
+
+.modal .modal-actions .btn:hover {
+    background: var(--newspaper-gray-2) !important;
+    color: var(--newspaper-black) !important;
+    border-color: var(--newspaper-gray-6) !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+/* Override specific button colors like btn-primary, btn-danger */
+.modal .modal-actions .btn-primary,
+.modal .modal-actions .btn-danger {
+    background: var(--newspaper-black) !important;
+    color: var(--newspaper-white) !important;
+    border-color: var(--newspaper-black) !important;
+}
+
+.modal .modal-actions .btn-primary:hover,
+.modal .modal-actions .btn-danger:hover {
+    background: var(--newspaper-gray-6) !important;
+    border-color: var(--newspaper-gray-6) !important;
+    color: var(--newspaper-white) !important;
+}
