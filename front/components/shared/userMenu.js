@@ -96,6 +96,7 @@ function updateUserMenu() {
   // Add a small delay to ensure elements are fully in DOM before setting up events
   setTimeout(() => {
     setupUserMenuEvents(); // Sets up dropdown toggle and logout
+    updateThemeMenuText(); // Sync theme toggle with actual current theme
   }, 50);
   // Event listeners for new header buttons are set in populateHeaderAuthButtons
 }
