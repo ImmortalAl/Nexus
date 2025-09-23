@@ -843,6 +843,90 @@ body.light-theme .chronicle-spinner {
     color: #0f172a;
 }
 
+body.light-theme .chronicles-controls {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+body.light-theme .view-controls {
+    background: #ffffff;
+}
+
+body.light-theme .view-btn {
+    background: #ffffff;
+    color: #0f172a;
+    border-color: #cbd5e1;
+}
+
+body.light-theme .view-btn:hover {
+    background: #f8fafc;
+    color: #0f172a;
+}
+
+body.light-theme .view-btn.active {
+    background: #0f172a;
+    color: #ffffff;
+    border-color: #0f172a;
+}
+
+body.light-theme .chronicles-feed::before,
+body.light-theme .chronicles-feed::after {
+    background: #cbd5e1;
+}
+
+body.light-theme .chronicle-form input,
+body.light-theme .chronicle-form textarea,
+body.light-theme .chronicle-form select {
+    background: #ffffff;
+    color: #0f172a;
+    border-color: #cbd5e1;
+}
+
+body.light-theme .chronicle-form input:focus,
+body.light-theme .chronicle-form textarea:focus,
+body.light-theme .chronicle-form select:focus {
+    border-color: #64748b;
+    box-shadow: 0 0 0 1px #64748b;
+}
+
+body.light-theme .chronicle-form label {
+    color: #0f172a;
+}
+
+body.light-theme .chronicle-tag {
+    background: #ffffff;
+    color: #64748b;
+    border-color: #cbd5e1;
+}
+
+body.light-theme .chronicle-tag:hover {
+    background: #f8fafc;
+    color: #0f172a;
+    border-color: #94a3b8;
+}
+
+body.light-theme .chronicle-excerpt,
+body.light-theme .chronicle-content {
+    color: #334155;
+}
+
+body.light-theme .chronicle-byline,
+body.light-theme .chronicle-author-info {
+    color: #64748b;
+}
+
+body.light-theme .action-btn {
+    background: #ffffff;
+    color: #0f172a;
+    border-color: #cbd5e1;
+}
+
+body.light-theme .action-btn:hover {
+    background: #0f172a;
+    color: #ffffff;
+    border-color: #0f172a;
+}
+
 /* ==========================================================================
    UTILITY CLASSES
    ========================================================================== */
