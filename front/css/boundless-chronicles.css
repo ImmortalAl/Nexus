@@ -981,6 +981,25 @@ body.light-theme .action-btn:hover {
     border-color: #0f172a;
 }
 
+/* Light theme tooltip */
+body.light-theme .chronicles-feed .chronicle-card .action-btn::after {
+    background: #0f172a;
+    color: #ffffff;
+}
+
+/* Ensure icon-only buttons work in light theme */
+body.light-theme .chronicles-feed .chronicle-card .action-btn {
+    background: transparent !important;
+    color: #475569 !important;
+    border-color: #cbd5e1 !important;
+}
+
+body.light-theme .chronicles-feed .chronicle-card .action-btn:hover {
+    background: #f8fafc !important;
+    color: #0f172a !important;
+    border-color: #94a3b8 !important;
+}
+
 /* ==========================================================================
    UTILITY CLASSES
    ========================================================================== */
@@ -1210,28 +1229,65 @@ body.light-theme .action-btn:hover {
     background: transparent !important;
     border: var(--border-thin) !important;
     color: var(--newspaper-gray-6) !important;
-    padding: 0.4rem 0.65rem !important;
-    font-size: var(--caption-size) !important;
+    padding: 0.45rem !important;
+    font-size: 0 !important; /* Hide text, show only icons */
     text-transform: uppercase !important;
     font-family: 'Times New Roman', serif;
     white-space: nowrap !important;
     flex: 0 0 auto !important;
-    gap: 0.35rem !important;
+    gap: 0.25rem !important;
+    position: relative !important;
+    min-width: auto !important;
+    width: auto !important;
 }
 
+/* Show only icons in card buttons */
 .chronicles-feed .chronicle-card .action-btn i {
-    font-size: 0.7rem !important;
+    font-size: 0.9rem !important;
+    display: inline-block !important;
 }
 
+/* Hide text labels in cards, only show icons */
+.chronicles-feed .chronicle-card .action-btn span:not(.count) {
+    display: none !important;
+}
+
+/* Show count badge next to icon */
 .chronicles-feed .chronicle-card .action-btn .count {
     font-size: 0.65rem !important;
-    opacity: 0.7 !important;
+    opacity: 0.8 !important;
+    display: inline-block !important;
+    margin-left: 0.15rem !important;
 }
 
 .chronicles-feed .chronicle-card .action-btn:hover {
     background: var(--newspaper-gray-2) !important;
     color: var(--newspaper-black) !important;
     border-color: var(--newspaper-gray-6) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Tooltip on hover - show button label */
+.chronicles-feed .chronicle-card .action-btn::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--newspaper-black);
+    color: var(--newspaper-white);
+    padding: 0.25rem 0.5rem;
+    font-size: 0.65rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    margin-bottom: 0.25rem;
+    z-index: 10;
+}
+
+.chronicles-feed .chronicle-card .action-btn:hover::after {
+    opacity: 1;
 }
 
 /* Remove colored borders from specific action buttons on cards */
