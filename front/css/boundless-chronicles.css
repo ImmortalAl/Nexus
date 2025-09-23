@@ -92,6 +92,17 @@ body.dark-theme {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* DEBUG: Force theme visibility for testing */
+body.dark-theme .chronicles-main {
+    background: var(--newspaper-white) !important;
+    color: var(--newspaper-black) !important;
+}
+
+body.light-theme .chronicles-main {
+    background: var(--newspaper-white) !important;
+    color: var(--newspaper-black) !important;
+}
+
 
 .chronicles-container {
     max-width: var(--content-max-width);

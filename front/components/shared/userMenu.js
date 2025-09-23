@@ -65,32 +65,7 @@ function updateUserMenu() {
         console.log('Theme toggle element found after creation:', themeToggle);
         if (themeToggle) {
           console.log('Theme toggle HTML:', themeToggle.outerHTML);
-          
-          // Add direct event listener to theme toggle as backup
-          themeToggle.addEventListener('click', (e) => {
-            console.log('DIRECT theme toggle clicked!', e.target);
-            e.preventDefault();
-            e.stopPropagation();
-            
-            if (window.NEXUSTheme) {
-              console.log('Calling NEXUSTheme.toggleTheme() from direct listener');
-              window.NEXUSTheme.toggleTheme();
-              updateThemeMenuText();
-            } else {
-              console.error('NEXUSTheme not available in direct listener');
-              // Fallback manual theme toggle
-              console.log('Attempting manual theme toggle...');
-              const currentTheme = document.body.classList.contains('dark-theme') ? 'dark' : 'light';
-              const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-              console.log('Manual toggle from', currentTheme, 'to', newTheme);
-              
-              document.body.classList.remove('light-theme', 'dark-theme');
-              document.body.classList.add(newTheme + '-theme');
-              localStorage.setItem('nexus-theme', newTheme);
-              updateThemeMenuText();
-            }
-          });
-          console.log('Direct theme toggle event listener added');
+          console.log('Theme toggle found - ThemeManager will handle clicks');
         } else {
           console.error('Theme toggle element NOT found! Checking dropdown HTML...');
           console.log('User dropdown HTML:', userDropdown.innerHTML);
@@ -230,8 +205,8 @@ function setupUserMenuEvents() {
       event.preventDefault();
       handleLogout();
     }
-    if (isThemeToggleClick) {
-      console.log('Theme toggle menu clicked');
+    if (isThemeToggleClick && event.target.closest('#themeToggleMenu')) {
+      console.log('Theme toggle menu clicked (user menu version)');
       event.preventDefault();
       console.log('Theme toggle clicked. NEXUSTheme available:', !!window.NEXUSTheme);
       if (window.NEXUSTheme) {
