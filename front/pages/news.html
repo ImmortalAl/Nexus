@@ -377,11 +377,41 @@
                 window.SubmissionModal.init();
                 window.CommentsSystem.init();
                 window.ChroniclesFeed.init();
-                
+
                 // Ensure chroniclesFeed is properly exposed (compatibility fix)
                 if (window.ChroniclesFeed && !window.chroniclesFeed) {
                     window.chroniclesFeed = window.ChroniclesFeed;
                 }
+
+                // CRITICAL: Re-initialize theme manager after all other components
+                // This ensures theme toggle buttons are properly connected
+                console.log('Re-initializing theme manager after component loading...');
+                if (window.NEXUSTheme) {
+                    window.NEXUSTheme.connectExistingToggles();
+                    console.log('Theme manager re-connected to toggle buttons');
+                } else if (window.NEXUS && window.NEXUS.initThemeManager) {
+                    window.NEXUS.initThemeManager();
+                    console.log('Theme manager initialized via NEXUS');
+                } else {
+                    console.error('Theme manager not available!', {
+                        NEXUSTheme: window.NEXUSTheme,
+                        NEXUS: window.NEXUS
+                    });
+                }
+
+                // DEBUG: Add manual theme toggle test for debugging
+                console.log('Adding manual theme toggle test to window for debugging...');
+                window.testThemeToggle = function() {
+                    console.log('Manual theme toggle test triggered');
+                    if (window.NEXUSTheme) {
+                        console.log('Current theme:', window.NEXUSTheme.getTheme());
+                        window.NEXUSTheme.toggleTheme();
+                        console.log('New theme:', window.NEXUSTheme.getTheme());
+                    } else {
+                        console.error('NEXUSTheme not available for manual test');
+                    }
+                };
+                console.log('Manual theme toggle available as window.testThemeToggle()');
                 
                 // Initialize Quill editor for chronicle content
                 if (typeof Quill !== 'undefined') {
