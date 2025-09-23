@@ -54,6 +54,8 @@ class NexusThemeManager {
     }
 
     applyTheme(theme) {
+        console.log('applyTheme called with:', theme);
+        console.log('Body classes before:', Array.from(document.body.classList));
         
         // Remove existing theme classes
         document.body.classList.remove('light-theme', 'dark-theme');
@@ -64,6 +66,8 @@ class NexusThemeManager {
         } else {
             document.body.classList.add('dark-theme');
         }
+        
+        console.log('Body classes after:', Array.from(document.body.classList));
         
         // Update theme color meta tag
         const themeColor = theme === 'light' ? '#ffffff' : '#0d0d1a';
@@ -79,16 +83,22 @@ class NexusThemeManager {
         window.dispatchEvent(new CustomEvent('nexus-theme-changed', { 
             detail: { theme } 
         }));
+        
+        console.log('Theme applied successfully. Current body classes:', Array.from(document.body.classList));
     }
 
     setTheme(theme) {
+        console.log('setTheme called with:', theme);
         this.currentTheme = theme;
         localStorage.setItem(this.themeKey, theme);
+        console.log('Theme saved to localStorage:', localStorage.getItem(this.themeKey));
         this.applyTheme(theme);
     }
 
     toggleTheme() {
+        console.log('toggleTheme called. Current theme:', this.currentTheme);
         const newTheme = this.currentTheme === 'dark' ? 'light' : 'dark';
+        console.log('Switching to theme:', newTheme);
         this.setTheme(newTheme);
     }
 
