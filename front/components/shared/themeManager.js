@@ -48,13 +48,22 @@ class NexusThemeManager {
                 console.log(`Setting up toggle button ${index}:`, button);
                 // Remove any existing click listeners to avoid duplicates
                 button.removeEventListener('click', this.handleToggleClick);
-                // Add new click listener
-                button.addEventListener('click', (e) => {
-                    console.log('Desktop theme toggle clicked');
+                // Add new click listener with proper binding
+                const boundToggle = (e) => {
+                    console.log('Theme toggle button clicked, current theme:', this.currentTheme);
                     e.preventDefault();
                     e.stopPropagation();
                     this.toggleTheme();
-                });
+                    console.log('Theme toggled to:', this.currentTheme);
+                };
+                button.addEventListener('click', boundToggle);
+
+                // Store reference for cleanup if needed
+                button._themeToggleHandler = boundToggle;
+
+                // Update initial button state
+                this.updateSingleToggle(button, this.currentTheme);
+                console.log(`Toggle button ${index} setup complete`);
             });
         }, 100);
     }
@@ -102,15 +111,19 @@ class NexusThemeManager {
         return this.currentTheme;
     }
 
+    updateSingleToggle(button, theme) {
+        const icon = button.querySelector('i');
+        if (icon) {
+            icon.className = theme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+        }
+        button.setAttribute('aria-label', `Switch to ${theme === 'light' ? 'dark' : 'light'} mode`);
+    }
+
     updateThemeToggles(theme) {
         // Update all theme toggle buttons on the page
         const toggleButtons = document.querySelectorAll('[data-theme-toggle]');
         toggleButtons.forEach(button => {
-            const icon = button.querySelector('i');
-            if (icon) {
-                icon.className = theme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
-            }
-            button.setAttribute('aria-label', `Switch to ${theme === 'light' ? 'dark' : 'light'} mode`);
+            this.updateSingleToggle(button, theme);
         });
 
         // Update mobile theme toggle text specifically
@@ -145,14 +158,19 @@ function initThemeManager() {
     return window.NEXUSTheme;
 }
 
-// Auto-initialize theme manager
+// Auto-initialize theme manager with proper timing
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-        initThemeManager();
+        // Small delay to ensure all other scripts have initialized
+        setTimeout(() => {
+            initThemeManager();
+        }, 50);
     });
 } else {
-    // DOM already loaded
-    initThemeManager();
+    // DOM already loaded - delay slightly to ensure all scripts loaded
+    setTimeout(() => {
+        initThemeManager();
+    }, 50);
 }
 
 // Expose on MLNF namespace

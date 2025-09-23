@@ -23,17 +23,17 @@
     --transition: 0.15s ease;
 }
 
-/* Light Theme - Traditional Newspaper Color Palette (Default) */
-:root,
-body.light-theme {
-    --newspaper-black: #000000;
-    --newspaper-white: #ffffff;
-    --newspaper-gray-1: #f8f8f8;
-    --newspaper-gray-2: #e8e8e8;
-    --newspaper-gray-3: #d8d8d8;
-    --newspaper-gray-4: #b8b8b8;
-    --newspaper-gray-5: #888888;
-    --newspaper-gray-6: #666666;
+/* Newspaper Theme Variables - Integrated with Global Theme System */
+:root {
+    /* Default (Dark) Theme - Traditional Newspaper Colors Inverted */
+    --newspaper-black: var(--text-bright, #e5e5e5);
+    --newspaper-white: var(--background, #1a1a1a);
+    --newspaper-gray-1: var(--background-secondary, #242424);
+    --newspaper-gray-2: var(--background-tertiary, #2d2d2d);
+    --newspaper-gray-3: #383838;
+    --newspaper-gray-4: #555555;
+    --newspaper-gray-5: var(--text-muted, #999999);
+    --newspaper-gray-6: var(--text-secondary, #bbbbbb);
 
     /* Newspaper Borders */
     --border-thin: 1px solid var(--newspaper-black);
@@ -42,16 +42,34 @@ body.light-theme {
     --border-double: 3px double var(--newspaper-black);
 }
 
-/* Dark Theme - Inverted Newspaper Colors */
+/* Light Theme - Traditional Newspaper Colors */
+body.light-theme {
+    --newspaper-black: var(--text-bright, #000000);
+    --newspaper-white: var(--background, #ffffff);
+    --newspaper-gray-1: var(--background-secondary, #f8f8f8);
+    --newspaper-gray-2: var(--background-tertiary, #e8e8e8);
+    --newspaper-gray-3: #d8d8d8;
+    --newspaper-gray-4: #b8b8b8;
+    --newspaper-gray-5: var(--text-muted, #888888);
+    --newspaper-gray-6: var(--text-secondary, #666666);
+
+    /* Newspaper Borders for Light Theme */
+    --border-thin: 1px solid var(--newspaper-black);
+    --border-medium: 2px solid var(--newspaper-black);
+    --border-thick: 3px solid var(--newspaper-black);
+    --border-double: 3px double var(--newspaper-black);
+}
+
+/* Dark Theme - Ensure proper newspaper colors in dark mode */
 body.dark-theme {
-    --newspaper-black: #e5e5e5;
-    --newspaper-white: #1a1a1a;
-    --newspaper-gray-1: #242424;
-    --newspaper-gray-2: #2d2d2d;
+    --newspaper-black: var(--text-bright, #e5e5e5);
+    --newspaper-white: var(--background, #1a1a1a);
+    --newspaper-gray-1: var(--background-secondary, #242424);
+    --newspaper-gray-2: var(--background-tertiary, #2d2d2d);
     --newspaper-gray-3: #383838;
     --newspaper-gray-4: #555555;
-    --newspaper-gray-5: #999999;
-    --newspaper-gray-6: #bbbbbb;
+    --newspaper-gray-5: var(--text-muted, #999999);
+    --newspaper-gray-6: var(--text-secondary, #bbbbbb);
 
     /* Newspaper Borders for Dark Theme */
     --border-thin: 1px solid var(--newspaper-black);
@@ -74,7 +92,6 @@ body.dark-theme {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Theme variables handle this automatically - no explicit overrides needed */
 
 .chronicles-container {
     max-width: var(--content-max-width);
@@ -94,7 +111,6 @@ body.dark-theme {
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Theme variables handle this automatically - no explicit overrides needed */
 
 .chronicles-header::before {
     content: '';
