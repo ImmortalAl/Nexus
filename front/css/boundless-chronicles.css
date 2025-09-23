@@ -289,16 +289,16 @@ body.dark-theme {
    NEWSPAPER ARTICLE CARDS
    ========================================================================== */
 .chronicles-feed .chronicle-card {
-    background: var(--newspaper-white) !important;
-    border: var(--border-thin) !important;
-    border-radius: 0 !important;
-    padding: 2.5rem 2rem 2rem 2rem !important;
-    transition: var(--transition) !important;
+    background: var(--newspaper-white);
+    border: var(--border-thin);
+    border-radius: 0;
+    padding: 2.5rem 2rem 2rem 2rem;
+    transition: var(--transition);
     cursor: pointer;
     position: relative;
     break-inside: avoid;
     page-break-inside: avoid;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.05) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.05);
     overflow: hidden;
 }
 
@@ -328,9 +328,9 @@ body.dark-theme {
 }
 
 .chronicles-feed .chronicle-card:hover {
-    border-color: var(--newspaper-gray-6) !important;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1) !important;
-    transform: translateY(-2px) !important;
+    border-color: var(--newspaper-gray-6);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
 }
 
 .chronicles-feed .chronicle-card:hover::before {
@@ -510,30 +510,30 @@ body.dark-theme {
 }
 
 .chronicles-feed .action-btn {
-    color: var(--newspaper-gray-6) !important;
-    text-decoration: none !important;
-    font-size: var(--small-size) !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 0.5rem !important;
-    transition: var(--transition) !important;
-    font-family: 'Times New Roman', serif !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.05em !important;
-    padding: 0.5rem 1rem !important;
-    border: var(--border-thin) !important;
-    border-radius: 0 !important;
-    background: var(--newspaper-white) !important;
-    font-weight: 600 !important;
-    cursor: pointer !important;
+    color: var(--newspaper-gray-6);
+    text-decoration: none;
+    font-size: var(--small-size);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: var(--transition);
+    font-family: 'Times New Roman', serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.5rem 1rem;
+    border: var(--border-thin);
+    border-radius: 0;
+    background: var(--newspaper-white);
+    font-weight: 600;
+    cursor: pointer;
 }
 
 .chronicles-feed .action-btn:hover {
-    color: var(--newspaper-black) !important;
-    background: var(--newspaper-gray-2) !important;
-    border-color: var(--newspaper-gray-6) !important;
-    transform: translateY(-1px) !important;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+    color: var(--newspaper-black);
+    background: var(--newspaper-gray-2);
+    border-color: var(--newspaper-gray-6);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .chronicle-action i {
@@ -1004,19 +1004,20 @@ body.dark-theme {
 /*
  * 1. Card Overrides
  * Ensures cards have the correct newspaper background, border, and actions styling.
+ * Using higher specificity instead of !important for better theme integration.
  */
-.chronicles-feed .chronicle-card {
-    background: var(--newspaper-white) !important;
-    border: var(--border-thin) !important;
-    color: var(--newspaper-black) !important;
+.chronicles-main .chronicles-feed .chronicle-card {
+    background: var(--newspaper-white);
+    border: var(--border-thin);
+    color: var(--newspaper-black);
 }
 
 /* Ensure text inside the card uses theme colors */
-.chronicles-feed .chronicle-card .chronicle-title,
-.chronicles-feed .chronicle-card .chronicle-excerpt,
-.chronicles-feed .chronicle-card .chronicle-author-info,
-.chronicles-feed .chronicle-card .chronicle-dates {
-    color: var(--newspaper-black) !important;
+.chronicles-main .chronicles-feed .chronicle-card .chronicle-title,
+.chronicles-main .chronicles-feed .chronicle-card .chronicle-excerpt,
+.chronicles-main .chronicles-feed .chronicle-card .chronicle-author-info,
+.chronicles-main .chronicles-feed .chronicle-card .chronicle-dates {
+    color: var(--newspaper-black);
 }
 
 .chronicles-feed .chronicle-card .chronicle-actions {
