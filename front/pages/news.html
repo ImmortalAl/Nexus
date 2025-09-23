@@ -405,8 +405,19 @@
                     console.log('Manual theme toggle test triggered');
                     if (window.NEXUSTheme) {
                         console.log('Current theme:', window.NEXUSTheme.getTheme());
+                        console.log('Body classes before toggle:', document.body.className);
                         window.NEXUSTheme.toggleTheme();
                         console.log('New theme:', window.NEXUSTheme.getTheme());
+                        console.log('Body classes after toggle:', document.body.className);
+
+                        // Test actual CSS variables
+                        const style = getComputedStyle(document.body);
+                        console.log('CSS Variables after toggle:', {
+                            '--newspaper-black': style.getPropertyValue('--newspaper-black'),
+                            '--newspaper-white': style.getPropertyValue('--newspaper-white'),
+                            '--background': style.getPropertyValue('--background'),
+                            '--text-bright': style.getPropertyValue('--text-bright')
+                        });
                     } else {
                         console.error('NEXUSTheme not available for manual test');
                     }
