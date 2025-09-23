@@ -1,5 +1,5 @@
 // MLNF Service Worker - PWA Core Functionality
-const CACHE_VERSION = 'nexus-v1.2.3'; // Incremented version to bust cache
+const CACHE_VERSION = 'nexus-v1.3.0'; // A major version bump for the new activation logic
 const STATIC_CACHE = `nexus-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `nexus-dynamic-${CACHE_VERSION}`;
 const API_CACHE = `nexus-api-${CACHE_VERSION}`;
@@ -61,29 +61,24 @@ self.addEventListener('install', event => {
 });
 
 // Activate event - clean up old caches
-self.addEventListener('activate', event => {
-  console.log('[MLNF SW] Activating service worker...');
-  
+self.addEventListener('activate', (event) => {
+  console.log('[Service Worker] Activating new service worker...');
+  const cacheWhitelist = [STATIC_CACHE, DYNAMIC_CACHE, API_CACHE];
+
   event.waitUntil(
-    caches.keys()
-      .then(cacheNames => {
-        return Promise.all(
-          cacheNames.map(cacheName => {
-            if (cacheName.startsWith('nexus-') && 
-                cacheName !== STATIC_CACHE && 
-                cacheName !== DYNAMIC_CACHE && 
-                cacheName !== API_CACHE) {
-              console.log('[MLNF SW] Deleting old cache:', cacheName);
-              return caches.delete(cacheName);
-            }
-          })
-        );
-      })
-      .then(() => {
-        console.log('[MLNF SW] Service worker activated');
-        return self.clients.claim(); // Take control of all pages immediately
-      })
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheWhitelist.indexOf(cacheName) === -1) {
+            console.log('[Service Worker] Deleting old cache:', cacheName);
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
   );
+  // Force the activated service worker to take control of the page immediately.
+  return self.clients.claim();
 });
 
 // Fetch event - implement caching strategies
