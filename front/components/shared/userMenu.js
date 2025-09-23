@@ -168,7 +168,11 @@ function updateThemeMenuText() {
 // Setup event listeners for user menu (dropdown toggle, logout)
 function setupUserMenuEvents() {
   const userMenuContainer = document.getElementById('userMenuContainer');
-  if (!userMenuContainer) return;
+  console.log('setupUserMenuEvents called. userMenuContainer found:', !!userMenuContainer);
+  if (!userMenuContainer) {
+    console.error('userMenuContainer not found! Cannot setup events.');
+    return;
+  }
 
   // Event delegation for all actions within the user menu
   userMenuContainer.addEventListener('click', (event) => {
@@ -371,11 +375,13 @@ async function validateUserSession() {
 
 // Initialize user menu
 function initUserMenu() {
+  console.log('initUserMenu called');
   validateUserSession(); // Validate and then update UI
   setupUserMenuEvents(); // Setup event delegation ONCE
   
   // Listen for theme changes to update menu text
   window.addEventListener('nexus-theme-changed', updateThemeMenuText);
+  console.log('initUserMenu completed');
 }
 
 // Export the initialization function
