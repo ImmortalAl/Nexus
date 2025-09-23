@@ -37,29 +37,41 @@ class NexusThemeManager {
     }
 
     connectExistingToggles() {
-        console.log('connectExistingToggles called');
+        console.log('🔌 connectExistingToggles called');
         // Small delay to ensure DOM is fully ready
         setTimeout(() => {
             // Find and connect existing theme toggle buttons
             const toggleButtons = document.querySelectorAll('[data-theme-toggle]');
-            console.log('Found toggle buttons:', toggleButtons.length);
+            console.log('🔍 Found toggle buttons:', toggleButtons.length);
+
+            if (toggleButtons.length === 0) {
+                console.error('❌ NO THEME TOGGLE BUTTONS FOUND!');
+                console.log('🔍 Searching for all buttons on page:');
+                const allButtons = document.querySelectorAll('button');
+                console.log('All buttons:', allButtons.length);
+                allButtons.forEach((btn, i) => {
+                    console.log(`Button ${i}:`, btn.outerHTML);
+                });
+                return;
+            }
 
             toggleButtons.forEach((button, index) => {
-                console.log(`Setting up toggle button ${index}:`, button);
+                console.log(`🔧 Setting up toggle button ${index}:`, button.outerHTML);
 
                 // Remove any existing handler to prevent duplicates
                 if (button._themeToggleHandler) {
                     button.removeEventListener('click', button._themeToggleHandler);
-                    console.log(`Removed existing handler from button ${index}`);
+                    console.log(`🗑️ Removed existing handler from button ${index}`);
                 }
 
                 // Add new click listener with proper binding
                 const boundToggle = (e) => {
-                    console.log('Theme toggle button clicked, current theme:', this.currentTheme);
+                    console.log('🖱️ THEME TOGGLE BUTTON CLICKED!', e.target);
+                    console.log('🎨 Current theme:', this.currentTheme);
                     e.preventDefault();
                     e.stopPropagation();
                     this.toggleTheme();
-                    console.log('Theme toggled to:', this.currentTheme);
+                    console.log('🔄 Theme toggled to:', this.currentTheme);
                 };
                 button.addEventListener('click', boundToggle);
 
@@ -68,7 +80,14 @@ class NexusThemeManager {
 
                 // Update initial button state
                 this.updateSingleToggle(button, this.currentTheme);
-                console.log(`Toggle button ${index} setup complete with theme:`, this.currentTheme);
+                console.log(`✅ Toggle button ${index} setup complete with theme:`, this.currentTheme);
+
+                // TEST: Add a test click to verify it works
+                console.log('🧪 Testing click handler attachment...');
+                setTimeout(() => {
+                    console.log('🧪 Simulating click on button', index);
+                    button.click();
+                }, 1000);
             });
         }, 100);
     }
