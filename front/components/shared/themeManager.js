@@ -37,114 +37,52 @@ class NexusThemeManager {
     }
 
     connectExistingToggles() {
-        console.log('🔌 connectExistingToggles called');
-        // Small delay to ensure DOM is fully ready
         setTimeout(() => {
-            // Find and connect existing theme toggle buttons
             const toggleButtons = document.querySelectorAll('[data-theme-toggle]');
-            console.log('🔍 Found toggle buttons:', toggleButtons.length);
 
             if (toggleButtons.length === 0) {
-                console.error('❌ NO THEME TOGGLE BUTTONS FOUND!');
-                console.log('🔍 Searching for all buttons on page:');
-                const allButtons = document.querySelectorAll('button');
-                console.log('All buttons:', allButtons.length);
-                allButtons.forEach((btn, i) => {
-                    console.log(`Button ${i}:`, btn.outerHTML);
-                });
                 return;
             }
 
             toggleButtons.forEach((button, index) => {
-                console.log(`🔧 Setting up toggle button ${index}:`, button.outerHTML);
-
-                // Remove any existing handler to prevent duplicates
                 if (button._themeToggleHandler) {
                     button.removeEventListener('click', button._themeToggleHandler);
-                    console.log(`🗑️ Removed existing handler from button ${index}`);
                 }
 
-                // Add new click listener with proper binding
                 const boundToggle = (e) => {
-                    console.log('🖱️ THEME TOGGLE BUTTON CLICKED!', e.target);
-                    console.log('🎨 Current theme:', this.currentTheme);
                     e.preventDefault();
                     e.stopPropagation();
                     this.toggleTheme();
-                    console.log('🔄 Theme toggled to:', this.currentTheme);
                 };
                 button.addEventListener('click', boundToggle);
 
-                // Store reference for cleanup
                 button._themeToggleHandler = boundToggle;
 
-                // Update initial button state
                 this.updateSingleToggle(button, this.currentTheme);
-                console.log(`✅ Toggle button ${index} setup complete with theme:`, this.currentTheme);
-
-                // TEST: Add a test click to verify it works
-                console.log('🧪 Testing click handler attachment...');
-                setTimeout(() => {
-                    console.log('🧪 Simulating click on button', index);
-                    button.click();
-                }, 1000);
             });
         }, 100);
     }
 
     applyTheme(theme) {
-        console.log(`🎨 APPLYING THEME: ${theme}`);
-        console.log('🔍 Body classes BEFORE:', Array.from(document.body.classList));
-
-        // Remove existing theme classes
         document.body.classList.remove('light-theme', 'dark-theme');
-        console.log('🗑️ Removed existing theme classes');
-        console.log('🔍 Body classes AFTER removal:', Array.from(document.body.classList));
 
-        // Add new theme class
         if (theme === 'light') {
             document.body.classList.add('light-theme');
-            console.log('✅ Added light-theme class to body');
         } else {
             document.body.classList.add('dark-theme');
-            console.log('✅ Added dark-theme class to body');
         }
-        console.log('🔍 Body classes AFTER addition:', Array.from(document.body.classList));
 
-        // EMERGENCY CHECK: Force verify the class was actually added
-        setTimeout(() => {
-            const hasCorrectClass = theme === 'light' ?
-                document.body.classList.contains('light-theme') :
-                document.body.classList.contains('dark-theme');
-            console.log(`🚨 VERIFICATION: Body has ${theme}-theme class:`, hasCorrectClass);
-            console.log('🔍 Final body classes:', Array.from(document.body.classList));
-        }, 100);
-
-        // Debug: Check what CSS variables are actually set
-        const computedStyle = getComputedStyle(document.body);
-        console.log('Theme applied - CSS Variables check:', {
-            '--background': computedStyle.getPropertyValue('--background'),
-            '--text': computedStyle.getPropertyValue('--text'),
-            '--newspaper-black': computedStyle.getPropertyValue('--newspaper-black'),
-            '--newspaper-white': computedStyle.getPropertyValue('--newspaper-white')
-        });
-
-        // Update theme color meta tag
         const themeColor = theme === 'light' ? '#ffffff' : '#0d0d1a';
         const metaThemeColor = document.querySelector('meta[name="theme-color"]');
         if (metaThemeColor) {
             metaThemeColor.content = themeColor;
         }
 
-        // Update all theme toggle buttons
         this.updateThemeToggles(theme);
 
-        // Dispatch custom event for other components
         window.dispatchEvent(new CustomEvent('nexus-theme-changed', {
             detail: { theme }
         }));
-
-        console.log(`🎯 Theme application complete: ${theme}`);
     }
 
     setTheme(theme) {
@@ -154,11 +92,8 @@ class NexusThemeManager {
     }
 
     toggleTheme() {
-        console.log('toggleTheme called, current theme:', this.currentTheme);
         const newTheme = this.currentTheme === 'dark' ? 'light' : 'dark';
-        console.log('toggleTheme switching to:', newTheme);
         this.setTheme(newTheme);
-        console.log('toggleTheme complete, new theme:', this.currentTheme);
     }
 
     getTheme() {
@@ -203,13 +138,10 @@ class NexusThemeManager {
     }
 }
 
-// Initialize theme manager globally
 function initThemeManager() {
     if (!window.NEXUSTheme) {
-        console.log('Initializing NexusThemeManager');
         window.NEXUSTheme = new NexusThemeManager();
     } else {
-        console.log('NexusThemeManager already exists, re-connecting toggles');
         window.NEXUSTheme.connectExistingToggles();
     }
     return window.NEXUSTheme;
