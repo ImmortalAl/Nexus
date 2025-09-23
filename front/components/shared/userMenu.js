@@ -178,11 +178,20 @@ function setupUserMenuEvents() {
   userMenuContainer.addEventListener('click', (event) => {
     console.log('User menu container clicked!', event.target);
     console.log('Event target id:', event.target.id);
+    console.log('Event target tagName:', event.target.tagName);
+    console.log('Event target className:', event.target.className);
+    console.log('Event target textContent:', event.target.textContent?.trim());
     console.log('Event target closest #themeToggleMenu:', event.target.closest('#themeToggleMenu'));
+    console.log('Event target closest #themeToggleText:', event.target.closest('#themeToggleText'));
     
     const userMenuBtn = event.target.closest('#userMenuBtn');
     const logoutBtn = event.target.closest('#logoutBtn');
     const themeToggleMenu = event.target.closest('#themeToggleMenu');
+    
+    // Alternative ways to detect theme toggle click
+    const isThemeToggleText = event.target.id === 'themeToggleText' || event.target.closest('#themeToggleText');
+    const isThemeToggleIcon = event.target.closest('#themeToggleMenu i');
+    const isThemeToggleClick = themeToggleMenu || isThemeToggleText || isThemeToggleIcon;
 
     console.log('Found elements:', { userMenuBtn, logoutBtn, themeToggleMenu });
 
@@ -195,7 +204,7 @@ function setupUserMenuEvents() {
       event.preventDefault();
       handleLogout();
     }
-    if (themeToggleMenu) {
+    if (isThemeToggleClick) {
       console.log('Theme toggle menu clicked');
       event.preventDefault();
       console.log('Theme toggle clicked. NEXUSTheme available:', !!window.NEXUSTheme);
