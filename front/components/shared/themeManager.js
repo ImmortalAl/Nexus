@@ -5,29 +5,35 @@
 
 class NexusThemeManager {
     constructor() {
+        console.log('[ThemeManager] Constructor called');
         this.currentTheme = 'dark'; // Default theme
         this.themeKey = 'nexus-theme';
         this.init();
     }
 
     init() {
+        console.log('[ThemeManager] init() called');
         // Load saved theme or detect system preference
         const savedTheme = localStorage.getItem(this.themeKey);
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        
+
+        console.log('[ThemeManager] Saved theme:', savedTheme, 'System prefers dark:', prefersDark);
+
         if (savedTheme) {
             this.currentTheme = savedTheme;
         } else {
             // Default to dark theme for MLNF
             this.currentTheme = 'dark';
         }
-        
+
+        console.log('[ThemeManager] Initial theme set to:', this.currentTheme);
+
         // Apply theme immediately
         this.applyTheme(this.currentTheme);
-        
+
         // Connect existing theme toggle buttons
         this.connectExistingToggles();
-        
+
         // Listen for system theme changes
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
             if (!localStorage.getItem(this.themeKey)) {
@@ -39,17 +45,22 @@ class NexusThemeManager {
     connectExistingToggles() {
         setTimeout(() => {
             const toggleButtons = document.querySelectorAll('[data-theme-toggle]');
+            console.log('[ThemeManager] Found', toggleButtons.length, 'theme toggle buttons');
 
             if (toggleButtons.length === 0) {
+                console.warn('[ThemeManager] No theme toggle buttons found!');
                 return;
             }
 
             toggleButtons.forEach((button, index) => {
+                console.log('[ThemeManager] Connecting button', index, button);
+
                 if (button._themeToggleHandler) {
                     button.removeEventListener('click', button._themeToggleHandler);
                 }
 
                 const boundToggle = (e) => {
+                    console.log('[ThemeManager] Button clicked!', e.target);
                     e.preventDefault();
                     e.stopPropagation();
                     this.toggleTheme();
@@ -64,6 +75,9 @@ class NexusThemeManager {
     }
 
     applyTheme(theme) {
+        console.log('[ThemeManager] applyTheme called with:', theme);
+        console.log('[ThemeManager] Body classes before:', document.body.className);
+
         document.body.classList.remove('light-theme', 'dark-theme');
 
         if (theme === 'light') {
@@ -71,6 +85,8 @@ class NexusThemeManager {
         } else {
             document.body.classList.add('dark-theme');
         }
+
+        console.log('[ThemeManager] Body classes after:', document.body.className);
 
         const themeColor = theme === 'light' ? '#ffffff' : '#0d0d1a';
         const metaThemeColor = document.querySelector('meta[name="theme-color"]');
@@ -92,7 +108,9 @@ class NexusThemeManager {
     }
 
     toggleTheme() {
+        console.log('[ThemeManager] toggleTheme called. Current:', this.currentTheme);
         const newTheme = this.currentTheme === 'dark' ? 'light' : 'dark';
+        console.log('[ThemeManager] Switching to:', newTheme);
         this.setTheme(newTheme);
     }
 
@@ -143,9 +161,12 @@ class NexusThemeManager {
 }
 
 function initThemeManager() {
+    console.log('[ThemeManager] initThemeManager called');
     if (!window.NEXUSTheme) {
+        console.log('[ThemeManager] Creating new NexusThemeManager instance');
         window.NEXUSTheme = new NexusThemeManager();
     } else {
+        console.log('[ThemeManager] Instance already exists, reconnecting toggles');
         window.NEXUSTheme.connectExistingToggles();
     }
     return window.NEXUSTheme;

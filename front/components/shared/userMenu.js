@@ -50,7 +50,7 @@ function updateUserMenu() {
         <a href="/admin/"><i class="fas fa-crown"></i> Admin Panel</a>
         ` : ''}
         <div class="divider"></div>
-        <a href="#" id="themeToggleMenu"><i class="fas fa-moon"></i> <span id="themeToggleText">Light Mode</span></a>
+        <a href="#" id="themeToggleMenu" data-theme-toggle="true"><i class="fas fa-moon"></i> <span id="themeToggleText">Light Mode</span></a>
         <div class="divider"></div>
         <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Transcend Session</a>
       `;
@@ -188,14 +188,8 @@ function setupUserMenuEvents() {
     
     const userMenuBtn = event.target.closest('#userMenuBtn');
     const logoutBtn = event.target.closest('#logoutBtn');
-    const themeToggleMenu = event.target.closest('#themeToggleMenu');
-    
-    // Alternative ways to detect theme toggle click
-    const isThemeToggleText = event.target.id === 'themeToggleText' || event.target.closest('#themeToggleText');
-    const isThemeToggleIcon = event.target.closest('#themeToggleMenu i');
-    const isThemeToggleClick = themeToggleMenu || isThemeToggleText || isThemeToggleIcon;
 
-    console.log('Found elements:', { userMenuBtn, logoutBtn, themeToggleMenu });
+    console.log('Found elements:', { userMenuBtn, logoutBtn });
 
     if (userMenuBtn) {
       console.log('User menu button clicked');
@@ -206,27 +200,8 @@ function setupUserMenuEvents() {
       event.preventDefault();
       handleLogout();
     }
-    if (isThemeToggleClick && event.target.closest('#themeToggleMenu')) {
-      console.log('Theme toggle menu clicked (user menu version)');
-      event.preventDefault();
-      console.log('Theme toggle clicked. NEXUSTheme available:', !!window.NEXUSTheme);
-      if (window.NEXUSTheme) {
-        console.log('Calling NEXUSTheme.toggleTheme()');
-        window.NEXUSTheme.toggleTheme();
-        updateThemeMenuText();
-      } else {
-        console.error('NEXUSTheme not available. Available NEXUS properties:', Object.keys(window.NEXUS || {}));
-        // Fallback: try to initialize theme manager
-        if (window.NEXUS && window.NEXUS.initThemeManager) {
-          console.log('Attempting to initialize theme manager...');
-          window.NEXUS.initThemeManager();
-          if (window.NEXUSTheme) {
-            window.NEXUSTheme.toggleTheme();
-            updateThemeMenuText();
-          }
-        }
-      }
-    }
+    // Theme toggle now handled by themeManager.js via data-theme-toggle attribute
+    // No need for duplicate handling here
   });
 }
 
