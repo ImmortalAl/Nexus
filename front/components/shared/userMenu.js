@@ -65,6 +65,22 @@ function updateUserMenu() {
         console.log('Theme toggle element found after creation:', themeToggle);
         if (themeToggle) {
           console.log('Theme toggle HTML:', themeToggle.outerHTML);
+          
+          // Add direct event listener to theme toggle as backup
+          themeToggle.addEventListener('click', (e) => {
+            console.log('DIRECT theme toggle clicked!', e.target);
+            e.preventDefault();
+            e.stopPropagation();
+            
+            if (window.NEXUSTheme) {
+              console.log('Calling NEXUSTheme.toggleTheme() from direct listener');
+              window.NEXUSTheme.toggleTheme();
+              updateThemeMenuText();
+            } else {
+              console.error('NEXUSTheme not available in direct listener');
+            }
+          });
+          console.log('Direct theme toggle event listener added');
         } else {
           console.error('Theme toggle element NOT found! Checking dropdown HTML...');
           console.log('User dropdown HTML:', userDropdown.innerHTML);
