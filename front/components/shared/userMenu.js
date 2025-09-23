@@ -58,6 +58,18 @@ function updateUserMenu() {
       userMenuContainer.innerHTML = ''; 
       userMenuContainer.appendChild(userMenuBtn);
       userMenuContainer.appendChild(userDropdown);
+      
+      // Debug: Check if the theme toggle element was actually created
+      setTimeout(() => {
+        const themeToggle = document.getElementById('themeToggleMenu');
+        console.log('Theme toggle element found after creation:', themeToggle);
+        if (themeToggle) {
+          console.log('Theme toggle HTML:', themeToggle.outerHTML);
+        } else {
+          console.error('Theme toggle element NOT found! Checking dropdown HTML...');
+          console.log('User dropdown HTML:', userDropdown.innerHTML);
+        }
+      }, 100);
 
     } catch (error) {
       console.error('[userMenu.js] Error parsing user data:', error);
@@ -160,18 +172,27 @@ function setupUserMenuEvents() {
 
   // Event delegation for all actions within the user menu
   userMenuContainer.addEventListener('click', (event) => {
+    console.log('User menu container clicked!', event.target);
+    console.log('Event target id:', event.target.id);
+    console.log('Event target closest #themeToggleMenu:', event.target.closest('#themeToggleMenu'));
+    
     const userMenuBtn = event.target.closest('#userMenuBtn');
     const logoutBtn = event.target.closest('#logoutBtn');
     const themeToggleMenu = event.target.closest('#themeToggleMenu');
 
+    console.log('Found elements:', { userMenuBtn, logoutBtn, themeToggleMenu });
+
     if (userMenuBtn) {
+      console.log('User menu button clicked');
       handleToggleDropdown(event, userMenuBtn);
     }
     if (logoutBtn) {
+      console.log('Logout button clicked');
       event.preventDefault();
       handleLogout();
     }
     if (themeToggleMenu) {
+      console.log('Theme toggle menu clicked');
       event.preventDefault();
       console.log('Theme toggle clicked. NEXUSTheme available:', !!window.NEXUSTheme);
       if (window.NEXUSTheme) {
