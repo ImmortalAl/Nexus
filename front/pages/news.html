@@ -422,7 +422,26 @@
                         console.error('NEXUSTheme not available for manual test');
                     }
                 };
-                console.log('Manual theme toggle available as window.testThemeToggle()');
+
+                // EMERGENCY: Force theme switch
+                window.forceLight = function() {
+                    console.log('🚨 FORCING LIGHT THEME');
+                    document.body.classList.remove('dark-theme', 'light-theme');
+                    document.body.classList.add('light-theme');
+                    console.log('Body classes:', Array.from(document.body.classList));
+                };
+
+                window.forceDark = function() {
+                    console.log('🚨 FORCING DARK THEME');
+                    document.body.classList.remove('dark-theme', 'light-theme');
+                    document.body.classList.add('dark-theme');
+                    console.log('Body classes:', Array.from(document.body.classList));
+                };
+
+                console.log('Available debug functions:');
+                console.log('- window.testThemeToggle() - Test normal toggle');
+                console.log('- window.forceLight() - Force light theme');
+                console.log('- window.forceDark() - Force dark theme');
                 
                 // Initialize Quill editor for chronicle content
                 if (typeof Quill !== 'undefined') {

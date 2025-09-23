@@ -74,19 +74,32 @@ class NexusThemeManager {
     }
 
     applyTheme(theme) {
-        console.log(`Applying theme: ${theme}`);
+        console.log(`🎨 APPLYING THEME: ${theme}`);
+        console.log('🔍 Body classes BEFORE:', Array.from(document.body.classList));
 
         // Remove existing theme classes
         document.body.classList.remove('light-theme', 'dark-theme');
+        console.log('🗑️ Removed existing theme classes');
+        console.log('🔍 Body classes AFTER removal:', Array.from(document.body.classList));
 
         // Add new theme class
         if (theme === 'light') {
             document.body.classList.add('light-theme');
-            console.log('Added light-theme class to body');
+            console.log('✅ Added light-theme class to body');
         } else {
             document.body.classList.add('dark-theme');
-            console.log('Added dark-theme class to body');
+            console.log('✅ Added dark-theme class to body');
         }
+        console.log('🔍 Body classes AFTER addition:', Array.from(document.body.classList));
+
+        // EMERGENCY CHECK: Force verify the class was actually added
+        setTimeout(() => {
+            const hasCorrectClass = theme === 'light' ?
+                document.body.classList.contains('light-theme') :
+                document.body.classList.contains('dark-theme');
+            console.log(`🚨 VERIFICATION: Body has ${theme}-theme class:`, hasCorrectClass);
+            console.log('🔍 Final body classes:', Array.from(document.body.classList));
+        }, 100);
 
         // Debug: Check what CSS variables are actually set
         const computedStyle = getComputedStyle(document.body);
@@ -112,7 +125,7 @@ class NexusThemeManager {
             detail: { theme }
         }));
 
-        console.log(`Theme application complete: ${theme}`);
+        console.log(`🎯 Theme application complete: ${theme}`);
     }
 
     setTheme(theme) {
