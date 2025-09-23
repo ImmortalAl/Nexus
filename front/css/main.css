@@ -28,6 +28,7 @@
 @import url('../components/shared/styles.css');
 @import url('unified-modals.css');
 @import url('components/buttons.css');
+@import url('components/navigation.css');
 
 /* 4. PAGE-SPECIFIC STYLES */
 @import url('active-users.css');
