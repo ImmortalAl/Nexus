@@ -1,33 +1,11 @@
 /* ==========================================================================
    THE BOUNDLESS CHRONICLES - TRADITIONAL NEWSPAPER DESIGN
    Classic print newspaper aesthetic with medieval typography
-   Version: 2.0 - Fixed light/dark theme toggle functionality
+   Version: 2.1 - Fixed light theme display and CSS specificity issues
    ========================================================================== */
 
 :root {
-    /* Light Theme - Traditional Newspaper Color Palette */
-    --newspaper-black: #000000;
-    --newspaper-white: #ffffff;
-    --newspaper-gray-1: #f8f8f8;
-    --newspaper-gray-2: #e8e8e8;
-    --newspaper-gray-3: #d8d8d8;
-    --newspaper-gray-4: #b8b8b8;
-    --newspaper-gray-5: #888888;
-    --newspaper-gray-6: #666666;
-}
-
-/* Dark Theme - Inverted Newspaper Colors */
-body.dark-theme {
-    --newspaper-black: #e5e5e5;
-    --newspaper-white: #1a1a1a;
-    --newspaper-gray-1: #242424;
-    --newspaper-gray-2: #2d2d2d;
-    --newspaper-gray-3: #383838;
-    --newspaper-gray-4: #555555;
-    --newspaper-gray-5: #999999;
-    --newspaper-gray-6: #bbbbbb;
-
-    /* Newspaper Layout */
+    /* Base Layout Variables */
     --content-max-width: 1200px;
     --column-gap: 2rem;
     --gutter-width: 1rem;
@@ -41,14 +19,45 @@ body.dark-theme {
     --small-size: 0.875rem;
     --caption-size: 0.75rem;
 
+    /* Transitions */
+    --transition: 0.15s ease;
+}
+
+/* Light Theme - Traditional Newspaper Color Palette (Default) */
+:root,
+body.light-theme {
+    --newspaper-black: #000000;
+    --newspaper-white: #ffffff;
+    --newspaper-gray-1: #f8f8f8;
+    --newspaper-gray-2: #e8e8e8;
+    --newspaper-gray-3: #d8d8d8;
+    --newspaper-gray-4: #b8b8b8;
+    --newspaper-gray-5: #888888;
+    --newspaper-gray-6: #666666;
+
     /* Newspaper Borders */
     --border-thin: 1px solid var(--newspaper-black);
     --border-medium: 2px solid var(--newspaper-black);
     --border-thick: 3px solid var(--newspaper-black);
     --border-double: 3px double var(--newspaper-black);
+}
 
-    /* Transitions */
-    --transition: 0.15s ease;
+/* Dark Theme - Inverted Newspaper Colors */
+body.dark-theme {
+    --newspaper-black: #e5e5e5;
+    --newspaper-white: #1a1a1a;
+    --newspaper-gray-1: #242424;
+    --newspaper-gray-2: #2d2d2d;
+    --newspaper-gray-3: #383838;
+    --newspaper-gray-4: #555555;
+    --newspaper-gray-5: #999999;
+    --newspaper-gray-6: #bbbbbb;
+
+    /* Newspaper Borders for Dark Theme */
+    --border-thin: 1px solid var(--newspaper-black);
+    --border-medium: 2px solid var(--newspaper-black);
+    --border-thick: 3px solid var(--newspaper-black);
+    --border-double: 3px double var(--newspaper-black);
 }
 
 /* ==========================================================================
@@ -62,6 +71,18 @@ body.dark-theme {
     line-height: 1.6;
     font-size: var(--body-size);
     font-weight: 400;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Explicit theme overrides for main container */
+body.light-theme .chronicles-main {
+    background: var(--newspaper-white) !important;
+    color: var(--newspaper-black) !important;
+}
+
+body.dark-theme .chronicles-main {
+    background: var(--newspaper-white) !important;
+    color: var(--newspaper-black) !important;
 }
 
 .chronicles-container {
@@ -79,6 +100,18 @@ body.dark-theme {
     padding: 3rem 0;
     margin-bottom: var(--section-spacing);
     position: relative;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Explicit theme overrides for header */
+body.light-theme .chronicles-header {
+    background: var(--newspaper-white) !important;
+    border-bottom: var(--border-double) !important;
+}
+
+body.dark-theme .chronicles-header {
+    background: var(--newspaper-white) !important;
+    border-bottom: var(--border-double) !important;
 }
 
 .chronicles-header::before {
