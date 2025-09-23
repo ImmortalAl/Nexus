@@ -1,5 +1,15 @@
 /* MLNF Main Stylesheet (styles.css) */
 
+/* EMERGENCY THEME TEST - SHOULD OVERRIDE EVERYTHING */
+body.dark-theme {
+    background: red !important;
+}
+
+body.dark-theme header {
+    background: blue !important;
+}
+/* END EMERGENCY TEST */
+
 /* 
  * TABLE OF CONTENTS:
  * 1. Accessibility utilities
