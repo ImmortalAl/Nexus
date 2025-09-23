@@ -11,9 +11,14 @@ class NexusThemeManager {
     }
 
     init() {
+        console.log('ThemeManager init called');
+        
         // Load saved theme or detect system preference
         const savedTheme = localStorage.getItem(this.themeKey);
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        console.log('Saved theme from localStorage:', savedTheme);
+        console.log('System prefers dark:', prefersDark);
         
         if (savedTheme) {
             this.currentTheme = savedTheme;
@@ -21,6 +26,8 @@ class NexusThemeManager {
             // Default to dark theme for MLNF
             this.currentTheme = 'dark';
         }
+        
+        console.log('Initial theme set to:', this.currentTheme);
         
         // Apply theme immediately
         this.applyTheme(this.currentTheme);
@@ -89,10 +96,13 @@ class NexusThemeManager {
 
     setTheme(theme) {
         console.log('setTheme called with:', theme);
+        console.log('Previous theme was:', this.currentTheme);
         this.currentTheme = theme;
         localStorage.setItem(this.themeKey, theme);
         console.log('Theme saved to localStorage:', localStorage.getItem(this.themeKey));
+        console.log('localStorage verification:', localStorage.getItem(this.themeKey));
         this.applyTheme(theme);
+        console.log('setTheme completed. Current theme is now:', this.currentTheme);
     }
 
     toggleTheme() {
