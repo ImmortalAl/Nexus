@@ -23,9 +23,9 @@
     --transition: 0.15s ease;
 }
 
-/* Newspaper Theme Variables - Properly Cascading from Global Theme System */
+/* Newspaper Theme Variables - Default Dark Theme */
 :root {
-    /* Newspaper-specific colors that adapt to global theme */
+    /* Newspaper-specific colors for DARK theme */
     --newspaper-black: var(--text-bright);
     --newspaper-white: var(--background);
     --newspaper-gray-1: var(--background-secondary);
@@ -40,6 +40,25 @@
     --border-medium: 2px solid var(--newspaper-black);
     --border-thick: 3px solid var(--newspaper-black);
     --border-double: 3px double var(--newspaper-black);
+}
+
+/* Newspaper Theme Variables - Light Theme Override */
+body.light-theme {
+    /* Newspaper-specific colors for LIGHT theme - INVERTED */
+    --newspaper-black: #000000;
+    --newspaper-white: #ffffff;
+    --newspaper-gray-1: #f8fafc;
+    --newspaper-gray-2: #e2e8f0;
+    --newspaper-gray-3: #cbd5e1;
+    --newspaper-gray-4: #94a3b8;
+    --newspaper-gray-5: #64748b;
+    --newspaper-gray-6: #475569;
+
+    /* Newspaper Borders for light theme */
+    --border-thin: 1px solid #cbd5e1;
+    --border-medium: 2px solid #94a3b8;
+    --border-thick: 3px solid #64748b;
+    --border-double: 3px double #475569;
 }
 
 /* ==========================================================================
