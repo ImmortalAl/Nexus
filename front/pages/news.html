@@ -336,6 +336,13 @@
     <script>
         // Initialize everything when DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
+            // Debug: Check if main.css loaded properly
+            const mainStylesheet = document.querySelector('link[href*="main.css"]');
+            console.log('Main stylesheet found:', mainStylesheet);
+            if (mainStylesheet) {
+                console.log('Main stylesheet loaded:', !mainStylesheet.sheet || mainStylesheet.sheet.cssRules.length > 0);
+            }
+            
             // Ensure navigation is initialized (fallback if nexus-core didn't do it)
             console.log('Checking navigation initialization...');
             if (window.NEXUS && window.NEXUS.initNavigation) {

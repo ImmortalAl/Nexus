@@ -143,6 +143,20 @@ function injectCompleteHeader() {
         console.log('Generated header HTML:', headerHTML.substring(0, 200) + '...');
         headerElement.innerHTML = headerHTML;
         console.log('Header HTML injected');
+        
+        // Debug: Check computed styles
+        const computedStyle = window.getComputedStyle(headerElement);
+        console.log('Header computed styles:', {
+            display: computedStyle.display,
+            visibility: computedStyle.visibility,
+            opacity: computedStyle.opacity,
+            height: computedStyle.height,
+            width: computedStyle.width,
+            position: computedStyle.position,
+            top: computedStyle.top,
+            zIndex: computedStyle.zIndex,
+            background: computedStyle.background
+        });
         // Re-setup mobile navigation events after injecting new HTML
         setupMobileNavEvents();
     } else {
