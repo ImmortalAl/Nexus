@@ -103,7 +103,9 @@ class NexusThemeManager {
     updateSingleToggle(button, theme) {
         const icon = button.querySelector('i');
         if (icon) {
-            icon.className = theme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+            // When in dark mode, show sun icon (switch to light)
+            // When in light mode, show moon icon (switch to dark)
+            icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
         }
         button.setAttribute('aria-label', `Switch to ${theme === 'light' ? 'dark' : 'light'} mode`);
     }
@@ -127,13 +129,15 @@ class NexusThemeManager {
         button.className = 'theme-toggle';
         button.setAttribute('data-theme-toggle', 'true');
         button.setAttribute('aria-label', `Switch to ${this.currentTheme === 'light' ? 'dark' : 'light'} mode`);
-        
+
         const icon = document.createElement('i');
-        icon.className = this.currentTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+        // When in dark mode, show sun icon (switch to light)
+        // When in light mode, show moon icon (switch to dark)
+        icon.className = this.currentTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
         button.appendChild(icon);
-        
+
         button.addEventListener('click', () => this.toggleTheme());
-        
+
         return button;
     }
 }
