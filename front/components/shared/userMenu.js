@@ -124,16 +124,31 @@ function updateThemeMenuText() {
   const themeToggleMenu = document.getElementById('themeToggleMenu');
   const themeToggleText = document.getElementById('themeToggleText');
   
-  if (themeToggleMenu && themeToggleText && window.NEXUSTheme) {
-    const currentTheme = window.NEXUSTheme.getTheme();
-    const icon = themeToggleMenu.querySelector('i');
-    
-    if (currentTheme === 'dark') {
-      themeToggleText.textContent = 'Light Mode';
-      if (icon) icon.className = 'fas fa-sun';
+  if (themeToggleMenu && themeToggleText) {
+    if (window.NEXUSTheme) {
+      const currentTheme = window.NEXUSTheme.getTheme();
+      const icon = themeToggleMenu.querySelector('i');
+      
+      if (currentTheme === 'dark') {
+        themeToggleText.textContent = 'Light Mode';
+        if (icon) icon.className = 'fas fa-sun';
+      } else {
+        themeToggleText.textContent = 'Dark Mode';
+        if (icon) icon.className = 'fas fa-moon';
+      }
     } else {
-      themeToggleText.textContent = 'Dark Mode';
-      if (icon) icon.className = 'fas fa-moon';
+      console.warn('NEXUSTheme not available for updateThemeMenuText');
+      // Fallback: detect current theme from body class
+      const isDark = document.body.classList.contains('dark-theme');
+      const icon = themeToggleMenu.querySelector('i');
+      
+      if (isDark) {
+        themeToggleText.textContent = 'Light Mode';
+        if (icon) icon.className = 'fas fa-sun';
+      } else {
+        themeToggleText.textContent = 'Dark Mode';
+        if (icon) icon.className = 'fas fa-moon';
+      }
     }
   }
 }
@@ -158,9 +173,22 @@ function setupUserMenuEvents() {
     }
     if (themeToggleMenu) {
       event.preventDefault();
+      console.log('Theme toggle clicked. NEXUSTheme available:', !!window.NEXUSTheme);
       if (window.NEXUSTheme) {
+        console.log('Calling NEXUSTheme.toggleTheme()');
         window.NEXUSTheme.toggleTheme();
         updateThemeMenuText();
+      } else {
+        console.error('NEXUSTheme not available. Available NEXUS properties:', Object.keys(window.NEXUS || {}));
+        // Fallback: try to initialize theme manager
+        if (window.NEXUS && window.NEXUS.initThemeManager) {
+          console.log('Attempting to initialize theme manager...');
+          window.NEXUS.initThemeManager();
+          if (window.NEXUSTheme) {
+            window.NEXUSTheme.toggleTheme();
+            updateThemeMenuText();
+          }
+        }
       }
     }
   });

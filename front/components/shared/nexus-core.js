@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Initialize components only if their functions are available
   const components = [
+    { name: 'initThemeManager', desc: 'Theme Manager' },
     { name: 'initUserMenu', desc: 'User Menu' },
     { name: 'initNavigation', desc: 'Navigation' },
     { name: 'initAuthModal', desc: 'Auth Modal' },
