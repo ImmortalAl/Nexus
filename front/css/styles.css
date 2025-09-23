@@ -1,12 +1,12 @@
 /* MLNF Main Stylesheet (styles.css) */
 
-/* EMERGENCY THEME TEST - SHOULD OVERRIDE EVERYTHING */
+/* Dark theme styles */
 body.dark-theme {
-    background: red !important;
+    background: var(--bg-primary);
 }
 
 body.dark-theme header {
-    background: blue !important;
+    background: var(--bg-secondary);
 }
 /* END EMERGENCY TEST */
 

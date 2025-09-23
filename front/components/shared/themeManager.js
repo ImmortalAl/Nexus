@@ -11,14 +11,9 @@ class NexusThemeManager {
     }
 
     init() {
-        console.log('ThemeManager init called');
-        
         // Load saved theme or detect system preference
         const savedTheme = localStorage.getItem(this.themeKey);
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        
-        console.log('Saved theme from localStorage:', savedTheme);
-        console.log('System prefers dark:', prefersDark);
         
         if (savedTheme) {
             this.currentTheme = savedTheme;
@@ -26,8 +21,6 @@ class NexusThemeManager {
             // Default to dark theme for MLNF
             this.currentTheme = 'dark';
         }
-        
-        console.log('Initial theme set to:', this.currentTheme);
         
         // Apply theme immediately
         this.applyTheme(this.currentTheme);
@@ -44,16 +37,22 @@ class NexusThemeManager {
     }
 
     connectExistingToggles() {
+        console.log('connectExistingToggles called');
         // Small delay to ensure DOM is fully ready
         setTimeout(() => {
             // Find and connect existing theme toggle buttons
             const toggleButtons = document.querySelectorAll('[data-theme-toggle]');
-            
-            toggleButtons.forEach(button => {
+            console.log('Found toggle buttons:', toggleButtons.length);
+
+            toggleButtons.forEach((button, index) => {
+                console.log(`Setting up toggle button ${index}:`, button);
                 // Remove any existing click listeners to avoid duplicates
                 button.removeEventListener('click', this.handleToggleClick);
                 // Add new click listener
-                button.addEventListener('click', () => {
+                button.addEventListener('click', (e) => {
+                    console.log('Desktop theme toggle clicked');
+                    e.preventDefault();
+                    e.stopPropagation();
                     this.toggleTheme();
                 });
             });
@@ -61,8 +60,6 @@ class NexusThemeManager {
     }
 
     applyTheme(theme) {
-        console.log('applyTheme called with:', theme);
-        console.log('Body classes before:', Array.from(document.body.classList));
         
         // Remove existing theme classes
         document.body.classList.remove('light-theme', 'dark-theme');
@@ -73,8 +70,6 @@ class NexusThemeManager {
         } else {
             document.body.classList.add('dark-theme');
         }
-        
-        console.log('Body classes after:', Array.from(document.body.classList));
         
         // Update theme color meta tag
         const themeColor = theme === 'light' ? '#ffffff' : '#0d0d1a';
@@ -90,25 +85,16 @@ class NexusThemeManager {
         window.dispatchEvent(new CustomEvent('nexus-theme-changed', { 
             detail: { theme } 
         }));
-        
-        console.log('Theme applied successfully. Current body classes:', Array.from(document.body.classList));
     }
 
     setTheme(theme) {
-        console.log('setTheme called with:', theme);
-        console.log('Previous theme was:', this.currentTheme);
         this.currentTheme = theme;
         localStorage.setItem(this.themeKey, theme);
-        console.log('Theme saved to localStorage:', localStorage.getItem(this.themeKey));
-        console.log('localStorage verification:', localStorage.getItem(this.themeKey));
         this.applyTheme(theme);
-        console.log('setTheme completed. Current theme is now:', this.currentTheme);
     }
 
     toggleTheme() {
-        console.log('toggleTheme called. Current theme:', this.currentTheme);
         const newTheme = this.currentTheme === 'dark' ? 'light' : 'dark';
-        console.log('Switching to theme:', newTheme);
         this.setTheme(newTheme);
     }
 
@@ -147,39 +133,9 @@ class NexusThemeManager {
 // Initialize theme manager globally
 function initThemeManager() {
     if (!window.NEXUSTheme) {
+        console.log('Initializing NexusThemeManager');
         window.NEXUSTheme = new NexusThemeManager();
     }
-    
-    // Add theme toggle event listener as a backup/fallback
-    const attachThemeToggleListener = () => {
-        const themeToggle = document.getElementById('themeToggleMenu');
-        if (themeToggle && !themeToggle.hasAttribute('data-theme-listener-attached')) {
-            console.log('Theme manager: Adding fallback event listener to theme toggle');
-            themeToggle.addEventListener('click', (e) => {
-                console.log('Theme manager: Theme toggle clicked');
-                e.preventDefault();
-                e.stopPropagation();
-                
-                if (window.NEXUSTheme) {
-                    window.NEXUSTheme.toggleTheme();
-                    // Update theme menu text
-                    if (typeof window.updateThemeMenuText === 'function') {
-                        window.updateThemeMenuText();
-                    }
-                }
-            });
-            themeToggle.setAttribute('data-theme-listener-attached', 'true');
-            console.log('Theme manager: Fallback event listener attached to theme toggle');
-            return true;
-        }
-        return false;
-    };
-    
-    // Try multiple times with different delays to handle timing issues
-    setTimeout(attachThemeToggleListener, 500);
-    setTimeout(attachThemeToggleListener, 1000);
-    setTimeout(attachThemeToggleListener, 2000);
-    
     return window.NEXUSTheme;
 }
 
