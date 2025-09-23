@@ -1,10 +1,11 @@
 /* ==========================================================================
    THE BOUNDLESS CHRONICLES - TRADITIONAL NEWSPAPER DESIGN
    Classic print newspaper aesthetic with medieval typography
+   Version: 2.0 - Fixed light/dark theme toggle functionality
    ========================================================================== */
 
 :root {
-    /* Traditional Newspaper Color Palette - Black & White */
+    /* Light Theme - Traditional Newspaper Color Palette */
     --newspaper-black: #000000;
     --newspaper-white: #ffffff;
     --newspaper-gray-1: #f8f8f8;
@@ -13,6 +14,18 @@
     --newspaper-gray-4: #b8b8b8;
     --newspaper-gray-5: #888888;
     --newspaper-gray-6: #666666;
+}
+
+/* Dark Theme - Inverted Newspaper Colors */
+body.dark-theme {
+    --newspaper-black: #e5e5e5;
+    --newspaper-white: #1a1a1a;
+    --newspaper-gray-1: #242424;
+    --newspaper-gray-2: #2d2d2d;
+    --newspaper-gray-3: #383838;
+    --newspaper-gray-4: #555555;
+    --newspaper-gray-5: #999999;
+    --newspaper-gray-6: #bbbbbb;
 
     /* Newspaper Layout */
     --content-max-width: 1200px;
@@ -961,27 +974,21 @@
  * 1. Card Overrides
  * Ensures cards have the correct newspaper background, border, and actions styling.
  */
-.chronicles-feed .chronicle-card,
-body.dark-theme .chronicles-feed .chronicle-card { /* Added dark theme override */
+.chronicles-feed .chronicle-card {
     background: var(--newspaper-white) !important;
     border: var(--border-thin) !important;
     color: var(--newspaper-black) !important;
 }
 
-/* Ensure text inside the card is dark */
+/* Ensure text inside the card uses theme colors */
 .chronicles-feed .chronicle-card .chronicle-title,
 .chronicles-feed .chronicle-card .chronicle-excerpt,
 .chronicles-feed .chronicle-card .chronicle-author-info,
-.chronicles-feed .chronicle-card .chronicle-dates,
-body.dark-theme .chronicles-feed .chronicle-card .chronicle-title,
-body.dark-theme .chronicles-feed .chronicle-card .chronicle-excerpt,
-body.dark-theme .chronicles-feed .chronicle-card .chronicle-author-info,
-body.dark-theme .chronicles-feed .chronicle-card .chronicle-dates {
+.chronicles-feed .chronicle-card .chronicle-dates {
     color: var(--newspaper-black) !important;
 }
 
-.chronicles-feed .chronicle-card .chronicle-actions,
-body.dark-theme .chronicles-feed .chronicle-card .chronicle-actions { /* Added dark theme override */
+.chronicles-feed .chronicle-card .chronicle-actions {
     background: transparent !important;
     border-top: var(--border-thin) !important;
 }
@@ -1024,23 +1031,18 @@ body.dark-theme .chronicles-feed .chronicle-card .chronicle-actions { /* Added d
  * Ensures modal titles and buttons use the correct newspaper styling.
  */
 .modal .chronicle-detail-modal,
-.modal .chronicle-modal,
-body.dark-theme .modal .chronicle-detail-modal, /* Added dark theme override */
-body.dark-theme .modal .chronicle-modal { /* Added dark theme override */
+.modal .chronicle-modal {
     background: var(--newspaper-white) !important;
     color: var(--newspaper-black) !important;
 }
 
 .modal .chronicle-detail-modal .modal-header h2,
-.modal .chronicle-modal .modal-header h3,
-body.dark-theme .modal .chronicle-detail-modal .modal-header h2, /* Added dark theme override */
-body.dark-theme .modal .chronicle-modal .modal-header h3 { /* Added dark theme override */
+.modal .chronicle-modal .modal-header h3 {
     font-family: 'Cinzel', serif !important;
     color: var(--newspaper-black) !important;
 }
 
-.modal .modal-actions .btn,
-body.dark-theme .modal .modal-actions .btn { /* Added dark theme override */
+.modal .modal-actions .btn {
     background: var(--newspaper-white) !important;
     border: var(--border-thin) !important;
     color: var(--newspaper-gray-6) !important;
@@ -1050,8 +1052,7 @@ body.dark-theme .modal .modal-actions .btn { /* Added dark theme override */
     box-shadow: none !important;
 }
 
-.modal .modal-actions .btn:hover,
-body.dark-theme .modal .modal-actions .btn:hover { /* Added dark theme override */
+.modal .modal-actions .btn:hover {
     background: var(--newspaper-gray-2) !important;
     color: var(--newspaper-black) !important;
     border-color: var(--newspaper-gray-6) !important;
@@ -1060,18 +1061,14 @@ body.dark-theme .modal .modal-actions .btn:hover { /* Added dark theme override 
 
 /* Override specific button colors like btn-primary, btn-danger */
 .modal .modal-actions .btn-primary,
-.modal .modal-actions .btn-danger,
-body.dark-theme .modal .modal-actions .btn-primary, /* Added dark theme override */
-body.dark-theme .modal .modal-actions .btn-danger { /* Added dark theme override */
+.modal .modal-actions .btn-danger {
     background: var(--newspaper-black) !important;
     color: var(--newspaper-white) !important;
     border-color: var(--newspaper-black) !important;
 }
 
 .modal .modal-actions .btn-primary:hover,
-.modal .modal-actions .btn-danger:hover,
-body.dark-theme .modal .modal-actions .btn-primary:hover, /* Added dark theme override */
-body.dark-theme .modal .modal-actions .btn-danger:hover { /* Added dark theme override */
+.modal .modal-actions .btn-danger:hover {
     background: var(--newspaper-gray-6) !important;
     border-color: var(--newspaper-gray-6) !important;
     color: var(--newspaper-white) !important;
