@@ -1095,27 +1095,108 @@ async function quickDownvote(postId) {
     }
 }
 
-// Open counterpoint comment box
+// Open counterpoint modal
 function openCounterpoint(postId) {
     // Remove dropdown
     const dropdown = document.querySelector('.challenge-dropdown');
     if (dropdown) dropdown.remove();
 
-    // Find or scroll to comments section
-    const commentsSection = document.getElementById('commentsSection');
-    if (commentsSection) {
-        // Scroll to comments
-        commentsSection.scrollIntoView({ behavior: 'smooth' });
-        
-        // Focus on comment input and add Challenge prefix
+    // Set post ID in hidden field
+    const counterpointPostIdInput = document.getElementById('counterpointPostId');
+    if (counterpointPostIdInput) {
+        counterpointPostIdInput.value = postId;
+    }
+
+    // Clear previous input
+    const counterpointText = document.getElementById('counterpointText');
+    const counterpointSources = document.getElementById('counterpointSources');
+    if (counterpointText) counterpointText.value = '';
+    if (counterpointSources) counterpointSources.value = '';
+
+    // Show modal
+    const modal = document.getElementById('counterpointModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        modal.setAttribute('aria-hidden', 'false');
+
+        // Focus on textarea
         setTimeout(() => {
-            const commentInput = document.getElementById('commentInput');
-            if (commentInput) {
-                commentInput.value = '🗡️ Challenge: ';
-                commentInput.focus();
-                commentInput.setSelectionRange(commentInput.value.length, commentInput.value.length);
-            }
-        }, 500);
+            if (counterpointText) counterpointText.focus();
+        }, 100);
+    }
+}
+
+// Close counterpoint modal
+function closeCounterpointModal() {
+    const modal = document.getElementById('counterpointModal');
+    if (modal) {
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+    }
+}
+
+// Submit counterpoint
+async function submitCounterpoint(event) {
+    event.preventDefault();
+
+    const token = localStorage.getItem('sessionToken');
+    if (!token) {
+        alert('You must be logged in to submit a counterpoint');
+        return;
+    }
+
+    const postId = document.getElementById('counterpointPostId')?.value;
+    const counterpointText = document.getElementById('counterpointText')?.value.trim();
+    const counterpointSources = document.getElementById('counterpointSources')?.value.trim();
+
+    if (!postId || !counterpointText) {
+        alert('Please provide a counterpoint');
+        return;
+    }
+
+    // Format comment with counterpoint prefix and sources
+    let commentContent = `🗡️ **Counterpoint:**\n\n${counterpointText}`;
+
+    if (counterpointSources) {
+        const sourcesList = counterpointSources.split('\n').filter(s => s.trim());
+        if (sourcesList.length > 0) {
+            commentContent += '\n\n**Sources:**';
+            sourcesList.forEach(source => {
+                commentContent += `\n• ${source.trim()}`;
+            });
+        }
+    }
+
+    try {
+        const response = await fetch(`${BLOG_API_BASE_URL}/posts/${postId}/comments`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                content: commentContent,
+                isCounterpoint: true
+            })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Failed to submit counterpoint');
+        }
+
+        // Close modal and refresh comments
+        closeCounterpointModal();
+
+        // Reload comments if we're viewing this post
+        if (currentPostId === postId) {
+            await loadComments(postId);
+        }
+
+        alert('Counterpoint submitted successfully!');
+    } catch (error) {
+        console.error('Error submitting counterpoint:', error);
+        alert('Failed to submit counterpoint: ' + error.message);
     }
 }
 
@@ -1410,6 +1491,8 @@ window.cancelPostEdit = cancelPostEdit;
 
 // Export new enhanced functions
 window.copyPostLink = copyPostLink;
+window.closeCounterpointModal = closeCounterpointModal;
+window.submitCounterpoint = submitCounterpoint;
 
 // ALWAYS check for auto-open regardless of page type - multiple triggers to ensure it runs
 // Immediate check
@@ -1418,8 +1501,20 @@ setTimeout(checkAutoOpen, 100);
 // DOM ready check
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', checkAutoOpen);
+    document.addEventListener('DOMContentLoaded', () => {
+        // Attach counterpoint form submit handler
+        const counterpointForm = document.getElementById('counterpointForm');
+        if (counterpointForm) {
+            counterpointForm.addEventListener('submit', submitCounterpoint);
+        }
+    });
 } else {
     checkAutoOpen();
+    // Attach counterpoint form submit handler
+    const counterpointForm = document.getElementById('counterpointForm');
+    if (counterpointForm) {
+        counterpointForm.addEventListener('submit', submitCounterpoint);
+    }
 }
 
 // Backup check after window load
