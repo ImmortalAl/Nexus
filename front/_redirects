@@ -1,3 +1,6 @@
+# Root path
+/           /index.html           200
+
 # Vanity URLs for main sections
 /profile     /profile/index.html   200
 /news        /pages/news.html      200
