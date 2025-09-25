@@ -595,10 +595,10 @@
             return `
             <div class="thread ${thread.isAnonymous ? 'anonymous' : ''}" data-id="${thread._id}">
                 <div class="thread-voting">
-                    <button class="vote-btn ${!isAuthenticated ? 'disabled' : ''}" data-action="upvote-thread" aria-label="Upvote" ${!isAuthenticated ? 'disabled' : ''}>
+                    <button class="vote-btn ${!isAuthenticated || isAuthor ? 'disabled' : ''}" data-action="upvote-thread" aria-label="Upvote" ${!isAuthenticated || isAuthor ? 'disabled' : ''} ${isAuthor ? 'title="You cannot vote on your own threads"' : ''}>
                         <i class="fas fa-arrow-up"></i>
                     </button>
-                    <button class="vote-btn ${!isAuthenticated ? 'disabled' : ''}" data-action="downvote-thread" aria-label="Downvote" ${!isAuthenticated ? 'disabled' : ''}>
+                    <button class="vote-btn ${!isAuthenticated || isAuthor ? 'disabled' : ''}" data-action="downvote-thread" aria-label="Downvote" ${!isAuthenticated || isAuthor ? 'disabled' : ''} ${isAuthor ? 'title="You cannot vote on your own threads"' : ''}>
                         <i class="fas fa-arrow-down"></i>
                     </button>
                 </div>
@@ -1156,8 +1156,12 @@
                 return `
                 <div class="reply ${reply.isAnonymous ? 'anonymous' : ''}" data-id="${reply._id}">
                      <div class="thread-voting reply-voting">
-                        <button class="vote-btn" data-action="upvote-reply" aria-label="Upvote"><i class="fas fa-arrow-up"></i></button>
-                        <button class="vote-btn" data-action="downvote-reply" aria-label="Downvote"><i class="fas fa-arrow-down"></i></button>
+                        <button class="vote-btn ${!isAuthenticated || isAuthor ? 'disabled' : ''}" data-action="upvote-reply" aria-label="Upvote" ${!isAuthenticated || isAuthor ? 'disabled' : ''} ${isAuthor ? 'title="You cannot vote on your own replies"' : ''}>
+                            <i class="fas fa-arrow-up"></i>
+                        </button>
+                        <button class="vote-btn ${!isAuthenticated || isAuthor ? 'disabled' : ''}" data-action="downvote-reply" aria-label="Downvote" ${!isAuthenticated || isAuthor ? 'disabled' : ''} ${isAuthor ? 'title="You cannot vote on your own replies"' : ''}>
+                            <i class="fas fa-arrow-down"></i>
+                        </button>
                     </div>
                     <div class="reply-main" data-thread-id="${threadId}">
                         <div class="reply-author-info"></div>

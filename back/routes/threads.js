@@ -275,6 +275,11 @@ router.post('/:id/vote', auth, async (req, res) => {
             return res.status(404).json({ error: 'Thread not found' });
         }
 
+        // Prevent self-voting (users can't vote on their own threads)
+        if (thread.author && thread.author.toString() === userId) {
+            return res.status(403).json({ error: 'You cannot vote on your own threads' });
+        }
+
         // Initialize votes structure if it doesn't exist
         if (!thread.votes) {
             thread.votes = { upvotes: [], downvotes: [] };
@@ -420,6 +425,11 @@ router.post('/:threadId/replies/:replyId/vote', auth, async (req, res) => {
         const reply = thread.replies.id(replyId);
         if (!reply) {
             return res.status(404).json({ error: 'Reply not found' });
+        }
+
+        // Prevent self-voting (users can't vote on their own replies)
+        if (reply.author && reply.author.toString() === userId) {
+            return res.status(403).json({ error: 'You cannot vote on your own replies' });
         }
 
         // Initialize votes structure if it doesn't exist
