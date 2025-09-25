@@ -1,4 +1,4 @@
-# MLNF CSS Architecture Documentation
+# Immortal Nexus CSS Architecture Documentation
 
 > **📚 For complete CSS documentation, see [../docs/CSS-GUIDE.md](../docs/CSS-GUIDE.md)**  
 > *This file provides quick reference for developers working directly in the CSS folder.*

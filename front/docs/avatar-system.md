@@ -1,4 +1,4 @@
-# MLNF Avatar System Documentation
+# Immortal Nexus Avatar System Documentation
 
 ## Table of Contents
 
@@ -21,7 +21,7 @@
 
 ## Why This Documentation is Standalone
 
-The MLNF Avatar System warrants standalone documentation for several critical reasons:
+The Immortal Nexus Avatar System warrants standalone documentation for several critical reasons:
 
 ### **1. Complexity and Scope**
 - **Multi-layered system**: Combines CSS styling, JavaScript API, typography, and online status indicators
@@ -47,7 +47,7 @@ The MLNF Avatar System warrants standalone documentation for several critical re
 
 ## System Overview
 
-The MLNF Avatar System provides a consistent, scalable, and immortal-themed approach to displaying user avatars and information across the site. It combines visual design, functional programming, and architectural considerations into a unified system.
+The Immortal Nexus Avatar System provides a consistent, scalable, and immortal-themed approach to displaying user avatars and information across the site. It combines visual design, functional programming, and architectural considerations into a unified system.
 
 ---
 
@@ -103,7 +103,7 @@ The MLNF Avatar System provides a consistent, scalable, and immortal-themed appr
 
 ```javascript
 // Basic avatar with unique colors
-const avatar = window.MLNFAvatars.createAvatar({
+const avatar = window.NexusAvatars.createAvatar({
     username: 'ImmortalAl',
     size: 'lg',
     mystical: true,
@@ -111,7 +111,7 @@ const avatar = window.MLNFAvatars.createAvatar({
 });
 
 // Complete user display
-const userDisplay = window.MLNFAvatars.createUserDisplay({
+const userDisplay = window.NexusAvatars.createUserDisplay({
     username: 'ImmortalAl',
     title: 'Founder & Eternal Guide',
     status: 'Manifesting Liberation',
@@ -133,18 +133,18 @@ document.body.appendChild(userDisplay);
 
 ```javascript
 // Generate avatar URL with unique color based on username
-const avatarUrl = window.MLNFAvatars.generateAvatarUrl('Username', 48);
+const avatarUrl = window.NexusAvatars.generateAvatarUrl('Username', 48);
 // Returns: https://ui-avatars.com/api/?name=Username&background=4ade80&color=fff&size=48&format=svg
 
 // With custom avatar (bypasses color generation)
-const customUrl = window.MLNFAvatars.generateAvatarUrl('Username', 48, 'https://example.com/avatar.jpg');
+const customUrl = window.NexusAvatars.generateAvatarUrl('Username', 48, 'https://example.com/avatar.jpg');
 ```
 
 ### Color Generation System
 
 ```javascript
 // The system generates unique colors for each username
-const colors = window.MLNFAvatars.generateUserColors('ImmortalAl');
+const colors = window.NexusAvatars.generateUserColors('ImmortalAl');
 // Returns: { bg: 'ff5e78', text: 'fff' } - Consistent for this username
 
 // Available color palette (10 immortal-themed colors):
@@ -190,7 +190,7 @@ const colors = window.MLNFAvatars.generateUserColors('ImmortalAl');
 🚧 **In Progress**: Online status indicators are currently being debugged. The system architecture is complete but CSS dependencies are being resolved.
 
 ### Architecture
-- **Data Flow**: API → activeUsers.js → MLNFAvatars.createUserDisplay() → DOM
+- **Data Flow**: API → activeUsers.js → NexusAvatars.createUserDisplay() → DOM
 - **DOM Structure**: Avatar container with positioned `.online-dot` element
 - **CSS Location**: Global styles in `styles.css` (moved from `active-users.css` for site-wide availability)
 - **Animation**: Pulsing green dots with `immortalPulse` animation
@@ -308,7 +308,7 @@ Use `mlnf-avatar--mystical` for:
 
 ### Comment System Integration
 ```javascript
-const commentUser = window.MLNFAvatars.createUserDisplay({
+const commentUser = window.NexusAvatars.createUserDisplay({
     username: comment.author.username,
     title: 'Eternal Soul',
     avatarSize: 'sm',

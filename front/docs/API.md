@@ -1275,7 +1275,7 @@ The Immortal Nexus platform uses WebSocket for real-time features. The WebSocket
 
 ```javascript
 // Convert HTTP URL to WebSocket URL
-const wsUrl = MLNF_CONFIG.API_BASE_URL.replace('https://', 'wss://').replace('http://', 'ws://').replace('/api', '');
+const wsUrl = NEXUS_CONFIG.API_BASE_URL.replace('https://', 'wss://').replace('http://', 'ws://').replace('/api', '');
 const fullUrl = `${wsUrl}?token=${encodeURIComponent(token)}`;
 ```
 
@@ -1366,15 +1366,15 @@ const fullUrl = `${wsUrl}?token=${encodeURIComponent(token)}`;
 ### WebSocket Client Methods
 
 ```javascript
-// Available on window.MLNF.websocket
-window.MLNF.websocket.connect()              // Connect to WebSocket
-window.MLNF.websocket.disconnect()           // Disconnect from WebSocket
-window.MLNF.websocket.send(data)             // Send data to server
-window.MLNF.websocket.on(type, handler)      // Register event handler
-window.MLNF.websocket.off(type, handler)     // Remove event handler
-window.MLNF.websocket.sendTypingIndicator(recipientId, isTyping)  // Send typing indicator
-window.MLNF.websocket.isUserOnline(userId)   // Check if user is online
-window.MLNF.websocket.getOnlineUsers()       // Get list of online users
+// Available on window.NEXUS.websocket
+window.NEXUS.websocket.connect()              // Connect to WebSocket
+window.NEXUS.websocket.disconnect()           // Disconnect from WebSocket
+window.NEXUS.websocket.send(data)             // Send data to server
+window.NEXUS.websocket.on(type, handler)      // Register event handler
+window.NEXUS.websocket.off(type, handler)     // Remove event handler
+window.NEXUS.websocket.sendTypingIndicator(recipientId, isTyping)  // Send typing indicator
+window.NEXUS.websocket.isUserOnline(userId)   // Check if user is online
+window.NEXUS.websocket.getOnlineUsers()       // Get list of online users
 ```
 
 ## Error Handling
@@ -1631,4 +1631,4 @@ try {
 
 ---
 
-This documentation covers all major API endpoints and patterns used in the MLNF platform. For implementation details, refer to the source code in `/components/shared/apiClient.js` and related service files.
+This documentation covers all major API endpoints and patterns used in the Immortal Nexus platform. For implementation details, refer to the source code in `/components/shared/apiClient.js` and related service files.

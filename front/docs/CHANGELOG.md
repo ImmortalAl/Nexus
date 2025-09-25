@@ -1,4 +1,4 @@
-# MLNF Development Changelog
+# Immortal Nexus Development Changelog
 
 ## Table of Contents
 
@@ -9,7 +9,7 @@
 5. [Major Milestones](#major-milestones-achieved)
 6. [Development Metrics](#development-metrics)
 
-This file documents the complete development history and session logs for the MLNF project.
+This file documents the complete development history and session logs for the Immortal Nexus project.
 
 ---
 
@@ -143,7 +143,7 @@ This file documents the complete development history and session logs for the ML
 1. **CSS Conflicts**: Duplicate `.online-dot` styles in multiple CSS files causing cascade conflicts
 2. **Missing Backend Data**: API populate queries missing `online` field for author data
 3. **Frontend Caching**: localStorage caching preventing immediate display of updated data
-4. **Loading Order Issues**: Some components not safely checking for MLNFAvatars availability
+4. **Loading Order Issues**: Some components not safely checking for NexusAvatars availability
 
 **Systematic Resolution Process**:
 1. **CSS Conflict Resolution**:
@@ -164,7 +164,7 @@ This file documents the complete development history and session logs for the ML
    - Reduced Souls directory cache time from 5 minutes to 30 seconds for testing
 
 4. **Component Integration Verification**:
-   - Confirmed all components using new MLNF Avatar System with proper safety checks
+   - Confirmed all components using new Immortal Nexus Avatar System with proper safety checks
    - Updated individual Soul pages to use unified avatar system
    - Verified cross-site compatibility and loading order
 
@@ -596,11 +596,11 @@ This file documents the complete development history and session logs for the ML
 
 ---
 
-# MLNF Development Changelog
+# Immortal Nexus Development Changelog
 
 ## 📝 **Development History**
 
-All notable changes to the MLNF project are documented here, organized by development sessions and major milestones.
+All notable changes to the Immortal Nexus project are documented here, organized by development sessions and major milestones.
 
 ---
 
@@ -946,7 +946,7 @@ All notable changes to the MLNF project are documented here, organized by develo
 
 ---
 
-*Complete development history and milestone tracking for MLNF platform*  
+*Complete development history and milestone tracking for Immortal Nexus platform*  
 *Last updated: Documentation consolidation phase*
 
 ## [Version 1.2.0] - YYYY-MM-DD

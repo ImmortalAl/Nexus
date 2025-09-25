@@ -106,12 +106,10 @@ class FeedbackSystem {
         }
         const isAnonymous = this.anonymousCheckbox.checked;
         const anonymousName = this.anonymousNameInput ? this.anonymousNameInput.value.trim() : '';
-        const isBetaFeedback = document.getElementById('betaFeedback') ? document.getElementById('betaFeedback').checked : false;
         const token = localStorage.getItem('sessionToken');
         const feedbackData = {
             content: content,
             anonymous: isAnonymous,
-            isBeta: isBetaFeedback,
             ...(isAnonymous && anonymousName && { anonymousName: anonymousName })
         };
         try {

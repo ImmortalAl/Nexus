@@ -1,9 +1,9 @@
-# MLNF Shared Components
+# Immortal Nexus Shared Components
 
 > **📚 For complete development documentation, see [../../docs/DEVELOPMENT.md](../../docs/DEVELOPMENT.md)**  
 > *This file provides quick reference for developers working directly with components.*
 
-This directory contains the shared components for the MLNF website to ensure consistent navigation, user interface, and authentication across all pages.
+This directory contains the shared components for the Immortal Nexus website to ensure consistent navigation, user interface, and authentication across all pages.
 
 ## Components Overview
 
@@ -62,14 +62,14 @@ Add the following scripts before the closing `</body>` tag:
 <script src="/components/shared/userMenu.js"></script>
 <script src="/components/shared/userSidebar.js"></script>
 <script src="/components/shared/authModal.js"></script>
-<script src="/components/shared/mlnf-core.js"></script>
+<script src="/components/shared/nexus-core.js"></script>
 ```
 
-The order is important - `mlnf-core.js` should be included last.
+The order is important - `nexus-core.js` should be included last.
 
 ## How It Works
 
-1. When the page loads, the `mlnf-core.js` script initializes all components
+1. When the page loads, the `nexus-core.js` script initializes all components
 2. The navigation script injects the navigation HTML into the header
 3. The user menu is injected within the navigation
 4. The user sidebar and auth modal are injected into the document body
@@ -92,19 +92,19 @@ You can manually interact with the components as follows:
 
 ```javascript
 // Open the login modal
-window.MLNF.openSoulModal('login');
+window.NEXUS.openSoulModal('login');
 
 // Open the register modal
-window.MLNF.openSoulModal('register');
+window.NEXUS.openSoulModal('register');
 
 // Close the modal
-window.MLNF.closeSoulModal();
+window.NEXUS.closeSoulModal();
 
 // Update the user menu (e.g., after profile changes)
-window.MLNF.updateUserMenu();
+window.NEXUS.updateUserMenu();
 
 // Update the user sidebar
-window.MLNF.updateUserSidebar();
+window.NEXUS.updateUserSidebar();
 ```
 
 ## Page Template
