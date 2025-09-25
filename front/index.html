@@ -892,13 +892,24 @@
                 const date = new Date(message.createdAt).toLocaleDateString('en-US', {
                     year: 'numeric', month: 'long', day: 'numeric'
                 });
-                const author = message.author || {};
+                // Handle anonymous vs regular authors
+                let author;
+                if (message.isAnonymous) {
+                    author = {
+                        username: message.anonymousDisplayName || 'Anonymous Seeker',
+                        displayName: message.anonymousDisplayName || 'Anonymous Seeker',
+                        avatar: null,
+                        isAnonymous: true
+                    };
+                } else {
+                    author = message.author || {};
+                }
                 const replyCount = message.replies ? message.replies.length : 0;
-                
+
                 // Create highlight card container
                 const highlightCard = document.createElement('a');
                 highlightCard.href = 'pages/messageboard.html';
-                highlightCard.className = 'highlight-item echo-highlight-card echo-link';
+                highlightCard.className = `highlight-item echo-highlight-card echo-link${author.isAnonymous ? ' anonymous-thread' : ''}`;
                 highlightCard.setAttribute('data-message-id', message._id);
                 
                 // Add click handler to open specific thread
@@ -921,16 +932,17 @@
                 
                 // Create user display with avatar using unified avatar system
                 const userDisplay = window.NexusAvatars.createUserDisplay({
-                    username: author.username || 'Anonymous',
-                    title: author.displayName || 'Echo Weaver',
+                    username: author.username,
+                    title: author.isAnonymous ? 'Anonymous Echo' : (author.displayName || 'Echo Weaver'),
                     avatarSize: 'sm',
                     displaySize: 'sm',
                     compact: true,
-                    mystical: author.isVIP || author.role === 'admin',
+                    mystical: (!author.isAnonymous) && (author.isVIP || author.role === 'admin'),
                     online: author.online,
-                    customAvatar: author.avatar,
-                    usernameStyle: 'immortal',
-                    enableUnifiedNavigation: true
+                    customAvatar: author.isAnonymous ? null : author.avatar,
+                    usernameStyle: author.isAnonymous ? 'anonymous' : 'immortal',
+                    enableUnifiedNavigation: !author.isAnonymous, // Don't enable navigation for anonymous
+                    anonymous: author.isAnonymous
                 });
                 
                 // Create meta info
