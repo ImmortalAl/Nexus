@@ -94,62 +94,147 @@
     
     async function loadStats() {
         const token = localStorage.getItem('sessionToken');
-        
+
         try {
-            // Fetch total users
-            const usersResponse = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/users`, {
+            // Fetch user analytics
+            const analyticsResponse = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/users/analytics`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
-            
-            if (usersResponse.ok) {
-                const responseData = await usersResponse.json();
-                
-                // Ensure usersArray is an array
-                let usersArray = [];
-                if (Array.isArray(responseData)) {
-                    usersArray = responseData;
-                } else if (responseData && Array.isArray(responseData.data)) { // Common pattern: { data: [...] }
-                    usersArray = responseData.data;
-                } else if (responseData && Array.isArray(responseData.users)) { // Another common pattern: { users: [...] }
-                    usersArray = responseData.users;
-                }
-                // Add more checks here if other structures are possible based on console output
 
-                document.getElementById('totalUsers').textContent = usersArray.length || '0';
-                
-                const onlineCount = usersArray.filter(u => u.online).length;
-                document.getElementById('onlineUsers').textContent = onlineCount;
+            if (analyticsResponse.ok) {
+                const analytics = await analyticsResponse.json();
+                document.getElementById('totalUsers').textContent = analytics.totalUsers || '0';
+                document.getElementById('onlineUsers').textContent = analytics.onlineUsers || '0';
             } else {
-                console.error('[Admin] Failed to fetch users for stats:', usersResponse.status, usersResponse.statusText);
+                console.error('[Admin] Failed to fetch user analytics:', analyticsResponse.status, analyticsResponse.statusText);
                 document.getElementById('totalUsers').textContent = 'Error';
                 document.getElementById('onlineUsers').textContent = 'Error';
             }
-            
-            // TODO: Replace placeholder post/message counts with real API calls when endpoints are available
-            document.getElementById('totalPosts').textContent = '0'; // Keep as placeholder or fetch if API ready
-            document.getElementById('totalMessages').textContent = '0'; // Keep as placeholder
-            
+
+            // Fetch thread statistics
+            const threadsResponse = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/threads/stats`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (threadsResponse.ok) {
+                const threadStats = await threadsResponse.json();
+                const totalPosts = threadStats.totalThreads + threadStats.totalReplies;
+                document.getElementById('totalPosts').textContent = totalPosts || '0';
+            } else {
+                console.error('[Admin] Failed to fetch thread stats:', threadsResponse.status, threadsResponse.statusText);
+                document.getElementById('totalPosts').textContent = 'Error';
+            }
+
+            // Fetch message statistics
+            const messagesResponse = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/messages/stats`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (messagesResponse.ok) {
+                const messageStats = await messagesResponse.json();
+                document.getElementById('totalMessages').textContent = messageStats.totalMessages || '0';
+            } else {
+                console.error('[Admin] Failed to fetch message stats:', messagesResponse.status, messagesResponse.statusText);
+                document.getElementById('totalMessages').textContent = 'Error';
+            }
+
         } catch (error) {
             console.error('Error loading stats:', error);
             document.getElementById('totalUsers').textContent = 'Error';
             document.getElementById('onlineUsers').textContent = 'Error';
+            document.getElementById('totalPosts').textContent = 'Error';
+            document.getElementById('totalMessages').textContent = 'Error';
         }
     }
     
     async function loadRecentActivity() {
         const activityFeed = document.getElementById('activityFeed');
-        
-        // TODO: Replace placeholder activity with real recent activity data from backend
-        activityFeed.innerHTML = `
-            <div class="activity-item">
-                <i class="fas fa-user-plus activity-icon"></i>
-                <div class="activity-content">
-                    <strong>New soul manifested</strong>
-                    <p>A new user joined the eternal sanctuary</p>
+        const token = localStorage.getItem('sessionToken');
+
+        try {
+            // Fetch recent threads and messages
+            const [threadsRes, messagesRes, usersRes] = await Promise.all([
+                fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/threads/stats`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                }),
+                fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/messages/stats`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                }),
+                fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/users/analytics`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                })
+            ]);
+
+            let activityHTML = '';
+
+            // Recent user registrations
+            if (usersRes.ok) {
+                const userData = await usersRes.json();
+                if (userData.recentUsers && userData.recentUsers.length > 0) {
+                    userData.recentUsers.slice(0, 3).forEach(user => {
+                        const timeAgo = new Date(user.createdAt).toLocaleDateString();
+                        activityHTML += `
+                            <div class="activity-item">
+                                <i class="fas fa-user-plus activity-icon"></i>
+                                <div class="activity-content">
+                                    <strong>New soul manifested</strong>
+                                    <p>${user.displayName || user.username} joined the eternal sanctuary</p>
+                                </div>
+                                <span class="activity-time">${timeAgo}</span>
+                            </div>
+                        `;
+                    });
+                }
+            }
+
+            // Recent threads
+            if (threadsRes.ok) {
+                const threadData = await threadsRes.json();
+                if (threadData.recentThreads && threadData.recentThreads.length > 0) {
+                    threadData.recentThreads.slice(0, 2).forEach(thread => {
+                        const timeAgo = new Date(thread.createdAt).toLocaleDateString();
+                        activityHTML += `
+                            <div class="activity-item">
+                                <i class="fas fa-comments activity-icon"></i>
+                                <div class="activity-content">
+                                    <strong>New thread created</strong>
+                                    <p>"${thread.title}" by ${thread.author.displayName || thread.author.username}</p>
+                                </div>
+                                <span class="activity-time">${timeAgo}</span>
+                            </div>
+                        `;
+                    });
+                }
+            }
+
+            if (!activityHTML) {
+                activityHTML = `
+                    <div class="activity-item">
+                        <i class="fas fa-moon activity-icon"></i>
+                        <div class="activity-content">
+                            <strong>The sanctuary rests</strong>
+                            <p>Awaiting the first echoes of immortal activity...</p>
+                        </div>
+                        <span class="activity-time">Eternal silence</span>
+                    </div>
+                `;
+            }
+
+            activityFeed.innerHTML = activityHTML;
+
+        } catch (error) {
+            console.error('Error loading recent activity:', error);
+            activityFeed.innerHTML = `
+                <div class="activity-item">
+                    <i class="fas fa-exclamation-triangle activity-icon"></i>
+                    <div class="activity-content">
+                        <strong>Error loading activity</strong>
+                        <p>Unable to fetch recent sanctuary activities</p>
+                    </div>
+                    <span class="activity-time">Error</span>
                 </div>
-                <span class="activity-time">Just now</span>
-            </div>
-        `;
+            `;
+        }
     }
     
     // User Management
@@ -354,12 +439,39 @@
         });
     }
     
-    function loadMetrics() {
-        // TODO: Replace placeholder analytics/chart data with real data after site launch
-        document.getElementById('avgSession').textContent = '12m 34s';
-        document.getElementById('dailyActive').textContent = '42';
-        document.getElementById('contentRate').textContent = '3.2/day';
-        document.getElementById('engagement').textContent = '87%';
+    async function loadMetrics() {
+        const token = localStorage.getItem('sessionToken');
+
+        try {
+            // Fetch user analytics
+            const analyticsResponse = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/users/analytics`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            // Fetch thread stats for content rate
+            const threadsResponse = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/threads/stats`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (analyticsResponse.ok) {
+                const analytics = await analyticsResponse.json();
+                document.getElementById('avgSession').textContent = analytics.avgSession || '0m 0s';
+                document.getElementById('dailyActive').textContent = analytics.dailyActive || '0';
+                document.getElementById('engagement').textContent = analytics.engagementRate || '0%';
+            }
+
+            if (threadsResponse.ok) {
+                const threadStats = await threadsResponse.json();
+                document.getElementById('contentRate').textContent = `${threadStats.contentRate || '0'}/day`;
+            }
+
+        } catch (error) {
+            console.error('Error loading metrics:', error);
+            document.getElementById('avgSession').textContent = 'Error';
+            document.getElementById('dailyActive').textContent = 'Error';
+            document.getElementById('contentRate').textContent = 'Error';
+            document.getElementById('engagement').textContent = 'Error';
+        }
     }
     
     // User Actions

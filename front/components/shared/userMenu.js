@@ -59,18 +59,6 @@ function updateUserMenu() {
       userMenuContainer.appendChild(userMenuBtn);
       userMenuContainer.appendChild(userDropdown);
       
-      // Debug: Check if the theme toggle element was actually created
-      setTimeout(() => {
-        const themeToggle = document.getElementById('themeToggleMenu');
-        console.log('Theme toggle element found after creation:', themeToggle);
-        if (themeToggle) {
-          console.log('Theme toggle HTML:', themeToggle.outerHTML);
-          console.log('Theme toggle found - ThemeManager will handle clicks');
-        } else {
-          console.error('Theme toggle element NOT found! Checking dropdown HTML...');
-          console.log('User dropdown HTML:', userDropdown.innerHTML);
-        }
-      }, 100);
 
     } catch (error) {
       console.error('[userMenu.js] Error parsing user data:', error);
@@ -115,7 +103,7 @@ function populateHeaderAuthButtons(container) {
       if (window.NEXUS && window.NEXUS.openSoulModal) {
         window.NEXUS.openSoulModal('register');
       } else {
-        console.error('[userMenu.js] openSoulModal function not available!');
+        console.error('openSoulModal function not available!');
         alert('Registration modal not available. Please refresh the page.');
       }
     });
@@ -126,7 +114,7 @@ function populateHeaderAuthButtons(container) {
       if (window.NEXUS && window.NEXUS.openSoulModal) {
         window.NEXUS.openSoulModal('login');
       } else {
-        console.error('[userMenu.js] openSoulModal function not available!');
+        console.error('openSoulModal function not available!');
         alert('Login modal not available. Please refresh the page.');
       }
     });
@@ -151,7 +139,6 @@ function updateThemeMenuText() {
         if (icon) icon.className = 'fas fa-moon';
       }
     } else {
-      console.warn('NEXUSTheme not available for updateThemeMenuText');
       // Fallback: detect current theme from body class
       const isDark = document.body.classList.contains('dark-theme');
       const icon = themeToggleMenu.querySelector('i');
@@ -170,7 +157,6 @@ function updateThemeMenuText() {
 // Setup event listeners for user menu (dropdown toggle, logout)
 function setupUserMenuEvents() {
   const userMenuContainer = document.getElementById('userMenuContainer');
-  console.log('setupUserMenuEvents called. userMenuContainer found:', !!userMenuContainer);
   if (!userMenuContainer) {
     console.error('userMenuContainer not found! Cannot setup events.');
     return;
@@ -178,25 +164,13 @@ function setupUserMenuEvents() {
 
   // Event delegation for all actions within the user menu
   userMenuContainer.addEventListener('click', (event) => {
-    console.log('User menu container clicked!', event.target);
-    console.log('Event target id:', event.target.id);
-    console.log('Event target tagName:', event.target.tagName);
-    console.log('Event target className:', event.target.className);
-    console.log('Event target textContent:', event.target.textContent?.trim());
-    console.log('Event target closest #themeToggleMenu:', event.target.closest('#themeToggleMenu'));
-    console.log('Event target closest #themeToggleText:', event.target.closest('#themeToggleText'));
-    
     const userMenuBtn = event.target.closest('#userMenuBtn');
     const logoutBtn = event.target.closest('#logoutBtn');
 
-    console.log('Found elements:', { userMenuBtn, logoutBtn });
-
     if (userMenuBtn) {
-      console.log('User menu button clicked');
       handleToggleDropdown(event, userMenuBtn);
     }
     if (logoutBtn) {
-      console.log('Logout button clicked');
       event.preventDefault();
       handleLogout();
     }
@@ -346,12 +320,11 @@ async function validateUserSession() {
         localStorage.setItem('user', JSON.stringify(userData));
       } else {
         // If fetching user data fails (e.g., token invalid), clear token
-        console.warn('[userMenu.js] Failed to fetch user data with existing token. Clearing token.');
         localStorage.removeItem('sessionToken');
         localStorage.removeItem('user'); // Also clear potentially stale user data
       }
     } catch (error) {
-      console.error('[userMenu.js] Error fetching user data for session validation:', error);
+      console.error('Error fetching user data for session validation:', error);
       localStorage.removeItem('sessionToken');
       localStorage.removeItem('user');
     }
@@ -361,13 +334,11 @@ async function validateUserSession() {
 
 // Initialize user menu
 function initUserMenu() {
-  console.log('initUserMenu called');
   validateUserSession(); // Validate and then update UI
   setupUserMenuEvents(); // Setup event delegation ONCE
-  
+
   // Listen for theme changes to update menu text
   window.addEventListener('nexus-theme-changed', updateThemeMenuText);
-  console.log('initUserMenu completed');
 }
 
 // Export the initialization function

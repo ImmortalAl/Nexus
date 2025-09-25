@@ -9,14 +9,12 @@ router.post('/flags', auth, async (req, res) => {
     const { threadId } = req.body;
 
     if (!threadId) {
-        console.log(`Missing threadId for flag from ${req.ip}`);
         return res.status(400).json({ error: 'Thread ID is required' });
     }
 
     try {
         const thread = await Thread.findById(threadId);
         if (!thread || thread.hidden) {
-            console.log(`Thread not found or hidden: ${threadId} from ${req.ip}`);
             return res.status(404).json({ error: 'Thread not found' });
         }
 
@@ -29,7 +27,6 @@ router.post('/flags', auth, async (req, res) => {
             });
         } else {
             if (moderation.flags.some(flag => flag.userId.toString() === req.user.id)) {
-                console.log(`User ${req.user.id} already flagged thread ${threadId} from ${req.ip}`);
                 return res.status(400).json({ error: 'You have already flagged this thread' });
             }
             moderation.flags.push({ userId: req.user.id, createdAt: new Date() });
@@ -43,10 +40,9 @@ router.post('/flags', auth, async (req, res) => {
         }
 
         await moderation.save();
-        console.log(`Thread ${threadId} flagged by ${req.user.id} from ${req.ip}. Total flags: ${moderation.flags.length}`);
         res.status(201).json({ message: 'Thread flagged for community review' });
     } catch (error) {
-        console.error(`Error flagging thread ${threadId} from ${req.ip}:`, error.message, error.stack);
+        console.error('Error flagging thread:', error);
         res.status(500).json({ error: 'Failed to flag thread' });
     }
 });
@@ -56,25 +52,21 @@ router.post('/votes', auth, async (req, res) => {
     const { threadId, action } = req.body; // action: 'delete', 'hide', 'ban'
 
     if (!threadId || !action) {
-        console.log(`Missing threadId or action for vote from ${req.ip}`);
         return res.status(400).json({ error: 'Thread ID and action are required' });
     }
 
     const validActions = ['delete', 'hide', 'ban'];
     if (!validActions.includes(action)) {
-        console.log(`Invalid action: ${action} from ${req.ip}`);
         return res.status(400).json({ error: 'Invalid action' });
     }
 
     try {
         const moderation = await Moderation.findOne({ threadId });
         if (!moderation) {
-            console.log(`No moderation record for thread ${threadId} from ${req.ip}`);
             return res.status(404).json({ error: 'No moderation record found' });
         }
 
         if (moderation.votes.some(vote => vote.userId.toString() === req.user.id)) {
-            console.log(`User ${req.user.id} already voted on thread ${threadId} from ${req.ip}`);
             return res.status(400).json({ error: 'You have already voted' });
         }
 
@@ -90,7 +82,6 @@ router.post('/votes', auth, async (req, res) => {
         if (totalVotes >= 10 && votePercentage >= threshold) {
             const thread = await Thread.findById(threadId);
             if (!thread) {
-                console.log(`Thread not found: ${threadId} from ${req.ip}`);
                 return res.status(404).json({ error: 'Thread not found' });
             }
 
@@ -110,13 +101,11 @@ router.post('/votes', auth, async (req, res) => {
                 }
             }
             await moderation.save();
-            console.log(`Moderation action ${action} applied to thread ${threadId} from ${req.ip}`);
         }
 
-        console.log(`Vote cast by ${req.user.id} for ${action} on thread ${threadId} from ${req.ip}`);
         res.status(201).json({ message: 'Vote recorded' });
     } catch (error) {
-        console.error(`Error voting on thread ${threadId} from ${req.ip}:`, error.message, error.stack);
+        console.error('Error recording vote:', error);
         res.status(500).json({ error: 'Failed to record vote' });
     }
 });
@@ -129,10 +118,9 @@ router.get('/logs', async (req, res) => {
             .populate('flags.userId', 'username')
             .populate('votes.userId', 'username')
             .sort({ createdAt: -1 });
-        console.log(`Fetched moderation logs from ${req.ip}`);
         res.json(logs);
     } catch (error) {
-        console.error(`Error fetching moderation logs from ${req.ip}:`, error.message, error.stack);
+        console.error('Error fetching moderation logs:', error);
         res.status(500).json({ error: 'Failed to fetch moderation logs' });
     }
 });
