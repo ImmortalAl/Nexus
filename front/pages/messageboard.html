@@ -588,6 +588,7 @@
         threadList.innerHTML = threads.map(thread => {
             const currentUser = window.authManager.getUser();
             const isAuthor = isAuthenticated && currentUser && thread.author && currentUser._id === thread.author._id;
+            const isAdmin = isAuthenticated && currentUser && (currentUser.role === 'admin' || currentUser.username === 'ImmortalAl');
             const createdDate = new Date(thread.createdAt).toLocaleDateString();
             const lastActive = thread.updatedAt ? new Date(thread.updatedAt).toLocaleDateString() : createdDate;
             
@@ -620,6 +621,8 @@
                     <div class="thread-actions">
                         ${isAuthor && !thread.isAnonymous ? `
                             <button class="btn btn-secondary btn-sm edit-thread-btn" data-action="edit-thread"><i class="fas fa-edit"></i> Edit</button>
+                        ` : ''}
+                        ${(isAuthor && !thread.isAnonymous) || isAdmin ? `
                             <button class="btn btn-danger btn-sm delete-thread-btn" data-action="delete-thread" data-thread-id="${thread._id}"><i class="fas fa-trash"></i> Delete</button>
                         ` : ''}
                         ${thread.tags && thread.tags.length > 0 ? `
@@ -1143,7 +1146,10 @@
             }
             
             const repliesHTML = replies.map((reply, index) => {
-                const isAuthor = window.authManager.isLoggedIn() && window.authManager.getUser()?._id === reply.author?._id;
+                const currentUser = window.authManager.getUser();
+                const isAuthenticated = window.authManager.isLoggedIn();
+                const isAuthor = isAuthenticated && currentUser && reply.author && currentUser._id === reply.author._id;
+                const isAdmin = isAuthenticated && currentUser && (currentUser.role === 'admin' || currentUser.username === 'ImmortalAl');
                 const hasSubsequentReplies = index < replies.length - 1; // Check if there are replies after this one
                 const canEdit = isAuthor && !reply.isAnonymous && !hasSubsequentReplies;
                 
@@ -1162,7 +1168,7 @@
                         </div>
                         <div class="reply-actions">
                             ${canEdit ? `<button class="btn btn-secondary btn-xs edit-reply-btn" data-action="edit-reply" data-reply-id="${reply._id}" data-thread-id="${threadId}"><i class="fas fa-edit"></i> Edit</button>` : ''}
-                            ${isAuthor && !reply.isAnonymous ? `<button class="btn btn-danger btn-xs delete-reply-btn" data-action="delete-reply" data-reply-id="${reply._id}" data-thread-id="${threadId}"><i class="fas fa-trash"></i> Delete</button>` : ''}
+                            ${(isAuthor && !reply.isAnonymous) || isAdmin ? `<button class="btn btn-danger btn-xs delete-reply-btn" data-action="delete-reply" data-reply-id="${reply._id}" data-thread-id="${threadId}"><i class="fas fa-trash"></i> Delete</button>` : ''}
                             ${reply.editHistory && reply.editHistory.length > 0 ? `<button class="btn btn-secondary btn-xs view-edit-history-btn" data-action="view-edit-history" data-reply-id="${reply._id}"><i class="fas fa-history"></i> History (${reply.editHistory.length})</button>` : ''}
                         </div>
                         ${reply.author && reply.author.status && !reply.isAnonymous ? `<div class="user-status-signature"><i class="fas fa-comment-dots"></i> ${escapeHTML(reply.author.status)}</div>` : ''}
