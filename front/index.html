@@ -775,6 +775,71 @@
     </script>
     
     <script>
+    // Curated thread selection algorithm
+    function selectCuratedThreads(threads, count = 2) {
+        if (!threads || threads.length === 0) return [];
+
+        // Score each thread based on multiple factors
+        const scoredThreads = threads.map(thread => {
+            let score = 0;
+
+            // Vote score factor (higher weight for popular threads)
+            const voteScore = thread.voteScore || 0;
+            score += voteScore * 10; // Each vote point = 10 score points
+
+            // Engagement factor (replies indicate active discussion)
+            const replyCount = thread.replies ? thread.replies.length : 0;
+            score += replyCount * 5; // Each reply = 5 score points
+
+            // Content quality factor (longer content generally better)
+            const contentLength = thread.content ? thread.content.length : 0;
+            if (contentLength > 100) score += 15; // Bonus for substantial content
+            if (contentLength > 300) score += 10; // Extra bonus for detailed content
+
+            // Recency factor (prefer recent but not only newest)
+            const hoursOld = (Date.now() - new Date(thread.createdAt).getTime()) / (1000 * 60 * 60);
+            if (hoursOld < 24) score += 20; // Recent bonus
+            else if (hoursOld < 72) score += 10; // Semi-recent bonus
+            else if (hoursOld > 168) score -= 5; // Slight penalty for very old
+
+            // Title quality factor (avoid very short titles)
+            if (thread.title && thread.title.length > 20) score += 5;
+
+            return { ...thread, curatedScore: score };
+        });
+
+        // Sort by score (descending) and select top threads
+        scoredThreads.sort((a, b) => b.curatedScore - a.curatedScore);
+
+        // Ensure author diversity - avoid showing multiple threads from same user
+        const selectedThreads = [];
+        const usedAuthors = new Set();
+
+        for (const thread of scoredThreads) {
+            if (selectedThreads.length >= count) break;
+
+            const authorId = thread.author?._id || thread.author?.id || 'anonymous';
+
+            // If we haven't used this author yet, or we're running low on options
+            if (!usedAuthors.has(authorId) || selectedThreads.length < count && scoredThreads.length - selectedThreads.length <= count - selectedThreads.length) {
+                selectedThreads.push(thread);
+                usedAuthors.add(authorId);
+            }
+        }
+
+        // If we still need more threads, fill with highest scoring remaining
+        while (selectedThreads.length < count && selectedThreads.length < scoredThreads.length) {
+            for (const thread of scoredThreads) {
+                if (selectedThreads.length >= count) break;
+                if (!selectedThreads.find(t => t._id === thread._id)) {
+                    selectedThreads.push(thread);
+                }
+            }
+        }
+
+        return selectedThreads.slice(0, count);
+    }
+
     // Dynamic Echoes Unbound Highlights
     async function loadEchoesHighlights() {
         try {
@@ -784,12 +849,15 @@
                 return;
             }
             
-            // Try threads endpoint (should work for messageboard)
-            const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/threads?limit=2`);
+            // Fetch more threads for better curation selection
+            const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/threads?limit=10`);
             if (!response.ok) throw new Error('Failed to fetch');
-            
+
             const data = await response.json();
-            const messages = Array.isArray(data) ? data : (data.threads || data.docs || data.data || []);
+            let allThreads = Array.isArray(data) ? data : (data.threads || data.docs || data.data || []);
+
+            // Curated selection algorithm
+            const messages = selectCuratedThreads(allThreads, 2);
             
             if (!Array.isArray(messages)) {
                 console.error('Threads data is not an array:', data);
@@ -807,7 +875,15 @@
                 return;
             }
             
-            console.log(`Loading ${messages.length} echoes threads for highlights:`, messages.map(m => ({ id: m._id, title: m.title, author: m.author?.username })));
+            console.log(`Loading ${messages.length} curated echoes threads for highlights:`,
+                messages.map(m => ({
+                    id: m._id,
+                    title: m.title,
+                    author: m.author?.username,
+                    score: m.curatedScore,
+                    voteScore: m.voteScore,
+                    replies: m.replies?.length || 0
+                })));
             
             // Clear existing content and build with unified avatar system
             highlightsContainer.innerHTML = '';
