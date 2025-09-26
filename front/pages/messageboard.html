@@ -39,8 +39,8 @@
     <link rel="preload" href="../css/active-users.css?v=7.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="../css/active-users.css?v=7.1"></noscript>
     
-    <link rel="preload" href="../css/messageboard.css?v=2.2" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="../css/messageboard.css?v=2.2"></noscript>
+    <link rel="preload" href="../css/messageboard.css?v=3.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/messageboard.css?v=3.0"></noscript>
     
     <!-- Democracy 3.0 Styles -->
     <link rel="preload" href="../css/democracy.css?v=1.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -104,16 +104,50 @@
         </section>
         <div class="lyceum-grid">
             <aside class="lyceum-column categories-column" id="lyceum-categories" aria-label="Message categories">
-                <h3>Categories</h3>
+                <h3 class="categories-header">
+                    <span class="header-text">Eternal Realms</span>
+                    <button class="category-collapse-toggle" id="categoryCollapseBtn" aria-label="Toggle category view">
+                        <i class="fas fa-compress-alt"></i>
+                    </button>
+                </h3>
                 <nav>
-                    <ul>
-                        <li><a href="#" data-category="all" class="active">All Echoes</a></li>
-                        <li><a href="#" data-category="Ideas">Ideas</a></li>
-                        <li><a href="#" data-category="Debates">Debates</a></li>
-                        <li><a href="#" data-category="Trades">Trades</a></li>
-                        <li><a href="#" data-category="Events">Events</a></li>
-                        <li><a href="#" data-category="Governance">Governance</a></li>
-                        <li><a href="#" data-category="Anonymous Whispers">Anonymous Whispers</a></li>
+                    <ul class="immortal-categories">
+                        <li><a href="#" data-category="all" class="category-link active" data-icon="🌌" data-short="ALL">
+                            <span class="category-icon">🌌</span>
+                            <span class="category-name">All Echoes</span>
+                        </a></li>
+                        <li><a href="#" data-category="Eternal Discourse" class="category-link" data-icon="⚡" data-short="ED">
+                            <span class="category-icon">⚡</span>
+                            <span class="category-name">Eternal Discourse</span>
+                        </a></li>
+                        <li><a href="#" data-category="Sacred Debates" class="category-link" data-icon="⚔️" data-short="SD">
+                            <span class="category-icon">⚔️</span>
+                            <span class="category-name">Sacred Debates</span>
+                        </a></li>
+                        <li><a href="#" data-category="Nexus Commerce" class="category-link" data-icon="💎" data-short="NC">
+                            <span class="category-icon">💎</span>
+                            <span class="category-name">Nexus Commerce</span>
+                        </a></li>
+                        <li><a href="#" data-category="Temporal Events" class="category-link" data-icon="🌟" data-short="TE">
+                            <span class="category-icon">🌟</span>
+                            <span class="category-name">Temporal Events</span>
+                        </a></li>
+                        <li><a href="#" data-category="Governance Council" class="category-link" data-icon="👑" data-short="GC">
+                            <span class="category-icon">👑</span>
+                            <span class="category-name">Governance Council</span>
+                        </a></li>
+                        <li><a href="#" data-category="Mystic Whispers" class="category-link" data-icon="🎭" data-short="MW">
+                            <span class="category-icon">🎭</span>
+                            <span class="category-name">Mystic Whispers</span>
+                        </a></li>
+                        <li><a href="#" data-category="Soul Manifestos" class="category-link" data-icon="📜" data-short="SM">
+                            <span class="category-icon">📜</span>
+                            <span class="category-name">Soul Manifestos</span>
+                        </a></li>
+                        <li><a href="#" data-category="Technical Codex" class="category-link" data-icon="⚙️" data-short="TC">
+                            <span class="category-icon">⚙️</span>
+                            <span class="category-name">Technical Codex</span>
+                        </a></li>
                     </ul>
                 </nav>
             </aside>
@@ -714,10 +748,49 @@
         return str ? str.replace(/[&<>"']/g, match => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[match])) : '';
     };
 
+    // Dynamic Layout System - Immortal Nexus
+    let isThreadReading = false;
+    let isCategoriesCollapsed = false;
+
+    function updateLayoutClasses() {
+        const lyceumGrid = document.querySelector('.lyceum-grid');
+        const categoriesColumn = document.getElementById('lyceum-categories');
+
+        lyceumGrid.classList.toggle('thread-reading-mode', isThreadReading);
+        lyceumGrid.classList.toggle('categories-collapsed', isCategoriesCollapsed);
+        categoriesColumn.classList.toggle('collapsed', isCategoriesCollapsed);
+    }
+
+    function enterReadingMode() {
+        isThreadReading = true;
+        updateLayoutClasses();
+    }
+
+    function exitReadingMode() {
+        isThreadReading = false;
+        updateLayoutClasses();
+    }
+
+    function toggleCategoriesCollapse() {
+        isCategoriesCollapsed = !isCategoriesCollapsed;
+        updateLayoutClasses();
+
+        // Update toggle button icon
+        const toggleBtn = document.getElementById('categoryCollapseBtn');
+        const icon = toggleBtn.querySelector('i');
+        icon.className = isCategoriesCollapsed ? 'fas fa-expand-alt' : 'fas fa-compress-alt';
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         threadList = document.getElementById('threadList');
         threadComposer = document.getElementById('threadComposer');
         threadForm = document.getElementById('threadForm');
+
+        // Initialize category collapse functionality
+        const categoryCollapseBtn = document.getElementById('categoryCollapseBtn');
+        if (categoryCollapseBtn) {
+            categoryCollapseBtn.addEventListener('click', toggleCategoriesCollapse);
+        }
         
         const quill = new Quill('#editor', {
             theme: 'snow',
@@ -768,27 +841,41 @@
         // Initial category change handler
         handleCategoryChange();
 
-        // Add click handlers for category navigation
-        document.querySelectorAll('[data-category]').forEach(categoryLink => {
+        // Add click handlers for category navigation with new category names
+        document.querySelectorAll('.category-link').forEach(categoryLink => {
             categoryLink.addEventListener('click', (e) => {
                 e.preventDefault();
-                
+
                 // Remove active state from all category links
-                document.querySelectorAll('[data-category]').forEach(link => link.classList.remove('active'));
-                
+                document.querySelectorAll('.category-link').forEach(link => link.classList.remove('active'));
+
                 // Add active state to clicked link
                 categoryLink.classList.add('active');
-                
-                // Get category name
+
+                // Get category name - map new names to old backend categories
                 const categoryName = categoryLink.dataset.category;
-                currentCategory = categoryName === 'all' ? '' : categoryName;
-                
-                
+                const categoryMapping = {
+                    'all': '',
+                    'Eternal Discourse': 'Ideas',
+                    'Sacred Debates': 'Debates',
+                    'Nexus Commerce': 'Trades',
+                    'Temporal Events': 'Events',
+                    'Governance Council': 'Governance',
+                    'Mystic Whispers': 'Anonymous Whispers',
+                    'Soul Manifestos': 'Ideas', // Could be new category later
+                    'Technical Codex': 'Ideas' // Could be new category later
+                };
+
+                currentCategory = categoryMapping[categoryName] || '';
+
+                // Exit reading mode when switching categories
+                exitReadingMode();
+
                 // Hide active thread column when switching categories
                 document.getElementById('lyceum-active-thread').style.display = 'none';
-                
+
                 // Special handling for Governance category
-                if (categoryName === 'Governance') {
+                if (currentCategory === 'Governance') {
                     window.displayGovernanceInterface();
                 } else {
                     // Fetch regular threads for other categories
@@ -825,6 +912,7 @@
         document.getElementById('closeActiveThread').addEventListener('click', () => {
             document.getElementById('lyceum-active-thread').style.display = 'none';
             document.querySelectorAll('.thread.active').forEach(t => t.classList.remove('active'));
+            exitReadingMode(); // Exit reading mode when closing thread
         });
 
         // Set first category as active by default and fetch threads
@@ -910,7 +998,10 @@
                 document.querySelectorAll('.thread.active').forEach(th => th.classList.remove('active'));
                 // Add active class to the clicked thread
                 threadElement.classList.add('active');
-                
+
+                // Enter reading mode for focused thread view
+                enterReadingMode();
+
                 // Show and load the active thread column
                 const activeThreadContainer = document.getElementById('lyceum-active-thread');
                 activeThreadContainer.style.display = 'block';
