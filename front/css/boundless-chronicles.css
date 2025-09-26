@@ -1,7 +1,7 @@
 /* ==========================================================================
    THE BOUNDLESS CHRONICLES - TRADITIONAL NEWSPAPER DESIGN
    Classic print newspaper aesthetic with medieval typography
-   Version: 2.6 - Epic badass font with gradient effects and dramatic styling
+   Version: 2.7 - Sans serif heraldic font stack for modern medieval look
    ========================================================================== */
 
 :root {
@@ -119,7 +119,7 @@ body.light-theme {
 }
 
 .chronicles-title {
-    font-family: 'Pirata One', 'Creepster', 'Nosifer', 'Metal Mania', 'Cinzel', cursive !important;
+    font-family: 'Orbitron', 'Exo 2', 'Rajdhani', 'Oswald', 'Bebas Neue', sans-serif !important;
     font-size: clamp(2.8rem, 7vw, 5.5rem);
     font-weight: 900;
     color: var(--newspaper-black);
