@@ -1,7 +1,7 @@
 /* ==========================================================================
    THE BOUNDLESS CHRONICLES - TRADITIONAL NEWSPAPER DESIGN
    Classic print newspaper aesthetic with medieval typography
-   Version: 2.2 - Fixed dark theme display and removed conflicting theme overrides
+   Version: 2.3 - Classic medieval newspaper font for title
    ========================================================================== */
 
 :root {
@@ -119,21 +119,23 @@ body.light-theme {
 }
 
 .chronicles-title {
-    font-family: 'Cinzel', 'Times New Roman', serif;
+    font-family: 'Old English Text MT', 'Blackletter', 'UnifrakturMaguntia', 'Fette Fraktur', 'Cinzel', serif;
     font-size: clamp(2.5rem, 6vw, 4.5rem);
     font-weight: 700;
     color: var(--newspaper-black);
     margin: 0;
     text-shadow:
-        0 1px 2px rgba(0,0,0,0.1),
-        0 2px 4px rgba(0,0,0,0.05);
-    letter-spacing: 0.02em;
+        0 2px 4px rgba(0,0,0,0.2),
+        0 4px 8px rgba(0,0,0,0.1);
+    letter-spacing: 0.05em;
     line-height: 1;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.1rem;
+    text-decoration: none;
+    font-style: normal;
 }
 
 .chronicles-title .title-line-1 {
