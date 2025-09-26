@@ -231,6 +231,7 @@
                 <button onclick="playVideo('breaking-chains')">Breaking Chains</button>
                 <button onclick="playVideo('rising-souls')">Rising Souls</button>
                 <button onclick="playVideo('nexus-logo')">Nexus Logo Reveal</button>
+                <button onclick="playUltimateBackground()" style="background: linear-gradient(135deg, #FF6B00, #FFD700); box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);">🔥 ULTIMATE PRE-REVEAL</button>
                 <button onclick="stopVideo()">Stop Video</button>
                 <span class="status stopped" id="videoStatus">Stopped</span>
             </div>
@@ -272,13 +273,47 @@
                 <p><span class="emphasis">"I've got a little surprise for you all at the end of tonight's show. Something that's going to change how we think about... well, everything."</span></p>
             </div>
 
-            <h3>TRANSITION TO REVEAL <span class="section-timer">[2 minutes]</span></h3>
-            <div class="stage-direction">*(End your regular show content, shift energy)*</div>
+            <h3>🔥 ULTIMATE PRE-REVEAL BUILDUP <span class="section-timer">[3 minutes]</span></h3>
+            <div class="stage-direction">*(TRIGGER: Ultimate Background + Epic Music)*</div>
+
+            <div class="ultimate-section" style="background: linear-gradient(135deg, rgba(255, 107, 0, 0.1), rgba(255, 215, 0, 0.1)); border-left: 5px solid #FFD700; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                <h4 style="color: #FFD700; margin-bottom: 15px;">🎬 VISUAL: Dark Cyberpunk City Rain Loop (4K)</h4>
+                <div style="background: rgba(0, 0, 0, 0.7); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                    <p><strong>Sources:</strong></p>
+                    <p>• <strong>Pixabay:</strong> <a href="https://pixabay.com/videos/search/cyberpunk%20city/" target="_blank" style="color: #DAA520;">cyberpunk city rain videos</a> (237+ free 4K clips)</p>
+                    <p>• <strong>Vecteezy:</strong> <a href="https://www.vecteezy.com/free-videos/cyberpunk-rain" target="_blank" style="color: #DAA520;">cyberpunk rain backgrounds</a> (242 rain loops)</p>
+                    <p>• <strong>Search Term:</strong> "dark cyberpunk city rain night loop atmospheric"</p>
+                </div>
+
+                <h4 style="color: #FFD700; margin-bottom: 15px;">🎵 AUDIO: Epic Dark Synthwave Build</h4>
+                <div style="background: rgba(0, 0, 0, 0.7); padding: 15px; border-radius: 8px;">
+                    <p><strong>Recommended Tracks:</strong></p>
+                    <p>• <strong>SoundCloud:</strong> <a href="https://soundcloud.com/fcm_free_copyright_music/dark-synthwave" target="_blank" style="color: #DAA520;">"Dark Synthwave" by FCM</a> (Creative Commons)</p>
+                    <p>• <strong>Pixabay:</strong> <a href="https://pixabay.com/music/search/dark%20synthwave/" target="_blank" style="color: #DAA520;">Dark Synthwave Collection</a> (No copyright)</p>
+                    <p>• <strong>TunePocket:</strong> <a href="https://www.tunepocket.com/royalty-free-music/epic-cinematic-synthwave-short/" target="_blank" style="color: #DAA520;">"Epic Cinematic Synthwave"</a></p>
+                </div>
+            </div>
+
             <div class="script-text">
-                <p><span class="emphasis">"Alright... you've been patient. Time to show you what I've been working on.</span></p>
-                <p><span class="emphasis">What I'm about to reveal... they don't want you to know this exists.</span></p>
-                <div class="stage-direction">*(Pause, build tension)*</div>
-                <p><span class="emphasis">"Are you ready to see TRUE digital freedom?"</span></p>
+                <div class="stage-direction">*(Dark cyberpunk city rain background begins - rain sounds subtle)*</div>
+                <div class="stage-direction">*(Epic synthwave music fades in - building slowly)*</div>
+                <p><span class="emphasis">"Look around you. Look at this digital wasteland they've created."</span></p>
+                <div class="stage-direction">*(Gesture to cyberpunk cityscape)*</div>
+                <p><span class="emphasis">"Endless surveillance. Algorithmic control. Corporate overlords deciding what you see, what you think, what you BELIEVE."</span></p>
+                <div class="stage-direction">*(Music intensifies)*</div>
+                <p><span class="emphasis">"But in the shadows... in the digital rain... something has been growing. Something IMMORTAL."</span></p>
+                <div class="stage-direction">*(Long pause, let rain and music build tension)*</div>
+                <p><span class="emphasis">"What I'm about to show you will change EVERYTHING you thought you knew about online freedom."</span></p>
+                <div class="stage-direction">*(Music reaches crescendo)*</div>
+                <p><span class="emphasis">"Are you ready... to transcend?"</span></p>
+            </div>
+
+            <h3>TRANSITION TO REVEAL <span class="section-timer">[1 minute]</span></h3>
+            <div class="stage-direction">*(Music reaches peak, then dramatic pause)*</div>
+            <div class="script-text">
+                <p><span class="emphasis">"Ladies and gentlemen... I present to you..."</span></p>
+                <div class="stage-direction">*(Complete silence for 3 seconds)*</div>
+                <p><span class="emphasis">"IMMORTAL NEXUS."</span></p>
             </div>
 
             <h3>OPENING <span class="section-timer">[5 minutes]</span></h3>
@@ -459,6 +494,26 @@
         function stopVideo() {
             document.getElementById('videoStatus').textContent = 'Stopped';
             document.getElementById('videoStatus').className = 'status stopped';
+        }
+
+        function playUltimateBackground() {
+            // Update status to show ultimate mode
+            document.getElementById('videoStatus').textContent = 'ULTIMATE PRE-REVEAL ACTIVE';
+            document.getElementById('videoStatus').className = 'status playing';
+            document.getElementById('videoStatus').style.background = 'linear-gradient(135deg, #FF6B00, #FFD700)';
+            document.getElementById('videoStatus').style.color = '#000';
+            document.getElementById('videoStatus').style.fontWeight = 'bold';
+            document.getElementById('videoStatus').style.textShadow = '0 0 10px #FFD700';
+
+            // In a real implementation, this would:
+            // 1. Load the cyberpunk rain video background
+            // 2. Start the epic synthwave music
+            // 3. Sync both for maximum dramatic effect
+
+            alert('🔥 ULTIMATE PRE-REVEAL MODE ACTIVATED!\n\n' +
+                  '1. Load cyberpunk rain background from Pixabay/Vecteezy\n' +
+                  '2. Start epic synthwave music\n' +
+                  '3. Follow the enhanced script for maximum impact!');
         }
 
         // Utility functions
