@@ -158,9 +158,22 @@ function updateThemeMenuText() {
 function setupUserMenuEvents() {
   const userMenuContainer = document.getElementById('userMenuContainer');
   if (!userMenuContainer) {
-    console.error('userMenuContainer not found! Cannot setup events.');
+    // If element doesn't exist, try again after a short delay (navigation may still be loading)
+    setTimeout(() => {
+      const retryContainer = document.getElementById('userMenuContainer');
+      if (retryContainer) {
+        setupUserMenuEventsForContainer(retryContainer);
+      }
+      // If still not found, silently return - this page doesn't use shared navigation
+    }, 100);
     return;
   }
+
+  setupUserMenuEventsForContainer(userMenuContainer);
+}
+
+// Separate function to actually set up the events once we have the container
+function setupUserMenuEventsForContainer(userMenuContainer) {
 
   // Event delegation for all actions within the user menu
   userMenuContainer.addEventListener('click', (event) => {
