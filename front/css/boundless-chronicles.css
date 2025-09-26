@@ -1,7 +1,7 @@
 /* ==========================================================================
    THE BOUNDLESS CHRONICLES - TRADITIONAL NEWSPAPER DESIGN
    Classic print newspaper aesthetic with medieval typography
-   Version: 2.7 - Sans serif heraldic font stack for modern medieval look
+   Version: 2.8 - Medieval newspaper serif heraldic fonts for authentic look
    ========================================================================== */
 
 :root {
@@ -119,7 +119,7 @@ body.light-theme {
 }
 
 .chronicles-title {
-    font-family: 'Orbitron', 'Exo 2', 'Rajdhani', 'Oswald', 'Bebas Neue', sans-serif !important;
+    font-family: 'Playfair Display', 'Crimson Pro', 'Cormorant Garamond', 'Cinzel', 'Times New Roman', serif !important;
     font-size: clamp(2.8rem, 7vw, 5.5rem);
     font-weight: 900;
     color: var(--newspaper-black);
