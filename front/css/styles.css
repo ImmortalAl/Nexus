@@ -2249,9 +2249,22 @@ footer {
     }
 }
 
+/* Fix for long section titles like "Boundless Chronicles" */
+#newsHeading {
+    font-size: 2.4rem !important;
+    line-height: 1.1 !important;
+}
+
+@media (max-width: 768px) {
+    #newsHeading {
+        font-size: 2.0rem !important;
+    }
+}
+
 @media (max-width: 480px) {
     .hero h1 { font-size: 2rem; }
     .section-title h2 { font-size: 1.8rem; }
+    #newsHeading { font-size: 1.6rem !important; }
     .feature-card h3 { font-size: 1.4rem; }
     .highlight-item h4, .debate-position h4 { font-size: 1.3rem; }
     .chronicle-title-prominent { font-size: 1.4rem !important; }
