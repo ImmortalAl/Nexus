@@ -149,7 +149,14 @@ function initMessageModal() {
         window.NEXUS.websocket.on('newMessage', handleIncomingMessage);
     }
 
-        isInitialized = true;
+    // Escape key handler for closing modal
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && messageModal && messageModal.classList.contains('active')) {
+            close();
+        }
+    });
+
+    isInitialized = true;
 }
 
 async function openMessageModal(username) {

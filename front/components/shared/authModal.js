@@ -345,6 +345,13 @@ function setupSoulModalEvents() {
   
   // Form submission
   soulLoginForm.addEventListener('submit', handleSoulModalSubmit);
+
+  // Escape key handler for closing modal
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && soulModal && soulModal.classList.contains('active')) {
+      closeSoulModal();
+    }
+  });
 }
 
 // Initialize auth modal
