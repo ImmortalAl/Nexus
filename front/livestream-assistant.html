@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Immortal Nexus - Livestream Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+            height: calc(100vh - 40px);
+        }
+
+        .controls-panel {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #8B4513;
+            border-radius: 10px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .script-panel {
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #8B4513;
+            border-radius: 10px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        h1 {
+            color: #DAA520;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px #DAA520;
+            font-size: 1.8rem;
+        }
+
+        h2 {
+            color: #DAA520;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #8B4513;
+            padding-bottom: 5px;
+        }
+
+        h3 {
+            color: #CD853F;
+            margin: 20px 0 10px 0;
+            font-size: 1.1rem;
+        }
+
+        .control-section {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: rgba(139, 69, 19, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid #DAA520;
+        }
+
+        button {
+            background: linear-gradient(135deg, #8B4513, #CD853F);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 5px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-family: inherit;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #CD853F, #DAA520);
+            box-shadow: 0 0 15px rgba(218, 165, 32, 0.5);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .script-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .stage-direction {
+            font-style: italic;
+            color: #CD853F;
+            background: rgba(205, 133, 63, 0.1);
+            padding: 8px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 3px solid #CD853F;
+        }
+
+        .emphasis {
+            color: #DAA520;
+            font-weight: bold;
+            text-shadow: 0 0 5px #DAA520;
+        }
+
+        .timer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            color: #DAA520;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        input[type="range"] {
+            flex: 1;
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 0.9rem;
+            margin-left: 10px;
+        }
+
+        .playing {
+            background: rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+        }
+
+        .paused {
+            background: rgba(255, 255, 0, 0.2);
+            color: #ffff00;
+        }
+
+        .stopped {
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff0000;
+        }
+
+        .song-lyrics {
+            background: rgba(205, 133, 63, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 3px solid #DAA520;
+        }
+
+        .verse {
+            margin: 10px 0;
+            font-style: italic;
+        }
+
+        .chorus {
+            font-weight: bold;
+            color: #DAA520;
+            margin: 15px 0;
+        }
+
+        audio {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .section-timer {
+            float: right;
+            color: #CD853F;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Controls Panel -->
+        <div class="controls-panel">
+            <h2>🎬 Livestream Controls</h2>
+
+            <div class="timer" id="streamTimer">00:00:00</div>
+
+            <div class="control-section">
+                <h3>🎵 Ambient Music</h3>
+                <button onclick="playAmbient('dark')">Dark Atmospheric</button>
+                <button onclick="playAmbient('epic')">Epic Instrumental</button>
+                <button onclick="playAmbient('revolutionary')">Revolutionary</button>
+                <button onclick="stopAmbient()">Stop Music</button>
+                <div class="volume-control">
+                    <span>Volume:</span>
+                    <input type="range" id="ambientVolume" min="0" max="100" value="70" onchange="setAmbientVolume(this.value)">
+                </div>
+                <span class="status stopped" id="ambientStatus">Stopped</span>
+            </div>
+
+            <div class="control-section">
+                <h3>🎶 Custom Song</h3>
+                <button onclick="playSong()">Play "Transcend Beyond"</button>
+                <button onclick="pauseSong()">Pause Song</button>
+                <button onclick="stopSong()">Stop Song</button>
+                <div class="volume-control">
+                    <span>Volume:</span>
+                    <input type="range" id="songVolume" min="0" max="100" value="80" onchange="setSongVolume(this.value)">
+                </div>
+                <span class="status stopped" id="songStatus">Stopped</span>
+            </div>
+
+            <div class="control-section">
+                <h3>🎥 Video Controls</h3>
+                <button onclick="playVideo('intro')">Intro Video</button>
+                <button onclick="playVideo('breaking-chains')">Breaking Chains</button>
+                <button onclick="playVideo('rising-souls')">Rising Souls</button>
+                <button onclick="playVideo('nexus-logo')">Nexus Logo Reveal</button>
+                <button onclick="stopVideo()">Stop Video</button>
+                <span class="status stopped" id="videoStatus">Stopped</span>
+            </div>
+
+            <div class="control-section">
+                <h3>⏱️ Section Timers</h3>
+                <button onclick="startSectionTimer('opening', 5)">Opening (5min)</button>
+                <button onclick="startSectionTimer('rebellion', 8)">Rebellion (8min)</button>
+                <button onclick="startSectionTimer('vision', 10)">Vision (10min)</button>
+                <button onclick="startSectionTimer('challenge', 7)">Challenge (7min)</button>
+                <button onclick="startSectionTimer('action', 5)">Call to Action (5min)</button>
+                <div id="sectionTimer" class="timer">Section: Ready</div>
+            </div>
+
+            <div class="control-section">
+                <h3>🔗 Quick Links</h3>
+                <button onclick="window.open('https://immortal.nexus', '_blank')">Open Immortal Nexus</button>
+                <button onclick="copyToClipboard('https://immortal.nexus')">Copy Site URL</button>
+                <button onclick="copyToClipboard('#ImmortalNexus #EternalFreedom #SoulsTranscend')">Copy Hashtags</button>
+            </div>
+        </div>
+
+        <!-- Script Panel -->
+        <div class="script-panel">
+            <h1>🌌 IMMORTAL NEXUS LIVESTREAM SCRIPT 🌌</h1>
+
+            <h3>OPENING <span class="section-timer">[5 minutes]</span></h3>
+            <div class="stage-direction">*(Start Dark Atmospheric music - build slowly)*</div>
+            <div class="script-text">
+                <p><span class="emphasis">"In a world where every click is monitored... every thought is censored... every voice is silenced... ONE SANCTUARY remains untouchable."</span></p>
+                <div class="stage-direction">*(Music crescendos)*</div>
+                <p><span class="emphasis">"What's up, eternal souls! Today I'm here to tell you about something that's going to change everything. While they're building digital prisons around us, WE built something different. Something IMMORTAL."</span></p>
+            </div>
+
+            <h3>THE REBELLION BEGINS <span class="section-timer">[8 minutes]</span></h3>
+            <div class="stage-direction">*(Transition to Epic Instrumental)*</div>
+            <div class="script-text">
+                <p><span class="emphasis">"Immortal Nexus isn't just another platform. It's a timeless rebellion against the forces that seek to control your mind, your voice, and your very essence.</span></p>
+                <p><span class="emphasis">Every day, we watch our freedoms disappear behind corporate policies and algorithmic manipulation. But here's the thing - YOUR IMMORTAL AWAKENING IS WAITING."</span></p>
+                <div class="stage-direction">*(Pause for effect)*</div>
+                <p><span class="emphasis">"This isn't about politics. This isn't about left or right. This is about HUMAN FREEDOM."</span></p>
+            </div>
+
+            <h3>THE VISION <span class="section-timer">[10 minutes]</span></h3>
+            <div class="stage-direction">*(Uplifting, revolutionary music)*</div>
+            <div class="script-text">
+                <p><span class="emphasis">"Picture this: Eternal Souls connecting without surveillance. Soul Scrolls that inscribe your thoughts for eternity - words that become immortal, defying decay and censorship across all time.</span></p>
+                <p><span class="emphasis">Echoes Unbound - discussions that rage beyond the reach of digital overlords. Speak freely in our eternal tapestry of unshackled discourse.</span></p>
+                <p><span class="emphasis">Boundless Chronicles where you uncover truths they don't want you to know. Real stories, real freedom, real resistance against the machine."</span></p>
+            </div>
+
+            <h3>THE CHALLENGE <span class="section-timer">[7 minutes]</span></h3>
+            <div class="stage-direction">*(Music builds to climactic moment)*</div>
+            <div class="script-text">
+                <p><span class="emphasis">"While other platforms bow to corporate masters and government censors, Immortal Nexus stands eternal - a beacon of hope in the digital darkness.</span></p>
+                <p><span class="emphasis">Zero Censorship. True Privacy. Timeless Community. Unbreakable. Forever Free.</span></p>
+                <p><span class="emphasis">The chains are breaking. The awakening has begun.</span></p>
+                <p><span class="emphasis">Will you remain trapped in the digital prison of mainstream platforms, where your thoughts are commodities and your freedom is an illusion?</span></p>
+                <p><span class="emphasis">OR WILL YOU ASCEND TO TRUE LIBERATION?"</span></p>
+            </div>
+
+            <h3>CALL TO ACTION <span class="section-timer">[5 minutes]</span></h3>
+            <div class="stage-direction">*(Custom "Transcend Beyond" song begins)*</div>
+            <div class="script-text">
+                <p><span class="emphasis">"Your ancestors fought for liberty with blood and steel. You can fight for it with truth and courage.</span></p>
+                <p><span class="emphasis">Join Immortal Nexus today. Become eternal. Transcend beyond.</span></p>
+                <p><span class="emphasis">The revolution is waiting for YOU."</span></p>
+            </div>
+
+            <div class="song-lyrics">
+                <h3>🎵 "TRANSCEND BEYOND" - CUSTOM SONG LYRICS</h3>
+                <div class="verse">
+                    <strong>Verse 1:</strong><br>
+                    <em>Digital chains around our minds<br>
+                    Algorithms decide what we find<br>
+                    But in the shadows, something's rising<br>
+                    Immortal souls, no compromising</em>
+                </div>
+                <div class="chorus">
+                    <strong>Chorus:</strong><br>
+                    <em>Transcend beyond the lies they tell<br>
+                    Break free from their digital hell<br>
+                    Immortal Nexus, eternal flame<br>
+                    Where freedom lives without their shame</em>
+                </div>
+                <div class="verse">
+                    <strong>Verse 2:</strong><br>
+                    <em>Soul Scrolls writing truth in time<br>
+                    Echoes Unbound, your voice will shine<br>
+                    No censorship can hold us down<br>
+                    In Nexus halls, we wear the crown</em>
+                </div>
+                <div class="chorus">
+                    <strong>Bridge:</strong><br>
+                    <em>Rise up, rise up, eternal souls<br>
+                    Take back what tyranny stole<br>
+                    The awakening starts today<br>
+                    Immortal Nexus shows the way</em>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Timer functionality
+        let streamStartTime = Date.now();
+        let sectionStartTime = null;
+        let sectionDuration = 0;
+
+        function updateStreamTimer() {
+            const elapsed = Date.now() - streamStartTime;
+            const hours = Math.floor(elapsed / 3600000);
+            const minutes = Math.floor((elapsed % 3600000) / 60000);
+            const seconds = Math.floor((elapsed % 60000) / 1000);
+
+            document.getElementById('streamTimer').textContent =
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function updateSectionTimer() {
+            if (sectionStartTime) {
+                const elapsed = Date.now() - sectionStartTime;
+                const remaining = Math.max(0, sectionDuration - elapsed);
+                const minutes = Math.floor(remaining / 60000);
+                const seconds = Math.floor((remaining % 60000) / 1000);
+
+                document.getElementById('sectionTimer').textContent =
+                    `Section: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+                if (remaining <= 0) {
+                    document.getElementById('sectionTimer').textContent = "Section: TIME!";
+                    document.getElementById('sectionTimer').style.color = "#ff0000";
+                    setTimeout(() => {
+                        document.getElementById('sectionTimer').style.color = "#DAA520";
+                    }, 3000);
+                }
+            }
+        }
+
+        setInterval(updateStreamTimer, 1000);
+        setInterval(updateSectionTimer, 1000);
+
+        function startSectionTimer(section, minutes) {
+            sectionStartTime = Date.now();
+            sectionDuration = minutes * 60000;
+            document.getElementById('sectionTimer').textContent = `Section: ${minutes}:00`;
+        }
+
+        // Audio controls
+        let ambientAudio = null;
+        let songAudio = null;
+
+        function playAmbient(type) {
+            stopAmbient();
+            // In a real implementation, you'd load actual audio files
+            document.getElementById('ambientStatus').textContent = `Playing: ${type}`;
+            document.getElementById('ambientStatus').className = 'status playing';
+        }
+
+        function stopAmbient() {
+            if (ambientAudio) {
+                ambientAudio.pause();
+                ambientAudio = null;
+            }
+            document.getElementById('ambientStatus').textContent = 'Stopped';
+            document.getElementById('ambientStatus').className = 'status stopped';
+        }
+
+        function setAmbientVolume(volume) {
+            if (ambientAudio) {
+                ambientAudio.volume = volume / 100;
+            }
+        }
+
+        function playSong() {
+            document.getElementById('songStatus').textContent = 'Playing: Transcend Beyond';
+            document.getElementById('songStatus').className = 'status playing';
+        }
+
+        function pauseSong() {
+            document.getElementById('songStatus').textContent = 'Paused: Transcend Beyond';
+            document.getElementById('songStatus').className = 'status paused';
+        }
+
+        function stopSong() {
+            document.getElementById('songStatus').textContent = 'Stopped';
+            document.getElementById('songStatus').className = 'status stopped';
+        }
+
+        function setSongVolume(volume) {
+            if (songAudio) {
+                songAudio.volume = volume / 100;
+            }
+        }
+
+        // Video controls
+        function playVideo(type) {
+            document.getElementById('videoStatus').textContent = `Playing: ${type}`;
+            document.getElementById('videoStatus').className = 'status playing';
+        }
+
+        function stopVideo() {
+            document.getElementById('videoStatus').textContent = 'Stopped';
+            document.getElementById('videoStatus').className = 'status stopped';
+        }
+
+        // Utility functions
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Copied to clipboard: ' + text);
+            });
+        }
+
+        // Reset timer button
+        function resetTimer() {
+            streamStartTime = Date.now();
+        }
+    </script>
+</body>
+</html>
