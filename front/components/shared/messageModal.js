@@ -243,7 +243,7 @@ async function openMessageModal(username) {
 
 // Mobile keyboard detection removed - was causing scrollbar issues
 
-// Expose to global MLNF object
+// Expose to global Nexus object
 window.NEXUS.initMessageModal = initMessageModal;
     window.NEXUS.openMessageModal = openMessageModal; // Still useful to expose for direct calls if needed
 })(); 

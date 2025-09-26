@@ -1,4 +1,4 @@
-// MLNF API Client
+// Nexus API Client
 // A centralized module for handling all communication with the backend API.
 
 const getAuthToken = () => {

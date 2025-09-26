@@ -1,4 +1,4 @@
-// MLNF Auth Manager
+// Nexus Auth Manager
 // A centralized module for managing user authentication state.
 
 class AuthManager {

@@ -1367,7 +1367,7 @@ async function editPost(postId) {
     `;
 
     // Initialize rich text editor with post content
-    window.currentEditEditor = new MLNFRichTextEditor('edit-content-container', {
+    window.currentEditEditor = new NexusRichTextEditor('edit-content-container', {
         placeholder: 'Edit your eternal thoughts...',
         theme: 'snow'
     });

@@ -1,4 +1,4 @@
-// MLNF Advanced User Management System
+// Nexus Advanced User Management System
 // Comprehensive user management with roles, permissions, and social features
 
 class AdvancedUserManager {
@@ -51,7 +51,7 @@ class AdvancedUserManager {
     };
 
     static USER_BADGES = {
-        FOUNDER: { icon: '👑', name: 'Founder', description: 'Original architect of MLNF' },
+        FOUNDER: { icon: '👑', name: 'Founder', description: 'Original architect of Nexus' },
         EARLY_ADOPTER: { icon: '🌟', name: 'Early Soul', description: 'Among the first eternal beings' },
         CONTENT_CREATOR: { icon: '✍️', name: 'Scroll Master', description: 'Prolific content creator' },
         COMMUNITY_BUILDER: { icon: '🤝', name: 'Soul Connector', description: 'Brings souls together' },

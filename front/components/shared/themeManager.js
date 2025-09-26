@@ -1,5 +1,5 @@
 /**
- * MLNF Theme Manager - Centralized theme management system
+ * Nexus Theme Manager - Centralized theme management system
  * Provides consistent dark/light mode across all pages
  */
 
@@ -18,7 +18,7 @@ class NexusThemeManager {
         if (savedTheme) {
             this.currentTheme = savedTheme;
         } else {
-            // Default to dark theme for MLNF
+            // Default to dark theme for Nexus
             this.currentTheme = 'dark';
         }
 
@@ -167,7 +167,7 @@ if (document.readyState === 'loading') {
     }, 50);
 }
 
-// Expose on MLNF namespace
+// Expose on Nexus namespace
 window.NEXUS = window.NEXUS || {};
 window.NEXUS.initThemeManager = initThemeManager;
 window.NEXUS.ThemeManager = NexusThemeManager;

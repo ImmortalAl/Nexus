@@ -25,12 +25,12 @@
 ```html
 <!-- Core Scripts -->
 <script src="js/main.js?v=2.0"></script>
-<script src="js/mlnf-avatar-system.js?v=2.0"></script>
+<script src="js/nexus-avatar-system.js?v=2.0"></script>
 
 <!-- Shared Components -->
 <script src="components/shared/messageModal.js?v=1.3"></script>
 <script src="components/shared/authManager.js?v=1.3"></script>
-<script src="components/shared/mlnf-core.js?v=1.3"></script>
+<script src="components/shared/nexus-core.js?v=1.3"></script>
 ```
 
 ## ⚡ When to Bump Versions
@@ -56,16 +56,16 @@
 ### Quick Commands
 ```bash
 # CSS Changes - Bump main styles
-sed -i 's/styles.css?v=[0-9.]*/styles.css?v=6.0/g' /home/immortalal/sites/mlnf/front/index.html
+sed -i 's/styles.css?v=[0-9.]*/styles.css?v=6.0/g' /home/immortalal/sites/nexus/front/index.html
 
 # JavaScript Changes - Bump main.js
-sed -i 's/main.js?v=[0-9.]*/main.js?v=3.0/g' /home/immortalal/sites/mlnf/front/index.html
+sed -i 's/main.js?v=[0-9.]*/main.js?v=3.0/g' /home/immortalal/sites/nexus/front/index.html
 
 # Shared Components - Bump shared styles
-sed -i 's/shared\/styles.css?v=[0-9.]*/shared\/styles.css?v=6.0/g' /home/immortalal/sites/mlnf/front/index.html
+sed -i 's/shared\/styles.css?v=[0-9.]*/shared\/styles.css?v=6.0/g' /home/immortalal/sites/nexus/front/index.html
 
 # Multiple file updates
-find /home/immortalal/sites/mlnf/front -name "*.html" -exec sed -i 's/messageModal.js?v=[0-9.]*/messageModal.js?v=2.0/g' {} \;
+find /home/immortalal/sites/nexus/front -name "*.html" -exec sed -i 's/messageModal.js?v=[0-9.]*/messageModal.js?v=2.0/g' {} \;
 ```
 
 ### Manual Method
@@ -90,7 +90,7 @@ CSS:
 
 JavaScript:  
 - js/main.js → v=2.0 (authentication changes)
-- js/mlnf-avatar-system.js → v=2.0
+- js/nexus-avatar-system.js → v=2.0
 - components/shared/messageModal.js → v=1.3
 ```
 
@@ -114,10 +114,10 @@ JavaScript:
 ### The Correct Process:
 ```bash
 # 1. Make your changes
-vim /home/immortalal/sites/mlnf/front/css/styles.css
+vim /home/immortalal/sites/nexus/front/css/styles.css
 
 # 2. IMMEDIATELY bump version
-sed -i 's/styles.css?v=[0-9.]*/styles.css?v=6.0/g' /home/immortalal/sites/mlnf/front/index.html
+sed -i 's/styles.css?v=[0-9.]*/styles.css?v=6.0/g' /home/immortalal/sites/nexus/front/index.html
 
 # 3. Commit everything together
 git add .
@@ -151,8 +151,8 @@ If you forgot to bump versions and changes aren't visible:
 
 ```bash
 # Emergency cache bust - bump ALL versions
-find /home/immortalal/sites/mlnf/front -name "*.html" -exec sed -i 's/\.css?v=[0-9.]*/\.css?v=99.0/g' {} \;
-find /home/immortalal/sites/mlnf/front -name "*.html" -exec sed -i 's/\.js?v=[0-9.]*/\.js?v=99.0/g' {} \;
+find /home/immortalal/sites/nexus/front -name "*.html" -exec sed -i 's/\.css?v=[0-9.]*/\.css?v=99.0/g' {} \;
+find /home/immortalal/sites/nexus/front -name "*.html" -exec sed -i 's/\.js?v=[0-9.]*/\.js?v=99.0/g' {} \;
 
 git add .
 git commit -m "emergency: force cache refresh with version bump"

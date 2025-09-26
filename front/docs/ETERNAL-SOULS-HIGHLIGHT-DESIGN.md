@@ -98,7 +98,7 @@ const MESSAGE_CATEGORIES = {
 
 This system leverages your existing architecture:
 - **Modal System**: Extends current feedback modal
-- **Avatar System**: Uses MLNFAvatars for guide displays
+- **Avatar System**: Uses Immortal NexusAvatars for guide displays
 - **API Patterns**: Follows existing message routing
 - **Admin Integration**: Builds on current admin dashboard
 
@@ -128,7 +128,7 @@ This system leverages your existing architecture:
 
 ### **Phase 1: Foundation**
 - Create guide cards UI structure
-- Integrate MLNF Avatar System
+- Integrate Immortal Nexus Avatar System
 - Set up anonymous messaging modal
 - Implement founder fixture
 

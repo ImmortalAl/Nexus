@@ -146,7 +146,7 @@ async function fetchCurrentUser() {
 
 // Fetch online users with retry (Restored)
 async function fetchOnlineUsers() {
-    const apiBaseUrl = localStorage.getItem('apiBaseUrl') || 'https://mlnf.reintegrate.ai';
+    const apiBaseUrl = localStorage.getItem('apiBaseUrl') || 'https://nexus.reintegrate.ai';
     const token = localStorage.getItem('token');
 
     if (!token) {

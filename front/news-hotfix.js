@@ -1,4 +1,4 @@
-// MLNF News Page Hotfix
+// Nexus News Page Hotfix
 // Include this on news page if issues persist
 
 (function() {
@@ -59,7 +59,7 @@
                     
                     return originalCreateUserDisplay.call(this, options);
                 } catch (error) {
-                    console.error('[MLNF Hotfix] Avatar creation failed, using fallback:', error);
+                    console.error('[Nexus Hotfix] Avatar creation failed, using fallback:', error);
                     
                     // Create fallback
                     const fallback = document.createElement('div');
@@ -85,7 +85,7 @@
             modal.setAttribute('aria-hidden', 'false');
             document.body.style.overflow = 'hidden';
         } else {
-            console.error(`[MLNF Hotfix] Modal not found: ${modalId}`);
+            console.error(`[Nexus Hotfix] Modal not found: ${modalId}`);
         }
     };
     

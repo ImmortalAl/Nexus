@@ -14,5 +14,5 @@ if (typeof window.NEXUS_CONFIG === 'undefined') {
     };
     
     // Keep backward compatibility for now
-    window.MLNF_CONFIG = window.NEXUS_CONFIG;
+    window.Nexus_CONFIG = window.NEXUS_CONFIG;
 } 

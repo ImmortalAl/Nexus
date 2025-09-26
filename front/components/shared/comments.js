@@ -331,6 +331,6 @@ class CommentsSystem {
     }
 }
 
-// Add to global MLNF object
+// Add to global Nexus object
 window.NEXUS = window.NEXUS || {};
 window.NEXUS.CommentsSystem = CommentsSystem; 

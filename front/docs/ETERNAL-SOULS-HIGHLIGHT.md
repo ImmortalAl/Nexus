@@ -58,7 +58,7 @@ Transform your MySpace Tom concept into a sophisticated **community guidance eco
 
 ### **Leveraging Existing Architecture:**
 - **Modal System**: Extend current feedback modal pattern
-- **Avatar System**: Use `MLNFAvatars.createUserDisplay()` for guides
+- **Avatar System**: Use `Immortal NexusAvatars.createUserDisplay()` for guides
 - **API Patterns**: Follow existing message routing structure
 - **Admin Dashboard**: Integrate with current admin interface
 
@@ -149,7 +149,7 @@ POST /api/guides/set-cycle  // Admin: Set new champion
 
 ### **Phase 1: Foundation (Week 1)**
 1. Create guide cards HTML structure on index.html
-2. Integrate MLNF Avatar System for guide displays
+2. Integrate Immortal Nexus Avatar System for guide displays
 3. Set up ImmortalAl as permanent founder fixture
 4. Basic anonymous messaging modal setup
 

@@ -1,4 +1,4 @@
-// nexus-core.js - Core initialization for MLNF components
+// nexus-core.js - Core initialization for Nexus components
 
 // Establish the global namespace
 window.NEXUS = window.NEXUS || {};

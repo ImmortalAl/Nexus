@@ -1,5 +1,5 @@
 {
-  "name": "mlnf",
+  "name": "nexus",
   "version": "1.0.0",
   "description": "A timeless sanctuary for liberated spirits to manifest truth and freedom.",
   "main": "index.js",
@@ -23,11 +23,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ImmortalAl/mlnf.git"
+    "url": "git+https://github.com/ImmortalAl/nexus.git"
   },
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/ImmortalAl/mlnf/issues"
+    "url": "https://github.com/ImmortalAl/nexus/issues"
   },
-  "homepage": "https://github.com/ImmortalAl/mlnf#readme"
+  "homepage": "https://github.com/ImmortalAl/nexus#readme"
 }

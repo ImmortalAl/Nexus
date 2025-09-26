@@ -42,7 +42,7 @@
 ## 📋 **Current Immortal Status (August 2025)**
 
 ### **🦇 The Great Transformation**
-- Successfully migrated from MLNF to Immortal Nexus
+- Successfully migrated from Immortal Nexus to Immortal Nexus
 - Implemented monorepo structure for unified deployment
 - Domain resurrection at immortal.nexus complete
 
@@ -118,10 +118,10 @@ const headers = {
 ### **Shared Components**
 ```javascript
 // Available global functions
-window.MLNF.openSoulModal('login'|'register');
-window.MLNF.closeSoulModal();
-window.MLNF.updateUserMenu();
-window.MLNF.toggleActiveUsers();
+window.Immortal Nexus.openSoulModal('login'|'register');
+window.Immortal Nexus.closeSoulModal();
+window.Immortal Nexus.updateUserMenu();
+window.Immortal Nexus.toggleActiveUsers();
 ```
 
 ## 🔧 **Common Development Patterns**
@@ -215,16 +215,16 @@ function initializeModal() {
 ### **Git Workflow & Critical Directory Information**
 
 **⚠️ CRITICAL: Git Repository Location**
-- **Git repository is in `MLNF/front/` NOT in `MLNF/` root**
+- **Git repository is in `Immortal Nexus/front/` NOT in `Immortal Nexus/` root**
 - **Always navigate to `front/` directory before Git operations**
-- **Working directory should be: `C:\Users\coold\Documents\Sites\MLNF\front`**
+- **Working directory should be: `C:\Users\coold\Documents\Sites\Immortal Nexus\front`**
 
 ```bash
-# ALWAYS start with this from MLNF root:
+# ALWAYS start with this from Immortal Nexus root:
 cd front
 
 # Verify you're in the right location:
-pwd  # Should show: C:\Users\coold\Documents\Sites\MLNF\front
+pwd  # Should show: C:\Users\coold\Documents\Sites\Immortal Nexus\front
 
 # Then proceed with Git operations:
 git status
@@ -234,9 +234,9 @@ git push origin main
 ```
 
 **Common AI Assistant Mistakes to Avoid:**
-1. **Don't run Git commands from MLNF root directory** - Git repo is in front/
+1. **Don't run Git commands from Immortal Nexus root directory** - Git repo is in front/
 2. **Always check current directory** with `pwd` before Git operations
-3. **Remember: Shell starts in MLNF root, but Git repo is in front/**
+3. **Remember: Shell starts in Immortal Nexus root, but Git repo is in front/**
 4. **Use `cd front` as first command** in new conversations
 
 ## 🔍 **Debugging & Troubleshooting**

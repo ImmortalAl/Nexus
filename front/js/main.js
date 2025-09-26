@@ -468,7 +468,7 @@ function openFounderMessage() {
         }
     } else {
         // Show authentication required message
-        showAuthenticationRequired('message the MLNF Founder');
+        showAuthenticationRequired('message the Nexus Creator');
     }
 }
 

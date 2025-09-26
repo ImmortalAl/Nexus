@@ -70,27 +70,27 @@ The Immortal Nexus Avatar System provides a consistent, scalable, and immortal-t
 ### Basic Avatar
 
 ```html
-<img class="mlnf-avatar mlnf-avatar--md" src="avatar-url.jpg" alt="Username">
+<img class="nexus-avatar nexus-avatar--md" src="avatar-url.jpg" alt="Username">
 ```
 
 ### Avatar with Mystical Effects
 
 ```html
-<img class="mlnf-avatar mlnf-avatar--lg mlnf-avatar--mystical" src="avatar-url.jpg" alt="Username">
+<img class="nexus-avatar nexus-avatar--lg nexus-avatar--mystical" src="avatar-url.jpg" alt="Username">
 ```
 
 ### Complete User Display with Online Status
 
 ```html
-<div class="mlnf-user-display mlnf-user-display--md">
+<div class="nexus-user-display nexus-user-display--md">
     <div style="position: relative; display: inline-block;">
-        <img class="mlnf-avatar mlnf-avatar--md" src="avatar-url.jpg" alt="Username">
+        <img class="nexus-avatar nexus-avatar--md" src="avatar-url.jpg" alt="Username">
         <div class="online-dot online"></div> <!-- Online status indicator -->
     </div>
-    <div class="mlnf-user-info">
-        <span class="mlnf-username mlnf-username--immortal">Username</span>
-        <span class="mlnf-user-title">Eternal Soul</span>
-        <span class="mlnf-user-status">Online now</span>
+    <div class="nexus-user-info">
+        <span class="nexus-username nexus-username--immortal">Username</span>
+        <span class="nexus-user-title">Eternal Soul</span>
+        <span class="nexus-user-status">Online now</span>
     </div>
 </div>
 ```
@@ -156,31 +156,31 @@ const colors = window.NexusAvatars.generateUserColors('ImmortalAl');
 ## CSS Classes Reference
 
 ### Avatar Sizes
-- `mlnf-avatar--xs` - 20px (16px on mobile)
-- `mlnf-avatar--sm` - 28px (20px on mobile)
-- `mlnf-avatar--md` - 36px (28px on mobile)
-- `mlnf-avatar--lg` - 48px (36px on mobile)
-- `mlnf-avatar--xl` - 64px (44px on mobile)
-- `mlnf-avatar--xxl` - 80px (56px on mobile)
+- `nexus-avatar--xs` - 20px (16px on mobile)
+- `nexus-avatar--sm` - 28px (20px on mobile)
+- `nexus-avatar--md` - 36px (28px on mobile)
+- `nexus-avatar--lg` - 48px (36px on mobile)
+- `nexus-avatar--xl` - 64px (44px on mobile)
+- `nexus-avatar--xxl` - 80px (56px on mobile)
 
 ### Avatar Effects
-- `mlnf-avatar--mystical` - Rotating gradient border with pulsing glow
+- `nexus-avatar--mystical` - Rotating gradient border with pulsing glow
 
 ### User Display Sizes
-- `mlnf-user-display--xs` - Extra small padding and gaps
-- `mlnf-user-display--sm` - Small padding and gaps
-- `mlnf-user-display--md` - Medium padding and gaps (default)
-- `mlnf-user-display--lg` - Large padding and gaps
-- `mlnf-user-display--xl` - Extra large padding and gaps
+- `nexus-user-display--xs` - Extra small padding and gaps
+- `nexus-user-display--sm` - Small padding and gaps
+- `nexus-user-display--md` - Medium padding and gaps (default)
+- `nexus-user-display--lg` - Large padding and gaps
+- `nexus-user-display--xl` - Extra large padding and gaps
 
 ### User Display Variants
-- `mlnf-user-display--compact` - Transparent background, minimal padding
-- `mlnf-user-display--interactive` - Hover effects and clickable styling
+- `nexus-user-display--compact` - Transparent background, minimal padding
+- `nexus-user-display--interactive` - Hover effects and clickable styling
 
 ### Username Styles
-- `mlnf-username--immortal` - Cinzel font with gradient text
-- `mlnf-username--mystical` - Caesar Dressing font with glow effect
-- `mlnf-username--eternal` - Metal Mania font with letter spacing
+- `nexus-username--immortal` - Cinzel font with gradient text
+- `nexus-username--mystical` - Caesar Dressing font with glow effect
+- `nexus-username--eternal` - Metal Mania font with letter spacing
 
 ---
 
@@ -209,7 +209,7 @@ Response: [{ username: 'user1', online: true, avatar: '...' }] // Filtered clien
 ### Expected DOM Structure
 ```html
 <div style="position: relative; display: inline-block;">
-    <img class="mlnf-avatar mlnf-avatar--md" src="..." alt="username">
+    <img class="nexus-avatar nexus-avatar--md" src="..." alt="username">
     <div class="online-dot online"></div> <!-- Green pulsing dot -->
 </div>
 ```
@@ -255,7 +255,7 @@ Response: [{ username: 'user1', online: true, avatar: '...' }] // Filtered clien
 - **xl/xxl**: Profile pages, modal headers, special displays
 
 ### Mystical Effects Guidelines
-Use `mlnf-avatar--mystical` for:
+Use `nexus-avatar--mystical` for:
 - VIP users or moderators
 - Special events or announcements
 - Profile highlights
@@ -285,23 +285,23 @@ Use `mlnf-avatar--mystical` for:
 
 ### Chronicles Highlights
 ```html
-<div class="mlnf-user-display mlnf-user-display--sm mlnf-user-display--compact">
-    <img class="mlnf-avatar mlnf-avatar--sm" src="avatar.jpg" alt="Author">
-    <div class="mlnf-user-info">
-        <span class="mlnf-username mlnf-username--immortal">AuthorName</span>
-        <span class="mlnf-user-title">Eternal Chronicler</span>
+<div class="nexus-user-display nexus-user-display--sm nexus-user-display--compact">
+    <img class="nexus-avatar nexus-avatar--sm" src="avatar.jpg" alt="Author">
+    <div class="nexus-user-info">
+        <span class="nexus-username nexus-username--immortal">AuthorName</span>
+        <span class="nexus-user-title">Eternal Chronicler</span>
     </div>
 </div>
 ```
 
 ### Modal Author Display
 ```html
-<div class="mlnf-user-display mlnf-user-display--lg">
-    <img class="mlnf-avatar mlnf-avatar--lg mlnf-avatar--mystical" src="avatar.jpg" alt="Author">
-    <div class="mlnf-user-info">
-        <span class="mlnf-username mlnf-username--mystical">AuthorName</span>
-        <span class="mlnf-user-title">Eternal Chronicler</span>
-        <span class="mlnf-user-status">Keeper of Immortal Truths</span>
+<div class="nexus-user-display nexus-user-display--lg">
+    <img class="nexus-avatar nexus-avatar--lg nexus-avatar--mystical" src="avatar.jpg" alt="Author">
+    <div class="nexus-user-info">
+        <span class="nexus-username nexus-username--mystical">AuthorName</span>
+        <span class="nexus-user-title">Eternal Chronicler</span>
+        <span class="nexus-user-status">Keeper of Immortal Truths</span>
     </div>
 </div>
 ```
@@ -359,7 +359,7 @@ const commentUser = window.NexusAvatars.createUserDisplay({
 
 **Diagnostic Steps**:
 1. Verify `mystical: true` parameter is passed
-2. Check that `.mlnf-avatar--mystical` class is applied
+2. Check that `.nexus-avatar--mystical` class is applied
 3. Test CSS animation support in browser
 
 **Solutions**:

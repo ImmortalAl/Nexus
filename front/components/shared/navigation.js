@@ -68,7 +68,7 @@ function generateCompleteHeaderHTML(currentPath) {
 function generateNavLinksHTML(currentPath, navType = 'main') {
     // Normalize currentPath for local file testing (ends with / or /index.html)
     const isHomePageLocal = currentPath.endsWith('/index.html') || currentPath.endsWith('/');
-    const normalizedCurrentPath = isHomePageLocal && currentPath.includes('/MLNF/index.html') ? '/' : currentPath; // Simplify if it's the full local path to index
+    const normalizedCurrentPath = isHomePageLocal && currentPath.includes('/Nexus/index.html') ? '/' : currentPath; // Simplify if it's the full local path to index
 
     const allLinks = [
         { href: "/", icon: "fas fa-home", text: "Home" },
