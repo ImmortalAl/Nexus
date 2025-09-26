@@ -124,10 +124,10 @@ body.light-theme {
     font-weight: 700;
     color: var(--newspaper-black);
     margin: 0;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-    text-decoration: none;
+    text-shadow:
+        0 1px 2px rgba(0,0,0,0.1),
+        0 2px 4px rgba(0,0,0,0.05);
+    letter-spacing: 0.02em;
     line-height: 1;
     text-align: center;
     display: flex;
@@ -139,13 +139,13 @@ body.light-theme {
 .chronicles-title .title-line-1 {
     font-size: clamp(2.3rem, 5.5vw, 4.2rem);
     font-weight: 600;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.02em;
 }
 
 .chronicles-title .title-line-2 {
     font-size: clamp(2.3rem, 5.5vw, 4.2rem);
     font-weight: 700;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.03em;
     margin-top: -0.3rem;
 }
 
@@ -627,11 +627,12 @@ body.light-theme {
     .chronicles-title .title-line-1,
     .chronicles-title .title-line-2 {
         font-size: clamp(1.8rem, 5vw, 3.5rem);
-        letter-spacing: 0.15em;
+        letter-spacing: 0.02em;
     }
 
     .chronicles-title .title-line-2 {
         margin-top: -0.25rem;
+        letter-spacing: 0.03em;
     }
 }
 
@@ -647,11 +648,12 @@ body.light-theme {
     .chronicles-title .title-line-1,
     .chronicles-title .title-line-2 {
         font-size: clamp(1.4rem, 4.5vw, 2.8rem);
-        letter-spacing: 0.12em;
+        letter-spacing: 0.02em;
     }
 
     .chronicles-title .title-line-2 {
         margin-top: -0.2rem;
+        letter-spacing: 0.03em;
     }
 
     .chronicle-title {
