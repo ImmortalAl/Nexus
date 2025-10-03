@@ -52,6 +52,8 @@ app.use(cors({
         if (!origin) return callback(null, true);
 
         const allowedOrigins = [
+            'https://immortal.nexus',  // Primary custom domain
+            'http://immortal.nexus',
             'https://immortalnexus.netlify.app',
             'http://immortalnexus.netlify.app',  // Added HTTP version
             'https://dashing-belekoy-7a0095.netlify.app',  // Actual live site
