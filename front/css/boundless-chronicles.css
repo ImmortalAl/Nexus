@@ -413,20 +413,6 @@ body.light-theme {
     margin: 0 0 1rem 0;
 }
 
-.chronicle-excerpt p:first-child::first-letter {
-    font-family: 'Cinzel', serif;
-    font-size: 3em;
-    font-weight: 700;
-    float: left;
-    line-height: 0.85;
-    margin: 0.15em 0.15em 0.1em 0;
-    color: var(--newspaper-black);
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.15);
-    border: 1px solid var(--newspaper-gray-3);
-    padding: 0.1em 0.15em;
-    background: var(--newspaper-gray-1);
-}
-
 .chronicle-excerpt p:last-child {
     margin-bottom: 0;
 }
