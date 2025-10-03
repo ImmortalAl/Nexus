@@ -272,28 +272,6 @@ body.light-theme {
     margin-bottom: var(--section-spacing);
 }
 
-.chronicles-feed::before {
-    content: '';
-    position: absolute;
-    left: 33.333%;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background: var(--newspaper-gray-3);
-    z-index: 0;
-}
-
-.chronicles-feed::after {
-    content: '';
-    position: absolute;
-    left: 66.666%;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background: var(--newspaper-gray-3);
-    z-index: 0;
-}
-
 /* ==========================================================================
    NEWSPAPER ARTICLE CARDS
    ========================================================================== */
@@ -573,11 +551,6 @@ body.light-theme {
     .chronicles-feed {
         grid-template-columns: repeat(2, 1fr);
         gap: 1.5rem;
-    }
-
-    .chronicles-feed::before,
-    .chronicles-feed::after {
-        display: none;
     }
 }
 
@@ -963,11 +936,6 @@ body.light-theme .view-btn.active {
     background: #0f172a;
     color: #ffffff;
     border-color: #0f172a;
-}
-
-body.light-theme .chronicles-feed::before,
-body.light-theme .chronicles-feed::after {
-    background: #cbd5e1;
 }
 
 body.light-theme .chronicle-form input,
