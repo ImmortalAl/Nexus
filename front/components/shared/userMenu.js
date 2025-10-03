@@ -4,6 +4,9 @@
 // const API_BASE_URL = 'https://nexus-ytrg.onrender.com/api'; // REMOVED
 // const DEFAULT_AVATAR = '/assets/images/default-avatar.png'; // REMOVED
 
+// Track if event listeners are already attached (prevent duplicate listeners)
+let userMenuEventsAttached = false;
+
 // Update user dropdown menu based on authentication status
 function updateUserMenu() {
   
@@ -81,11 +84,16 @@ function updateUserMenu() {
     window.NEXUS.updateActiveUsersButtonVisibility();
   }
   
-  // Add a small delay to ensure elements are fully in DOM before setting up events
-  setTimeout(() => {
-    setupUserMenuEvents(); // Sets up dropdown toggle and logout
-    updateThemeMenuText(); // Sync theme toggle with actual current theme
-  }, 50);
+  // Only set up events if not already attached
+  if (!userMenuEventsAttached) {
+    setTimeout(() => {
+      setupUserMenuEvents(); // Sets up dropdown toggle and logout
+      updateThemeMenuText(); // Sync theme toggle with actual current theme
+    }, 50);
+  } else {
+    // Just update theme text if events already exist
+    updateThemeMenuText();
+  }
   // Event listeners for new header buttons are set in populateHeaderAuthButtons
 }
 
@@ -156,6 +164,11 @@ function updateThemeMenuText() {
 
 // Setup event listeners for user menu (dropdown toggle, logout)
 function setupUserMenuEvents() {
+  // Prevent duplicate event listeners
+  if (userMenuEventsAttached) {
+    return;
+  }
+
   const userMenuContainer = document.getElementById('userMenuContainer');
   if (!userMenuContainer) {
     // If element doesn't exist, try again after a short delay (navigation may still be loading)
@@ -163,6 +176,7 @@ function setupUserMenuEvents() {
       const retryContainer = document.getElementById('userMenuContainer');
       if (retryContainer) {
         setupUserMenuEventsForContainer(retryContainer);
+        userMenuEventsAttached = true;
       }
       // If still not found, silently return - this page doesn't use shared navigation
     }, 100);
@@ -170,6 +184,7 @@ function setupUserMenuEvents() {
   }
 
   setupUserMenuEventsForContainer(userMenuContainer);
+  userMenuEventsAttached = true;
 }
 
 // Separate function to actually set up the events once we have the container
