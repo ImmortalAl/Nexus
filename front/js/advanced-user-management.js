@@ -57,7 +57,7 @@ class AdvancedUserManager {
         COMMUNITY_BUILDER: { icon: '🤝', name: 'Soul Connector', description: 'Brings souls together' },
         HELPFUL_SOUL: { icon: '💫', name: 'Helpful Soul', description: 'Always lending a hand' },
         BUG_HUNTER: { icon: '🐛', name: 'Bug Hunter', description: 'Helps improve the platform' },
-        BETA_TESTER: { icon: '🧪', name: 'Beta Tester', description: 'Tests new features' },
+        FOUNDING_MEMBER: { icon: '🧪', name: 'Founding Member', description: 'Official launch pioneer' },
         VERIFIED: { icon: '✅', name: 'Verified', description: 'Identity verified' }
     };
 
