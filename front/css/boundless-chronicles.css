@@ -289,19 +289,6 @@ body.light-theme {
     overflow: hidden;
 }
 
-.chronicles-feed .chronicle-card::before {
-    content: '✦';
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    font-size: 1.2rem;
-    color: var(--newspaper-gray-4);
-    opacity: 0.4;
-    font-family: serif;
-    transform: rotate(15deg);
-    z-index: 2;
-}
-
 .chronicles-feed .chronicle-card::after {
     content: '';
     position: absolute;
@@ -318,10 +305,6 @@ body.light-theme {
     border-color: var(--newspaper-gray-6);
     box-shadow: 0 8px 20px rgba(0,0,0,0.15), 0 4px 8px rgba(0,0,0,0.1);
     transform: translateY(-2px);
-}
-
-.chronicles-feed .chronicle-card:hover::before {
-    opacity: 0.6;
 }
 
 .chronicles-feed .chronicle-card:hover::after {
