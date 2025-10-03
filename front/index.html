@@ -606,10 +606,11 @@
                 title.className = 'chronicle-title-prominent';
                 title.textContent = post.title;
                 
-                // Create excerpt
+                // Create excerpt - strip HTML tags first
                 const excerpt = document.createElement('p');
                 excerpt.className = 'chronicle-excerpt';
-                excerpt.textContent = post.content.substring(0, 120) + '...';
+                const textOnly = post.content.replace(/<[^>]*>/g, '').trim();
+                excerpt.textContent = (textOnly.length > 120 ? textOnly.substring(0, 120) + '...' : textOnly);
                 
                 // Create unified user display
                 const userDisplay = window.NexusAvatars.createUserDisplay({
