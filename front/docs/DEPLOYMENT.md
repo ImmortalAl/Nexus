@@ -20,7 +20,7 @@ Nexus/
 ### **1. Update Netlify Site Settings**
 
 1. **Go to Netlify Dashboard**: https://app.netlify.com
-2. **Select your site** (currently pointing to old MLNF repo)
+2. **Select your site** (currently pointing to old Immortal Nexus repo)
 3. **Site settings → Build & deploy → Repository**
 4. **Update repository**: 
    - Repository: `https://github.com/ImmortalAl/Nexus`
@@ -49,7 +49,7 @@ NODE_VERSION=18
 ### **1. Update Render Service Settings**
 
 1. **Go to Render Dashboard**: https://dashboard.render.com
-2. **Select your backend service** (currently pointing to old mlnf-auth repo)
+2. **Select your backend service** (currently pointing to old nexus-auth repo)
 3. **Settings → Repository**
 4. **Update repository settings**:
    - Repository: `https://github.com/ImmortalAl/Nexus`

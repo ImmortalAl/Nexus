@@ -4,33 +4,22 @@
    ========================================================================== */
 
 /* ==========================================================================
-   NEWSPAPER THEME VARIABLES
+   NEWSPAPER THEME VARIABLES - Immortal Nexus Accents Only
    ========================================================================== */
 :root {
-    /* Newspaper-specific colors */
-    --newspaper-black: #1a1a1a;
-    --newspaper-dark: #2a2a2a;
-    --newspaper-gray: #666666;
-    --newspaper-light-gray: #cccccc;
-    --newspaper-cream: #f8f6f0;
-    --newspaper-ink: #0f0f0f;
-    
-    /* Immortal accents for newspaper */
+    /* Immortal accents for newspaper - Theme-independent colors */
     --immortal-gold: #d4af37;
     --immortal-deep-gold: #b8941f;
     --immortal-crimson: #8b0000;
     --immortal-purple: #4a148c;
-    
-    /* Page-specific background for news layout */
-    --background-tertiary: #2a2a45;
-    
+
     /* Typography scale for newspaper hierarchy */
     --headline-size: 3.5rem;
     --subhead-size: 1.8rem;
     --byline-size: 0.95rem;
     --body-size: 1rem;
     --caption-size: 0.85rem;
-    
+
     /* Newspaper spacing */
     --column-gap: 2rem;
     --section-gap: 3rem;
@@ -190,7 +179,7 @@
 
 .view-btn:hover {
     background: var(--immortal-gold);
-    color: var(--primary);
+    color: var(--background);
     border-color: var(--immortal-gold);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
@@ -198,14 +187,14 @@
 
 .view-btn.active {
     background: var(--immortal-gold);
-    color: var(--primary);
+    color: var(--background);
     border-color: var(--immortal-gold);
     box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
 }
 
 .submit-chronicle-btn {
     background: linear-gradient(135deg, var(--immortal-crimson), var(--immortal-purple));
-    color: white;
+    color: var(--text-bright);
     border: none;
     padding: 1rem 2rem;
     border-radius: 8px;
@@ -442,7 +431,7 @@
 .action-btn.consecrate:hover,
 .action-btn.consecrate.active {
     background: var(--success);
-    color: white;
+    color: var(--text-bright);
     box-shadow: 0 4px 12px rgba(92, 184, 92, 0.3);
 }
 
@@ -465,7 +454,7 @@
 
 .action-btn.edit:hover {
     background: var(--accent);
-    color: white;
+    color: var(--text-bright);
 }
 
 .action-btn.comments {
@@ -475,7 +464,7 @@
 
 .action-btn.comments:hover {
     background: var(--info);
-    color: white;
+    color: var(--text-bright);
 }
 
 .count {
@@ -515,7 +504,7 @@
 
 .modal-header {
     background: linear-gradient(135deg, var(--immortal-crimson), var(--immortal-purple));
-    color: white;
+    color: var(--text-bright);
     padding: 1.5rem 2rem;
     display: flex;
     justify-content: space-between;
@@ -536,7 +525,7 @@
 .close-modal {
     background: none;
     border: none;
-    color: white;
+    color: var(--text-bright);
     font-size: 2rem;
     font-weight: bold;
     cursor: pointer;

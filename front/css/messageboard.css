@@ -399,13 +399,29 @@ section {
     opacity: 0.8;
 }
 
-/* 3-Column Grid Layout */
+/* 3-Column Dynamic Grid Layout */
 .lyceum-grid {
     display: grid;
-    grid-template-columns: 250px 1fr 1fr;
+    grid-template-columns: 25% 35% 40%;
     gap: var(--space-lg);
     flex-grow: 1;
     overflow: hidden;
+    transition: grid-template-columns 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Thread Reading Mode - Columns shrink for content focus */
+.lyceum-grid.thread-reading-mode {
+    grid-template-columns: 15% 20% 65%;
+}
+
+/* Collapsed Categories State */
+.lyceum-grid.categories-collapsed {
+    grid-template-columns: 80px 35% 40%;
+}
+
+/* Combined: Reading + Collapsed */
+.lyceum-grid.thread-reading-mode.categories-collapsed {
+    grid-template-columns: 60px 15% 65%;
 }
 
 @media (max-width: 1024px) {
@@ -445,118 +461,401 @@ section {
     font-family: 'Cinzel', serif;
 }
 
-/* Categories Navigation */
-.categories-column nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
+/* ============================================================================
+   IMMORTAL CATEGORIES SYSTEM
+   ============================================================================ */
 
-.categories-column nav ul li {
-    margin-bottom: 0.25rem;
-}
-
-.categories-column nav ul li a {
-    display: block;
-    padding: 0.75rem 1rem;
-    color: var(--text-muted);
-    text-decoration: none;
-    border-radius: var(--radius-sm);
-    transition: all 0.2s ease;
-    font-size: 0.95rem;
-}
-
-.categories-column nav ul li a:hover {
-    background-color: rgba(255, 94, 120, 0.1);
-    color: var(--text);
-    transform: translateX(4px);
-}
-
-.categories-column nav ul li a.active {
-    background-color: rgba(255, 94, 120, 0.2);
-    color: var(--accent);
-    font-weight: 600;
-    border-left: 3px solid var(--accent);
-}
-
-/* Thread List */
-.thread-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.thread {
+/* Categories Header with Toggle */
+.categories-header {
     display: flex;
-    gap: 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 1rem;
-    border-radius: var(--radius-sm);
-    margin-bottom: 1rem;
-    border: 1px solid rgba(255, 94, 120, 0.2);
-    transition: all 0.3s ease;
-    cursor: pointer;
-    position: relative;
-}
-
-.thread:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: var(--accent);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-.thread.active {
-    background: rgba(255, 94, 120, 0.15);
-    border-color: var(--accent);
-    border-left: 3px solid var(--accent);
-}
-
-.thread-main {
-    flex-grow: 1;
-}
-
-.thread-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 0.25rem;
-}
-
-.thread-meta {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    margin-bottom: 0.5rem;
-    opacity: 0.8;
-}
-
-/* Voting UI */
-.thread-voting {
-    display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
-    justify-content: flex-start;
-    padding-top: 0.2rem;
-    color: var(--text-muted);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 94, 120, 0.3);
 }
 
-.vote-btn {
+.header-text {
+    font-family: 'Cinzel', serif;
+    background: linear-gradient(135deg, var(--accent), #8b5cf6);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 600;
+}
+
+.category-collapse-toggle {
     background: none;
     border: none;
     color: var(--text-muted);
     cursor: pointer;
     padding: 0.25rem;
-    font-size: 1.1rem;
-    transition: all 0.2s ease;
+    border-radius: var(--radius-sm);
+    transition: all 0.3s ease;
+}
+
+.category-collapse-toggle:hover {
+    color: var(--accent);
+    background: rgba(255, 94, 120, 0.1);
+    transform: scale(1.1);
+}
+
+/* Immortal Categories List */
+.immortal-categories {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.immortal-categories li {
+    margin-bottom: 0.5rem;
+}
+
+/* Category Links with Icons */
+.category-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-radius: var(--radius-lg);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 0.95rem;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid transparent;
+}
+
+.category-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 94, 120, 0.05), rgba(139, 92, 246, 0.05));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 0;
+}
+
+.category-link:hover::before {
+    opacity: 1;
+}
+
+.category-link:hover {
+    color: var(--text);
+    transform: translateX(6px) scale(1.02);
+    border-color: rgba(255, 94, 120, 0.3);
+    box-shadow: 0 4px 20px rgba(255, 94, 120, 0.15);
+}
+
+.category-link.active {
+    background: linear-gradient(135deg, rgba(255, 94, 120, 0.15), rgba(139, 92, 246, 0.1));
+    color: var(--accent);
+    font-weight: 600;
+    border-color: var(--accent);
+    border-left: 4px solid var(--accent);
+}
+
+.category-link.active .category-icon {
+    animation: pulseGlow 2s ease-in-out infinite;
+}
+
+/* Category Icons */
+.category-icon {
+    font-size: 1.4rem;
+    min-width: 1.4rem;
+    text-align: center;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    transition: all 0.3s ease;
+    z-index: 1;
+    position: relative;
+}
+
+.category-name {
+    font-family: 'Cinzel', serif;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    z-index: 1;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* Collapsed Categories State */
+.categories-column.collapsed .category-name {
+    display: none;
+}
+
+.categories-column.collapsed .category-link {
+    justify-content: center;
+    padding: 0.75rem 0.5rem;
+    gap: 0;
+}
+
+.categories-column.collapsed .category-icon {
+    font-size: 1.8rem;
+}
+
+.categories-column.collapsed .header-text {
+    display: none;
+}
+
+/* Tooltip for collapsed categories */
+.category-link[data-short]::after {
+    content: attr(data-short);
+    position: absolute;
+    top: 50%;
+    right: 0.5rem;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.7rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 10;
+}
+
+.categories-column.collapsed .category-link:hover::after {
+    opacity: 1;
+}
+
+/* ============================================================================
+   IMMORTAL THREAD CARDS - COLUMN 2 REDESIGN
+   ============================================================================ */
+
+.thread-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Enhanced Thread Card Design */
+.thread {
+    display: flex;
+    gap: 1rem;
+    background: linear-gradient(135deg, rgba(26, 26, 51, 0.9), rgba(15, 15, 35, 0.95));
+    backdrop-filter: blur(20px);
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    margin-bottom: 0;
+    border: 1px solid rgba(255, 94, 120, 0.15);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Ethereal glow effect */
+.thread::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg,
+        rgba(255, 94, 120, 0.02) 0%,
+        rgba(139, 92, 246, 0.02) 50%,
+        rgba(255, 94, 120, 0.02) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.thread:hover::before {
+    opacity: 1;
+}
+
+.thread:hover {
+    background: linear-gradient(135deg, rgba(26, 26, 51, 0.95), rgba(15, 15, 35, 1));
+    border-color: rgba(255, 94, 120, 0.4);
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 8px 40px rgba(255, 94, 120, 0.15),
+                0 2px 20px rgba(0, 0, 0, 0.2);
+}
+
+.thread.active {
+    background: linear-gradient(135deg,
+        rgba(255, 94, 120, 0.08),
+        rgba(139, 92, 246, 0.06));
+    border-color: var(--accent);
+    border-left: 4px solid var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 30px rgba(255, 94, 120, 0.2);
+}
+
+.thread.active::before {
+    opacity: 0.5;
+}
+
+/* Enhanced Thread Content */
+.thread-main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 120px;
+}
+
+.thread-header {
+    margin-bottom: 1rem;
+}
+
+.thread-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.3px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.thread.active .thread-title {
+    color: var(--accent);
+    text-shadow: 0 2px 4px rgba(255, 94, 120, 0.3);
+}
+
+/* Enhanced Thread Preview */
+.thread-preview {
+    font-size: 1rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-family: system-ui, -apple-system, sans-serif;
+    opacity: 0.9;
+}
+
+.thread:hover .thread-preview {
+    color: var(--text);
+    opacity: 1;
+}
+
+/* Thread Footer with Meta Info */
+.thread-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 94, 120, 0.1);
+}
+
+.thread-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0;
+    opacity: 0.8;
+}
+
+.thread:hover .thread-meta {
+    opacity: 1;
+}
+
+.thread-meta span {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.thread-meta i {
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+/* ============================================================================
+   ENHANCED VOTING UI - COLUMN 2
+   ============================================================================ */
+
+.thread-voting {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem 0.75rem;
+    background: rgba(255, 94, 120, 0.02);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(255, 94, 120, 0.08);
+    transition: all 0.3s ease;
+    min-width: 60px;
+}
+
+/* Enhanced Vote Buttons */
+.vote-btn {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+    border: 1px solid rgba(255, 94, 120, 0.15);
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0.75rem;
+    font-size: 1.2rem;
+    border-radius: var(--radius-sm);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.vote-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 94, 120, 0.1), rgba(139, 92, 246, 0.1));
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .vote-btn:hover {
     color: var(--accent);
-    transform: scale(1.1);
+    transform: translateY(-2px) scale(1.05);
+    border-color: rgba(255, 94, 120, 0.4);
+    box-shadow: 0 4px 20px rgba(255, 94, 120, 0.2);
+}
+
+.vote-btn:hover::before {
+    opacity: 1;
+}
+
+.vote-btn:active {
+    transform: translateY(0) scale(0.98);
 }
 
 .vote-btn.active {
-    color: var(--accent-bright);
+    color: var(--accent);
+    background: linear-gradient(135deg, rgba(255, 94, 120, 0.15), rgba(139, 92, 246, 0.1));
+    border-color: var(--accent);
+    box-shadow: 0 0 20px rgba(255, 94, 120, 0.3);
+}
+
+.vote-btn.active::before {
+    opacity: 0.5;
 }
 
 .vote-count {
@@ -565,21 +864,52 @@ section {
     color: var(--text);
 }
 
-/* Modern Replies Styling */
+/* ============================================================================
+   ENHANCED REPLIES SYSTEM - COLUMN 3
+   ============================================================================ */
+
+/* Modern Replies Container */
 .replies-container {
-    padding-left: 2rem;
-    margin-top: 1rem;
-    border-left: 2px solid #e2e8f0;
+    margin-top: 2rem;
+    padding: 0;
+    border: none;
 }
 
+/* Enhanced Reply Cards */
 .reply {
     display: flex;
-    gap: 1rem;
-    padding: 1rem;
-    background: #f8fafc;
-    border-radius: 6px;
-    margin-bottom: 0.75rem;
-    border: 1px solid #e2e8f0;
+    gap: 1.5rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.005));
+    backdrop-filter: blur(15px);
+    border-radius: var(--radius-lg);
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(255, 94, 120, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.reply::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--accent), rgba(139, 92, 246, 0.6));
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+}
+
+.reply:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(255, 94, 120, 0.1);
+    border-color: rgba(255, 94, 120, 0.2);
+}
+
+.reply:hover::before {
+    opacity: 0.8;
 }
 
 .reply-main {
@@ -587,10 +917,14 @@ section {
 }
 
 .reply-content {
-    color: #475569;
-    line-height: 1.6;
-    font-size: 0.9375rem;
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 1rem;
     font-family: system-ui, -apple-system, sans-serif;
+    background: rgba(255, 255, 255, 0.01);
+    padding: 1.5rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(255, 94, 120, 0.05);
 }
 
 .reply-content p {
@@ -607,13 +941,23 @@ section {
     font-size: 0.9rem;
 }
 
+/* ============================================================================
+   ENHANCED COLUMN 3 - THREAD CONTENT DISPLAY
+   ============================================================================ */
+
 /* Modern Full Thread Content */
 .thread-content-full {
-    padding: 1rem 0;
-    line-height: 1.6;
-    color: #1a202c;
+    padding: 2rem 0;
+    line-height: 1.8;
+    color: var(--text);
     font-family: system-ui, -apple-system, sans-serif;
-    font-size: 0.9375rem;
+    font-size: 1.1rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    margin: 1rem 0;
+    border: 1px solid rgba(255, 94, 120, 0.1);
+    backdrop-filter: blur(10px);
 }
 
 .thread-content-full p, 

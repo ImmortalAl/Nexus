@@ -1,4 +1,4 @@
-# MLNF Development Changelog
+# Immortal Nexus Development Changelog
 
 ## Table of Contents
 
@@ -9,7 +9,7 @@
 5. [Major Milestones](#major-milestones-achieved)
 6. [Development Metrics](#development-metrics)
 
-This file documents the complete development history and session logs for the MLNF project.
+This file documents the complete development history and session logs for the Immortal Nexus project.
 
 ---
 
@@ -40,7 +40,7 @@ This file documents the complete development history and session logs for the ML
 
 **Console Debug Cleanup:**
 - Removed 110+ debug console statements from production JavaScript
-- Cleaned up scripts.js (137 → 27 statements), activeUsers.js, navigation.js, userMenu.js, mlnf-avatar-system.js
+- Cleaned up scripts.js (137 → 27 statements), activeUsers.js, navigation.js, userMenu.js, nexus-avatar-system.js
 - Preserved all error/warning logging for production debugging
 - Eliminated development artifacts like `[DEBUG]`, `[MOCK DEBUG]`, `[Reintegration]` patterns
 
@@ -112,7 +112,7 @@ This file documents the complete development history and session logs for the ML
 
 **Console Error Elimination:**
 - Updated FontAwesome from v6.4.0 to v6.7.2 (fixes glyph bbox errors)
-- Resolved "window.mlnf.updatemobileauthlinks not found" navigation error
+- Resolved "window.nexus.updatemobileauthlinks not found" navigation error
 - Improved cached souls error messaging to be less intrusive
 
 **Visual Design Improvements:**
@@ -143,7 +143,7 @@ This file documents the complete development history and session logs for the ML
 1. **CSS Conflicts**: Duplicate `.online-dot` styles in multiple CSS files causing cascade conflicts
 2. **Missing Backend Data**: API populate queries missing `online` field for author data
 3. **Frontend Caching**: localStorage caching preventing immediate display of updated data
-4. **Loading Order Issues**: Some components not safely checking for MLNFAvatars availability
+4. **Loading Order Issues**: Some components not safely checking for NexusAvatars availability
 
 **Systematic Resolution Process**:
 1. **CSS Conflict Resolution**:
@@ -164,7 +164,7 @@ This file documents the complete development history and session logs for the ML
    - Reduced Souls directory cache time from 5 minutes to 30 seconds for testing
 
 4. **Component Integration Verification**:
-   - Confirmed all components using new MLNF Avatar System with proper safety checks
+   - Confirmed all components using new Immortal Nexus Avatar System with proper safety checks
    - Updated individual Soul pages to use unified avatar system
    - Verified cross-site compatibility and loading order
 
@@ -232,7 +232,7 @@ This file documents the complete development history and session logs for the ML
 - **Fixed Online Status Indicators**: Resolved CSS dependency issues preventing green dots from appearing
 - **Unified DOM Element Approach**: Changed from HTML string generation to proper DOM element creation
 - **Cross-Site Compatibility**: Ensured avatar system works consistently across all pages
-- **Script Dependencies**: Added missing `mlnf-avatar-system.js` references to blog.html and profile pages
+- **Script Dependencies**: Added missing `nexus-avatar-system.js` references to blog.html and profile pages
 - **Comments System Fix**: Restored clickable usernames in comments by returning DOM elements
 
 #### **📚 Comprehensive Documentation Updates**
@@ -243,7 +243,7 @@ This file documents the complete development history and session logs for the ML
 
 #### **📁 Files Modified**
 - `css/styles.css` - Moved online dot styles for global availability
-- `js/mlnf-avatar-system.js` - Fixed to create DOM elements instead of HTML strings
+- `js/nexus-avatar-system.js` - Fixed to create DOM elements instead of HTML strings
 - `components/shared/comments.js` - Updated to preserve click handlers
 - `pages/blog.html` - Added missing avatar system script
 - `souls/[username].html` - Added missing avatar system script
@@ -460,7 +460,7 @@ This file documents the complete development history and session logs for the ML
 2.  **Active Users Sidebar Button (`#showUsersBtn`):**
     *   **Conditional Visibility:** The button is now only displayed to logged-in users. It's hidden when no user is logged in.
     *   **Enhanced Styling:** The button's visual appearance was significantly upgraded (larger, rounded-square, gradient background, dynamic hover/active effects).
-    *   Relevant files: `front/components/shared/activeUsers.js` (added `updateActiveUsersButtonVisibility()` and integrated it into init and global MLNF object), `front/components/shared/userMenu.js` (calls visibility update on auth state change), `front/css/active-users.css` (new button styles).
+    *   Relevant files: `front/components/shared/activeUsers.js` (added `updateActiveUsersButtonVisibility()` and integrated it into init and global Immortal Nexus object), `front/components/shared/userMenu.js` (calls visibility update on auth state change), `front/css/active-users.css` (new button styles).
 
 **Overall Impact:**
 *   Improved clarity in the header UI, distinguishing more effectively between logged-in and guest states.
@@ -526,16 +526,16 @@ This file documents the complete development history and session logs for the ML
 **Key Changes & Achievements:**
 
 1.  **Project Structure & Git:**
-    *   Standardized frontend to `MLNF/front/` and backend to `MLNF/back/`.
-    *   Resolved Git "too many active changes" error in `MLNF/back/` by correcting `.gitignore` and untracking `node_modules` contents.
+    *   Standardized frontend to `Immortal Nexus/front/` and backend to `Immortal Nexus/back/`.
+    *   Resolved Git "too many active changes" error in `Immortal Nexus/back/` by correcting `.gitignore` and untracking `node_modules` contents.
 
 2.  **File System Cleanup (Frontend):**
-    *   Consolidated `dev-log.md` into `MLNF/front/`.
+    *   Consolidated `dev-log.md` into `Immortal Nexus/front/`.
     *   Deleted several redundant/old HTML files and a `package-lock.json` from an incorrect location.
-    *   Confirmed removal of nested `MLNF/front/MLNF/` folder.
-    *   Created `MLNF/front/_redirects` for Cloudflare Pages from a legacy `.htaccess` file. The `.htaccess` file was later confirmed as not present and thus didn't require deletion.
+    *   Confirmed removal of nested `Immortal Nexus/front/Immortal Nexus/` folder.
+    *   Created `Immortal Nexus/front/_redirects` for Cloudflare Pages from a legacy `.htaccess` file. The `.htaccess` file was later confirmed as not present and thus didn't require deletion.
 
-3.  **CSS Externalization & Standardization (`MLNF/front/`):
+3.  **CSS Externalization & Standardization (`Immortal Nexus/front/`):
     *   **`profile-setup.html`**: Inline styles moved to `css/profile-setup.css`.
     *   **`base-theme.css`**: Created to centralize CSS custom properties (`:root`) from various files.
     *   **`styles.css` (main stylesheet)**: Removed its local `:root` (merged one variable to `base-theme.css`).
@@ -544,14 +544,14 @@ This file documents the complete development history and session logs for the ML
     *   **`souls/index.html`**: Large inline `<style>` block's content was moved. Page-specific styles were consolidated into `css/souls-listing.css` (which was cleaned of global style duplications). Generic/global styles from the inline block were added/merged into `css/styles.css`. The HTML file itself will need manual removal of the now-redundant `<style>` tags.
     *   All relevant HTML files updated to link `base-theme.css` and their specific stylesheets.
 
-4.  **CSS Consolidation (Shared vs. Main - `MLNF/front/`):
+4.  **CSS Consolidation (Shared vs. Main - `Immortal Nexus/front/`):
     *   **User Menu, Mobile Nav Toggle, Soul Modal**: Styles were removed/confirmed to be primarily in `components/shared/styles.css`, removing them from `styles.css`.
     *   **Active Users Sidebar**: Styles moved from `styles.css` to `css/active-users.css`.
     *   **Message Modal**: Styles consolidated into `components/shared/styles.css` (from `active-users.css` and `styles.css`). The content class was renamed from `.auth-modal` to `.message-modal-content` in CSS and relevant HTML files.
     *   **`styles.css` Full Refactor**: The main `styles.css` was manually replaced with a cleaner version focusing on global styles, generic elements, and page structure, excluding component-specific rules.
     *   `@keyframes modalContentAppear` moved from `styles.css` to `components/shared/styles.css`.
 
-5.  **Shared JavaScript Components & Refactoring (`MLNF/front/`):
+5.  **Shared JavaScript Components & Refactoring (`Immortal Nexus/front/`):
     *   **`messageModal.js`**: Created as a new shared component from inline JS in `lander.html`.
     *   **`index.html`**: Corrected JS path, removed redundant inline JS for Active Users and Message Modal.
     *   **`lander.html`**: Removed large commented-out JS block.
@@ -596,11 +596,11 @@ This file documents the complete development history and session logs for the ML
 
 ---
 
-# MLNF Development Changelog
+# Immortal Nexus Development Changelog
 
 ## 📝 **Development History**
 
-All notable changes to the MLNF project are documented here, organized by development sessions and major milestones.
+All notable changes to the Immortal Nexus project are documented here, organized by development sessions and major milestones.
 
 ---
 
@@ -609,7 +609,7 @@ All notable changes to the MLNF project are documented here, organized by develo
 
 #### **✅ Completed**
 - **Message Board Architecture**:
-  - Created new `messageboard.html` with modern MLNF architecture
+  - Created new `messageboard.html` with modern Immortal Nexus architecture
   - Integrated shared components (navigation, sidebars, modals)
   - Implemented proper HTML structure and styling
   - Added WebSocket support for real-time features
@@ -711,7 +711,7 @@ All notable changes to the MLNF project are documented here, organized by develo
 
 #### **✅ Major Accomplishments**
 - **Project Structure Standardization**:
-  - Organized frontend to `MLNF/front/` and backend to `MLNF/back/`
+  - Organized frontend to `Immortal Nexus/front/` and backend to `Immortal Nexus/back/`
   - Resolved Git issues with proper `.gitignore` configuration
   - Consolidated scattered development logs
 
@@ -946,7 +946,7 @@ All notable changes to the MLNF project are documented here, organized by develo
 
 ---
 
-*Complete development history and milestone tracking for MLNF platform*  
+*Complete development history and milestone tracking for Immortal Nexus platform*  
 *Last updated: Documentation consolidation phase*
 
 ## [Version 1.2.0] - YYYY-MM-DD
@@ -968,7 +968,7 @@ All notable changes to the MLNF project are documented here, organized by develo
 ## [Version 1.1.0] - 2024-05-15
 
 ## Message Board Implementation (from `development_log.md`, dated 2024-03-XX)
-- Successfully integrated the "Echoes Unbound" message board into the MLNF architecture
+- Successfully integrated the "Echoes Unbound" message board into the Immortal Nexus architecture
 - Implemented shared component system:
   - Active users sidebar with real-time updates
   - Instant messaging system with WebSocket support
@@ -996,5 +996,5 @@ The message board implementation draws inspiration from:
 ### Technical Notes
 - Using WebSocket for real-time features
 - Implemented proper error handling and loading states
-- Following the established MLNF component architecture
+- Following the established Immortal Nexus component architecture
 - Maintaining consistent styling with the main site theme 

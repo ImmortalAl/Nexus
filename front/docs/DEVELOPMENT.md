@@ -89,7 +89,7 @@ sed -i 's/main.js?v=[0-9.]*/main.js?v=3.0/g' front/index.html
 
 ### **Component Creation Ceremony**
 1. Study existing components in `front/components/shared/`
-2. Follow the established patterns (see mlnf-core.js)
+2. Follow the established patterns (see nexus-core.js)
 3. Use CSS variables from base-theme.css
 4. Test across multiple pages
 5. Bump versions for all affected files
@@ -110,7 +110,7 @@ css/
 ```
 js/
 ├── main.js              # Primary initialization
-├── mlnf-avatar-system.js # Soul visualization
+├── nexus-avatar-system.js # Soul visualization
 ├── mindmap/             # Infinite Nexus engine
 └── components/shared/   # Reusable sorcery
 ```

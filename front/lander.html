@@ -32,8 +32,8 @@
     <noscript><link rel="stylesheet" href="css/features.css?v=6.3"></noscript>
     
     <!-- 4. SHARED COMPONENTS (lazy loaded) -->
-    <link rel="preload" href="components/shared/styles.css?v=14.8" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="components/shared/styles.css?v=14.8"></noscript>
+    <link rel="preload" href="components/shared/styles.css?v=15.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="components/shared/styles.css?v=15.0"></noscript>
     
     <!-- 4.5. UNIFIED BUTTON SYSTEM (lazy loaded) -->
     <link rel="preload" href="css/components/buttons.css?v=1.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -1959,16 +1959,20 @@
     <!-- Shared Immortal Nexus Scripts -->
     <!-- Config MUST be loaded first -->
     <script src="components/shared/config.js?v=2.0"></script>
+
+    <!-- Theme Manager - Load early for immediate theme application -->
+    <script src="components/shared/themeManager.js?v=2.2"></script>
+
     <script src="components/shared/nexus-core.js?v=1.5"></script>
-    <script src="components/shared/navigation.js?v=2.0"></script>
-    <script src="components/shared/userMenu.js?v=6.7"></script>
+    <script src="components/shared/navigation.js?v=2.2"></script>
+    <script src="components/shared/userMenu.js?v=6.9"></script>
     <script src="components/shared/authModal.js?v=4.2"></script>
     <script src="components/shared/messageModal.js?v=1.4"></script>
     <script src="components/shared/activeUsers.js?v=1.8"></script>
     <!-- End Shared Immortal Nexus Scripts -->
 
     <!-- <script src="js/scripts.js?v=1.0"></script> --> <!-- Legacy script - functionality moved to components -->
-    <script src="js/main.js?v=2.3"></script>
+    <script src="js/main.js?v=3.5"></script>
     <script>
         let quill;
         

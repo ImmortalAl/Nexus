@@ -1,6 +1,6 @@
-# 🚀 MLNF Development Mode Guide
+# 🚀 Immortal Nexus Development Mode Guide
 
-Welcome, apprentice! This guide will help you use the development mode to test your MLNF site locally.
+Welcome, apprentice! This guide will help you use the development mode to test your Immortal Nexus site locally.
 
 ## 🎯 What is Development Mode?
 
@@ -14,12 +14,12 @@ Development Mode lets you:
 
 ### Step 1: Start Your Local Backend
 ```powershell
-# In your MLNF folder, run:
+# In your Immortal Nexus folder, run:
 .\start-local-backend.ps1
 ```
 
 ### Step 2: Open Your Page
-Open any MLNF page in your browser (e.g., `front/pages/news.html`)
+Open any Immortal Nexus page in your browser (e.g., `front/pages/news.html`)
 
 ### Step 3: Enable Dev Mode
 Either:
@@ -95,7 +95,7 @@ Click the dev button to see options:
 
 - Check the browser console (F12) for error messages
 - The dev panel shows connection status
-- Look for the console messages starting with `[MLNF`
+- Look for the console messages starting with `[Immortal Nexus`
 
 Remember: You're learning! It's okay to make mistakes. The dev mode is here to help you experiment safely.
 

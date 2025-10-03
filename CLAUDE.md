@@ -94,6 +94,109 @@ If features.css versions are inconsistent across pages:
 - `refactor: description` - Code restructuring
 - `docs: description` - Documentation updates
 
+## 🎨 THEME SYSTEM CRITICAL GUIDELINES
+
+**The theme system is centralized in `themeManager.js` - NO other file should manage themes!**
+
+### Theme Toggle Requirements
+
+**CRITICAL: Every theme toggle button MUST have this attribute:**
+```html
+data-theme-toggle="true"
+```
+
+**Without this attribute, the button WILL NOT WORK!**
+
+### Correct Theme Toggle Patterns
+
+**Static HTML:**
+```html
+<!-- ✅ CORRECT -->
+<button class="theme-toggle" data-theme-toggle="true" aria-label="Toggle theme">
+    <i class="fas fa-moon"></i>
+</button>
+
+<!-- ❌ WRONG - Missing data attribute -->
+<button class="theme-toggle" id="themeToggle">
+    <i class="fas fa-moon"></i>
+</button>
+```
+
+**Dynamic JavaScript (User Menu, Mobile Menu):**
+```javascript
+// ✅ CORRECT - Has data-theme-toggle
+innerHTML = `<a href="#" id="themeToggle" data-theme-toggle="true">
+    <i class="fas fa-moon"></i> Toggle Theme
+</a>`;
+
+// ❌ WRONG - Missing data attribute
+innerHTML = `<a href="#" id="themeToggle">Theme</a>`;
+```
+
+### Theme System Architecture
+
+**Single Source of Truth:**
+- File: `front/components/shared/themeManager.js`
+- Searches for ALL elements with `[data-theme-toggle]`
+- Attaches click handlers automatically
+- Updates all toggles simultaneously
+
+**Theme Toggle Locations:**
+1. Floating button (logged-out): Has `data-theme-toggle="true"` ✓
+2. User menu (logged-in): Must have `data-theme-toggle="true"` in userMenu.js
+3. Mobile menu: Must have `data-theme-toggle="true"` in navigation.js
+
+**Storage:**
+- Key: `'nexus-theme'` (localStorage)
+- Values: `'dark'` or `'light'`
+- Default: `'dark'`
+
+### Theme System Rules
+
+**🚨 NEVER DO THESE:**
+- ❌ Create theme logic in main.js, scripts.js, or other files
+- ❌ Add manual click handlers to theme toggle buttons
+- ❌ Create theme toggles without `data-theme-toggle="true"`
+- ❌ Use different localStorage keys for theme
+
+**✅ ALWAYS DO THESE:**
+- ✅ Add `data-theme-toggle="true"` to every theme toggle
+- ✅ Let themeManager.js handle all theme operations
+- ✅ Call `window.NEXUSTheme?.connectExistingToggles()` after creating dynamic toggles
+- ✅ Use consistent icon logic (dark mode = sun icon, light mode = moon icon)
+
+### Icon Logic (CRITICAL)
+
+```javascript
+// ✅ CORRECT - Icon shows OPPOSITE of current state (what it will BECOME)
+if (currentTheme === 'dark') {
+    icon.className = 'fas fa-sun';  // Show sun (click to go LIGHT)
+} else {
+    icon.className = 'fas fa-moon'; // Show moon (click to go DARK)
+}
+
+// ❌ WRONG - This is backwards!
+if (currentTheme === 'light') {
+    icon.className = 'fas fa-sun';  // NO! Light mode should show moon!
+}
+```
+
+### Theme System Version Requirements
+
+- **themeManager.js**: v2.0+ (fixed icon logic, debug logging)
+- **userMenu.js**: v6.8+ (has data-theme-toggle attribute)
+- **navigation.js**: v2.0+ (has data-theme-toggle attribute)
+
+### Troubleshooting
+
+**If theme toggle doesn't work:**
+1. Check browser console for `[ThemeManager]` debug logs
+2. Verify `data-theme-toggle="true"` exists on button
+3. Check if themeManager.js is loading (Network tab)
+4. Look for JavaScript errors blocking execution
+
+**See full troubleshooting guide:** `/front/docs/THEME-SYSTEM-TROUBLESHOOTING.md`
+
 ## Development Best Practices
 
 ### Architecture-First Development
@@ -164,12 +267,10 @@ This ensures continuous deployment and prevents work loss.
   - Located at: `/home/immortalal/sites/Nexus/front/performance-audit.html`
   - Access via: `https://immortalnexus.netlify.app/performance-audit.html`
 
-### Launch Planning
-- **`LAUNCH-PLAN.md`** - Comprehensive beta and official launch checklist
-  - Phase 0-5 roadmap with go/no-go criteria
-  - Risk mitigation strategies
-  - Success metrics and KPIs
-  - Located at: `/home/immortalal/sites/Nexus/LAUNCH-PLAN.md`
+### Performance Monitoring
+- Real-time performance monitoring capabilities
+- Launch readiness verification processes
+- Success metrics and KPI tracking
 
 ## Monorepo Structure
 

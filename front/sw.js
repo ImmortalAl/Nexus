@@ -1,5 +1,5 @@
-// MLNF Service Worker - PWA Core Functionality
-const CACHE_VERSION = 'nexus-v1.3.0'; // A major version bump for the new activation logic
+// Nexus Service Worker - PWA Core Functionality
+const CACHE_VERSION = 'nexus-v1.2.3'; // Incremented version to bust cache
 const STATIC_CACHE = `nexus-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `nexus-dynamic-${CACHE_VERSION}`;
 const API_CACHE = `nexus-api-${CACHE_VERSION}`;
@@ -42,43 +42,48 @@ const SYNC_TAGS = {
 
 // Install event - cache static assets
 self.addEventListener('install', event => {
-  console.log('[MLNF SW] Installing service worker...');
+  console.log('[Nexus SW] Installing service worker...');
   
   event.waitUntil(
     caches.open(STATIC_CACHE)
       .then(cache => {
-        console.log('[MLNF SW] Caching static assets');
+        console.log('[Nexus SW] Caching static assets');
         return cache.addAll(STATIC_ASSETS);
       })
       .then(() => {
-        console.log('[MLNF SW] Static assets cached successfully');
+        console.log('[Nexus SW] Static assets cached successfully');
         return self.skipWaiting(); // Activate immediately
       })
       .catch(error => {
-        console.error('[MLNF SW] Failed to cache static assets:', error);
+        console.error('[Nexus SW] Failed to cache static assets:', error);
       })
   );
 });
 
 // Activate event - clean up old caches
-self.addEventListener('activate', (event) => {
-  console.log('[Service Worker] Activating new service worker...');
-  const cacheWhitelist = [STATIC_CACHE, DYNAMIC_CACHE, API_CACHE];
-
+self.addEventListener('activate', event => {
+  console.log('[Nexus SW] Activating service worker...');
+  
   event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
-            console.log('[Service Worker] Deleting old cache:', cacheName);
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
+    caches.keys()
+      .then(cacheNames => {
+        return Promise.all(
+          cacheNames.map(cacheName => {
+            if (cacheName.startsWith('nexus-') && 
+                cacheName !== STATIC_CACHE && 
+                cacheName !== DYNAMIC_CACHE && 
+                cacheName !== API_CACHE) {
+              console.log('[Nexus SW] Deleting old cache:', cacheName);
+              return caches.delete(cacheName);
+            }
+          })
+        );
+      })
+      .then(() => {
+        console.log('[Nexus SW] Service worker activated');
+        return self.clients.claim(); // Take control of all pages immediately
+      })
   );
-  // Force the activated service worker to take control of the page immediately.
-  return self.clients.claim();
 });
 
 // Fetch event - implement caching strategies
@@ -125,7 +130,7 @@ async function handleApiRequest(request) {
         return await networkOnly(request);
     }
   } catch (error) {
-    console.error('[MLNF SW] API request failed:', error);
+    console.error('[Nexus SW] API request failed:', error);
     return await getCachedResponse(request, API_CACHE) || 
            new Response(JSON.stringify({ error: 'Offline - cached data unavailable' }), {
              status: 503,
@@ -139,7 +144,7 @@ async function handleStaticAsset(request) {
   try {
     return await cacheFirst(request, STATIC_CACHE);
   } catch (error) {
-    console.error('[MLNF SW] Static asset request failed:', error);
+    console.error('[Nexus SW] Static asset request failed:', error);
     return new Response('Offline - asset unavailable', { status: 503 });
   }
 }
@@ -149,7 +154,7 @@ async function handleDynamicContent(request) {
   try {
     return await staleWhileRevalidate(request, DYNAMIC_CACHE);
   } catch (error) {
-    console.error('[MLNF SW] Dynamic content request failed:', error);
+    console.error('[Nexus SW] Dynamic content request failed:', error);
     
     // For HTML pages, return offline page if available
     if (request.headers.get('accept').includes('text/html')) {
@@ -263,7 +268,7 @@ function isCacheExpired(response, ttl) {
 
 // Background Sync for offline actions
 self.addEventListener('sync', event => {
-  console.log('[MLNF SW] Background sync triggered:', event.tag);
+  console.log('[Nexus SW] Background sync triggered:', event.tag);
   
   switch (event.tag) {
     case SYNC_TAGS.MESSAGE_SEND:
@@ -286,10 +291,10 @@ self.addEventListener('sync', event => {
 
 // Push notification handler
 self.addEventListener('push', event => {
-  console.log('[MLNF SW] Push notification received');
+  console.log('[Nexus SW] Push notification received');
   
   let notificationData = {
-    title: 'MLNF Notification',
+    title: 'Nexus Notification',
     body: 'You have a new update',
     icon: '/favicon.svg',
     badge: '/assets/icons/badge-72x72.png',
@@ -301,7 +306,7 @@ self.addEventListener('push', event => {
       const data = event.data.json();
       notificationData = { ...notificationData, ...data };
     } catch (error) {
-      console.error('[MLNF SW] Failed to parse push data:', error);
+      console.error('[Nexus SW] Failed to parse push data:', error);
     }
   }
   
@@ -331,7 +336,7 @@ self.addEventListener('push', event => {
 
 // Notification click handler
 self.addEventListener('notificationclick', event => {
-  console.log('[MLNF SW] Notification clicked:', event.action);
+  console.log('[Nexus SW] Notification clicked:', event.action);
   
   event.notification.close();
   
@@ -373,9 +378,9 @@ async function syncMessages() {
       });
     }
     await clearStoredData('pendingMessages');
-    console.log('[MLNF SW] Messages synced successfully');
+    console.log('[Nexus SW] Messages synced successfully');
   } catch (error) {
-    console.error('[MLNF SW] Failed to sync messages:', error);
+    console.error('[Nexus SW] Failed to sync messages:', error);
   }
 }
 
@@ -393,9 +398,9 @@ async function syncBlogPosts() {
       });
     }
     await clearStoredData('pendingBlogPosts');
-    console.log('[MLNF SW] Blog posts synced successfully');
+    console.log('[Nexus SW] Blog posts synced successfully');
   } catch (error) {
-    console.error('[MLNF SW] Failed to sync blog posts:', error);
+    console.error('[Nexus SW] Failed to sync blog posts:', error);
   }
 }
 
@@ -413,9 +418,9 @@ async function syncChronicleSubmissions() {
       });
     }
     await clearStoredData('pendingChronicleSubmissions');
-    console.log('[MLNF SW] Chronicle submissions synced successfully');
+    console.log('[Nexus SW] Chronicle submissions synced successfully');
   } catch (error) {
-    console.error('[MLNF SW] Failed to sync chronicle submissions:', error);
+    console.error('[Nexus SW] Failed to sync chronicle submissions:', error);
   }
 }
 
@@ -433,9 +438,9 @@ async function syncStatusUpdates() {
       });
     }
     await clearStoredData('pendingStatusUpdates');
-    console.log('[MLNF SW] Status updates synced successfully');
+    console.log('[Nexus SW] Status updates synced successfully');
   } catch (error) {
-    console.error('[MLNF SW] Failed to sync status updates:', error);
+    console.error('[Nexus SW] Failed to sync status updates:', error);
   }
 }
 
@@ -453,9 +458,9 @@ async function syncLikeActions() {
       });
     }
     await clearStoredData('pendingLikeActions');
-    console.log('[MLNF SW] Like actions synced successfully');
+    console.log('[Nexus SW] Like actions synced successfully');
   } catch (error) {
-    console.error('[MLNF SW] Failed to sync like actions:', error);
+    console.error('[Nexus SW] Failed to sync like actions:', error);
   }
 }
 

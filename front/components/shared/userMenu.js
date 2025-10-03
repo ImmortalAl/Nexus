@@ -50,7 +50,7 @@ function updateUserMenu() {
         <a href="/admin/"><i class="fas fa-crown"></i> Admin Panel</a>
         ` : ''}
         <div class="divider"></div>
-        <a href="#" id="themeToggleMenu"><i class="fas fa-moon"></i> <span id="themeToggleText">Light Mode</span></a>
+        <a href="#" id="themeToggleMenu" data-theme-toggle="true"><i class="fas fa-moon"></i> <span id="themeToggleText">Light Mode</span></a>
         <div class="divider"></div>
         <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Transcend Session</a>
       `;
@@ -59,43 +59,6 @@ function updateUserMenu() {
       userMenuContainer.appendChild(userMenuBtn);
       userMenuContainer.appendChild(userDropdown);
       
-      // Debug: Check if the theme toggle element was actually created
-      setTimeout(() => {
-        const themeToggle = document.getElementById('themeToggleMenu');
-        console.log('Theme toggle element found after creation:', themeToggle);
-        if (themeToggle) {
-          console.log('Theme toggle HTML:', themeToggle.outerHTML);
-          
-          // Add direct event listener to theme toggle as backup
-          themeToggle.addEventListener('click', (e) => {
-            console.log('DIRECT theme toggle clicked!', e.target);
-            e.preventDefault();
-            e.stopPropagation();
-            
-            if (window.NEXUSTheme) {
-              console.log('Calling NEXUSTheme.toggleTheme() from direct listener');
-              window.NEXUSTheme.toggleTheme();
-              updateThemeMenuText();
-            } else {
-              console.error('NEXUSTheme not available in direct listener');
-              // Fallback manual theme toggle
-              console.log('Attempting manual theme toggle...');
-              const currentTheme = document.body.classList.contains('dark-theme') ? 'dark' : 'light';
-              const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-              console.log('Manual toggle from', currentTheme, 'to', newTheme);
-              
-              document.body.classList.remove('light-theme', 'dark-theme');
-              document.body.classList.add(newTheme + '-theme');
-              localStorage.setItem('nexus-theme', newTheme);
-              updateThemeMenuText();
-            }
-          });
-          console.log('Direct theme toggle event listener added');
-        } else {
-          console.error('Theme toggle element NOT found! Checking dropdown HTML...');
-          console.log('User dropdown HTML:', userDropdown.innerHTML);
-        }
-      }, 100);
 
     } catch (error) {
       console.error('[userMenu.js] Error parsing user data:', error);
@@ -121,6 +84,7 @@ function updateUserMenu() {
   // Add a small delay to ensure elements are fully in DOM before setting up events
   setTimeout(() => {
     setupUserMenuEvents(); // Sets up dropdown toggle and logout
+    updateThemeMenuText(); // Sync theme toggle with actual current theme
   }, 50);
   // Event listeners for new header buttons are set in populateHeaderAuthButtons
 }
@@ -139,7 +103,7 @@ function populateHeaderAuthButtons(container) {
       if (window.NEXUS && window.NEXUS.openSoulModal) {
         window.NEXUS.openSoulModal('register');
       } else {
-        console.error('[userMenu.js] openSoulModal function not available!');
+        console.error('openSoulModal function not available!');
         alert('Registration modal not available. Please refresh the page.');
       }
     });
@@ -150,7 +114,7 @@ function populateHeaderAuthButtons(container) {
       if (window.NEXUS && window.NEXUS.openSoulModal) {
         window.NEXUS.openSoulModal('login');
       } else {
-        console.error('[userMenu.js] openSoulModal function not available!');
+        console.error('openSoulModal function not available!');
         alert('Login modal not available. Please refresh the page.');
       }
     });
@@ -175,7 +139,6 @@ function updateThemeMenuText() {
         if (icon) icon.className = 'fas fa-moon';
       }
     } else {
-      console.warn('NEXUSTheme not available for updateThemeMenuText');
       // Fallback: detect current theme from body class
       const isDark = document.body.classList.contains('dark-theme');
       const icon = themeToggleMenu.querySelector('i');
@@ -194,63 +157,38 @@ function updateThemeMenuText() {
 // Setup event listeners for user menu (dropdown toggle, logout)
 function setupUserMenuEvents() {
   const userMenuContainer = document.getElementById('userMenuContainer');
-  console.log('setupUserMenuEvents called. userMenuContainer found:', !!userMenuContainer);
   if (!userMenuContainer) {
-    console.error('userMenuContainer not found! Cannot setup events.');
+    // If element doesn't exist, try again after a short delay (navigation may still be loading)
+    setTimeout(() => {
+      const retryContainer = document.getElementById('userMenuContainer');
+      if (retryContainer) {
+        setupUserMenuEventsForContainer(retryContainer);
+      }
+      // If still not found, silently return - this page doesn't use shared navigation
+    }, 100);
     return;
   }
 
+  setupUserMenuEventsForContainer(userMenuContainer);
+}
+
+// Separate function to actually set up the events once we have the container
+function setupUserMenuEventsForContainer(userMenuContainer) {
+
   // Event delegation for all actions within the user menu
   userMenuContainer.addEventListener('click', (event) => {
-    console.log('User menu container clicked!', event.target);
-    console.log('Event target id:', event.target.id);
-    console.log('Event target tagName:', event.target.tagName);
-    console.log('Event target className:', event.target.className);
-    console.log('Event target textContent:', event.target.textContent?.trim());
-    console.log('Event target closest #themeToggleMenu:', event.target.closest('#themeToggleMenu'));
-    console.log('Event target closest #themeToggleText:', event.target.closest('#themeToggleText'));
-    
     const userMenuBtn = event.target.closest('#userMenuBtn');
     const logoutBtn = event.target.closest('#logoutBtn');
-    const themeToggleMenu = event.target.closest('#themeToggleMenu');
-    
-    // Alternative ways to detect theme toggle click
-    const isThemeToggleText = event.target.id === 'themeToggleText' || event.target.closest('#themeToggleText');
-    const isThemeToggleIcon = event.target.closest('#themeToggleMenu i');
-    const isThemeToggleClick = themeToggleMenu || isThemeToggleText || isThemeToggleIcon;
-
-    console.log('Found elements:', { userMenuBtn, logoutBtn, themeToggleMenu });
 
     if (userMenuBtn) {
-      console.log('User menu button clicked');
       handleToggleDropdown(event, userMenuBtn);
     }
     if (logoutBtn) {
-      console.log('Logout button clicked');
       event.preventDefault();
       handleLogout();
     }
-    if (isThemeToggleClick) {
-      console.log('Theme toggle menu clicked');
-      event.preventDefault();
-      console.log('Theme toggle clicked. NEXUSTheme available:', !!window.NEXUSTheme);
-      if (window.NEXUSTheme) {
-        console.log('Calling NEXUSTheme.toggleTheme()');
-        window.NEXUSTheme.toggleTheme();
-        updateThemeMenuText();
-      } else {
-        console.error('NEXUSTheme not available. Available NEXUS properties:', Object.keys(window.NEXUS || {}));
-        // Fallback: try to initialize theme manager
-        if (window.NEXUS && window.NEXUS.initThemeManager) {
-          console.log('Attempting to initialize theme manager...');
-          window.NEXUS.initThemeManager();
-          if (window.NEXUSTheme) {
-            window.NEXUSTheme.toggleTheme();
-            updateThemeMenuText();
-          }
-        }
-      }
-    }
+    // Theme toggle now handled by themeManager.js via data-theme-toggle attribute
+    // No need for duplicate handling here
   });
 }
 
@@ -395,12 +333,11 @@ async function validateUserSession() {
         localStorage.setItem('user', JSON.stringify(userData));
       } else {
         // If fetching user data fails (e.g., token invalid), clear token
-        console.warn('[userMenu.js] Failed to fetch user data with existing token. Clearing token.');
         localStorage.removeItem('sessionToken');
         localStorage.removeItem('user'); // Also clear potentially stale user data
       }
     } catch (error) {
-      console.error('[userMenu.js] Error fetching user data for session validation:', error);
+      console.error('Error fetching user data for session validation:', error);
       localStorage.removeItem('sessionToken');
       localStorage.removeItem('user');
     }
@@ -410,13 +347,11 @@ async function validateUserSession() {
 
 // Initialize user menu
 function initUserMenu() {
-  console.log('initUserMenu called');
   validateUserSession(); // Validate and then update UI
   setupUserMenuEvents(); // Setup event delegation ONCE
-  
+
   // Listen for theme changes to update menu text
   window.addEventListener('nexus-theme-changed', updateThemeMenuText);
-  console.log('initUserMenu completed');
 }
 
 // Export the initialization function

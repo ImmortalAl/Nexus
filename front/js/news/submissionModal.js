@@ -86,7 +86,9 @@ class SubmissionModal {
         const modal = document.getElementById('submissionModal');
         if (modal) {
             this.resetSubmissionForm();
+            modal.classList.add('active');
             modal.setAttribute('aria-hidden', 'false');
+            modal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
     }
@@ -94,7 +96,9 @@ class SubmissionModal {
     closeSubmissionModal() {
         const modal = document.getElementById('submissionModal');
         if (modal) {
+            modal.classList.remove('active');
             modal.setAttribute('aria-hidden', 'true');
+            modal.style.display = 'none';
             document.body.style.overflow = '';
             this.resetSubmissionForm();
         }

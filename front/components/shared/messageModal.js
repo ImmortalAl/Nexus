@@ -149,7 +149,14 @@ function initMessageModal() {
         window.NEXUS.websocket.on('newMessage', handleIncomingMessage);
     }
 
-        isInitialized = true;
+    // Escape key handler for closing modal
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && messageModal && messageModal.classList.contains('active')) {
+            close();
+        }
+    });
+
+    isInitialized = true;
 }
 
 async function openMessageModal(username) {
@@ -236,7 +243,7 @@ async function openMessageModal(username) {
 
 // Mobile keyboard detection removed - was causing scrollbar issues
 
-// Expose to global MLNF object
+// Expose to global Nexus object
 window.NEXUS.initMessageModal = initMessageModal;
     window.NEXUS.openMessageModal = openMessageModal; // Still useful to expose for direct calls if needed
 })(); 

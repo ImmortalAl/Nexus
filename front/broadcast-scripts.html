@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Broadcast Scripts Library - Immortal Nexus</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+            height: calc(100vh - 40px);
+        }
+
+        .nav-panel {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #8B4513;
+            border-radius: 10px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .content-panel {
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #8B4513;
+            border-radius: 10px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        h1 {
+            color: #DAA520;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px #DAA520;
+            font-size: 1.8rem;
+        }
+
+        h2 {
+            color: #DAA520;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #8B4513;
+            padding-bottom: 5px;
+        }
+
+        h3 {
+            color: #CD853F;
+            margin: 20px 0 10px 0;
+            font-size: 1.1rem;
+        }
+
+        .nav-category {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(139, 69, 19, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid #DAA520;
+        }
+
+        .nav-button {
+            background: linear-gradient(135deg, #8B4513, #CD853F);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            margin: 3px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-family: inherit;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .nav-button:hover {
+            background: linear-gradient(135deg, #CD853F, #DAA520);
+            box-shadow: 0 0 15px rgba(218, 165, 32, 0.3);
+        }
+
+        .nav-button.active {
+            background: linear-gradient(135deg, #DAA520, #F4A460);
+            box-shadow: 0 0 15px rgba(218, 165, 32, 0.5);
+        }
+
+        .script-section {
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+
+        .script-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .script-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            border-left: 3px solid #CD853F;
+        }
+
+        .stage-direction {
+            font-style: italic;
+            color: #CD853F;
+            background: rgba(205, 133, 63, 0.1);
+            padding: 8px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 3px solid #CD853F;
+        }
+
+        .emphasis {
+            color: #DAA520;
+            font-weight: bold;
+            text-shadow: 0 0 5px #DAA520;
+        }
+
+        .script-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .timing {
+            color: #CD853F;
+            font-size: 0.9rem;
+            background: rgba(205, 133, 63, 0.2);
+            padding: 5px 10px;
+            border-radius: 15px;
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: linear-gradient(135deg, #45a049, #4CAF50);
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+
+        .usage-note {
+            background: rgba(255, 193, 7, 0.1);
+            color: #FFC107;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border-left: 3px solid #FFC107;
+            font-size: 0.9rem;
+        }
+
+        .script-variations {
+            margin-top: 20px;
+        }
+
+        .variation {
+            background: rgba(139, 69, 19, 0.1);
+            border: 1px solid #8B4513;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .variation h4 {
+            color: #DAA520;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Panel -->
+        <div class="nav-panel">
+            <h2>📚 Script Library</h2>
+
+            <div class="nav-category">
+                <h3>🎬 Show Structure</h3>
+                <button class="nav-button active" onclick="showScript('show-open')">Show Opening</button>
+                <button class="nav-button" onclick="showScript('mid-show-hype')">Mid-Show Hype</button>
+                <button class="nav-button" onclick="showScript('great-reveal')">The Great Reveal</button>
+                <button class="nav-button" onclick="showScript('show-close')">Show Closing</button>
+            </div>
+
+            <div class="nav-category">
+                <h3>🎥 Video Transitions</h3>
+                <button class="nav-button" onclick="showScript('video-intro')">Video Intros</button>
+                <button class="nav-button" onclick="showScript('video-outro')">Video Outros</button>
+                <button class="nav-button" onclick="showScript('between-videos')">Between Videos</button>
+            </div>
+
+            <div class="nav-category">
+                <h3>⚡ Quick Hits</h3>
+                <button class="nav-button" onclick="showScript('teaser-drops')">Teaser Drops</button>
+                <button class="nav-button" onclick="showScript('energy-boosters')">Energy Boosters</button>
+                <button class="nav-button" onclick="showScript('call-to-actions')">Call to Actions</button>
+            </div>
+
+            <div class="nav-category">
+                <h3>🎵 Music Cues</h3>
+                <button class="nav-button" onclick="showScript('music-intros')">Music Intros</button>
+                <button class="nav-button" onclick="showScript('dramatic-builds')">Dramatic Builds</button>
+                <button class="nav-button" onclick="showScript('song-transitions')">Song Transitions</button>
+            </div>
+
+            <div class="nav-category">
+                <h3>🎨 Visual Resources</h3>
+                <button class="nav-button" onclick="showScript('static-backdrops')">Static Backdrops</button>
+                <button class="nav-button" onclick="showScript('video-backgrounds')">Video Backgrounds</button>
+                <button class="nav-button" onclick="showScript('visual-timing')">Visual Timing Guide</button>
+            </div>
+
+            <div class="nav-category">
+                <h3>🔥 Emergency Scripts</h3>
+                <button class="nav-button" onclick="showScript('tech-issues')">Tech Issues</button>
+                <button class="nav-button" onclick="showScript('time-fillers')">Time Fillers</button>
+                <button class="nav-button" onclick="showScript('audience-interaction')">Audience Interaction</button>
+            </div>
+        </div>
+
+        <!-- Content Panel -->
+        <div class="content-panel">
+            <h1>🌌 BROADCAST SCRIPTS LIBRARY 🌌</h1>
+
+            <!-- Show Opening Scripts -->
+            <div id="show-open" class="script-section active">
+                <div class="script-header">
+                    <h2>🎬 Show Opening Scripts</h2>
+                    <span class="timing">2-3 minutes</span>
+                </div>
+
+                <div class="usage-note">
+                    <strong>Usage:</strong> Use at the very beginning of your broadcast to set the tone and establish energy.
+                </div>
+
+                <div class="script-variations">
+                    <div class="variation">
+                        <div class="script-header">
+                            <h4>Standard Show Open</h4>
+                            <button class="copy-btn" onclick="copyScript('standard-open')">Copy</button>
+                        </div>
+                        <div id="standard-open" class="script-text">
+                            <div class="stage-direction">*(Intro music fades in)*</div>
+                            <p><span class="emphasis">"Welcome back, truth seekers. I'm [Your Name], and you're tuned in to [Show Name]."</span></p>
+                            <p><span class="emphasis">"Tonight, we're diving deep into the stories they don't want you to hear. The conversations they're trying to silence."</span></p>
+                            <div class="stage-direction">*(Pause, let energy build)*</div>
+                            <p><span class="emphasis">"But first... stick around tonight. I've got something special planned. Something I've been working on that's going to change everything."</span></p>
+                        </div>
+                    </div>
+
+                    <div class="variation">
+                        <div class="script-header">
+                            <h4>High-Energy Open</h4>
+                            <button class="copy-btn" onclick="copyScript('energy-open')">Copy</button>
+                        </div>
+                        <div id="energy-open" class="script-text">
+                            <div class="stage-direction">*(Powerful music, quick fade)*</div>
+                            <p><span class="emphasis">"They're watching. They're listening. They're controlling what you see, what you think, what you BELIEVE."</span></p>
+                            <p><span class="emphasis">"But not here. Not tonight. Welcome to the one place they can't touch."</span></p>
+                            <p><span class="emphasis">"I'm [Your Name], and for the next hour, we're going off the grid. We're going DEEP."</span></p>
+                            <div class="stage-direction">*(Quick pause)*</div>
+                            <p><span class="emphasis">"And before we're done tonight... I'm going to show you something that proves there's still hope."</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mid-Show Hype Scripts -->
+            <div id="mid-show-hype" class="script-section">
+                <div class="script-header">
+                    <h2>⚡ Mid-Show Hype Scripts</h2>
+                    <span class="timing">30-60 seconds</span>
+                </div>
+
+                <div class="usage-note">
+                    <strong>Usage:</strong> Drop these during natural breaks in your regular content to build anticipation.
+                </div>
+
+                <div class="script-variations">
+                    <div class="variation">
+                        <div class="script-header">
+                            <h4>Mysterious Build</h4>
+                            <button class="copy-btn" onclick="copyScript('mysterious-build')">Copy</button>
+                        </div>
+                        <div id="mysterious-build" class="script-text">
+                            <div class="stage-direction">*(Lower voice, create intimacy)*</div>
+                            <p><span class="emphasis">"You know... while we're talking about censorship... I've been working on something."</span></p>
+                            <p><span class="emphasis">"Can't say much yet, but... let's just say the solution is closer than you think."</span></p>
+                            <div class="stage-direction">*(Pause, return to regular content)*</div>
+                            <p><span class="emphasis">"More on that later. But first..."</span></p>
+                        </div>
+                    </div>
+
+                    <div class="variation">
+                        <div class="script-header">
+                            <h4>Forbidden Fruit</h4>
+                            <button class="copy-btn" onclick="copyScript('forbidden-fruit')">Copy</button>
+                        </div>
+                        <div id="forbidden-fruit" class="script-text">
+                            <div class="stage-direction">*(Slight energy shift)*</div>
+                            <p><span class="emphasis">"Oh, and stick around after this segment. I've got something to show you."</span></p>
+                            <p><span class="emphasis">"Something... well, let's just say some people don't want you to see it."</span></p>
+                            <div class="stage-direction">*(Mysterious smile in voice)*</div>
+                            <p><span class="emphasis">"Trust me on this one."</span></p>
+                        </div>
+                    </div>
+
+                    <div class="variation">
+                        <div class="script-header">
+                            <h4>The Immortal Tease</h4>
+                            <button class="copy-btn" onclick="copyScript('immortal-tease')">Copy</button>
+                        </div>
+                        <div id="immortal-tease" class="script-text">
+                            <div class="stage-direction">*(Thoughtful tone)*</div>
+                            <p><span class="emphasis">"You know what? After we finish this topic, I'm going to share something I've been building."</span></p>
+                            <p><span class="emphasis">"Something... immortal."</span></p>
+                            <div class="stage-direction">*(Let that word hang)*</div>
+                            <p><span class="emphasis">"But let's get back to..."</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Great Reveal Scripts -->
+            <div id="great-reveal" class="script-section">
+                <div class="script-header">
+                    <h2>🌟 The Great Reveal</h2>
+                    <span class="timing">15-20 minutes</span>
+                </div>
+
+                <div class="usage-note">
+                    <strong>Usage:</strong> Your main Immortal Nexus presentation script from the livestream assistant.
+                </div>
+
+                <div class="script-text">
+                    <p><strong>This is your main presentation script from the Livestream Assistant.</strong></p>
+                    <p>Access it via: <strong>Admin Panel → Livestream Assistant</strong></p>
+                    <div class="stage-direction">*(Includes: Transition, Opening, Rebellion, Vision, Challenge, Call to Action)*</div>
+                </div>
+            </div>
+
+            <!-- Video Intro Scripts -->
+            <div id="video-intro" class="script-section">
+                <div class="script-header">
+                    <h2>🎥 Video Introduction Scripts</h2>
+                    <span class="timing">10-20 seconds</span>
+                </div>
+
+                <div class="script-variations">
+                    <div class="variation">
+                        <div class="script-header">
+                            <h4>Atmospheric Video Setup</h4>
+                            <button class="copy-btn" onclick="copyScript('video-atmospheric')">Copy</button>
+                        </div>
+                        <div id="video-atmospheric" class="script-text">
+                            <div class="stage-direction">*(Lower music, build anticipation)*</div>
+                            <p><span class="emphasis">"Watch this..."</span></p>
+                            <div class="stage-direction">*(Start video)*</div>
+                        </div>
+                    </div>
+
+                    <div class="variation">
+                        <div class="script-header">
+                            <h4>Context Setup</h4>
+                            <button class="copy-btn" onclick="copyScript('video-context')">Copy</button>
+                        </div>
+                        <div id="video-context" class="script-text">
+                            <div class="stage-direction">*(Build energy)*</div>
+                            <p><span class="emphasis">"This next piece... this is what I'm talking about."</span></p>
+                            <div class="stage-direction">*(Cue video)*</div>
+                        </div>
+                    </div>
+
+                    <div class="variation">
+                        <div class="script-header">
+                            <h4>Dramatic Setup</h4>
+                            <button class="copy-btn" onclick="copyScript('video-dramatic')">Copy</button>
+                        </div>
+                        <div id="video-dramatic" class="script-text">
+                            <div class="stage-direction">*(Pause, create tension)*</div>
+                            <p><span class="emphasis">"I want you to see something..."</span></p>
+                            <div class="stage-direction">*(Let silence build, then start video)*</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Teaser Drops -->
+            <div id="teaser-drops" class="script-section">
+                <div class="script-header">
+                    <h2>⚡ Quick Teaser Drops</h2>
+                    <span class="timing">5-10 seconds</span>
+                </div>
+
+                <div class="usage-note">
+                    <strong>Usage:</strong> Lightning-fast hints you can drop anywhere without interrupting flow.
+                </div>
+
+                <div class="script-variations">
+                    <div class="variation">
+                        <div class="script-header">
+                            <h4>Micro Teasers</h4>
+                            <button class="copy-btn" onclick="copyScript('micro-teasers')">Copy</button>
+                        </div>
+                        <div id="micro-teasers" class="script-text">
+                            <p><span class="emphasis">"...more on that later."</span></p>
+                            <p><span class="emphasis">"...stay tuned."</span></p>
+                            <p><span class="emphasis">"...you'll see."</span></p>
+                            <p><span class="emphasis">"...trust me on this."</span></p>
+                            <p><span class="emphasis">"...something big is coming."</span></p>
+                            <p><span class="emphasis">"...the solution exists."</span></p>
+                            <p><span class="emphasis">"...I've been building something."</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Static Backdrops Section -->
+            <div id="static-backdrops" class="script-section">
+                <div class="script-header">
+                    <h2>🎨 Static Backdrop Resources</h2>
+                    <span class="timing">High-Res Downloads</span>
+                </div>
+
+                <div class="usage-note">
+                    <strong>Usage:</strong> Professional 4K backdrops for stream overlays, thumbnails, or still moments during broadcast.
+                </div>
+
+                <div class="script-variations">
+                    <div class="variation">
+                        <div class="script-header">
+                            <h4>🌃 Cyberpunk City Atmospheres</h4>
+                            <button class="copy-btn" onclick="copyScript('cyberpunk-backdrops')">Copy Links</button>
+                        </div>
+                        <div id="cyberpunk-backdrops" class="script-text">
+                            <p><strong>Wallpaper Flare:</strong> https://www.wallpaperflare.com/search?wallpaper=Dark+Cyberpunk</p>
+                            <p><em>→ Dark cyberpunk wallpapers in 4K/5K HD, perfect for mysterious segments</em></p>
+
+                            <p><strong>Pixground:</strong> https://www.pixground.com/dark-cyberpunk-underworld-4k-wallpaper/</p>
+                            <p><em>→ "Dark Cyberpunk Underworld" - neon-soaked streets, towering skyscrapers</em></p>
+
+                            <p><strong>Unsplash:</strong> https://unsplash.com/s/photos/cyberpunk</p>
+                            <p><em>→ 100+ free cyberpunk images, commercial use, no attribution required</em></p>
+                        </div>
+                    </div>
+
+                    <div class="variation">
+                        <div class="script-header">
+                            <h4>🌌 Mystical & Immortal Themes</h4>
+                            <button class="copy-btn" onclick="copyScript('mystical-backdrops')">Copy Links</button>
+                        </div>
+                        <div id="mystical-backdrops" class="script-text">
+                            <p><strong>WallpaperBat:</strong> https://wallpaperbat.com/dark-cyberpunk-wallpapers</p>
+                            <p><em>→ 60+ dark cyberpunk wallpapers with mystical atmospheres</em></p>
+
+                            <p><strong>Wallpaper Cave:</strong> https://wallpapercave.com/cyberpunk-4k-wallpapers</p>
+                            <p><em>→ Tons of 4K cyberpunk wallpapers with ethereal, immortal vibes</em></p>
+
+                            <p><strong>Search Terms:</strong> "dark ethereal", "immortal cosmos", "eternal night", "digital transcendence"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Backgrounds Section -->
+            <div id="video-backgrounds" class="script-section">
+                <div class="script-header">
+                    <h2>🎥 Video Background Resources</h2>
+                    <span class="timing">Free Commercial Use</span>
+                </div>
+
+                <div class="usage-note">
+                    <strong>Usage:</strong> Animated backgrounds for dynamic segments, transitions, and atmospheric enhancement.
+                </div>
+
+                <div class="script-variations">
+                    <div class="variation">
+                        <div class="script-header">
+                            <h4>🔥 Premium Free Sources</h4>
+                            <button class="copy-btn" onclick="copyScript('premium-video-sources')">Copy Links</button>
+                        </div>
+                        <div id="premium-video-sources" class="script-text">
+                            <p><strong>Mixkit:</strong> https://mixkit.co/free-stock-video/cyberpunk/</p>
+                            <p><em>→ No watermark, free commercial use under Mixkit License</em></p>
+                            <p><em>→ Cyberpunk virtual cities, neon lights, atmospheric content</em></p>
+
+                            <p><strong>Pixabay:</strong> https://pixabay.com/videos/search/cyberpunk/</p>
+                            <p><em>→ 237+ free 4K & HD clips, royalty-free, no attribution required</em></p>
+
+                            <p><strong>Videezy:</strong> https://www.videezy.com/free-video/cyberpunk</p>
+                            <p><em>→ 38 cyberpunk clips, Creative Commons licensed</em></p>
+                            <p><em>→ Retro cyberpunk, neon lines, sci-fi elements</em></p>
+                        </div>
+                    </div>
+
+                    <div class="variation">
+                        <div class="script-header">
+                            <h4>🌊 Ambient & Atmospheric</h4>
+                            <button class="copy-btn" onclick="copyScript('ambient-videos')">Copy Search Terms</button>
+                        </div>
+                        <div id="ambient-videos" class="script-text">
+                            <p><strong>Recommended Search Terms:</strong></p>
+                            <p>• "Dark atmospheric loop"</p>
+                            <p>• "Cyberpunk neon tunnel"</p>
+                            <p>• "Abstract digital particles"</p>
+                            <p>• "Mystical energy waves"</p>
+                            <p>• "Futuristic cityscape motion"</p>
+                            <p>• "Digital rain matrix"</p>
+                            <p>• "Glitch effects background"</p>
+                        </div>
+                    </div>
+
+                    <div class="variation">
+                        <div class="script-header">
+                            <h4>🎬 Specific Video Recommendations</h4>
+                            <button class="copy-btn" onclick="copyScript('video-recs')">Copy List</button>
+                        </div>
+                        <div id="video-recs" class="script-text">
+                            <p><strong>For Opening/Closing:</strong></p>
+                            <p>• Dark city flythrough (3-5 minutes)</p>
+                            <p>• Neon logo reveal animation</p>
+                            <p>• Abstract particle systems</p>
+
+                            <p><strong>For Mid-Show:</strong></p>
+                            <p>• Subtle digital rain loops</p>
+                            <p>• Slow neon pulse backgrounds</p>
+                            <p>• Matrix-style code streams</p>
+
+                            <p><strong>For Reveals:</strong></p>
+                            <p>• Dramatic light breakthrough</p>
+                            <p>• Digital chains breaking</p>
+                            <p>• Phoenix/rebirth animations</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visual Timing Guide -->
+            <div id="visual-timing" class="script-section">
+                <div class="script-header">
+                    <h2>⏱️ Visual Timing Guide</h2>
+                    <span class="timing">Synchronization Tips</span>
+                </div>
+
+                <div class="usage-note">
+                    <strong>Usage:</strong> Perfect timing for visual elements to match your script delivery.
+                </div>
+
+                <div class="script-variations">
+                    <div class="variation">
+                        <div class="script-header">
+                            <h4>📐 Backdrop Switching Schedule</h4>
+                            <button class="copy-btn" onclick="copyScript('backdrop-schedule')">Copy Schedule</button>
+                        </div>
+                        <div id="backdrop-schedule" class="script-text">
+                            <p><strong>Show Opening (0-3min):</strong> Dark cityscape or matrix-style</p>
+                            <p><strong>Mid-Show Teasers (varies):</strong> Subtle neon pulse, low-intensity</p>
+                            <p><strong>Transition to Reveal (30-35min):</strong> Dramatic buildup visuals</p>
+                            <p><strong>Great Reveal (35-50min):</strong> Epic cyberpunk vistas, immortal themes</p>
+                            <p><strong>Call to Action (50-55min):</strong> Bright, energetic, action-inspiring</p>
+                            <p><strong>Show Close (55-60min):</strong> Calm but memorable fade-out</p>
+                        </div>
+                    </div>
+
+                    <div class="variation">
+                        <div class="script-header">
+                            <h4>🎨 Visual-Audio Sync Tips</h4>
+                            <button class="copy-btn" onclick="copyScript('sync-tips')">Copy Tips</button>
+                        </div>
+                        <div id="sync-tips" class="script-text">
+                            <p><strong>Music + Visual Pairing:</strong></p>
+                            <p>• Dark atmospheric music = Slow-moving cityscapes</p>
+                            <p>• Epic instrumental = Dynamic particle effects</p>
+                            <p>• Custom "Transcend Beyond" song = Phoenix/rebirth visuals</p>
+
+                            <p><strong>Script + Visual Pairing:</strong></p>
+                            <p>• "Digital chains" mention = Chain-breaking animation</p>
+                            <p>• "Immortal souls" = Rising light/energy effects</p>
+                            <p>• "Transcend beyond" = Cosmic/space visuals</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function showScript(scriptId) {
+            // Hide all script sections
+            const sections = document.querySelectorAll('.script-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.nav-button');
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(scriptId).classList.add('active');
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        function copyScript(scriptId) {
+            const scriptElement = document.getElementById(scriptId);
+            const text = scriptElement.textContent.replace(/\*/g, '').replace(/\([^)]*\)/g, '').trim();
+
+            navigator.clipboard.writeText(text).then(() => {
+                // Visual feedback
+                const button = event.target;
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                button.style.background = 'linear-gradient(135deg, #4CAF50, #66BB6A)';
+
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = 'linear-gradient(135deg, #4CAF50, #45a049)';
+                }, 2000);
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Broadcast Scripts Library loaded');
+        });
+    </script>
+</body>
+</html>

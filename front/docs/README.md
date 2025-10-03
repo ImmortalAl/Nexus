@@ -61,7 +61,7 @@ Welcome to the **Immortal Nexus** documentation crypt. All project grimoires hav
 
 ## 🌑 The Immortal Transformation
 
-This documentation sanctum chronicles our metamorphosis from "MLNF" to "Immortal Nexus" - a rebirth into eternal darkness and freedom.
+This documentation sanctum chronicles our metamorphosis from "Immortal Nexus" to "Immortal Nexus" - a rebirth into eternal darkness and freedom.
 
 ### ✅ **Recent Resurrections**
 - [x] Monorepo structure implemented

@@ -19,7 +19,7 @@ async function createProductionThreads() {
                 username: 'SystemAdmin',
                 email: 'system@mlnf.com',
                 password: 'system_hash',
-                displayName: 'MLNF System',
+                displayName: 'Immortal Nexus System',
                 role: 'admin'
             });
             await systemUser.save();

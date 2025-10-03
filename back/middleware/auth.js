@@ -25,7 +25,7 @@ module.exports = async function (req, res, next) {
         // Check if user is banned
         if (user.banned) {
             console.warn(`[Auth Middleware] Banned user attempted to access protected route: ${user.username}`);
-            return res.status(403).json({ error: 'Your account has been banned from MLNF' });
+            return res.status(403).json({ error: 'Your account has been banned from Immortal Nexus' });
         }
         
         req.user = user;

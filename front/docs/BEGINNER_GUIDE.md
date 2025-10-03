@@ -1,4 +1,4 @@
-# 🌟 Beginner's Guide to Local Testing - MLNF
+# 🌟 Beginner's Guide to Local Testing - Immortal Nexus
 
 Welcome! This guide explains **everything** you need to know about running your website locally for testing.
 
@@ -25,7 +25,7 @@ A local server serves files as `http://localhost:8080` which:
 
 ### **Method 1: Use Our Script (Recommended)**
 ```powershell
-# In your MLNF folder, run:
+# In your Immortal Nexus folder, run:
 .\start-frontend-server.ps1
 ```
 Then open: `http://localhost:8080/pages/news.html`
@@ -76,13 +76,13 @@ node --version
 ### **Step 3: Start Your Frontend Server**
 
 ```powershell
-# In your MLNF root folder:
+# In your Immortal Nexus root folder:
 .\start-frontend-server.ps1
 ```
 
 **You should see:**
 ```
-🌐 Starting MLNF Frontend Server...
+🌐 Starting Immortal Nexus Frontend Server...
 🐍 Using Python HTTP server...
 Serving HTTP on :: port 8080...
 ```

@@ -1,8 +1,8 @@
-// MLNF Shared Rich Text Editor Component
+// Nexus Shared Rich Text Editor Component
 // Based on Quill.js implementation from lander.html
-// Usage: const editor = new MLNFRichTextEditor(containerId, options);
+// Usage: const editor = new NexusRichTextEditor(containerId, options);
 
-class MLNFRichTextEditor {
+class NexusRichTextEditor {
     constructor(containerId, options = {}) {
         this.containerId = containerId;
         this.container = document.getElementById(containerId);
@@ -35,7 +35,7 @@ class MLNFRichTextEditor {
         
         // Ensure Quill.js is loaded
         if (typeof Quill === 'undefined') {
-            console.error('MLNF Rich Text Editor: Quill.js not loaded');
+            console.error('Nexus Rich Text Editor: Quill.js not loaded');
             return;
         }
         
@@ -166,4 +166,4 @@ class MLNFRichTextEditor {
 }
 
 // Export for use across the site
-window.NEXUSRichTextEditor = MLNFRichTextEditor;
+window.NEXUSRichTextEditor = NexusRichTextEditor;

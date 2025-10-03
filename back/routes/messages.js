@@ -4,6 +4,44 @@ const Message = require('../models/Message');
 const User = require('../models/User');
 const router = express.Router();
 
+// Get message statistics for admin dashboard
+router.get('/stats', authMiddleware, async (req, res) => {
+  try {
+    // Check if user is admin (basic check - should be enhanced)
+    if (req.user.username !== 'ImmortalAl' && req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Admin access required' });
+    }
+
+    const totalMessages = await Message.countDocuments();
+
+    const today = new Date();
+    const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const todayMessages = await Message.countDocuments({ timestamp: { $gte: startOfDay } });
+
+    const recentMessages = await Message.find()
+      .sort({ timestamp: -1 })
+      .limit(5)
+      .populate('sender', 'username displayName')
+      .populate('recipient', 'username displayName')
+      .select('sender recipient timestamp content');
+
+    res.json({
+      totalMessages,
+      todayMessages,
+      recentMessages: recentMessages.map(msg => ({
+        _id: msg._id,
+        sender: msg.sender,
+        recipient: msg.recipient,
+        timestamp: msg.timestamp,
+        content: msg.content.substring(0, 50) + '...' // Preview only
+      }))
+    });
+  } catch (error) {
+    console.error('Error fetching message stats:', error);
+    res.status(500).json({ error: 'Failed to fetch message statistics' });
+  }
+});
+
 // Get conversation between two users
 router.get('/conversation/:username', authMiddleware, async (req, res) => {
   try {

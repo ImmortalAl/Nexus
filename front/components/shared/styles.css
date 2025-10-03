@@ -1,4 +1,4 @@
-/* MLNF Shared Component Styles */
+/* Immortal Nexus Shared Component Styles */
 
 /* Main Navigation Styles */
 /* Header base styles moved to critical.css to prevent conflicts */
@@ -28,22 +28,9 @@
     position: relative;
 }
 
-/* Beta badge - appears on all pages consistently */
+/* Launch-ready - Beta badge removed for production */
 .title-stack::after {
-    content: "Beta";
-    position: absolute;
-    top: -5px;
-    right: -35px;
-    background: linear-gradient(45deg, #ff5e78, #ff8f00);
-    color: white;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    z-index: 10;
+    display: none;
 }
 
 .full-title {

@@ -784,7 +784,7 @@ class NexusEngine {
     }
     
     initWebSocket() {
-        // Use the existing MLNF WebSocket manager
+        // Use the existing Nexus WebSocket manager
         if (window.NEXUS && window.NEXUS.websocket) {
             // Register mindmap-specific handlers
             window.NEXUS.websocket.on('nodeCreated', (data) => {

@@ -74,7 +74,7 @@ The soul modal (login) is competing with other high z-index elements. The inline
 ### JS Loading Order:
 1. `config.js` - Configuration
 2. `themeManager.js` - Theme switching
-3. `mlnf-core.js` - Core functionality
+3. `nexus-core.js` - Core functionality
 4. `authManager.js` - Authentication logic
 5. `apiClient.js` - API communications
 6. `navigation.js` - Navigation handling
@@ -82,7 +82,7 @@ The soul modal (login) is competing with other high z-index elements. The inline
 8. `userMenu.js` - User menu functionality
 9. `activeUsers.js` - Active users sidebar
 10. `messageModal.js` - Direct messaging
-11. `mlnf-avatar-system.js` - Avatar display
+11. `nexus-avatar-system.js` - Avatar display
 12. `main.js` - Main initialization
 13. `mindmap-preview.js` - Mindmap preview
 
@@ -105,7 +105,7 @@ The soul modal (login) is competing with other high z-index elements. The inline
 
 3. **Legacy styles**:
    - `css/legacy/owls.css` - Old owl-themed modal styles
-   - Old "MLNF" references not fully migrated to "Immortal Nexus"
+   - Old "Immortal Nexus" references not fully migrated to "Immortal Nexus"
 
 ### JavaScript Redundancies:
 1. **Multiple modal management systems**:
@@ -176,11 +176,11 @@ The soul modal (login) is competing with other high z-index elements. The inline
 
 4. **Content Loading**:
    - Page load → Inline scripts → Fetch highlights → Display cards
-   - Dynamic avatars: MLNFAvatars system → Canvas rendering
+   - Dynamic avatars: Immortal NexusAvatars system → Canvas rendering
 
 ### Component Dependencies:
 - Auth system depends on: config.js, apiClient.js, authManager.js
-- User display depends on: mlnf-avatar-system.js, activeUsers.js
+- User display depends on: nexus-avatar-system.js, activeUsers.js
 - Messaging depends on: WebSocket, messageModal.js, authManager.js
 
 ## Progress Update:
@@ -197,7 +197,7 @@ The soul modal (login) is competing with other high z-index elements. The inline
    - Extracted hero button handlers to js/heroButtons.js
    - Improved code organization and maintainability
 4. ✅ Remove unused legacy references - COMPLETED
-   - No legacy MLNF references found
+   - No legacy Immortal Nexus references found
 5. ⏳ Consolidate duplicate modal styles - IN PROGRESS
 6. ⏳ Consolidate JavaScript modal management - PENDING
 

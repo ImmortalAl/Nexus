@@ -76,6 +76,35 @@ const threadSchema = new mongoose.Schema({
             trim: true,
             maxlength: 50,
             default: null
+        },
+        // Reply voting system
+        votes: {
+            upvotes: [{
+                user: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'User',
+                    required: true
+                },
+                createdAt: {
+                    type: Date,
+                    default: Date.now
+                }
+            }],
+            downvotes: [{
+                user: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'User',
+                    required: true
+                },
+                createdAt: {
+                    type: Date,
+                    default: Date.now
+                }
+            }]
+        },
+        voteScore: {
+            type: Number,
+            default: 0
         }
     }],
     isLocked: {
@@ -92,6 +121,35 @@ const threadSchema = new mongoose.Schema({
         maxlength: 50,
         default: null
     },
+    // Voting system fields
+    votes: {
+        upvotes: [{
+            user: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+                required: true
+            },
+            createdAt: {
+                type: Date,
+                default: Date.now
+            }
+        }],
+        downvotes: [{
+            user: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+                required: true
+            },
+            createdAt: {
+                type: Date,
+                default: Date.now
+            }
+        }]
+    },
+    voteScore: {
+        type: Number,
+        default: 0
+    },
     // Governance-specific fields
     isProposal: {
         type: Boolean,
@@ -102,7 +160,7 @@ const threadSchema = new mongoose.Schema({
             type: String,
             enum: [
                 'feature_request',
-                'policy_change', 
+                'policy_change',
                 'moderation_decision',
                 'content_guideline',
                 'community_standard',

@@ -78,14 +78,14 @@ front/
 │       ├── messageModal.js  # Messaging modal
 │       ├── comments.js      # Comments system
 │       ├── styles.css       # Component styles
-│       └── mlnf-core.js     # Component initialization
+│       └── nexus-core.js     # Component initialization
 ├── css/
 │   ├── base-theme.css       # CSS variables (theme)
 │   ├── styles.css           # Global layout styles
 │   ├── active-users.css     # Active users specific styles
 │   └── [page].css           # Page-specific styles
 ├── js/
-│   ├── mlnf-avatar-system.js # Avatar system (site-wide)
+│   ├── nexus-avatar-system.js # Avatar system (site-wide)
 │   ├── shared/
 │   │   └── apiClient.js     # Centralized API client
 │   └── [page].js            # Page-specific JavaScript
@@ -106,8 +106,8 @@ front/
 ```html
 <!-- Critical loading order -->
 <script src="../components/shared/config.js"></script>
-<script src="../components/shared/mlnf-core.js"></script>
-<script src="../js/mlnf-avatar-system.js"></script>
+<script src="../components/shared/nexus-core.js"></script>
+<script src="../js/nexus-avatar-system.js"></script>
 <script src="../components/shared/navigation.js"></script>
 <script src="../components/shared/userMenu.js"></script>
 <script src="../components/shared/authModal.js"></script>
@@ -178,15 +178,15 @@ souls-listing.css           /* Souls directory only */
 #### **Avatar System Dependencies**
 ```css
 /* CRITICAL: Avatar classes MUST be in styles.css for cross-site functionality */
-.mlnf-avatar {
+.nexus-avatar {
     /* Base avatar styling */
 }
 
-.mlnf-avatar--online, .mlnf-avatar--offline {
+.nexus-avatar--online, .nexus-avatar--offline {
     /* Status-specific avatar modifications */
 }
 
-.mlnf-user-display {
+.nexus-user-display {
     /* User display container styling */
 }
 ```
@@ -228,7 +228,7 @@ souls-listing.css           /* Souls directory only */
 
 #### **1. Core Avatar Generation**
 ```javascript
-// Located: /js/mlnf-avatar-system.js
+// Located: /js/nexus-avatar-system.js
 class ImmortalNexusAvatarSystem {
     generateAvatarUrl(username, size, customUrl) {
         // Unique color generation based on username hash
@@ -338,7 +338,7 @@ const userDisplay = window.ImmortalNexusAvatars.createUserDisplay({
 
 // Creates DOM structure:
 // <div style="position: relative;">
-//   <img class="mlnf-avatar mlnf-avatar--md" src="...">
+//   <img class="nexus-avatar nexus-avatar--md" src="...">
 //   <div class="online-dot online"></div>  <!-- If online: true -->
 // </div>
 ```
@@ -416,7 +416,7 @@ const ComponentName = {
 };
 
 // Global Immortal Nexus object
-window.MLNF = {
+window.NEXUS = {
     // Component instances and global methods
 };
 ```
@@ -457,7 +457,7 @@ window.MLNF = {
 
 #### **Avatar System Integration Checklist**
 - [ ] **CSS Dependencies**: Ensure `styles.css` is loaded
-- [ ] **JavaScript Dependencies**: Ensure `mlnf-avatar-system.js` is loaded before usage
+- [ ] **JavaScript Dependencies**: Ensure `nexus-avatar-system.js` is loaded before usage
 - [ ] **API Integration**: Pass correct `online` boolean values
 - [ ] **DOM Structure**: Create proper container for status dots
 - [ ] **Event Handlers**: Preserve click handlers for profile navigation
@@ -826,4 +826,4 @@ npm run dev  # Development mode with nodemon
 
 ---
 
-*Complete technical architecture documentation for MLNF platform with comprehensive CSS dependency mapping and online status system architecture*
+*Complete technical architecture documentation for Immortal Nexus platform with comprehensive CSS dependency mapping and online status system architecture*

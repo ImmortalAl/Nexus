@@ -56,6 +56,10 @@ function generateCompleteHeaderHTML(currentPath) {
             </div>
             <ul class="mobile-nav-list">
                 ${mobileNavHTML}
+                <div class="divider"></div>
+                <a href="#" id="mobileThemeToggle" data-theme-toggle="true">
+                    <i class="fas fa-moon"></i> <span id="mobileThemeToggleText">Light Mode</span>
+                </a>
             </ul>
         </nav>
     `;
@@ -64,7 +68,7 @@ function generateCompleteHeaderHTML(currentPath) {
 function generateNavLinksHTML(currentPath, navType = 'main') {
     // Normalize currentPath for local file testing (ends with / or /index.html)
     const isHomePageLocal = currentPath.endsWith('/index.html') || currentPath.endsWith('/');
-    const normalizedCurrentPath = isHomePageLocal && currentPath.includes('/MLNF/index.html') ? '/' : currentPath; // Simplify if it's the full local path to index
+    const normalizedCurrentPath = isHomePageLocal && currentPath.includes('/Nexus/index.html') ? '/' : currentPath; // Simplify if it's the full local path to index
 
     const allLinks = [
         { href: "/", icon: "fas fa-home", text: "Home" },
@@ -131,48 +135,30 @@ function generateNavLinksHTML(currentPath, navType = 'main') {
 }
 
 function injectCompleteHeader() {
-    console.log('injectCompleteHeader called');
     const headerElement = document.querySelector('header');
     const currentPath = window.location.pathname;
-    
-    console.log('Header element found:', headerElement);
-    console.log('Current path:', currentPath);
 
     if (headerElement) {
         const headerHTML = generateCompleteHeaderHTML(currentPath);
-        console.log('Generated header HTML:', headerHTML.substring(0, 200) + '...');
         headerElement.innerHTML = headerHTML;
-        console.log('Header HTML injected');
         
-        // Debug: Check computed styles (with delay to ensure CSS is loaded)
+        // Check computed styles with delay to ensure CSS is loaded
         setTimeout(() => {
             const computedStyle = window.getComputedStyle(headerElement);
-            console.log('Header computed styles:', {
-                display: computedStyle.display,
-                visibility: computedStyle.visibility,
-                opacity: computedStyle.opacity,
-                height: computedStyle.height,
-                width: computedStyle.width,
-                position: computedStyle.position,
-                top: computedStyle.top,
-                zIndex: computedStyle.zIndex,
-                background: computedStyle.background,
-                minHeight: computedStyle.minHeight
-            });
-            
-                // Force a re-render if header appears to have no height
-                if (computedStyle.height === '0px' || computedStyle.display === 'none') {
-                    console.warn('Header appears to be hidden! Forcing visibility...');
-                    headerElement.style.display = 'flex';
-                    headerElement.style.visibility = 'visible';
-                    headerElement.style.minHeight = '60px';
-                    // DON'T set inline background - let CSS theme rules handle it!
-                    // headerElement.style.background = 'linear-gradient(135deg, #1a1a2e, #16213e)';
-                    headerElement.style.borderBottom = '2px solid #ff5e78';
-                    headerElement.style.position = 'sticky';
-                    headerElement.style.top = '0';
-                    headerElement.style.zIndex = '2500';
-                }
+
+            // Force a re-render if header appears to have no height
+            if (computedStyle.height === '0px' || computedStyle.display === 'none') {
+                console.warn('Header appears to be hidden! Forcing visibility...');
+                headerElement.style.display = 'flex';
+                headerElement.style.visibility = 'visible';
+                headerElement.style.minHeight = '60px';
+                // DON'T set inline background - let CSS theme rules handle it!
+                // headerElement.style.background = 'linear-gradient(135deg, #1a1a2e, #16213e)';
+                headerElement.style.borderBottom = '2px solid #ff5e78';
+                headerElement.style.position = 'sticky';
+                headerElement.style.top = '0';
+                headerElement.style.zIndex = '2500';
+            }
         }, 500);
         
         // Re-setup mobile navigation events after injecting new HTML
@@ -191,20 +177,12 @@ function injectCompleteHeader() {
 }
 
 function injectNavigation() {
-    console.log('injectNavigation called');
     // Check if we should inject complete header or just nav links
     const headerElement = document.querySelector('header');
     const hasHeaderContent = headerElement && headerElement.innerHTML.trim().length > 0;
-    
-    console.log('Header element:', headerElement);
-    console.log('Header has content:', hasHeaderContent);
-    if (headerElement) {
-        console.log('Header innerHTML:', headerElement.innerHTML);
-    }
 
     // If header is empty or has placeholder content, inject complete header
     if (!hasHeaderContent || headerElement.innerHTML.includes('<!-- SHARED_HEADER -->')) {
-        console.log('Injecting complete header...');
         injectCompleteHeader();
         return;
     }

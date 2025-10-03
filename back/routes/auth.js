@@ -87,7 +87,7 @@ router.post('/login', loginLimiter, async (req, res) => {
                 success: false,
                 reason: 'user_banned'
             }).catch(err => console.error('Failed to log login attempt:', err));
-            return res.status(403).json({ error: 'Your account has been banned from MLNF' });
+            return res.status(403).json({ error: 'Your account has been banned from Immortal Nexus' });
         }
 
         // Update online status and lastLogin time

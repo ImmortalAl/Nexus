@@ -1,4 +1,4 @@
-# Manifest Liberation, Naturally Free (MLNF)
+# Immortal Nexus
 
 *A timeless sanctuary for liberated spirits to manifest truth and freedom.*
 
@@ -15,9 +15,9 @@
 - **[🎯 Features & Roadmap](./docs/FEATURES.md)** - Current features and planned development
 
 **Important Project Structure:**
-- **Frontend Repository**: `MLNF/front/` (this folder - Netlify deployment)
-- **Backend API**: `MLNF/back/` (Express.js - Render deployment)
-- **Git Operations**: Always run from `front/` directory
+- **Frontend Repository**: `Immortal Nexus/front/` (this folder - Netlify deployment)
+- **Backend API**: `Immortal Nexus/back/` (Express.js - Render deployment)
+- **Git Operations**: Always run from root directory
 
 ## 🚀 **Quick Overview**
 
@@ -77,7 +77,7 @@ npm start  # Port 3001
 
 ## 📖 **Development Resources**
 
-For developers continuing work on MLNF:
+For developers continuing work on Immortal Nexus:
 
 1. **Start Here**: [Documentation Index](./docs/README.md)
 2. **Development Setup**: [DEVELOPMENT.md](./docs/DEVELOPMENT.md)
@@ -88,3 +88,4 @@ For developers continuing work on MLNF:
 ---
 
 *A digital sanctuary built for free thinkers, by free thinkers.* 🌟
+# Launch readiness check - Thu Sep 25 04:48:42 CDT 2025

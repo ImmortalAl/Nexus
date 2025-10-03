@@ -1,7 +1,7 @@
-# MLNF Site Troubleshooting Guide
+# Immortal Nexus Site Troubleshooting Guide
 
 ## 🎉 Success Story
-After extensive development and optimization, MLNF now works flawlessly across all devices and features! This comprehensive guide helps troubleshoot any issues you might encounter across the entire site.
+After extensive development and optimization, Immortal Nexus now works flawlessly across all devices and features! This comprehensive guide helps troubleshoot any issues you might encounter across the entire site.
 
 ## Common Site-Wide Issues & Solutions
 
@@ -19,7 +19,7 @@ After extensive development and optimization, MLNF now works flawlessly across a
 1. **Check CSS Version Numbers**
    ```bash
    # Look for version numbers in HTML files  
-   grep -r "\.css?v=" /home/immortalal/sites/mlnf/front/
+   grep -r "\.css?v=" /home/immortalal/sites/nexus/front/
    ```
    - Main styles: `styles.css?v=2.3` or higher
    - Shared components: `components/shared/styles.css?v=5.0` or higher
@@ -34,13 +34,13 @@ After extensive development and optimization, MLNF now works flawlessly across a
 3. **Bump CSS Versions** (systematic approach)
    ```bash
    # Find all CSS version references
-   find /home/immortalal/sites/mlnf/front -name "*.html" -exec grep -l "\.css?v=" {} \;
+   find /home/immortalal/sites/nexus/front -name "*.html" -exec grep -l "\.css?v=" {} \;
    
    # Update main styles version
-   sed -i 's/styles.css?v=[0-9.]*/styles.css?v=6.0/g' /home/immortalal/sites/mlnf/front/index.html
+   sed -i 's/styles.css?v=[0-9.]*/styles.css?v=6.0/g' /home/immortalal/sites/nexus/front/index.html
    
    # Update shared components version  
-   sed -i 's/shared\/styles.css?v=[0-9.]*/shared\/styles.css?v=6.0/g' /home/immortalal/sites/mlnf/front/index.html
+   sed -i 's/shared\/styles.css?v=[0-9.]*/shared\/styles.css?v=6.0/g' /home/immortalal/sites/nexus/front/index.html
    
    git add . && git commit -m "bump CSS versions for cache refresh" && git push origin main
    ```
@@ -53,13 +53,13 @@ After extensive development and optimization, MLNF now works flawlessly across a
 **Diagnosis:**
 ```bash
 # Check if file exists
-ls -la /home/immortalal/sites/mlnf/front/pages/[pagename].html
+ls -la /home/immortalal/sites/nexus/front/pages/[pagename].html
 
 # Check for recent deletions
 git log --oneline --follow -- pages/[pagename].html
 
 # Verify file structure
-find /home/immortalal/sites/mlnf/front -name "*.html" | sort
+find /home/immortalal/sites/nexus/front -name "*.html" | sort
 ```
 
 **Solutions:**
@@ -72,11 +72,11 @@ find /home/immortalal/sites/mlnf/front -name "*.html" | sort
 2. **Fix Corrupted Files** (like soul-scrolls.html)
    ```bash
    # Check file size and content
-   wc -c /home/immortalal/sites/mlnf/front/pages/soul-scrolls.html
-   file /home/immortalal/sites/mlnf/front/pages/soul-scrolls.html
+   wc -c /home/immortalal/sites/nexus/front/pages/soul-scrolls.html
+   file /home/immortalal/sites/nexus/front/pages/soul-scrolls.html
    
    # If corrupted, recreate from template
-   cp /home/immortalal/sites/mlnf/front/templates/page-template.html /home/immortalal/sites/mlnf/front/pages/soul-scrolls.html
+   cp /home/immortalal/sites/nexus/front/templates/page-template.html /home/immortalal/sites/nexus/front/pages/soul-scrolls.html
    ```
 
 ### 3. ⚡ JavaScript Features Not Working  
@@ -93,7 +93,7 @@ find /home/immortalal/sites/mlnf/front -name "*.html" | sort
 2. **Test Core Components**
    ```javascript
    // In browser console
-   console.log('MLNF object:', window.MLNF);
+   console.log('Immortal Nexus object:', window.Immortal Nexus);
    console.log('jQuery loaded:', typeof $);
    console.log('WebSocket available:', !!window.WebSocket);
    ```
@@ -105,7 +105,7 @@ find /home/immortalal/sites/mlnf/front -name "*.html" | sort
    <!-- 1. Core libraries first -->
    <script src="js/main.js"></script>
    <!-- 2. Shared components -->  
-   <script src="components/shared/mlnf-core.js"></script>
+   <script src="components/shared/nexus-core.js"></script>
    <!-- 3. Feature-specific scripts -->
    <script src="components/shared/messageModal.js"></script>
    ```
@@ -154,7 +154,7 @@ console.log('Device pixel ratio:', window.devicePixelRatio);
 // Check authentication state
 console.log('Session token:', localStorage.getItem('sessionToken'));
 console.log('User data:', localStorage.getItem('user'));
-console.log('Auth manager:', window.MLNF?.authManager);
+console.log('Auth manager:', window.Immortal Nexus?.authManager);
 ```
 
 **Solutions:**
@@ -201,8 +201,8 @@ console.log('Auth manager:', window.MLNF?.authManager);
 **Diagnosis:**
 ```bash
 # Check content files exist
-ls -la /home/immortalal/sites/mlnf/front/pages/
-ls -la /home/immortalal/sites/mlnf/front/souls/
+ls -la /home/immortalal/sites/nexus/front/pages/
+ls -la /home/immortalal/sites/nexus/front/souls/
 
 # Check for API connectivity
 curl https://api.immortal.nexus/news/latest
@@ -230,7 +230,7 @@ curl https://api.immortal.nexus/news/latest
 1. **Optimize Images**
    ```bash
    # Find large image files
-   find /home/immortalal/sites/mlnf/front -name "*.jpg" -o -name "*.png" | xargs ls -lh | sort -k5 -hr
+   find /home/immortalal/sites/nexus/front -name "*.jpg" -o -name "*.png" | xargs ls -lh | sort -k5 -hr
    
    # Compress if needed
    # Use tools like imagemin or online compressors
@@ -259,8 +259,8 @@ curl https://api.immortal.nexus/news/latest
 ```javascript
 // Check WebSocket connection
 console.log('WebSocket support:', !!window.WebSocket);
-console.log('MLNF WebSocket:', window.MLNF?.websocket);
-console.log('Connection state:', window.MLNF?.websocket?.ws?.readyState);
+console.log('Immortal Nexus WebSocket:', window.Immortal Nexus?.websocket);
+console.log('Connection state:', window.Immortal Nexus?.websocket?.ws?.readyState);
 ```
 
 **Solutions:**
@@ -286,11 +286,11 @@ console.log('Connection state:', window.MLNF?.websocket?.ws?.readyState);
 **Diagnosis:**
 ```bash
 # Check if image files exist
-ls -la /home/immortalal/sites/mlnf/front/assets/images/
-ls -la /home/immortalal/sites/mlnf/front/favicon.*
+ls -la /home/immortalal/sites/nexus/front/assets/images/
+ls -la /home/immortalal/sites/nexus/front/favicon.*
 
 # Check image permissions
-stat /home/immortalal/sites/mlnf/front/assets/images/default.jpg
+stat /home/immortalal/sites/nexus/front/assets/images/default.jpg
 ```
 
 **Solutions:**
@@ -300,7 +300,7 @@ stat /home/immortalal/sites/mlnf/front/assets/images/default.jpg
    git checkout HEAD -- assets/images/
    
    # Check for correct paths in HTML/CSS
-   grep -r "assets/images" /home/immortalal/sites/mlnf/front/
+   grep -r "assets/images" /home/immortalal/sites/nexus/front/
    ```
 
 2. **Optimize Image Loading**
@@ -314,16 +314,16 @@ stat /home/immortalal/sites/mlnf/front/assets/images/default.jpg
 ### Site Health Check
 ```bash
 # Check all CSS versions across site
-grep -r "\.css?v=" /home/immortalal/sites/mlnf/front/ | grep -v ".git"
+grep -r "\.css?v=" /home/immortalal/sites/nexus/front/ | grep -v ".git"
 
 # Verify all HTML pages exist and aren't corrupted
-find /home/immortalal/sites/mlnf/front -name "*.html" -exec wc -c {} \; | sort -n
+find /home/immortalal/sites/nexus/front -name "*.html" -exec wc -c {} \; | sort -n
 
 # Check for recent changes
 git log --oneline -10
 
 # Verify file structure integrity
-ls -la /home/immortalal/sites/mlnf/front/{pages,components,css,js}/
+ls -la /home/immortalal/sites/nexus/front/{pages,components,css,js}/
 
 # Test live site connectivity
 curl -I https://immortal.nexus
@@ -333,7 +333,7 @@ curl -I https://api.immortal.nexus
 ### Force Deployment
 ```bash
 # Emergency deployment with cache busting
-find /home/immortalal/sites/mlnf/front -name "*.html" -exec sed -i 's/\.css?v=[0-9.]*/\.css?v=99.0/g' {} \;
+find /home/immortalal/sites/nexus/front -name "*.html" -exec sed -i 's/\.css?v=[0-9.]*/\.css?v=99.0/g' {} \;
 git add . && git commit -m "emergency cache bust" && git push origin main
 ```
 
@@ -345,7 +345,7 @@ git checkout HEAD~1 -- path/to/missing/file.html
 git checkout HEAD -- .  # Restore everything to last commit
 
 # Find and fix corrupted files
-find /home/immortalal/sites/mlnf/front -name "*.html" -size -100c  # Files smaller than 100 bytes
+find /home/immortalal/sites/nexus/front -name "*.html" -size -100c  # Files smaller than 100 bytes
 ```
 
 ## 🌐 Browser Console Debug Commands
@@ -353,7 +353,7 @@ find /home/immortalal/sites/mlnf/front -name "*.html" -size -100c  # Files small
 ### General Site Diagnostics
 ```javascript
 // Check core functionality
-console.log('MLNF object:', window.MLNF);
+console.log('Immortal Nexus object:', window.Immortal Nexus);
 console.log('jQuery:', typeof $);
 console.log('Current page:', window.location.pathname);
 
@@ -376,16 +376,16 @@ fetch('https://api.immortal.nexus/status')
 ### Feature-Specific Tests
 ```javascript
 // Test modal functionality
-window.MLNF?.openMessageModal?.('TestUser');
+window.Immortal Nexus?.openMessageModal?.('TestUser');
 
 // Test WebSocket connection
-console.log('WebSocket state:', window.MLNF?.websocket?.ws?.readyState);
+console.log('WebSocket state:', window.Immortal Nexus?.websocket?.ws?.readyState);
 
 // Test authentication
-window.MLNF?.authManager?.checkAuthStatus?.();
+window.Immortal Nexus?.authManager?.checkAuthStatus?.();
 
 // Test real-time features
-window.MLNF?.websocket?.sendTypingIndicator?.('TestUser', true);
+window.Immortal Nexus?.websocket?.sendTypingIndicator?.('TestUser', true);
 ```
 
 ### Performance Diagnostics
@@ -408,7 +408,7 @@ document.addEventListener('DOMContentLoaded', () => console.timeEnd('DOM ready')
 ### Level 1: Soft Reset (Cache Issues)
 ```bash
 # Just clear cache and update versions
-find /home/immortalal/sites/mlnf/front -name "*.html" -exec sed -i 's/styles\.css?v=[0-9.]*/styles.css?v=6.0/g' {} \;
+find /home/immortalal/sites/nexus/front -name "*.html" -exec sed -i 's/styles\.css?v=[0-9.]*/styles.css?v=6.0/g' {} \;
 git add . && git commit -m "bump CSS versions" && git push origin main
 ```
 
@@ -476,16 +476,16 @@ When troubleshooting fails:
 
 ```bash
 # Key configuration files
-/home/immortalal/sites/mlnf/front/index.html           # Main page
-/home/immortalal/sites/mlnf/front/components/shared/   # Shared components
-/home/immortalal/sites/mlnf/front/css/                 # Stylesheets
-/home/immortalal/sites/mlnf/front/js/                  # JavaScript files
-/home/immortalal/sites/mlnf/front/pages/               # Individual pages
+/home/immortalal/sites/nexus/front/index.html           # Main page
+/home/immortalal/sites/nexus/front/components/shared/   # Shared components
+/home/immortalal/sites/nexus/front/css/                 # Stylesheets
+/home/immortalal/sites/nexus/front/js/                  # JavaScript files
+/home/immortalal/sites/nexus/front/pages/               # Individual pages
 
 # Important config files
-/home/immortalal/sites/mlnf/front/CLAUDE.md           # Development instructions
-/home/immortalal/sites/mlnf/front/package.json        # Dependencies
-/home/immortalal/sites/mlnf/front/_redirects          # URL redirects
+/home/immortalal/sites/nexus/front/CLAUDE.md           # Development instructions
+/home/immortalal/sites/nexus/front/package.json        # Dependencies
+/home/immortalal/sites/nexus/front/_redirects          # URL redirects
 ```
 
 ---

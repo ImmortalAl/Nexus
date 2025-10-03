@@ -3,23 +3,64 @@ const router = express.Router();
 const Thread = require('../models/Thread');
 const auth = require('../middleware/auth');
 
+// Get thread statistics for admin dashboard
+router.get('/stats', auth, async (req, res) => {
+    try {
+        // Check if user is admin (basic check - should be enhanced)
+        if (req.user.username !== 'ImmortalAl' && req.user.role !== 'admin') {
+            return res.status(403).json({ error: 'Admin access required' });
+        }
+
+        const totalThreads = await Thread.countDocuments();
+        const totalReplies = await Thread.aggregate([
+            { $project: { replyCount: { $size: "$replies" } } },
+            { $group: { _id: null, total: { $sum: "$replyCount" } } }
+        ]);
+
+        const today = new Date();
+        const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+        const todayThreads = await Thread.countDocuments({ createdAt: { $gte: startOfDay } });
+        const todayReplies = await Thread.aggregate([
+            { $match: { "replies.createdAt": { $gte: startOfDay } } },
+            { $project: { todayReplies: {
+                $size: {
+                    $filter: {
+                        input: "$replies",
+                        cond: { $gte: ["$$this.createdAt", startOfDay] }
+                    }
+                }
+            }}},
+            { $group: { _id: null, total: { $sum: "$todayReplies" } } }
+        ]);
+
+        const recentThreads = await Thread.find()
+            .sort({ createdAt: -1 })
+            .limit(5)
+            .populate('author', 'username displayName')
+            .select('title author createdAt category');
+
+        res.json({
+            totalThreads,
+            totalReplies: totalReplies[0]?.total || 0,
+            todayThreads,
+            todayReplies: todayReplies[0]?.total || 0,
+            contentRate: ((todayThreads + (todayReplies[0]?.total || 0))).toFixed(1),
+            recentThreads
+        });
+    } catch (error) {
+        console.error('Error fetching thread stats:', error);
+        res.status(500).json({ error: 'Failed to fetch statistics' });
+    }
+});
+
 // Create a new thread
 router.post('/', auth, async (req, res) => {
     try {
         const { title, content, category, tags, isAnonymous } = req.body;
         
-        // Debug logging
-        console.log(`[THREAD CREATE] User: ${req.user.id}, IP: ${req.ip}`);
-        console.log(`[THREAD CREATE] Request body:`, {
-            title: title ? title.substring(0, 50) + '...' : 'MISSING',
-            content: content ? `${content.length} chars` : 'MISSING',
-            category: category || 'MISSING',
-            tags: tags || 'none',
-            isAnonymous: !!isAnonymous
-        });
         
         if (!title || !content || !category) {
-            console.log(`[THREAD CREATE] Missing required fields from ${req.ip}`);
             return res.status(400).json({ error: 'Title, content, and category are required' });
         }
 
@@ -43,21 +84,11 @@ router.post('/', auth, async (req, res) => {
             isLocked: false
         });
         await thread.save();
-        
-        console.log(`[THREAD CREATE] SUCCESS: User ${req.user.id} from ${req.ip}: ${thread._id} (Anonymous: ${!!isAnonymous})`);
+
         res.status(201).json(thread);
     } catch (error) {
-        console.error(`[THREAD CREATE] ERROR from ${req.ip}:`, error.message);
-        console.error(`[THREAD CREATE] Stack:`, error.stack);
-        console.error(`[THREAD CREATE] Full error:`, error);
-        console.error(`[THREAD CREATE] Request body:`, {
-            title: req.body.title ? `${req.body.title.substring(0, 50)}${req.body.title.length > 50 ? '...' : ''}` : 'MISSING',
-            content: req.body.content ? `${req.body.content.length} chars` : 'MISSING',
-            category: req.body.category || 'MISSING',
-            tags: req.body.tags || 'none',
-            isAnonymous: !!req.body.isAnonymous
-        });
-        res.status(500).json({ 
+        console.error('Error creating thread:', error);
+        res.status(500).json({
             error: 'Failed to create thread',
             details: process.env.NODE_ENV === 'development' ? error.message : undefined
         });
@@ -84,10 +115,6 @@ function generateAnonymousName() {
 
 // Get all threads
 router.get('/', async (req, res) => {
-    console.log(`[DEBUG] GET /threads request from ${req.ip}`);
-    console.log(`[DEBUG] Request headers:`, req.headers);
-    console.log(`[DEBUG] Query params:`, req.query);
-    
     try {
         const { page = 1, limit = 10, category, q } = req.query;
         const skip = (parseInt(page) - 1) * parseInt(limit);
@@ -101,8 +128,6 @@ router.get('/', async (req, res) => {
                 { content: { $regex: q, $options: 'i' } }
             ];
         }
-        
-        console.log(`[DEBUG] MongoDB query:`, query);
         
         const threads = await Thread.find(query)
             .sort({ createdAt: -1 })
@@ -125,16 +150,6 @@ router.get('/', async (req, res) => {
         });
         const total = await Thread.countDocuments(query);
         
-        console.log(`[DEBUG] Fetched ${threads.length} threads for page ${page} from ${req.ip}`);
-        console.log(`[DEBUG] Sending response:`, {
-            threadsCount: threads.length,
-            pagination: {
-                page: parseInt(page),
-                pages: Math.ceil(total / limit),
-                total
-            }
-        });
-        
         res.json({
             threads: processedThreads,
             pagination: {
@@ -144,31 +159,24 @@ router.get('/', async (req, res) => {
             }
         });
     } catch (error) {
-        console.error(`[ERROR] Error fetching threads from ${req.ip}:`, error.message, error.stack);
+        console.error('Error fetching threads:', error);
         res.status(500).json({ error: 'Failed to fetch threads' });
     }
 });
 
 // Get a single thread by ID
 router.get('/:id', async (req, res) => {
-    console.log(`[DEBUG] GET /threads/${req.params.id} request from ${req.ip}`);
-    console.log(`[DEBUG] Thread ID received:`, req.params.id);
-    
     try {
         // Validate ObjectId format
         if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
-            console.log(`[DEBUG] Invalid ObjectId format: ${req.params.id} from ${req.ip}`);
             return res.status(400).json({ error: 'Invalid thread ID format' });
         }
 
         const thread = await Thread.findById(req.params.id)
             .populate('author', 'username displayName avatar signature')
             .populate('replies.author', 'username displayName avatar signature');
-        
-        console.log(`[DEBUG] Database query result for ${req.params.id}:`, thread ? 'Found' : 'Not found');
-        
+
         if (!thread) {
-            console.log(`[DEBUG] Thread not found: ${req.params.id} from ${req.ip}`);
             return res.status(404).json({ error: 'Thread not found' });
         }
 
@@ -202,12 +210,9 @@ router.get('/:id', async (req, res) => {
             });
         }
 
-        console.log(`[DEBUG] Successfully fetched and processed thread ${req.params.id} from ${req.ip}`);
-        console.log(`[DEBUG] Thread has ${threadObj.replies ? threadObj.replies.length : 0} replies`);
         res.json(threadObj);
     } catch (error) {
-        console.error(`[ERROR] Error fetching thread ${req.params.id} from ${req.ip}:`, error.message);
-        console.error(`[ERROR] Full error details:`, error);
+        console.error('Error fetching thread:', error);
         res.status(500).json({ error: 'Failed to fetch thread', details: error.message });
     }
 });
@@ -247,27 +252,84 @@ router.post('/:id/replies', auth, async (req, res) => {
         thread.updatedAt = new Date();
         await thread.save();
 
-        console.log(`Reply added to thread ${req.params.id} by user ${req.user.id} from ${req.ip} (Anonymous: ${!!isAnonymous})`);
         res.status(201).json({ message: 'Reply added successfully', reply });
     } catch (error) {
-        console.error(`Error adding reply to thread ${req.params.id} from ${req.ip}:`, error.message, error.stack);
+        console.error('Error adding reply to thread:', error);
         res.status(500).json({ error: 'Failed to add reply' });
     }
 });
 
-// Vote on a thread (placeholder - for now just returns success)
+// Vote on a thread
 router.post('/:id/vote', auth, async (req, res) => {
     try {
         const { vote } = req.body; // 'upvote' or 'downvote'
-        
-        // TODO: Implement actual voting logic with user tracking
-        // For now, just return a mock response
-        const newScore = Math.floor(Math.random() * 20) - 5; // Random score for demo
-        
-        console.log(`Vote ${vote} on thread ${req.params.id} by user ${req.user.id} from ${req.ip}`);
-        res.json({ message: 'Vote recorded', newScore });
+        const userId = req.user.id;
+        const threadId = req.params.id;
+
+        if (!vote || !['upvote', 'downvote'].includes(vote)) {
+            return res.status(400).json({ error: 'Vote must be "upvote" or "downvote"' });
+        }
+
+        const thread = await Thread.findById(threadId);
+        if (!thread) {
+            return res.status(404).json({ error: 'Thread not found' });
+        }
+
+        // Prevent self-voting (users can't vote on their own threads)
+        if (thread.author && thread.author.toString() === userId) {
+            return res.status(403).json({ error: 'You cannot vote on your own threads' });
+        }
+
+        // Initialize votes structure if it doesn't exist
+        if (!thread.votes) {
+            thread.votes = { upvotes: [], downvotes: [] };
+        }
+        if (!thread.votes.upvotes) thread.votes.upvotes = [];
+        if (!thread.votes.downvotes) thread.votes.downvotes = [];
+
+        // Check if user has already voted
+        const existingUpvote = thread.votes.upvotes.find(v => v.user.toString() === userId);
+        const existingDownvote = thread.votes.downvotes.find(v => v.user.toString() === userId);
+
+        if (vote === 'upvote') {
+            if (existingUpvote) {
+                // Remove upvote (toggle off)
+                thread.votes.upvotes = thread.votes.upvotes.filter(v => v.user.toString() !== userId);
+            } else {
+                // Remove any existing downvote first
+                if (existingDownvote) {
+                    thread.votes.downvotes = thread.votes.downvotes.filter(v => v.user.toString() !== userId);
+                }
+                // Add upvote
+                thread.votes.upvotes.push({ user: userId, createdAt: new Date() });
+            }
+        } else { // downvote
+            if (existingDownvote) {
+                // Remove downvote (toggle off)
+                thread.votes.downvotes = thread.votes.downvotes.filter(v => v.user.toString() !== userId);
+            } else {
+                // Remove any existing upvote first
+                if (existingUpvote) {
+                    thread.votes.upvotes = thread.votes.upvotes.filter(v => v.user.toString() !== userId);
+                }
+                // Add downvote
+                thread.votes.downvotes.push({ user: userId, createdAt: new Date() });
+            }
+        }
+
+        // Calculate new vote score
+        const newScore = thread.votes.upvotes.length - thread.votes.downvotes.length;
+        thread.voteScore = newScore;
+
+        await thread.save();
+
+        res.json({
+            message: 'Vote recorded',
+            newScore,
+            userVote: existingUpvote ? 'upvote' : (existingDownvote ? 'downvote' : null)
+        });
     } catch (error) {
-        console.error(`Error voting on thread ${req.params.id} from ${req.ip}:`, error.message, error.stack);
+        console.error('Error voting on thread:', error);
         res.status(500).json({ error: 'Failed to record vote' });
     }
 });
@@ -328,9 +390,8 @@ router.put('/:threadId/replies/:replyId', auth, async (req, res) => {
 
         await thread.save();
 
-        console.log(`Reply ${replyId} edited by user ${req.user.id} from ${req.ip}`);
-        res.json({ 
-            message: 'Reply updated successfully', 
+        res.json({
+            message: 'Reply updated successfully',
             reply: {
                 _id: reply._id,
                 content: reply.content,
@@ -340,24 +401,87 @@ router.put('/:threadId/replies/:replyId', auth, async (req, res) => {
         });
 
     } catch (error) {
-        console.error(`Error editing reply ${req.params.replyId} from ${req.ip}:`, error.message, error.stack);
+        console.error('Error editing reply:', error);
         res.status(500).json({ error: 'Failed to edit reply' });
     }
 });
 
-// Vote on a reply (placeholder - for now just returns success)
+// Vote on a reply
 router.post('/:threadId/replies/:replyId/vote', auth, async (req, res) => {
     try {
         const { vote } = req.body; // 'upvote' or 'downvote'
+        const userId = req.user.id;
+        const { threadId, replyId } = req.params;
 
-        // TODO: Implement actual voting logic with user tracking
-        // For now, just return a mock response
-        const newScore = Math.floor(Math.random() * 15) - 3; // Random score for demo
+        if (!vote || !['upvote', 'downvote'].includes(vote)) {
+            return res.status(400).json({ error: 'Vote must be "upvote" or "downvote"' });
+        }
 
-        console.log(`Vote ${vote} on reply ${req.params.replyId} by user ${req.user.id} from ${req.ip}`);
-        res.json({ message: 'Vote recorded', newScore });
+        const thread = await Thread.findById(threadId);
+        if (!thread) {
+            return res.status(404).json({ error: 'Thread not found' });
+        }
+
+        const reply = thread.replies.id(replyId);
+        if (!reply) {
+            return res.status(404).json({ error: 'Reply not found' });
+        }
+
+        // Prevent self-voting (users can't vote on their own replies)
+        if (reply.author && reply.author.toString() === userId) {
+            return res.status(403).json({ error: 'You cannot vote on your own replies' });
+        }
+
+        // Initialize votes structure if it doesn't exist
+        if (!reply.votes) {
+            reply.votes = { upvotes: [], downvotes: [] };
+        }
+        if (!reply.votes.upvotes) reply.votes.upvotes = [];
+        if (!reply.votes.downvotes) reply.votes.downvotes = [];
+
+        // Check if user has already voted on this reply
+        const existingUpvote = reply.votes.upvotes.find(v => v.user.toString() === userId);
+        const existingDownvote = reply.votes.downvotes.find(v => v.user.toString() === userId);
+
+        if (vote === 'upvote') {
+            if (existingUpvote) {
+                // Remove upvote (toggle off)
+                reply.votes.upvotes = reply.votes.upvotes.filter(v => v.user.toString() !== userId);
+            } else {
+                // Remove any existing downvote first
+                if (existingDownvote) {
+                    reply.votes.downvotes = reply.votes.downvotes.filter(v => v.user.toString() !== userId);
+                }
+                // Add upvote
+                reply.votes.upvotes.push({ user: userId, createdAt: new Date() });
+            }
+        } else { // downvote
+            if (existingDownvote) {
+                // Remove downvote (toggle off)
+                reply.votes.downvotes = reply.votes.downvotes.filter(v => v.user.toString() !== userId);
+            } else {
+                // Remove any existing upvote first
+                if (existingUpvote) {
+                    reply.votes.upvotes = reply.votes.upvotes.filter(v => v.user.toString() !== userId);
+                }
+                // Add downvote
+                reply.votes.downvotes.push({ user: userId, createdAt: new Date() });
+            }
+        }
+
+        // Calculate new vote score
+        const newScore = reply.votes.upvotes.length - reply.votes.downvotes.length;
+        reply.voteScore = newScore;
+
+        await thread.save();
+
+        res.json({
+            message: 'Vote recorded',
+            newScore,
+            userVote: existingUpvote ? 'upvote' : (existingDownvote ? 'downvote' : null)
+        });
     } catch (error) {
-        console.error(`Error voting on reply ${req.params.replyId} from ${req.ip}:`, error.message, error.stack);
+        console.error('Error voting on reply:', error);
         res.status(500).json({ error: 'Failed to record vote' });
     }
 });
@@ -371,7 +495,6 @@ router.delete('/:threadId/replies/:replyId', auth, async (req, res) => {
         const thread = await Thread.findById(threadId);
 
         if (!thread) {
-            console.log(`Thread not found: ${threadId} from ${req.ip}`);
             return res.status(404).json({ error: 'Thread not found' });
         }
 
@@ -379,7 +502,6 @@ router.delete('/:threadId/replies/:replyId', auth, async (req, res) => {
         const replyIndex = thread.replies.findIndex(r => r._id.toString() === replyId);
 
         if (replyIndex === -1) {
-            console.log(`Reply not found: ${replyId} in thread ${threadId} from ${req.ip}`);
             return res.status(404).json({ error: 'Reply not found' });
         }
 
@@ -390,7 +512,6 @@ router.delete('/:threadId/replies/:replyId', auth, async (req, res) => {
         const isAdmin = req.user.role === 'admin';
 
         if (!isAuthor && !isAdmin) {
-            console.log(`Unauthorized delete attempt for reply ${replyId} by user ${req.user.id} from ${req.ip}`);
             return res.status(403).json({ error: 'You can only delete your own replies' });
         }
 
@@ -403,14 +524,13 @@ router.delete('/:threadId/replies/:replyId', auth, async (req, res) => {
         // Save the thread
         await thread.save();
 
-        console.log(`Reply ${replyId} deleted from thread ${threadId} by user ${req.user.id} from ${req.ip}`);
         res.json({
             message: 'Reply deleted successfully',
             thread: thread
         });
 
     } catch (error) {
-        console.error(`Error deleting reply ${req.params.replyId} from ${req.ip}:`, error.message, error.stack);
+        console.error('Error deleting reply:', error);
         res.status(500).json({ error: 'Failed to delete reply' });
     }
 });
@@ -458,7 +578,6 @@ router.delete('/:id', auth, async (req, res) => {
         const thread = await Thread.findById(threadId);
 
         if (!thread) {
-            console.log(`Thread not found: ${threadId} from ${req.ip}`);
             return res.status(404).json({ error: 'Thread not found' });
         }
 
@@ -467,21 +586,19 @@ router.delete('/:id', auth, async (req, res) => {
         const isAdmin = req.user.role === 'admin';
 
         if (!isAuthor && !isAdmin) {
-            console.log(`Unauthorized delete attempt for thread ${threadId} by user ${req.user.id} from ${req.ip}`);
             return res.status(403).json({ error: 'You can only delete your own threads' });
         }
 
         // Delete the thread
         await Thread.findByIdAndDelete(threadId);
 
-        console.log(`Thread ${threadId} deleted by user ${req.user.id} from ${req.ip}`);
         res.json({
             message: 'Thread deleted successfully',
             threadId: threadId
         });
 
     } catch (error) {
-        console.error(`Error deleting thread ${req.params.id} from ${req.ip}:`, error.message, error.stack);
+        console.error('Error deleting thread:', error);
         res.status(500).json({ error: 'Failed to delete thread' });
     }
 });

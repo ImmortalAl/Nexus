@@ -1,8 +1,8 @@
 /**
- * MLNF WebSocket Client Manager
+ * Nexus WebSocket Client Manager
  * Handles real-time communication with the backend
  */
-class MLNFWebSocket {
+class NexusWebSocket {
     constructor() {
         this.ws = null;
         this.isConnected = false;
@@ -251,7 +251,7 @@ class MLNFWebSocket {
 
 // Create global WebSocket instance
 window.NEXUS = window.NEXUS || {};
-window.NEXUS.websocket = new MLNFWebSocket();
+window.NEXUS.websocket = new NexusWebSocket();
 
 // Auto-connect when user is authenticated
 document.addEventListener('DOMContentLoaded', () => {

@@ -528,7 +528,53 @@ class ChroniclesFeed {
     }
 
     formatContent(content) {
-        return this.escapeHtml(content).replace(/\n/g, '<br>');
+        // Check if content appears to be HTML (contains HTML tags)
+        if (content && content.includes('<') && content.includes('>')) {
+            // Content is HTML from Quill editor - sanitize but allow basic formatting
+            return this.sanitizeHtml(content);
+        } else {
+            // Content is plain text - escape and add line breaks
+            return this.escapeHtml(content).replace(/\n/g, '<br>');
+        }
+    }
+
+    sanitizeHtml(html) {
+        // Allow only safe HTML tags and attributes
+        const allowedTags = ['p', 'br', 'strong', 'b', 'em', 'i', 'u', 's', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'blockquote'];
+        const allowedAttributes = ['class'];
+
+        // Create a temporary div to parse HTML
+        const div = document.createElement('div');
+        div.innerHTML = html;
+
+        // Remove script tags and other dangerous elements
+        const scripts = div.querySelectorAll('script');
+        scripts.forEach(script => script.remove());
+
+        const dangerous = div.querySelectorAll('iframe, object, embed, link, style');
+        dangerous.forEach(el => el.remove());
+
+        // Clean attributes
+        const allElements = div.querySelectorAll('*');
+        allElements.forEach(el => {
+            // Remove all attributes except allowed ones
+            const attrs = Array.from(el.attributes);
+            attrs.forEach(attr => {
+                if (!allowedAttributes.includes(attr.name)) {
+                    el.removeAttribute(attr.name);
+                }
+            });
+
+            // Remove elements not in allowed tags
+            if (!allowedTags.includes(el.tagName.toLowerCase())) {
+                // Replace with text content instead of removing entirely
+                const textNode = document.createTextNode(el.textContent);
+                el.parentNode?.insertBefore(textNode, el);
+                el.remove();
+            }
+        });
+
+        return div.innerHTML;
     }
 
     escapeHtml(text) {

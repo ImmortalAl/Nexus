@@ -1,7 +1,7 @@
-# MLNF Features.css - Comprehensive Analysis
+# Immortal Nexus Features.css - Comprehensive Analysis
 
 ## Overview
-`features.css` is a **1,885-line** specialized stylesheet that handles page-specific UI features and enhancements across the MLNF website. It's loaded **asynchronously** after the core styles and provides advanced styling for interactive components, highlight sections, and responsive design.
+`features.css` is a **1,885-line** specialized stylesheet that handles page-specific UI features and enhancements across the Immortal Nexus website. It's loaded **asynchronously** after the core styles and provides advanced styling for interactive components, highlight sections, and responsive design.
 
 ## Loading Strategy
 - **Load Order**: 4th in CSS cascade (after base-theme.css, critical.css, styles.css)
@@ -52,7 +52,7 @@
 ### 6. PROFILE PREVIEW MODAL SYSTEM (Lines 657-914)
 **Purpose**: User profile modal and avatar system integration
 - **Components**: Profile modals, avatar displays, user info cards
-- **Features**: MLNF Avatar System integration, hover effects
+- **Features**: Immortal Nexus Avatar System integration, hover effects
 - **Used On**: User profiles, avatar displays across site
 
 ### 7. FOOTER STYLES (Lines 915-1019)
@@ -148,7 +148,7 @@
 ### Depends On:
 - **base-theme.css** - CSS variables and theme foundation
 - **styles.css** - Core component styles and overrides
-- **MLNF Avatar System** - JavaScript integration for user displays
+- **Immortal Nexus Avatar System** - JavaScript integration for user displays
 
 ### Integrates With:
 - **Message Modal System** - Authentication and messaging UI
@@ -189,7 +189,7 @@
 
 ## Key Learning: The Role of Features.css
 
-**Features.css is the "enhanced experience layer"** of MLNF:
+**Features.css is the "enhanced experience layer"** of Immortal Nexus:
 
 - **Core Purpose**: Provides advanced UI features and interactions
 - **Loading Strategy**: Non-blocking, performance-optimized

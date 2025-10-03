@@ -11,10 +11,10 @@
 ### Version Update Commands
 ```bash
 # Update ALL pages at once (RECOMMENDED)
-find /home/immortalal/sites/mlnf/front -name "*.html" -exec sed -i 's/features\.css?v=[0-9.]*/features.css?v=5.0/g' {} \;
+find /home/immortalal/sites/nexus/front -name "*.html" -exec sed -i 's/features\.css?v=[0-9.]*/features.css?v=5.0/g' {} \;
 
 # Verify all pages updated
-grep -r "features\.css?v=" /home/immortalal/sites/mlnf/front --include="*.html" | cut -d: -f2 | sort | uniq
+grep -r "features\.css?v=" /home/immortalal/sites/nexus/front --include="*.html" | cut -d: -f2 | sort | uniq
 ```
 
 ## Before Making Changes
@@ -118,7 +118,7 @@ git log --oneline | grep "features.css"
 git checkout COMMIT_HASH -- css/features.css
 
 # Update version numbers to force refresh
-find /home/immortalal/sites/mlnf/front -name "*.html" -exec sed -i 's/features\.css?v=[0-9.]*/features.css?v=99.0/g' {} \;
+find /home/immortalal/sites/nexus/front -name "*.html" -exec sed -i 's/features\.css?v=[0-9.]*/features.css?v=99.0/g' {} \;
 
 # Commit emergency revert
 git add . && git commit -m "emergency: revert features.css to working state" && git push origin main
@@ -129,7 +129,7 @@ git add . && git commit -m "emergency: revert features.css to working state" && 
 # Emergency cache bust - increment all versions by 1
 current_version="4.5"
 new_version="4.6"
-find /home/immortalal/sites/mlnf/front -name "*.html" -exec sed -i "s/features\.css?v=$current_version/features.css?v=$new_version/g" {} \;
+find /home/immortalal/sites/nexus/front -name "*.html" -exec sed -i "s/features\.css?v=$current_version/features.css?v=$new_version/g" {} \;
 ```
 
 ## Optimization Notes
@@ -160,6 +160,6 @@ find /home/immortalal/sites/mlnf/front -name "*.html" -exec sed -i "s/features\.
 
 ---
 
-**Remember**: features.css powers the enhanced user experience of MLNF. Handle with care, test thoroughly, and always update all pages simultaneously!
+**Remember**: features.css powers the enhanced user experience of Immortal Nexus. Handle with care, test thoroughly, and always update all pages simultaneously!
 
 *Last updated: 2025-06-30*

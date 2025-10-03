@@ -1,4 +1,4 @@
-# MLNF CSS Architecture - Claude Code Optimized
+# Immortal Nexus CSS Architecture - Claude Code Optimized
 
 ## 🎯 **Optimization Goals**
 - **Logical file grouping** for easier Claude navigation

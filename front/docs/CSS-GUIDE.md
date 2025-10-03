@@ -1,4 +1,4 @@
-# MLNF CSS Architecture & Style Guide
+# Immortal Nexus CSS Architecture & Style Guide
 
 ## Table of Contents
 
@@ -491,4 +491,4 @@
 
 ---
 
-*Complete CSS architecture and style guide for MLNF platform development* 
+*Complete CSS architecture and style guide for Immortal Nexus platform development* 

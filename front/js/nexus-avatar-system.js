@@ -3,7 +3,7 @@
  * Version: 2.0 - Enhanced with Unified Profile Navigation
  * 
  * This utility provides consistent avatar and user display functionality
- * across the entire MLNF site with immortal-themed styling and
+ * across the entire Nexus site with immortal-themed styling and
  * unified profile navigation system.
  */
 
@@ -73,7 +73,7 @@ class NexusProfilePreview {
             this.addModalEventListeners(modal);
             
         } catch (error) {
-            console.error('[MLNF] Profile preview error:', error);
+            console.error('[Nexus] Profile preview error:', error);
             this.showError('Unable to load profile preview');
         }
     }
@@ -209,8 +209,8 @@ class NexusProfilePreview {
     }
     
     static showError(message) {
-        // Simple error notification using existing MLNF notification system
-        console.error('[MLNF Profile Preview]', message);
+        // Simple error notification using existing Nexus notification system
+        console.error('[Nexus Profile Preview]', message);
         // Could integrate with existing notification system here
     }
 }
@@ -481,7 +481,7 @@ class NexusAvatarSystem {
     }
 
     /**
-     * Update existing avatar element to use MLNF system
+     * Update existing avatar element to use Nexus system
      * @param {HTMLElement} avatarElement - Existing avatar element
      * @param {Object} options - Update options
      */
