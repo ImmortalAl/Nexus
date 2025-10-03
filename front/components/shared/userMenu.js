@@ -192,15 +192,19 @@ function setupUserMenuEventsForContainer(userMenuContainer) {
 
   // Event delegation for all actions within the user menu
   userMenuContainer.addEventListener('click', (event) => {
-    const userMenuBtn = event.target.closest('#userMenuBtn');
     const logoutBtn = event.target.closest('#logoutBtn');
+    const userMenuBtn = event.target.closest('#userMenuBtn');
+
+    // Check logout FIRST before dropdown toggle (priority order matters!)
+    if (logoutBtn) {
+      event.preventDefault();
+      event.stopPropagation();
+      handleLogout();
+      return; // Exit early
+    }
 
     if (userMenuBtn) {
       handleToggleDropdown(event, userMenuBtn);
-    }
-    if (logoutBtn) {
-      event.preventDefault();
-      handleLogout();
     }
     // Theme toggle now handled by themeManager.js via data-theme-toggle attribute
     // No need for duplicate handling here

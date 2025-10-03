@@ -9,7 +9,8 @@
       "Bash(git commit:*)",
       "Bash(find:*)",
       "Bash(git push:*)",
-      "WebFetch(domain:nexus-ytrg.onrender.com)"
+      "WebFetch(domain:nexus-ytrg.onrender.com)",
+      "WebFetch(domain:immortal.nexus)"
     ],
     "deny": [],
     "ask": []
