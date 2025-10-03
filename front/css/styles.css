@@ -1499,7 +1499,7 @@ body.light-theme .nexus-avatar {
 /* Chronicles Section - inherits unified styling from .highlights, keeps unique heading styling */
 
 #newsHeading {
-    font-family: 'Cinzel', serif;
+    font-family: 'Cinzel', serif !important;
     background: linear-gradient(135deg, var(--accent), rgba(255, 202, 40, 0.9));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

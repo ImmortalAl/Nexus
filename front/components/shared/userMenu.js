@@ -209,6 +209,17 @@ function setupUserMenuEventsForContainer(userMenuContainer) {
     // Theme toggle now handled by themeManager.js via data-theme-toggle attribute
     // No need for duplicate handling here
   });
+
+  // CRITICAL FIX: Add global document listener for logout button
+  // This ensures logout works even when dropdown is moved to document.body
+  document.addEventListener('click', (event) => {
+    const logoutBtn = event.target.closest('#logoutBtn');
+    if (logoutBtn) {
+      event.preventDefault();
+      event.stopPropagation();
+      handleLogout();
+    }
+  }, true); // Use capture phase to intercept before other handlers
 }
 
 function handleToggleDropdown(event, button) {

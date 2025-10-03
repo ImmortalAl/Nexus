@@ -357,7 +357,6 @@ class EternalSoulsHighlight {
 
         // Wait for NexusAvatars if not available yet
         if (!window.NexusAvatars) {
-            console.log('[EternalSouls] Waiting for NexusAvatars system...');
             setTimeout(() => this.populateFeaturedSoul(), 500);
             return;
         }
@@ -391,8 +390,6 @@ class EternalSoulsHighlight {
                 users = responseData.docs;
             }
 
-            console.log('[EternalSouls] Fetched users:', users.length);
-
             // Filter out ImmortalAl and select first available user
             const availableUsers = users.filter(user =>
                 user.username && user.username.toLowerCase() !== 'immortalal'
@@ -412,7 +409,6 @@ class EternalSoulsHighlight {
             }
 
             const featuredSoul = this.featuredSoulData;
-            console.log('[EternalSouls] Displaying featured soul:', featuredSoul.username);
 
             // Create featured soul display
             const featuredUserDisplay = window.NexusAvatars.createUserDisplay({

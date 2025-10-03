@@ -792,7 +792,7 @@ body.light-theme .debate-position h4 {
 
 
 #newsHeading {
-    font-family: 'Cinzel', serif;
+    font-family: 'Cinzel', serif !important;
     background: linear-gradient(135deg, var(--accent), rgba(255, 202, 40, 0.9));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
