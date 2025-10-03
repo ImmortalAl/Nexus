@@ -144,12 +144,14 @@ body.light-theme {
 }
 
 .chronicles-title .title-line-1 {
+    font-family: 'Cinzel', serif !important;
     font-size: clamp(2.3rem, 5.5vw, 4.2rem);
     font-weight: 600;
     letter-spacing: 0.02em;
 }
 
 .chronicles-title .title-line-2 {
+    font-family: 'Cinzel', serif !important;
     font-size: clamp(2.3rem, 5.5vw, 4.2rem);
     font-weight: 700;
     letter-spacing: 0.03em;
@@ -633,11 +635,13 @@ body.light-theme {
 
     .chronicles-title .title-line-1,
     .chronicles-title .title-line-2 {
+        font-family: 'Cinzel', serif !important;
         font-size: clamp(1.8rem, 5vw, 3.5rem);
         letter-spacing: 0.02em;
     }
 
     .chronicles-title .title-line-2 {
+        font-family: 'Cinzel', serif !important;
         margin-top: -0.25rem;
         letter-spacing: 0.03em;
     }
@@ -654,11 +658,13 @@ body.light-theme {
 
     .chronicles-title .title-line-1,
     .chronicles-title .title-line-2 {
+        font-family: 'Cinzel', serif !important;
         font-size: clamp(1.4rem, 4.5vw, 2.8rem);
         letter-spacing: 0.02em;
     }
 
     .chronicles-title .title-line-2 {
+        font-family: 'Cinzel', serif !important;
         margin-top: -0.2rem;
         letter-spacing: 0.03em;
     }
