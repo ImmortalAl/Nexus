@@ -51,8 +51,8 @@
     <link rel="preload" href="../css/blog-cards.css?v=4.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="../css/blog-cards.css?v=4.1"></noscript>
     
-    <link rel="preload" href="../css/blog-modal.css?v=2.5" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="../css/blog-modal.css?v=2.5"></noscript>
+    <link rel="preload" href="../css/blog-modal.css?v=3.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/blog-modal.css?v=3.0"></noscript>
     
     <link rel="preload" href="../css/blog-forms.css?v=2.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="../css/blog-forms.css?v=2.3"></noscript>
@@ -155,6 +155,16 @@
         <div class="blog-modal-content" role="document">
             <!-- Simplified Modal Header -->
             <div class="modal-header-controls">
+                <div class="modal-vote-controls">
+                    <button class="compact-vote-btn upvote-btn" id="modalUpvoteBtn" onclick="voteFromModal('like')" title="Upvote" aria-label="Upvote this scroll">
+                        <i class="fas fa-chevron-up"></i>
+                        <span class="vote-count" id="modalUpvoteCount">0</span>
+                    </button>
+                    <button class="compact-vote-btn downvote-btn" id="modalDownvoteBtn" onclick="voteFromModal('dislike')" title="Downvote" aria-label="Downvote this scroll">
+                        <i class="fas fa-chevron-down"></i>
+                        <span class="vote-count" id="modalDownvoteCount">0</span>
+                    </button>
+                </div>
                 <button class="close-modal" onclick="closeBlogModal()" aria-label="Close modal">×</button>
             </div>
 
@@ -186,29 +196,6 @@
                 
                 <!-- Title Section -->
                 <h2 id="modal-title" class="scroll-title"></h2>
-
-                <!-- Vote Buttons Section -->
-                <div class="modal-vote-section">
-                    <div class="vote-container">
-                        <button class="vote-btn upvote-btn" id="modalUpvoteBtn" onclick="voteFromModal('like')" title="Upvote this scroll">
-                            <div class="vote-icon">
-                                <i class="fas fa-chevron-up"></i>
-                            </div>
-                            <span class="vote-count" id="modalUpvoteCount">0</span>
-                            <span class="vote-label">Upvote</span>
-                        </button>
-
-                        <div class="vote-divider"></div>
-
-                        <button class="vote-btn downvote-btn" id="modalDownvoteBtn" onclick="voteFromModal('dislike')" title="Downvote this scroll">
-                            <div class="vote-icon">
-                                <i class="fas fa-chevron-down"></i>
-                            </div>
-                            <span class="vote-count" id="modalDownvoteCount">0</span>
-                            <span class="vote-label">Downvote</span>
-                        </button>
-                    </div>
-                </div>
 
                 <!-- Content -->
                 <article id="modal-content" class="scroll-content" role="main"></article>

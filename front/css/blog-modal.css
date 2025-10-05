@@ -84,6 +84,71 @@
     top: 1rem;
     right: 1rem;
     z-index: var(--z-modal-controls);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.modal-vote-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(26, 26, 51, 0.6);
+    border: 1px solid rgba(255, 94, 120, 0.25);
+    border-radius: 22px;
+    padding: 0.25rem;
+    backdrop-filter: blur(10px);
+}
+
+.compact-vote-btn {
+    background: transparent;
+    border: none;
+    border-radius: 18px;
+    width: 36px;
+    height: 36px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.125rem;
+    padding: 0.25rem;
+    position: relative;
+}
+
+.compact-vote-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.95);
+    transform: scale(1.05);
+}
+
+.compact-vote-btn .vote-count {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: inherit;
+    text-shadow: none;
+    min-width: auto;
+}
+
+.compact-vote-btn.upvote-btn:hover {
+    color: var(--color-mystical-purple, #9d4edd);
+}
+
+.compact-vote-btn.downvote-btn:hover {
+    color: var(--color-danger, #ff5e78);
+}
+
+.compact-vote-btn.upvote-btn.voted {
+    background: rgba(157, 78, 221, 0.2);
+    color: var(--color-mystical-purple, #9d4edd);
+}
+
+.compact-vote-btn.downvote-btn.voted {
+    background: rgba(255, 94, 120, 0.2);
+    color: var(--color-danger, #ff5e78);
 }
 
 .close-modal {
@@ -113,37 +178,52 @@
 /* ===== MODAL BODY ===== */
 .modal-body {
     padding: 2rem;
+    padding-top: 4rem; /* Extra space for header controls */
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
     scroll-behavior: smooth;
     position: relative;
     min-height: 0; /* Important for flexbox scrolling */
+    cursor: auto; /* Fix cursor issues */
 }
 
-/* Custom scrollbar for modal body */
+.modal-body * {
+    cursor: auto; /* Ensure all child elements have normal cursor */
+}
+
+/* Custom scrollbar for modal body - optimized for smooth scrolling */
 .modal-body::-webkit-scrollbar {
-    width: 8px;
+    width: 10px;
 }
 
 .modal-body::-webkit-scrollbar-track {
-    background: rgba(26, 26, 51, 0.5);
-    border-radius: 4px;
+    background: rgba(26, 26, 51, 0.3);
+    border-radius: 5px;
+    margin: 0.5rem 0;
 }
 
 .modal-body::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, 
-        rgba(255, 94, 120, 0.6), 
-        rgba(255, 202, 40, 0.6)
+    background: linear-gradient(135deg,
+        rgba(255, 94, 120, 0.5),
+        rgba(255, 202, 40, 0.5)
     );
-    border-radius: 4px;
+    border-radius: 5px;
+    border: 2px solid rgba(26, 26, 51, 0.3);
 }
 
 .modal-body::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, 
-        rgba(255, 94, 120, 0.8), 
-        rgba(255, 202, 40, 0.8)
+    background: linear-gradient(135deg,
+        rgba(255, 94, 120, 0.7),
+        rgba(255, 202, 40, 0.7)
     );
+    border-color: rgba(26, 26, 51, 0.5);
+}
+
+/* Firefox scrollbar */
+.modal-body {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 94, 120, 0.5) rgba(26, 26, 51, 0.3);
 }
 
 /* ===== BODY SCROLL LOCK ===== */
@@ -375,187 +455,18 @@ body.modal-open {
     outline-offset: 2px;
 }
 
-/* ===== MODAL VOTE SECTION ===== */
+/* ===== LEGACY VOTE SECTION (REMOVED - NOW IN HEADER) ===== */
+/* Old prominent vote section removed - compact buttons now in modal header */
 .modal-vote-section {
-    margin: 2rem 0;
-    padding: 1.5rem 0;
-    border-top: 1px solid rgba(255, 94, 120, 0.15);
-    border-bottom: 1px solid rgba(255, 94, 120, 0.15);
-    background: linear-gradient(
-        90deg,
-        rgba(255, 94, 120, 0.03) 0%,
-        rgba(255, 94, 120, 0.08) 50%,
-        rgba(255, 94, 120, 0.03) 100%
-    );
+    display: none; /* Legacy section hidden */
 }
 
-.vote-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
-}
-
-.vote-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 1rem 2rem;
-    background: linear-gradient(135deg,
-        rgba(26, 26, 51, 0.8),
-        rgba(42, 64, 102, 0.6)
-    );
-    border: 2px solid rgba(255, 94, 120, 0.3);
-    border-radius: 16px;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-    min-width: 120px;
-    box-shadow:
-        0 4px 15px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.vote-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 94, 120, 0.2),
-        transparent
-    );
-    transition: left 0.6s ease;
-}
-
-.vote-btn:hover::before {
-    left: 100%;
-}
-
-.vote-btn:hover {
-    transform: translateY(-3px) scale(1.05);
-    border-color: rgba(255, 94, 120, 0.6);
-    box-shadow:
-        0 8px 25px rgba(0, 0, 0, 0.4),
-        0 0 30px rgba(255, 94, 120, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-.vote-btn:active {
-    transform: translateY(-1px) scale(1.02);
-}
-
-/* Upvote specific styles */
-.upvote-btn .vote-icon {
-    color: var(--color-mystical-purple, #9d4edd);
-}
-
-.upvote-btn:hover {
-    background: linear-gradient(135deg,
-        rgba(157, 78, 221, 0.15),
-        rgba(42, 64, 102, 0.6)
-    );
-}
-
-.upvote-btn.voted {
-    background: linear-gradient(135deg,
-        rgba(157, 78, 221, 0.3),
-        rgba(157, 78, 221, 0.15)
-    );
-    border-color: rgba(157, 78, 221, 0.7);
-    box-shadow:
-        0 4px 15px rgba(157, 78, 221, 0.3),
-        0 0 20px rgba(157, 78, 221, 0.2),
-        inset 0 0 20px rgba(157, 78, 221, 0.1);
-}
-
-/* Downvote specific styles */
-.downvote-btn .vote-icon {
-    color: var(--color-danger, #ff5e78);
-}
-
-.downvote-btn:hover {
-    background: linear-gradient(135deg,
-        rgba(255, 94, 120, 0.15),
-        rgba(42, 64, 102, 0.6)
-    );
-}
-
-.downvote-btn.voted {
-    background: linear-gradient(135deg,
-        rgba(255, 94, 120, 0.3),
-        rgba(255, 94, 120, 0.15)
-    );
-    border-color: rgba(255, 94, 120, 0.7);
-    box-shadow:
-        0 4px 15px rgba(255, 94, 120, 0.3),
-        0 0 20px rgba(255, 94, 120, 0.2),
-        inset 0 0 20px rgba(255, 94, 120, 0.1);
-}
-
-.vote-icon {
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
-}
-
-.vote-btn:hover .vote-icon {
-    transform: scale(1.2);
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.vote-count {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--color-light, #e0e0e0);
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    min-width: 30px;
-    text-align: center;
-}
-
-.vote-label {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: rgba(255, 255, 255, 0.6);
-    font-weight: 600;
-}
-
+.vote-container,
+.vote-btn:not(.compact-vote-btn),
+.vote-icon,
+.vote-label,
 .vote-divider {
-    width: 2px;
-    height: 60px;
-    background: linear-gradient(
-        to bottom,
-        transparent,
-        rgba(255, 94, 120, 0.5),
-        transparent
-    );
-    position: relative;
-}
-
-.vote-divider::before {
-    content: '✦';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: rgba(255, 94, 120, 0.6);
-    font-size: 0.875rem;
-    background: rgba(26, 26, 51, 0.9);
-    padding: 0.25rem;
-    border-radius: 50%;
+    display: none; /* Legacy vote UI hidden */
 }
 
 /* Auto-link styling for clickable URLs */
@@ -574,68 +485,52 @@ body.modal-open {
     text-shadow: 0 0 8px rgba(157, 78, 221, 0.4);
 }
 
-/* Responsive adjustments */
+/* Responsive adjustments for compact vote buttons */
 @media (max-width: 768px) {
-    .vote-container {
-        gap: 1rem;
+    .modal-header-controls {
+        top: 0.75rem;
+        right: 0.75rem;
+        gap: 0.5rem;
     }
 
-    .vote-btn {
-        padding: 0.875rem 1.5rem;
-        min-width: 100px;
+    .compact-vote-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
     }
 
-    .vote-icon {
-        font-size: 1.25rem;
-        width: 35px;
-        height: 35px;
+    .compact-vote-btn .vote-count {
+        font-size: 0.65rem;
     }
 
-    .vote-count {
-        font-size: 1.1rem;
-    }
-
-    .vote-label {
-        font-size: 0.7rem;
-    }
-
-    .vote-divider {
-        height: 50px;
+    .close-modal {
+        width: 40px;
+        height: 40px;
+        font-size: 1.3rem;
     }
 }
 
 @media (max-width: 480px) {
-    .modal-vote-section {
-        padding: 1rem 0;
-        margin: 1.5rem 0;
+    .modal-vote-controls {
+        gap: 0.25rem;
+        padding: 0.2rem;
+        border-radius: 18px;
     }
 
-    .vote-container {
-        gap: 0.75rem;
-    }
-
-    .vote-btn {
-        padding: 0.75rem 1rem;
-        min-width: 85px;
-        gap: 0.375rem;
-    }
-
-    .vote-icon {
-        font-size: 1.1rem;
+    .compact-vote-btn {
         width: 30px;
         height: 30px;
+        font-size: 0.75rem;
     }
 
-    .vote-count {
-        font-size: 1rem;
+    .compact-vote-btn .vote-count {
+        font-size: 0.6rem;
     }
 
-    .vote-label {
-        font-size: 0.65rem;
-    }
-
-    .vote-divider {
-        height: 45px;
+    .close-modal {
+        width: 36px;
+        height: 36px;
+        font-size: 1.2rem;
     }
 }
 
