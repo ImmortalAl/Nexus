@@ -1015,6 +1015,17 @@ async function likePost(postId) {
 
         const result = await response.json();
         updateLikeButtons(postId, result);
+
+        // Update cached post data
+        if (blogPosts[postId]) {
+            blogPosts[postId].likes = result.likes;
+            blogPosts[postId].dislikes = result.dislikes;
+        }
+
+        // Update modal if open for this post
+        if (currentPostId === postId) {
+            updateModalVoteButtonsFromResult(result);
+        }
     } catch (error) {
         console.error('Error liking post:', error);
         alert('Failed to like post: ' + error.message);
@@ -1124,6 +1135,12 @@ async function quickDownvote(postId) {
 
         const result = await response.json();
         updateLikeButtons(postId, result);
+
+        // Update cached post data
+        if (blogPosts[postId]) {
+            blogPosts[postId].likes = result.likes;
+            blogPosts[postId].dislikes = result.dislikes;
+        }
 
         // Update modal buttons if modal is open for this post
         if (currentPostId === postId) {
