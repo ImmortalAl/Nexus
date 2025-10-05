@@ -56,21 +56,23 @@
             // Monitor performance issues
             if ('PerformanceObserver' in window) {
                 try {
-                    // Monitor long tasks (blocking main thread)
-                    const longTaskObserver = new PerformanceObserver((list) => {
-                        for (const entry of list.getEntries()) {
-                            if (entry.duration > 50) {
-                                this.capturePerformanceIssue({
-                                    type: 'long_task',
-                                    duration: entry.duration,
-                                    startTime: entry.startTime,
-                                    name: entry.name,
-                                    url: window.location.href
-                                });
+                    // Check if longtask is supported before observing
+                    if (PerformanceObserver.supportedEntryTypes.includes('longtask')) {
+                        const longTaskObserver = new PerformanceObserver((list) => {
+                            for (const entry of list.getEntries()) {
+                                if (entry.duration > 50) {
+                                    this.capturePerformanceIssue({
+                                        type: 'long_task',
+                                        duration: entry.duration,
+                                        startTime: entry.startTime,
+                                        name: entry.name,
+                                        url: window.location.href
+                                    });
+                                }
                             }
-                        }
-                    });
-                    longTaskObserver.observe({ entryTypes: ['longtask'] });
+                        });
+                        longTaskObserver.observe({ entryTypes: ['longtask'] });
+                    }
                 } catch (e) {
                     // Long task monitoring not supported
                 }
