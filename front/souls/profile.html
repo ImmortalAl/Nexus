@@ -452,7 +452,7 @@
     <script src="../js/nexus-avatar-system.js?v=2.2"></script>
     
     <!-- Comments System -->
-    <script src="../components/shared/comments.js?v=1.3"></script>
+    <script src="../components/shared/comments.js?v=1.4"></script>
     
     <!-- Initialize Immortal Nexus -->
     <script>
@@ -474,12 +474,13 @@
                 // Get username from query parameter (passed by Netlify redirect)
                 const urlParams = new URLSearchParams(window.location.search);
                 let username = urlParams.get('user') || urlParams.get('username');
-                
-                // Also check if username is in the path (fallback for direct navigation)  
+
+                // Also check if username is in the path (fallback for direct navigation)
                 const pathParts = window.location.pathname.split('/');
                 if (!username && pathParts.length > 2 && pathParts[1] === 'souls') {
                     // Extract username from path like /souls/Mortal
-                    username = pathParts[2];
+                    // Decode URI component to handle usernames with spaces or special characters
+                    username = decodeURIComponent(pathParts[2]);
                 }
                 
                 if (!username) {

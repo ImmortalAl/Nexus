@@ -54,6 +54,7 @@ class CommentsSystem {
         if (!listContainer) return;
 
         try {
+            console.log('[Comments] Loading comments for:', { targetType: this.targetType, targetId: this.targetId });
 
             const headers = {
                 'Content-Type': 'application/json'
@@ -64,10 +65,12 @@ class CommentsSystem {
                 headers['Authorization'] = `Bearer ${this.token}`;
             }
 
-            const response = await fetch(
-                `${window.NEXUS_CONFIG.API_BASE_URL}/comments/${this.targetType}/${this.targetId}`,
-                { headers }
-            );
+            // Ensure targetId is properly encoded in URL
+            const encodedTargetId = encodeURIComponent(this.targetId);
+            const url = `${window.NEXUS_CONFIG.API_BASE_URL}/comments/${this.targetType}/${encodedTargetId}`;
+            console.log('[Comments] Fetching from URL:', url);
+
+            const response = await fetch(url, { headers });
             
             
             if (!response.ok) {

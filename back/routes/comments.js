@@ -7,15 +7,21 @@ const optionalAuth = require('../middleware/optionalAuth');
 // Get comments for a specific target (blog post, profile, etc.)
 router.get('/:targetType/:targetId', optionalAuth, async (req, res) => {
     try {
-        const { targetType, targetId } = req.params;
-        
-        const comments = await Comment.find({ 
-            targetType, 
-            targetId 
+        // Decode targetId to handle special characters and spaces
+        const { targetType } = req.params;
+        const targetId = decodeURIComponent(req.params.targetId);
+
+        console.log('[Comments] Fetching comments for:', { targetType, targetId });
+
+        const comments = await Comment.find({
+            targetType,
+            targetId
         })
         .populate('author', 'username displayName avatar')
         .sort({ createdAt: -1 });
-        
+
+        console.log(`[Comments] Found ${comments.length} comments`);
+
         res.json(comments);
     } catch (error) {
         console.error('Error fetching comments:', error);
@@ -27,26 +33,29 @@ router.get('/:targetType/:targetId', optionalAuth, async (req, res) => {
 router.post('/', auth, async (req, res) => {
     try {
         const { content, targetType, targetId } = req.body;
-        
+
+        console.log('[Comments] Creating comment with:', { targetType, targetId, contentLength: content?.length });
+
         if (!content || !targetType || !targetId) {
-            return res.status(400).json({ 
-                error: 'Content, target type, and target ID are required' 
+            return res.status(400).json({
+                error: 'Content, target type, and target ID are required'
             });
         }
-        
+
         const comment = new Comment({
             content,
             targetType,
             targetId,
             author: req.user.id
         });
-        
+
         await comment.save();
-        
+        console.log('[Comments] Comment saved with ID:', comment._id);
+
         // Populate author info before returning
         const populatedComment = await Comment.findById(comment._id)
             .populate('author', 'username displayName avatar');
-            
+
         res.status(201).json(populatedComment);
     } catch (error) {
         console.error('Error creating comment:', error);
