@@ -113,6 +113,53 @@ router.delete('/:id', auth, async (req, res) => {
     }
 });
 
+// Admin route: Recover corrupted profile comments
+router.post('/recover/corrupted', auth, async (req, res) => {
+    try {
+        console.log('[Comments Recovery] Starting corrupted comments recovery...');
+
+        // Find all profile comments with suspicious targetIds
+        const profileComments = await Comment.find({ targetType: 'profile' });
+        console.log(`[Comments Recovery] Found ${profileComments.length} profile comments to check`);
+
+        const User = require('../models/User');
+        const recoveredComments = [];
+
+        for (const comment of profileComments) {
+            // Check if targetId looks corrupted (contains 'object', '[', or other non-username chars)
+            const targetId = comment.targetId;
+            const isCorrupted = targetId.includes('object') ||
+                              targetId.includes('[') ||
+                              targetId.includes('<') ||
+                              targetId.length > 50; // Usernames shouldn't be super long
+
+            if (isCorrupted) {
+                console.log(`[Comments Recovery] Found corrupted comment: ${comment._id} with targetId: ${targetId}`);
+
+                // Try to find the intended user by checking the comment author's recent activity
+                // For now, we'll just log these for manual inspection
+                recoveredComments.push({
+                    commentId: comment._id,
+                    corruptedTargetId: targetId,
+                    author: comment.author,
+                    content: comment.content.substring(0, 50) + '...',
+                    createdAt: comment.createdAt
+                });
+            }
+        }
+
+        res.json({
+            message: 'Corrupted comments scan completed',
+            corruptedCount: recoveredComments.length,
+            corruptedComments: recoveredComments
+        });
+
+    } catch (error) {
+        console.error('[Comments Recovery] Error during recovery:', error);
+        res.status(500).json({ error: 'Failed to recover corrupted comments' });
+    }
+});
+
 // Admin route: Clean up orphaned profile comments
 router.delete('/cleanup/orphaned', auth, async (req, res) => {
     try {
