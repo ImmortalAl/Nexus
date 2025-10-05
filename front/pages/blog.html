@@ -33,8 +33,8 @@
     <link rel="preload" href="../css/components.css?v=7.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="../css/components.css?v=7.1"></noscript>
     
-    <link rel="preload" href="../css/features.css?v=6.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="../css/features.css?v=6.3"></noscript>
+    <link rel="preload" href="../css/features.css?v=7.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/features.css?v=7.0"></noscript>
     
     <!-- 5. SHARED COMPONENTS (lazy loaded) -->
     <link rel="preload" href="../components/shared/styles.css?v=15.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -154,35 +154,9 @@
     <div id="blogModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modal-title" aria-describedby="modal-content" style="display:none;">
         <div class="blog-modal-content" role="document">
             <!-- Unified Modal Header Bar -->
-            <div class="modal-header-bar">
-                <!-- Vote Controls - Left Side -->
-                <div class="modal-vote-controls">
-                    <button class="compact-vote-btn upvote-btn" id="modalUpvoteBtn" onclick="voteFromModal('like')" title="Upvote this scroll" aria-label="Upvote this scroll">
-                        <i class="fas fa-chevron-up"></i>
-                        <span class="vote-count" id="modalUpvoteCount">0</span>
-                    </button>
-                    <button class="compact-vote-btn challenge-btn" id="modalChallengeBtn" onclick="challengePostFromModal()" title="Challenge this scroll" aria-label="Challenge this scroll" data-post-id="">
-                        <i class="fas fa-bolt"></i>
-                        <span class="vote-count" id="modalChallengeCount">0</span>
-                    </button>
-                </div>
-
-                <!-- Author Info - Center -->
-                <div class="modal-author-info">
-                    <!-- Immortal Nexus Avatar System will populate this -->
-                </div>
-                <!-- Fallback structure for compatibility -->
-                <div class="scroll-author" style="display: none;">
-                    <a href="#" id="modal-author-link" class="author-avatar">
-                        <img id="modal-author-avatar" src="" alt="">
-                    </a>
-                    <div>
-                        <a href="#" id="modal-author-name-link" class="author-name"></a>
-                        <p id="modal-date" class="date"></p>
-                    </div>
-                </div>
-
-                <!-- Close Button - Right Side -->
+            <div class="modal-header-bar" id="blogModalHeader">
+                <!-- AuthorIdentityCard will populate this dynamically -->
+                <!-- Close Button will be added separately -->
                 <div class="modal-header-controls">
                     <button class="close-modal" onclick="closeBlogModal()" aria-label="Close modal">×</button>
                 </div>
@@ -292,8 +266,13 @@
     <script src="../components/shared/userMenu.js?v=7.2"></script>
     <script src="../components/shared/activeUsers.js?v=1.8"></script>
     <script src="../components/shared/messageModal.js?v=1.4"></script>
-    <script src="../components/shared/comments.js?v=1.2"></script>
-    <script src="../js/blog.js?v=4.8"></script>
+
+    <!-- Unified Voting System - IMMORTAL! -->
+    <script src="../js/shared/unifiedVoting.js?v=1.0"></script>
+    <script src="../components/shared/authorIdentityCard.js?v=1.0"></script>
+
+    <script src="../components/shared/comments.js?v=1.3"></script>
+    <script src="../js/blog.js?v=5.0"></script>
     <!-- <script src="../js/scripts.js?v=1.2"></script> --> <!-- Legacy script - functionality moved to components -->
     
     <!-- Analytics Tracking System -->

@@ -147,11 +147,42 @@ class CommentsSystem {
         const commentDiv = document.createElement('div');
         commentDiv.className = 'comment';
         commentDiv.id = `comment-${comment._id}`;
-        
-        // Create unified author display using Nexus Avatar System
+
+        // Create unified author display WITH VOTING using AuthorIdentityCard
         let authorDisplay;
-        
-        if (window.NexusAvatars && window.NexusAvatars.createUserDisplay) {
+
+        if (window.AuthorIdentityCard) {
+            // NEW UNIFIED SYSTEM WITH VOTING!
+            const identityCard = new AuthorIdentityCard({
+                author: comment.author,
+                contentType: 'comment',
+                contentId: comment._id,
+                timestamp: comment.createdAt,
+                upvotes: comment.upvotes || 0,
+                challenges: comment.challenges || 0,
+                userUpvoted: comment.userUpvoted || false,
+                userChallenged: comment.userChallenged || false,
+                size: 'sm',
+                variant: 'inline',
+                showVoting: true,
+                showTimestamp: true,
+                enableChallenge: false // Comments use simple upvote only
+            });
+
+            authorDisplay = identityCard.render();
+
+            // Listen for vote updates
+            if (window.unifiedVoting) {
+                const unsubscribe = window.unifiedVoting.addListener((detail) => {
+                    if (detail.contentType === 'comment' && detail.contentId === comment._id) {
+                        identityCard.updateVoteState(detail.votes);
+                        identityCard.refreshVoteDisplay();
+                    }
+                });
+                commentDiv._unsubscribeVoting = unsubscribe;
+            }
+        } else if (window.NexusAvatars && window.NexusAvatars.createUserDisplay) {
+            // Fallback to avatar system without voting
             authorDisplay = window.NexusAvatars.createUserDisplay({
                 username: comment.author.username,
                 title: comment.author.title || 'Eternal Soul',
@@ -166,12 +197,12 @@ class CommentsSystem {
                 enableUnifiedNavigation: true
             });
         } else {
-            // Fallback if avatar system not available
+            // Ultimate fallback
             authorDisplay = document.createElement('div');
             authorDisplay.className = 'comment-author-fallback';
             authorDisplay.innerHTML = `
-                <img src="${comment.author.avatar || '/assets/images/default.jpg'}" 
-                     alt="${comment.author.username}" 
+                <img src="${comment.author.avatar || '/assets/images/default.jpg'}"
+                     alt="${comment.author.username}"
                      class="comment-author-avatar" />
                 <div class="comment-author-info">
                     <span class="comment-author-name">${comment.author.username}</span>

@@ -527,14 +527,13 @@ function populateModalContent(modal, post) {
         // Make URLs clickable in the content
         essentialElements['modal-content'].innerHTML = linkifyContent(post.content);
         
-        // Update author info
-        updateAuthorInfo(post);
-        
+        // Update author info using AuthorIdentityCard
+        updateAuthorInfoWithIdentityCard(post);
+
         // Show edit button if user is the author
         updateEditButton(post);
 
-        // Update vote buttons with current counts
-        updateModalVoteButtons(post);
+        // Vote buttons are now part of AuthorIdentityCard (no separate update needed)
 
         // Load author's other scrolls
         loadAuthorOtherScrolls(post.author._id, post._id);
@@ -562,11 +561,90 @@ function updateReadingStats(content) {
     }
 }
 
+function updateAuthorInfoWithIdentityCard(post) {
+    const modalHeaderBar = document.getElementById('blogModalHeader');
+    if (!modalHeaderBar) {
+        console.error('[Blog] Modal header bar not found');
+        return;
+    }
+
+    // Clear existing content except close button
+    const closeBtn = modalHeaderBar.querySelector('.modal-header-controls');
+    modalHeaderBar.innerHTML = '';
+
+    // Create AuthorIdentityCard with voting
+    if (window.AuthorIdentityCard) {
+        // Calculate votes from arrays (blog-specific format)
+        const upvotes = Array.isArray(post.likes) ? post.likes.length : (post.likes || 0);
+        const challenges = Array.isArray(post.dislikes) ? post.dislikes.length : (post.dislikes || 0);
+
+        // Check if current user has voted
+        let userUpvoted = false;
+        let userChallenged = false;
+
+        const token = localStorage.getItem('sessionToken');
+        if (token) {
+            try {
+                const decoded = jwt_decode(token);
+                const userId = decoded.id;
+                userUpvoted = Array.isArray(post.likes) && post.likes.includes(userId);
+                userChallenged = Array.isArray(post.dislikes) && post.dislikes.includes(userId);
+            } catch (e) {
+                // Token decode failed
+            }
+        }
+
+        const identityCard = new AuthorIdentityCard({
+            author: post.author,
+            contentType: 'blog',
+            contentId: post._id,
+            timestamp: post.createdAt,
+            upvotes: upvotes,
+            challenges: challenges,
+            userUpvoted: userUpvoted,
+            userChallenged: userChallenged,
+            size: 'md',
+            variant: 'header',
+            showVoting: true,
+            showTimestamp: true,
+            enableChallenge: true // Enable 3-tier challenge for blogs
+        });
+
+        const cardElement = identityCard.render();
+
+        // Store reference for updates
+        window.currentModalIdentityCard = identityCard;
+
+        // Add card to header
+        modalHeaderBar.appendChild(cardElement);
+
+        // Re-add close button
+        if (closeBtn) {
+            modalHeaderBar.appendChild(closeBtn);
+        }
+
+        // Listen for vote updates
+        if (window.unifiedVoting) {
+            window.modalVoteListener = window.unifiedVoting.addListener((detail) => {
+                if (detail.contentType === 'blog' && detail.contentId === post._id) {
+                    identityCard.updateVoteState(detail.votes);
+                    identityCard.refreshVoteDisplay();
+                }
+            });
+        }
+    } else {
+        // Fallback to old system
+        updateAuthorInfo(post);
+        updateModalVoteButtons(post);
+    }
+}
+
+// Keep old function for backward compatibility
 function updateAuthorInfo(post) {
     // Existing author info logic from the original function
     const modalAuthorContainer = document.querySelector('.modal-author-info');
     const fallbackContainer = document.querySelector('.scroll-author');
-    
+
     if (modalAuthorContainer && window.NexusAvatars) {
         modalAuthorContainer.innerHTML = '';
         const modalAuthorDisplay = window.NexusAvatars.createUserDisplay({
@@ -588,9 +666,9 @@ function updateAuthorInfo(post) {
             showStatus: true,
             compact: false
         });
-        
+
         modalAuthorContainer.appendChild(modalAuthorDisplay);
-        
+
         if (fallbackContainer) {
             fallbackContainer.style.display = 'none';
         }
