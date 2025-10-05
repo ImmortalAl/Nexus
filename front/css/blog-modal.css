@@ -189,6 +189,58 @@
     box-shadow: 0 0 20px rgba(255, 94, 120, 0.5);
 }
 
+/* Challenge dropdown in modal header */
+.modal-vote-controls {
+    position: relative;
+}
+
+.modal-header-bar .challenge-dropdown {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    left: auto;
+    bottom: auto;
+    z-index: 200;
+    margin: 0;
+}
+
+.modal-header-bar .challenge-options {
+    background: linear-gradient(135deg,
+        rgba(26, 26, 51, 0.98),
+        rgba(42, 64, 102, 0.95)
+    );
+    border: 2px solid rgba(255, 94, 120, 0.4);
+    border-radius: 12px;
+    padding: 0.5rem;
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(255, 94, 120, 0.3);
+    min-width: 200px;
+    backdrop-filter: blur(10px);
+}
+
+.modal-header-bar .challenge-option {
+    color: rgba(255, 255, 255, 0.9);
+    background: transparent;
+    border: 1px solid rgba(255, 94, 120, 0.2);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+.modal-header-bar .challenge-option:last-child {
+    margin-bottom: 0;
+}
+
+.modal-header-bar .challenge-option:hover {
+    background: rgba(255, 94, 120, 0.2);
+    border-color: rgba(255, 94, 120, 0.6);
+    transform: translateX(-2px);
+    color: rgba(255, 255, 255, 1);
+}
+
 /* ===== MODAL BODY ===== */
 .modal-body {
     padding: 2rem;
