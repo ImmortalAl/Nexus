@@ -51,8 +51,8 @@
     <link rel="preload" href="../css/blog-cards.css?v=4.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="../css/blog-cards.css?v=4.1"></noscript>
     
-    <link rel="preload" href="../css/blog-modal.css?v=2.4" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="../css/blog-modal.css?v=2.4"></noscript>
+    <link rel="preload" href="../css/blog-modal.css?v=2.5" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/blog-modal.css?v=2.5"></noscript>
     
     <link rel="preload" href="../css/blog-forms.css?v=2.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="../css/blog-forms.css?v=2.3"></noscript>
@@ -186,7 +186,30 @@
                 
                 <!-- Title Section -->
                 <h2 id="modal-title" class="scroll-title"></h2>
-                
+
+                <!-- Vote Buttons Section -->
+                <div class="modal-vote-section">
+                    <div class="vote-container">
+                        <button class="vote-btn upvote-btn" id="modalUpvoteBtn" onclick="voteFromModal('like')" title="Upvote this scroll">
+                            <div class="vote-icon">
+                                <i class="fas fa-chevron-up"></i>
+                            </div>
+                            <span class="vote-count" id="modalUpvoteCount">0</span>
+                            <span class="vote-label">Upvote</span>
+                        </button>
+
+                        <div class="vote-divider"></div>
+
+                        <button class="vote-btn downvote-btn" id="modalDownvoteBtn" onclick="voteFromModal('dislike')" title="Downvote this scroll">
+                            <div class="vote-icon">
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <span class="vote-count" id="modalDownvoteCount">0</span>
+                            <span class="vote-label">Downvote</span>
+                        </button>
+                    </div>
+                </div>
+
                 <!-- Content -->
                 <article id="modal-content" class="scroll-content" role="main"></article>
                 
@@ -278,7 +301,7 @@
     <script src="../components/shared/activeUsers.js?v=1.8"></script>
     <script src="../components/shared/messageModal.js?v=1.4"></script>
     <script src="../components/shared/comments.js?v=1.2"></script>
-    <script src="../js/blog.js?v=4.6"></script>
+    <script src="../js/blog.js?v=4.7"></script>
     <!-- <script src="../js/scripts.js?v=1.2"></script> --> <!-- Legacy script - functionality moved to components -->
     
     <!-- Analytics Tracking System -->

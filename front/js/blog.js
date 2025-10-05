@@ -481,20 +481,32 @@ function hideModalLoading(modal) {
     if (modalBody) modalBody.style.display = 'block';
 }
 
+// Helper function to make URLs clickable in text
+function linkifyContent(html) {
+    // URL regex pattern that matches http(s) URLs
+    const urlPattern = /(\b(https?):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gig;
+
+    // Replace URLs with clickable links
+    return html.replace(urlPattern, function(url) {
+        // Don't linkify if already in an <a> tag
+        return '<a href="' + url + '" target="_blank" rel="noopener noreferrer" class="auto-link">' + url + '</a>';
+    });
+}
+
 function populateModalContent(modal, post) {
     // Check essential modal elements
     const essentialElements = {
         'modal-title': document.getElementById('modal-title'),
         'modal-content': document.getElementById('modal-content')
     };
-    
+
     const missingEssential = [];
     for (const [id, element] of Object.entries(essentialElements)) {
         if (!element) {
             missingEssential.push(id);
         }
     }
-    
+
     if (missingEssential.length > 0) {
         console.error('Missing essential modal elements:', missingEssential);
         return;
@@ -503,7 +515,7 @@ function populateModalContent(modal, post) {
     // Update modal content
     try {
         essentialElements['modal-title'].textContent = post.title;
-        
+
         // Show category if present
         if (post.category) {
             const categoryBadge = document.createElement('span');
@@ -511,18 +523,22 @@ function populateModalContent(modal, post) {
             categoryBadge.textContent = post.category;
             essentialElements['modal-title'].appendChild(categoryBadge);
         }
-        
-        essentialElements['modal-content'].innerHTML = post.content;
+
+        // Make URLs clickable in the content
+        essentialElements['modal-content'].innerHTML = linkifyContent(post.content);
         
         // Update author info
         updateAuthorInfo(post);
         
         // Show edit button if user is the author
         updateEditButton(post);
-        
+
+        // Update vote buttons with current counts
+        updateModalVoteButtons(post);
+
         // Load author's other scrolls
         loadAuthorOtherScrolls(post.author._id, post._id);
-        
+
     } catch (error) {
         console.error('Error updating modal content:', error);
         return;
@@ -1258,6 +1274,133 @@ function dislikePost(postId) {
     challengePost(postId);
 }
 
+// Vote from modal (upvote/downvote)
+async function voteFromModal(voteType) {
+    if (!currentPostId) {
+        console.error('No current post ID');
+        return;
+    }
+
+    const token = localStorage.getItem('sessionToken');
+    if (!isTokenValid(token)) {
+        if (window.NEXUS && window.NEXUS.openSoulModal) {
+            window.NEXUS.openSoulModal('login');
+        }
+        return;
+    }
+
+    try {
+        const endpoint = voteType === 'like' ? 'like' : 'dislike';
+        const response = await fetch(`${BLOG_API_BASE_URL}/blogs/${currentPostId}/${endpoint}`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.error || `Failed to ${voteType} post`);
+        }
+
+        const result = await response.json();
+
+        // Update both the card and modal
+        updateLikeButtons(currentPostId, result);
+        updateModalVoteButtonsFromResult(result);
+
+        // Update the post data in cache
+        if (blogPosts[currentPostId]) {
+            blogPosts[currentPostId].likes = result.likes ? result.likes.length || result.likes : 0;
+            blogPosts[currentPostId].dislikes = result.dislikes ? result.dislikes.length || result.dislikes : 0;
+        }
+    } catch (error) {
+        console.error(`Error ${voteType} post:`, error);
+        alert(`Failed to ${voteType} post: ` + error.message);
+    }
+}
+
+// Update modal vote buttons with post data
+function updateModalVoteButtons(post) {
+    const upvoteCount = document.getElementById('modalUpvoteCount');
+    const downvoteCount = document.getElementById('modalDownvoteCount');
+    const upvoteBtn = document.getElementById('modalUpvoteBtn');
+    const downvoteBtn = document.getElementById('modalDownvoteBtn');
+
+    if (upvoteCount) {
+        const likes = post.likes ? (Array.isArray(post.likes) ? post.likes.length : post.likes) : 0;
+        upvoteCount.textContent = likes;
+    }
+
+    if (downvoteCount) {
+        const dislikes = post.dislikes ? (Array.isArray(post.dislikes) ? post.dislikes.length : post.dislikes) : 0;
+        downvoteCount.textContent = dislikes;
+    }
+
+    // Check if current user has voted
+    const token = localStorage.getItem('sessionToken');
+    if (token && isTokenValid(token)) {
+        try {
+            const decoded = jwt_decode(token);
+            const userId = decoded.id;
+
+            // Check if user liked
+            if (upvoteBtn && post.likes && Array.isArray(post.likes)) {
+                if (post.likes.includes(userId)) {
+                    upvoteBtn.classList.add('voted');
+                } else {
+                    upvoteBtn.classList.remove('voted');
+                }
+            }
+
+            // Check if user disliked
+            if (downvoteBtn && post.dislikes && Array.isArray(post.dislikes)) {
+                if (post.dislikes.includes(userId)) {
+                    downvoteBtn.classList.add('voted');
+                } else {
+                    downvoteBtn.classList.remove('voted');
+                }
+            }
+        } catch (e) {
+            console.error('Error decoding token:', e);
+        }
+    }
+}
+
+// Update modal vote buttons from API result
+function updateModalVoteButtonsFromResult(result) {
+    const upvoteCount = document.getElementById('modalUpvoteCount');
+    const downvoteCount = document.getElementById('modalDownvoteCount');
+    const upvoteBtn = document.getElementById('modalUpvoteBtn');
+    const downvoteBtn = document.getElementById('modalDownvoteBtn');
+
+    if (upvoteCount && result.likes !== undefined) {
+        upvoteCount.textContent = result.likes;
+    }
+
+    if (downvoteCount && result.dislikes !== undefined) {
+        downvoteCount.textContent = result.dislikes;
+    }
+
+    // Update button states
+    if (upvoteBtn) {
+        if (result.userLiked) {
+            upvoteBtn.classList.add('voted');
+        } else {
+            upvoteBtn.classList.remove('voted');
+        }
+    }
+
+    if (downvoteBtn) {
+        if (result.userDisliked) {
+            downvoteBtn.classList.add('voted');
+        } else {
+            downvoteBtn.classList.remove('voted');
+        }
+    }
+}
+
 // Update like/dislike button states
 function updateLikeButtons(postId, result) {
     const postElement = document.getElementById(postId);
@@ -1491,6 +1634,7 @@ window.showChallengeOptions = showChallengeOptions;
 window.quickDownvote = quickDownvote;
 window.openCounterpoint = openCounterpoint;
 window.createFormalDebate = createFormalDebate;
+window.voteFromModal = voteFromModal;
 window.editCurrentPost = editCurrentPost;
 window.editPost = editPost;
 window.savePostEdit = savePostEdit;
