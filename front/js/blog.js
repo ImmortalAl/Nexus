@@ -1210,7 +1210,7 @@ async function submitCounterpoint(event) {
     }
 
     try {
-        const response = await fetch(`${BLOG_API_BASE_URL}/posts/${postId}/comments`, {
+        const response = await fetch(`${BLOG_API_BASE_URL}/comments`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -1218,6 +1218,8 @@ async function submitCounterpoint(event) {
             },
             body: JSON.stringify({
                 content: commentContent,
+                targetType: 'blog',
+                targetId: postId,
                 isCounterpoint: true
             })
         });
@@ -1237,12 +1239,12 @@ async function submitCounterpoint(event) {
         // Close modal and refresh comments
         closeCounterpointModal();
 
-        // Reload comments if we're viewing this post
-        if (currentPostId === postId) {
-            await loadComments(postId);
+        // Reload comments if we're viewing this post and comments system exists
+        if (currentPostId === postId && commentsSystem) {
+            await commentsSystem.loadComments();
         }
 
-        alert('Counterpoint submitted successfully!');
+        showNotification('Counterpoint submitted successfully!', 'success');
     } catch (error) {
         console.error('Error submitting counterpoint:', error);
         alert('Failed to submit counterpoint: ' + error.message);
