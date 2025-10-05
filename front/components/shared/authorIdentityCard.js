@@ -339,14 +339,43 @@ class AuthorIdentityCard {
     }
 
     /**
-     * Submit vote to API
+     * Submit vote to API using UnifiedVoting system
      */
     async submitVote(action) {
+        // Use the UnifiedVoting system if available
+        if (window.UnifiedVoting) {
+            return await window.UnifiedVoting.vote(this.contentType, this.contentId, action);
+        }
+
+        // Fallback to direct API call with correct endpoints
         const apiUrl = window.NEXUS_CONFIG?.API_BASE_URL || 'https://nexus-ytrg.onrender.com/api';
         const token = localStorage.getItem('sessionToken');
 
-        // Use new unified endpoint structure
-        const endpoint = `${apiUrl}/vote/${this.contentType}/${this.contentId}`;
+        let endpoint;
+        let body = {};
+
+        // Route to correct endpoint based on content type
+        switch (this.contentType) {
+            case 'blog':
+                endpoint = `${apiUrl}/blogs/${this.contentId}/${action === 'upvote' ? 'like' : 'dislike'}`;
+                break;
+            case 'comment':
+                endpoint = `${apiUrl}/comments/${this.contentId}/vote`;
+                body = { action };
+                break;
+            case 'node':
+                endpoint = `${apiUrl}/mindmap/nodes/${this.contentId}/vote`;
+                body = { value: action === 'upvote' ? 1 : -1 };
+                break;
+            case 'echo':
+                endpoint = `${apiUrl}/threads/${this.contentId}/vote`;
+                body = { action };
+                break;
+            default:
+                // Future unified endpoint
+                endpoint = `${apiUrl}/vote/${this.contentType}/${this.contentId}`;
+                body = { action };
+        }
 
         const response = await fetch(endpoint, {
             method: 'POST',
@@ -354,7 +383,7 @@ class AuthorIdentityCard {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({ action })
+            body: Object.keys(body).length > 0 ? JSON.stringify(body) : undefined
         });
 
         if (!response.ok) {
