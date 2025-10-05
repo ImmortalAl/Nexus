@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="../css/unified-modals.css?v=2.0">
     <link rel="stylesheet" href="../css/components/buttons.css?v=1.1">
     <link rel="stylesheet" href="../css/active-users.css?v=7.0">
-    <link rel="stylesheet" href="../css/mindmap.css">
+    <link rel="stylesheet" href="../css/mindmap.css?v=2.0">
     <link rel="stylesheet" href="../css/features.css?v=6.3">
     <!-- Quill editor styles -->
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
@@ -81,12 +81,10 @@
                     <!-- Node details panel -->
                     <div class="node-details-panel" id="nodeDetailsPanel">
                         <button class="close" id="closeNodeDetails">×</button>
-                        <h3 id="nodeTitle"></h3>
-                        <div class="content" id="nodeContent"></div>
-                        
-                        <div class="credibility-widget">
-                            <div>
-                                <div class="credibility-label">Credibility</div>
+
+                        <!-- Credibility badge in top-right corner -->
+                        <div class="credibility-widget" title="Node Credibility Score">
+                            <div class="credibility-badge">
                                 <div class="credibility-score" id="credibilityScore">50</div>
                             </div>
                             <div class="vote-buttons">
@@ -94,6 +92,9 @@
                                 <button id="downvoteBtn" title="Downvote"><i class="fas fa-arrow-down"></i></button>
                             </div>
                         </div>
+
+                        <h3 id="nodeTitle"></h3>
+                        <div class="content" id="nodeContent"></div>
                         
                         <div class="citations-list">
                             <h4>References</h4>

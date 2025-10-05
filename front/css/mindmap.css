@@ -274,6 +274,7 @@
     color: #e94560;
     margin-bottom: 15px;
     font-size: 18px;
+    padding-right: 100px; /* Space for credibility badge + close button */
 }
 
 .node-details-panel .content {
@@ -282,41 +283,102 @@
     line-height: 1.6;
 }
 
-/* Credibility widget */
-.credibility-widget {
+/* Improved close button */
+.node-details-panel .close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 32px;
+    height: 32px;
+    background: rgba(233, 69, 96, 0.15);
+    border: 1px solid rgba(233, 69, 96, 0.3);
+    border-radius: 50%;
     display: flex;
     align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
-    padding: 15px;
-    background: rgba(15, 52, 96, 0.3);
-    border-radius: 5px;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 18px;
+    color: #e94560;
+    line-height: 1;
+}
+
+.node-details-panel .close:hover {
+    background: rgba(233, 69, 96, 0.3);
+    border-color: #e94560;
+    transform: rotate(90deg) scale(1.1);
+    box-shadow: 0 0 15px rgba(233, 69, 96, 0.4);
+}
+
+/* Credibility widget - repositioned as subtle top-right badge */
+.credibility-widget {
+    position: absolute;
+    top: 15px;
+    right: 55px; /* Space for close button */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    background: transparent;
+    margin: 0;
+    transition: all 0.3s ease;
+}
+
+.credibility-badge {
+    min-width: 32px;
+    height: 32px;
+    padding: 0 8px;
+    background: rgba(233, 69, 96, 0.15);
+    border: 1px solid rgba(233, 69, 96, 0.3);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: help;
+    transition: all 0.3s ease;
+}
+
+.credibility-badge:hover {
+    background: rgba(233, 69, 96, 0.25);
+    border-color: rgba(233, 69, 96, 0.5);
+    transform: scale(1.05);
 }
 
 .credibility-score {
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 14px;
+    font-weight: 600;
     color: #e94560;
+    margin: 0;
 }
 
+/* Vote buttons - hidden by default, show on hover */
 .vote-buttons {
+    display: none;
+    gap: 4px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.credibility-widget:hover .vote-buttons {
     display: flex;
-    gap: 10px;
+    opacity: 1;
 }
 
 .vote-buttons button {
-    padding: 8px 15px;
+    padding: 6px 10px;
     background: rgba(233, 69, 96, 0.2);
-    border: 1px solid rgba(233, 69, 96, 0.5);
-    border-radius: 5px;
-    color: #f1f1f1;
+    border: 1px solid rgba(233, 69, 96, 0.4);
+    border-radius: 4px;
+    color: #e94560;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
+    font-size: 12px;
 }
 
 .vote-buttons button:hover {
     background: rgba(233, 69, 96, 0.4);
-    transform: scale(1.1);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(233, 69, 96, 0.3);
 }
 
 .vote-buttons button.voted {
