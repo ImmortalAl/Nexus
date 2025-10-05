@@ -12,7 +12,9 @@
       "WebFetch(domain:nexus-ytrg.onrender.com)",
       "WebFetch(domain:immortal.nexus)",
       "Bash(npm install)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(npm ls:*)",
+      "Bash(NODE_PATH=./back/node_modules node check-comments.js)"
     ],
     "deny": [],
     "ask": []

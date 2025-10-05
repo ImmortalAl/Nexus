@@ -11,16 +11,12 @@ router.get('/:targetType/:targetId', optionalAuth, async (req, res) => {
         const { targetType } = req.params;
         const targetId = decodeURIComponent(req.params.targetId);
 
-        console.log('[Comments] Fetching comments for:', { targetType, targetId });
-
         const comments = await Comment.find({
             targetType,
             targetId
         })
         .populate('author', 'username displayName avatar')
         .sort({ createdAt: -1 });
-
-        console.log(`[Comments] Found ${comments.length} comments`);
 
         res.json(comments);
     } catch (error) {
@@ -33,8 +29,6 @@ router.get('/:targetType/:targetId', optionalAuth, async (req, res) => {
 router.post('/', auth, async (req, res) => {
     try {
         const { content, targetType, targetId } = req.body;
-
-        console.log('[Comments] Creating comment with:', { targetType, targetId, contentLength: content?.length });
 
         if (!content || !targetType || !targetId) {
             return res.status(400).json({
@@ -50,7 +44,6 @@ router.post('/', auth, async (req, res) => {
         });
 
         await comment.save();
-        console.log('[Comments] Comment saved with ID:', comment._id);
 
         // Populate author info before returning
         const populatedComment = await Comment.findById(comment._id)
