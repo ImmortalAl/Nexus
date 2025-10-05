@@ -14,7 +14,8 @@
       "Bash(npm install)",
       "Bash(node:*)",
       "Bash(npm ls:*)",
-      "Bash(NODE_PATH=./back/node_modules node check-comments.js)"
+      "Bash(NODE_PATH=./back/node_modules node check-comments.js)",
+      "WebFetch(domain:github.com)"
     ],
     "deny": [],
     "ask": []
