@@ -484,7 +484,7 @@ function hideModalLoading(modal) {
 // Helper function to make URLs clickable in text
 function linkifyContent(html) {
     // URL regex pattern that matches http(s) URLs
-    const urlPattern = /(\b(https?):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gig;
+    const urlPattern = /(\b(https?):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
 
     // Replace URLs with clickable links
     return html.replace(urlPattern, function(url) {
