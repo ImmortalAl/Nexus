@@ -52,18 +52,19 @@ class CommentsSystem {
     async loadComments() {
         const listContainer = document.getElementById(`${this.containerId}-list`);
         if (!listContainer) return;
-        
+
         try {
-            
+            console.log(`[Comments] Loading comments for ${this.targetType}/${this.targetId}`);
+
             const headers = {
                 'Content-Type': 'application/json'
             };
-            
+
             // Only add auth header if user is logged in
             if (this.token) {
                 headers['Authorization'] = `Bearer ${this.token}`;
             }
-            
+
             const response = await fetch(
                 `${window.NEXUS_CONFIG.API_BASE_URL}/comments/${this.targetType}/${this.targetId}`,
                 { headers }
@@ -82,7 +83,8 @@ class CommentsSystem {
             }
             
             const data = await response.json();
-            
+            console.log(`[Comments] Received ${Array.isArray(data) ? data.length : 'unknown'} comments:`, data);
+
             // Handle different response formats
             if (Array.isArray(data)) {
                 this.comments = data;
@@ -94,7 +96,7 @@ class CommentsSystem {
                 console.warn('[Comments] Unexpected response format:', data);
                 this.comments = [];
             }
-            
+
             this.renderComments();
         } catch (error) {
             console.error('[Comments] Error loading comments:', error);
@@ -245,13 +247,15 @@ class CommentsSystem {
     async submitComment(inputField) {
         const content = inputField.value.trim();
         if (!content) return;
-        
+
         if (!this.token) {
             alert('Please log in to share your eternal thoughts.');
             return;
         }
-        
+
         try {
+            console.log(`[Comments] Submitting comment for ${this.targetType}/${this.targetId}:`, content);
+
             const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/comments`, {
                 method: 'POST',
                 headers: {
@@ -266,8 +270,9 @@ class CommentsSystem {
             });
             
             if (!response.ok) throw new Error('Failed to post comment');
-            
+
             const newComment = await response.json();
+            console.log('[Comments] Successfully submitted comment:', newComment);
             this.comments.unshift(newComment);
             this.renderComments();
             inputField.value = '';
