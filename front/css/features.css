@@ -2725,3 +2725,85 @@ body .floating-buttons button.theme-toggle#themeToggle {
         font-size: 0.9rem;
     }
 }
+
+/* ===== AUTHORIDENTITYCARD COMPONENT STYLES ===== */
+.author-identity-card {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Classic Immortal Username Font */
+.author-identity-card .username,
+.author-identity-card .author-username {
+    font-family: 'Cinzel', serif !important;
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: var(--accent);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.author-identity-card .username:hover,
+.author-identity-card .author-username:hover {
+    text-shadow: 0 2px 8px rgba(255, 94, 120, 0.4);
+    transform: translateY(-1px);
+}
+
+/* Voting controls integrated styling */
+.author-identity-card .vote-controls {
+    display: inline-flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.author-identity-card .vote-btn {
+    background: rgba(255, 94, 120, 0.1);
+    border: 1px solid rgba(255, 94, 120, 0.3);
+    color: var(--text-secondary);
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.9rem;
+}
+
+.author-identity-card .vote-btn:hover {
+    background: rgba(255, 94, 120, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.author-identity-card .vote-btn.voted,
+.author-identity-card .vote-btn.active {
+    background: rgba(255, 94, 120, 0.3);
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* Avatar styling */
+.author-identity-card .author-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 94, 120, 0.3);
+    object-fit: cover;
+}
+
+/* Compact variant for inline usage */
+.author-identity-card.compact {
+    gap: 0.5rem;
+}
+
+.author-identity-card.compact .author-avatar {
+    width: 24px;
+    height: 24px;
+}
+
+.author-identity-card.compact .username {
+    font-size: 1rem;
+}

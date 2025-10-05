@@ -186,9 +186,17 @@ class AuthorIdentityCard {
         // Create avatar using the universal system if available
         let avatarHtml = '';
         if (window.NexusAvatars) {
+            // Ensure we have a valid avatar URL or use default
+            const avatarUrl = this.author.avatar || this.author.customAvatar || null;
+
+            // Debug: Log what we're passing to avatar system
+            if (!avatarUrl) {
+                console.log('[AuthorIdentityCard] No avatar URL found for user:', username, this.author);
+            }
+
             const avatarElement = window.NexusAvatars.createAvatar({
                 username: username,
-                customAvatar: this.author.avatar,
+                customAvatar: avatarUrl,
                 size: this.size,
                 online: this.author.online,
                 mystical: this.author.isVIP || this.author.role === 'admin'
@@ -391,7 +399,38 @@ class AuthorIdentityCard {
             throw new Error(error.error || 'Vote failed');
         }
 
-        return response.json();
+        const data = await response.json();
+
+        // Normalize the response based on content type
+        return this.normalizeResponse(data);
+    }
+
+    /**
+     * Normalize response from different API formats
+     */
+    normalizeResponse(data) {
+        let normalized = {
+            upvotes: 0,
+            challenges: 0,
+            userUpvoted: false,
+            userChallenged: false
+        };
+
+        if (this.contentType === 'blog') {
+            // Blog uses likes/dislikes
+            normalized.upvotes = Array.isArray(data.likes) ? data.likes.length : (data.likes || 0);
+            normalized.challenges = Array.isArray(data.dislikes) ? data.dislikes.length : (data.dislikes || 0);
+            normalized.userUpvoted = data.userLiked || false;
+            normalized.userChallenged = data.userDisliked || false;
+        } else {
+            // Default format
+            normalized.upvotes = data.upvotes || 0;
+            normalized.challenges = data.challenges || data.downvotes || 0;
+            normalized.userUpvoted = data.userUpvoted || false;
+            normalized.userChallenged = data.userChallenged || data.userDownvoted || false;
+        }
+
+        return normalized;
     }
 
     /**
