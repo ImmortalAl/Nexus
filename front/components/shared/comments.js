@@ -54,7 +54,6 @@ class CommentsSystem {
         if (!listContainer) return;
 
         try {
-            console.log('[Comments DEBUG] Loading comments for:', this.targetType, '/', this.targetId);
 
             const headers = {
                 'Content-Type': 'application/json'
@@ -83,7 +82,6 @@ class CommentsSystem {
             }
             
             const data = await response.json();
-            console.log('[Comments DEBUG] Loaded comments:', data);
 
             // Handle different response formats
             if (Array.isArray(data)) {
@@ -254,12 +252,6 @@ class CommentsSystem {
         }
 
         try {
-            const requestData = {
-                content,
-                targetType: this.targetType,
-                targetId: this.targetId
-            };
-            console.log('[Comments DEBUG] Submitting:', requestData);
 
             const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/comments`, {
                 method: 'POST',
@@ -267,14 +259,16 @@ class CommentsSystem {
                     'Authorization': `Bearer ${this.token}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(requestData)
+                body: JSON.stringify({
+                    content,
+                    targetType: this.targetType,
+                    targetId: this.targetId
+                })
             });
             
             if (!response.ok) throw new Error('Failed to post comment');
 
             const newComment = await response.json();
-            console.log('[Comments DEBUG] Response:', newComment);
-            console.log('[Comments DEBUG] Saved with targetId:', newComment.targetId);
             this.comments.unshift(newComment);
             this.renderComments();
             inputField.value = '';

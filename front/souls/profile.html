@@ -452,7 +452,7 @@
     <script src="../js/nexus-avatar-system.js?v=2.2"></script>
     
     <!-- Comments System -->
-    <script src="../components/shared/comments.js?v=1.2"></script>
+    <script src="../components/shared/comments.js?v=1.3"></script>
     
     <!-- Initialize Immortal Nexus -->
     <script>
@@ -549,7 +549,7 @@
             // Update profile header
             const avatar = profileHeader.querySelector('.profile-avatar');
             const name = profileHeader.querySelector('.profile-name');
-            const username = profileHeader.querySelector('.profile-username');
+            const usernameElement = profileHeader.querySelector('.profile-username');
             const status = profileHeader.querySelector('.profile-status');
 
             // Use Nexus Avatar System for consistent avatar handling
@@ -571,7 +571,7 @@
             }
             
             if (name) name.textContent = userData.displayName || userData.username;
-            if (username) username.textContent = '@' + userData.username;
+            if (usernameElement) usernameElement.textContent = '@' + userData.username;
             if (status) {
                 status.textContent = userData.status || 'No status set';
                 status.style.display = 'block';
