@@ -54,7 +54,7 @@ class CommentsSystem {
         if (!listContainer) return;
 
         try {
-            console.log(`[Comments] Loading comments for ${this.targetType}/${this.targetId}`);
+            console.log('[Comments DEBUG] Loading comments for:', this.targetType, '/', this.targetId);
 
             const headers = {
                 'Content-Type': 'application/json'
@@ -83,7 +83,7 @@ class CommentsSystem {
             }
             
             const data = await response.json();
-            console.log(`[Comments] Received ${Array.isArray(data) ? data.length : 'unknown'} comments:`, data);
+            console.log('[Comments DEBUG] Loaded comments:', data);
 
             // Handle different response formats
             if (Array.isArray(data)) {
@@ -254,7 +254,12 @@ class CommentsSystem {
         }
 
         try {
-            console.log(`[Comments] Submitting comment for ${this.targetType}/${this.targetId}:`, content);
+            const requestData = {
+                content,
+                targetType: this.targetType,
+                targetId: this.targetId
+            };
+            console.log('[Comments DEBUG] Submitting:', requestData);
 
             const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/comments`, {
                 method: 'POST',
@@ -262,17 +267,14 @@ class CommentsSystem {
                     'Authorization': `Bearer ${this.token}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    content,
-                    targetType: this.targetType,
-                    targetId: this.targetId
-                })
+                body: JSON.stringify(requestData)
             });
             
             if (!response.ok) throw new Error('Failed to post comment');
 
             const newComment = await response.json();
-            console.log('[Comments] Successfully submitted comment:', newComment);
+            console.log('[Comments DEBUG] Response:', newComment);
+            console.log('[Comments DEBUG] Saved with targetId:', newComment.targetId);
             this.comments.unshift(newComment);
             this.renderComments();
             inputField.value = '';

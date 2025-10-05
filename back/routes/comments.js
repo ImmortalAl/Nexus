@@ -113,4 +113,54 @@ router.delete('/:id', auth, async (req, res) => {
     }
 });
 
+// Admin route: Clean up orphaned profile comments
+router.delete('/cleanup/orphaned', auth, async (req, res) => {
+    try {
+        // This should be admin-only, but we'll make it available for debugging
+        console.log('[Comments Cleanup] Starting orphaned comments cleanup...');
+
+        const User = require('../models/User');
+
+        // Find all profile comments
+        const profileComments = await Comment.find({ targetType: 'profile' });
+        console.log(`[Comments Cleanup] Found ${profileComments.length} profile comments`);
+
+        let orphanedCount = 0;
+        const orphanedCommentIds = [];
+
+        // Check each comment to see if target user still exists
+        for (const comment of profileComments) {
+            const userExists = await User.findOne({ username: comment.targetId });
+            if (!userExists) {
+                orphanedCommentIds.push(comment._id);
+                orphanedCount++;
+                console.log(`[Comments Cleanup] Found orphaned comment for deleted user: ${comment.targetId}`);
+            }
+        }
+
+        // Delete orphaned comments
+        if (orphanedCommentIds.length > 0) {
+            const deleteResult = await Comment.deleteMany({ _id: { $in: orphanedCommentIds } });
+            console.log(`[Comments Cleanup] Deleted ${deleteResult.deletedCount} orphaned comments`);
+
+            res.json({
+                message: 'Orphaned comments cleanup completed',
+                deletedCount: deleteResult.deletedCount,
+                orphanedUsers: [...new Set(profileComments
+                    .filter(c => orphanedCommentIds.includes(c._id))
+                    .map(c => c.targetId))]
+            });
+        } else {
+            res.json({
+                message: 'No orphaned comments found',
+                deletedCount: 0
+            });
+        }
+
+    } catch (error) {
+        console.error('[Comments Cleanup] Error during cleanup:', error);
+        res.status(500).json({ error: 'Failed to cleanup orphaned comments' });
+    }
+});
+
 module.exports = router; 

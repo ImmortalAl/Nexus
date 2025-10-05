@@ -292,8 +292,17 @@ router.delete('/:identifier', auth, adminAuth, async (req, res) => {
         
         // Delete user
         await User.findByIdAndDelete(userToDelete._id);
-        
-        // Note: Associated content (blogs, comments, etc.) will be orphaned
+
+        // Clean up orphaned profile comments for this user
+        const Comment = require('../models/Comment');
+        const deletedCommentsCount = await Comment.deleteMany({
+            targetType: 'profile',
+            targetId: deletedUsername
+        });
+
+        console.log(`[User Deletion] Cleaned up ${deletedCommentsCount.deletedCount} profile comments for deleted user: ${deletedUsername}`);
+
+        // Note: Other content (blogs, user-authored comments, etc.) will be orphaned
         // This is intentional to preserve content history
         
         res.json({ 
