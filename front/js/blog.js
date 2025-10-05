@@ -1403,21 +1403,21 @@ function updateModalVoteButtons(post) {
             const decoded = jwt_decode(token);
             const userId = decoded.id;
 
-            // Check if user liked
+            // Check if user liked (use both 'active' and 'voted' for compatibility)
             if (upvoteBtn && post.likes && Array.isArray(post.likes)) {
                 if (post.likes.includes(userId)) {
-                    upvoteBtn.classList.add('voted');
+                    upvoteBtn.classList.add('voted', 'active');
                 } else {
-                    upvoteBtn.classList.remove('voted');
+                    upvoteBtn.classList.remove('voted', 'active');
                 }
             }
 
-            // Check if user challenged (disliked)
+            // Check if user challenged/disliked (use both 'active' and 'voted' for compatibility)
             if (challengeBtn && post.dislikes && Array.isArray(post.dislikes)) {
                 if (post.dislikes.includes(userId)) {
-                    challengeBtn.classList.add('voted');
+                    challengeBtn.classList.add('voted', 'active');
                 } else {
-                    challengeBtn.classList.remove('voted');
+                    challengeBtn.classList.remove('voted', 'active');
                 }
             }
         } catch (e) {
@@ -1441,20 +1441,20 @@ function updateModalVoteButtonsFromResult(result) {
         challengeCount.textContent = result.dislikes;
     }
 
-    // Update button states
+    // Update button states (use both 'active' and 'voted' for compatibility)
     if (upvoteBtn) {
         if (result.userLiked) {
-            upvoteBtn.classList.add('voted');
+            upvoteBtn.classList.add('voted', 'active');
         } else {
-            upvoteBtn.classList.remove('voted');
+            upvoteBtn.classList.remove('voted', 'active');
         }
     }
 
     if (challengeBtn) {
         if (result.userDisliked) {
-            challengeBtn.classList.add('voted');
+            challengeBtn.classList.add('voted', 'active');
         } else {
-            challengeBtn.classList.remove('voted');
+            challengeBtn.classList.remove('voted', 'active');
         }
     }
 }
@@ -1474,20 +1474,20 @@ function updateLikeButtons(postId, result) {
     if (likeCount) likeCount.textContent = result.likes;
     if (challengeCount) challengeCount.textContent = result.dislikes;
 
-    // Update button states
+    // Update button states (use both 'active' and 'voted' for compatibility)
     if (likeBtn) {
         if (result.userLiked) {
-            likeBtn.classList.add('active');
+            likeBtn.classList.add('active', 'voted');
         } else {
-            likeBtn.classList.remove('active');
+            likeBtn.classList.remove('active', 'voted');
         }
     }
 
     if (challengeBtn) {
         if (result.userDisliked) {
-            challengeBtn.classList.add('active');
+            challengeBtn.classList.add('active', 'voted');
         } else {
-            challengeBtn.classList.remove('active');
+            challengeBtn.classList.remove('active', 'voted');
         }
     }
 }
