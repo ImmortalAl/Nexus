@@ -1061,12 +1061,26 @@ function showChallengeOptions(postId) {
     `;
 
     // Find the challenge button and position dropdown
-    const challengeBtn = document.querySelector(`button[data-post-id="${postId}"].challenge-btn`) || 
-                         document.querySelector(`button[onclick*="challengePost('${postId}')"]`);
-    
+    const challengeBtn = document.querySelector(`button[data-post-id="${postId}"].challenge-btn`) ||
+                         document.querySelector(`button[onclick*="challengePost('${postId}')"]`) ||
+                         document.getElementById('modalChallengeBtn');
+
     if (challengeBtn) {
-        challengeBtn.parentElement.style.position = 'relative';
-        challengeBtn.parentElement.appendChild(dropdown);
+        // Check if it's in the modal header
+        const isInModalHeader = challengeBtn.closest('.modal-header-bar');
+
+        if (isInModalHeader) {
+            // Position relative to modal-vote-controls for modal
+            const voteControls = challengeBtn.closest('.modal-vote-controls');
+            if (voteControls) {
+                voteControls.style.position = 'relative';
+                voteControls.appendChild(dropdown);
+            }
+        } else {
+            // Position relative to parent for card buttons
+            challengeBtn.parentElement.style.position = 'relative';
+            challengeBtn.parentElement.appendChild(dropdown);
+        }
     }
 
     // Close dropdown when clicking outside
@@ -1104,6 +1118,12 @@ async function quickDownvote(postId) {
 
         const result = await response.json();
         updateLikeButtons(postId, result);
+
+        // Update modal buttons if modal is open for this post
+        if (currentPostId === postId) {
+            updateModalVoteButtonsFromResult(result);
+        }
+
         showNotification('Downvoted', 'info');
     } catch (error) {
         console.error('Error downvoting post:', error);
@@ -1321,21 +1341,51 @@ async function voteFromModal(voteType) {
     }
 }
 
+// Challenge post from modal
+function challengePostFromModal() {
+    if (!currentPostId) {
+        console.error('No current post ID');
+        return;
+    }
+
+    const token = localStorage.getItem('sessionToken');
+    if (!isTokenValid(token)) {
+        if (window.NEXUS && window.NEXUS.openSoulModal) {
+            window.NEXUS.openSoulModal('login');
+        }
+        return;
+    }
+
+    // Update the challenge button's data-post-id
+    const modalChallengeBtn = document.getElementById('modalChallengeBtn');
+    if (modalChallengeBtn) {
+        modalChallengeBtn.setAttribute('data-post-id', currentPostId);
+    }
+
+    // Use the existing challengePost function
+    challengePost(currentPostId);
+}
+
 // Update modal vote buttons with post data
 function updateModalVoteButtons(post) {
     const upvoteCount = document.getElementById('modalUpvoteCount');
-    const downvoteCount = document.getElementById('modalDownvoteCount');
+    const challengeCount = document.getElementById('modalChallengeCount');
     const upvoteBtn = document.getElementById('modalUpvoteBtn');
-    const downvoteBtn = document.getElementById('modalDownvoteBtn');
+    const challengeBtn = document.getElementById('modalChallengeBtn');
 
     if (upvoteCount) {
         const likes = post.likes ? (Array.isArray(post.likes) ? post.likes.length : post.likes) : 0;
         upvoteCount.textContent = likes;
     }
 
-    if (downvoteCount) {
+    if (challengeCount) {
         const dislikes = post.dislikes ? (Array.isArray(post.dislikes) ? post.dislikes.length : post.dislikes) : 0;
-        downvoteCount.textContent = dislikes;
+        challengeCount.textContent = dislikes;
+    }
+
+    // Set the data-post-id attribute on challenge button
+    if (challengeBtn && post._id) {
+        challengeBtn.setAttribute('data-post-id', post._id);
     }
 
     // Check if current user has voted
@@ -1354,12 +1404,12 @@ function updateModalVoteButtons(post) {
                 }
             }
 
-            // Check if user disliked
-            if (downvoteBtn && post.dislikes && Array.isArray(post.dislikes)) {
+            // Check if user challenged (disliked)
+            if (challengeBtn && post.dislikes && Array.isArray(post.dislikes)) {
                 if (post.dislikes.includes(userId)) {
-                    downvoteBtn.classList.add('voted');
+                    challengeBtn.classList.add('voted');
                 } else {
-                    downvoteBtn.classList.remove('voted');
+                    challengeBtn.classList.remove('voted');
                 }
             }
         } catch (e) {
@@ -1371,16 +1421,16 @@ function updateModalVoteButtons(post) {
 // Update modal vote buttons from API result
 function updateModalVoteButtonsFromResult(result) {
     const upvoteCount = document.getElementById('modalUpvoteCount');
-    const downvoteCount = document.getElementById('modalDownvoteCount');
+    const challengeCount = document.getElementById('modalChallengeCount');
     const upvoteBtn = document.getElementById('modalUpvoteBtn');
-    const downvoteBtn = document.getElementById('modalDownvoteBtn');
+    const challengeBtn = document.getElementById('modalChallengeBtn');
 
     if (upvoteCount && result.likes !== undefined) {
         upvoteCount.textContent = result.likes;
     }
 
-    if (downvoteCount && result.dislikes !== undefined) {
-        downvoteCount.textContent = result.dislikes;
+    if (challengeCount && result.dislikes !== undefined) {
+        challengeCount.textContent = result.dislikes;
     }
 
     // Update button states
@@ -1392,11 +1442,11 @@ function updateModalVoteButtonsFromResult(result) {
         }
     }
 
-    if (downvoteBtn) {
+    if (challengeBtn) {
         if (result.userDisliked) {
-            downvoteBtn.classList.add('voted');
+            challengeBtn.classList.add('voted');
         } else {
-            downvoteBtn.classList.remove('voted');
+            challengeBtn.classList.remove('voted');
         }
     }
 }
@@ -1630,6 +1680,7 @@ window.shareCurrentPost = shareCurrentPost;
 window.likePost = likePost;
 window.dislikePost = dislikePost;
 window.challengePost = challengePost;
+window.challengePostFromModal = challengePostFromModal;
 window.showChallengeOptions = showChallengeOptions;
 window.quickDownvote = quickDownvote;
 window.openCounterpoint = openCounterpoint;

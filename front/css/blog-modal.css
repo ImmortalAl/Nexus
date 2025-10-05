@@ -151,8 +151,8 @@
     color: var(--color-mystical-purple, #9d4edd);
 }
 
-.compact-vote-btn.downvote-btn:hover {
-    color: var(--color-danger, #ff5e78);
+.compact-vote-btn.challenge-btn:hover {
+    color: var(--color-accent-gold, #ffca28);
 }
 
 .compact-vote-btn.upvote-btn.voted {
@@ -160,9 +160,9 @@
     color: var(--color-mystical-purple, #9d4edd);
 }
 
-.compact-vote-btn.downvote-btn.voted {
-    background: rgba(255, 94, 120, 0.2);
-    color: var(--color-danger, #ff5e78);
+.compact-vote-btn.challenge-btn.voted {
+    background: rgba(255, 202, 40, 0.2);
+    color: var(--color-accent-gold, #ffca28);
 }
 
 .close-modal {

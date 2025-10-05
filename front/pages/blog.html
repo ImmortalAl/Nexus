@@ -51,8 +51,8 @@
     <link rel="preload" href="../css/blog-cards.css?v=4.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="../css/blog-cards.css?v=4.1"></noscript>
     
-    <link rel="preload" href="../css/blog-modal.css?v=3.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="../css/blog-modal.css?v=3.1"></noscript>
+    <link rel="preload" href="../css/blog-modal.css?v=3.2" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/blog-modal.css?v=3.2"></noscript>
     
     <link rel="preload" href="../css/blog-forms.css?v=2.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="../css/blog-forms.css?v=2.3"></noscript>
@@ -171,13 +171,13 @@
 
                 <div class="modal-header-controls">
                     <div class="modal-vote-controls">
-                        <button class="compact-vote-btn upvote-btn" id="modalUpvoteBtn" onclick="voteFromModal('like')" title="Upvote" aria-label="Upvote this scroll">
+                        <button class="compact-vote-btn upvote-btn" id="modalUpvoteBtn" onclick="voteFromModal('like')" title="Upvote this scroll" aria-label="Upvote this scroll">
                             <i class="fas fa-chevron-up"></i>
                             <span class="vote-count" id="modalUpvoteCount">0</span>
                         </button>
-                        <button class="compact-vote-btn downvote-btn" id="modalDownvoteBtn" onclick="voteFromModal('dislike')" title="Downvote" aria-label="Downvote this scroll">
-                            <i class="fas fa-chevron-down"></i>
-                            <span class="vote-count" id="modalDownvoteCount">0</span>
+                        <button class="compact-vote-btn challenge-btn" id="modalChallengeBtn" onclick="challengePostFromModal()" title="Challenge this scroll" aria-label="Challenge this scroll" data-post-id="">
+                            <i class="fas fa-bolt"></i>
+                            <span class="vote-count" id="modalChallengeCount">0</span>
                         </button>
                     </div>
                     <button class="close-modal" onclick="closeBlogModal()" aria-label="Close modal">×</button>
