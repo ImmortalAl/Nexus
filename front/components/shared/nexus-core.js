@@ -10,11 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // For example, user menu should be initialized before components that might use it.
   
   // Initialize components only if their functions are available
+  // Note: Auth Modal auto-initializes itself, so it's not included here
   const components = [
     { name: 'initThemeManager', desc: 'Theme Manager' },
     { name: 'initUserMenu', desc: 'User Menu' },
     { name: 'initNavigation', desc: 'Navigation' },
-    { name: 'initAuthModal', desc: 'Auth Modal' },
     { name: 'initMessageModal', desc: 'Message Modal' },
     { name: 'initActiveUsers', desc: 'Active Users Sidebar' }
   ];
