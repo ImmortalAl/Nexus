@@ -628,14 +628,7 @@
             
             return `
             <div class="thread ${thread.isAnonymous ? 'anonymous' : ''}" data-id="${thread._id}">
-                <div class="thread-voting">
-                    <button class="vote-btn ${!isAuthenticated || isAuthor ? 'disabled' : ''}" data-action="upvote-thread" aria-label="Upvote" ${!isAuthenticated || isAuthor ? 'disabled' : ''} ${isAuthor ? 'title="You cannot vote on your own threads"' : ''}>
-                        <i class="fas fa-arrow-up"></i>
-                    </button>
-                    <button class="vote-btn ${!isAuthenticated || isAuthor ? 'disabled' : ''}" data-action="downvote-thread" aria-label="Downvote" ${!isAuthenticated || isAuthor ? 'disabled' : ''} ${isAuthor ? 'title="You cannot vote on your own threads"' : ''}>
-                        <i class="fas fa-arrow-down"></i>
-                    </button>
-                </div>
+                <!-- Voting will be integrated with AuthorIdentityCard -->
                 <div class="thread-main">
                     <h4 class="thread-title">
                         ${escapeHTML(thread.title)}
@@ -669,32 +662,58 @@
             </div>
         `}).join('');
         
-        // After creating the HTML, add unified user displays
+        // After creating the HTML, add AuthorIdentityCards with integrated voting
         setTimeout(() => {
-            if (!window.ImmortalNexusAvatars) return;
-
             threads.forEach(thread => {
                 const threadElement = threadList.querySelector(`.thread[data-id='${thread._id}']`);
                 if (threadElement && thread.author) {
                     const authorContainer = threadElement.querySelector('.thread-author-info');
                     if (authorContainer && authorContainer.children.length === 0) {
-                        const authorDisplay = window.ImmortalNexusAvatars.createUserDisplay({
-                            username: thread.author.username || 'Anonymous',
-                            title: thread.author.title || 'Echo Author',
-                            avatarSize: 'xs',
-                            displaySize: 'xs',
-                            compact: true,
-                            mystical: thread.author.isVIP || thread.author.role === 'admin',
-                            online: thread.author.online,
-                            customAvatar: thread.author.avatar,
-                            usernameStyle: 'immortal',
-                            enableUnifiedNavigation: true
-                        });
 
-                        if (thread.author._id) {
-                            authorDisplay.setAttribute('data-user-id', thread.author._id);
+                        // Use AuthorIdentityCard for unified voting and display
+                        if (window.AuthorIdentityCard) {
+                            // Calculate votes (threads might have different vote structure)
+                            const upvotes = thread.upvotes || thread.votes?.up || 0;
+                            const challenges = thread.downvotes || thread.votes?.down || 0;
+
+                            const identityCard = new AuthorIdentityCard({
+                                author: thread.author,
+                                contentType: 'echo',
+                                contentId: thread._id,
+                                timestamp: thread.createdAt,
+                                upvotes: upvotes,
+                                challenges: challenges,
+                                size: 'sm',
+                                variant: 'inline',
+                                showVoting: true,
+                                showTimestamp: false
+                            });
+
+                            const cardElement = identityCard.render();
+                            authorContainer.appendChild(cardElement);
+
+                        } else if (window.ImmortalNexusAvatars) {
+                            // Fallback to original avatar system
+                            const authorDisplay = window.ImmortalNexusAvatars.createUserDisplay({
+                                username: thread.author.username || 'Anonymous',
+                                title: thread.author.title || 'Echo Author',
+                                avatarSize: 'xs',
+                                displaySize: 'xs',
+                                compact: true,
+                                mystical: thread.author.isVIP || thread.author.role === 'admin',
+                                online: thread.author.online,
+                                customAvatar: thread.author.avatar,
+                                usernameStyle: 'immortal',
+                                enableUnifiedNavigation: true
+                            });
+
+                            if (thread.author._id) {
+                                authorDisplay.setAttribute('data-user-id', thread.author._id);
+                            }
+                            authorContainer.appendChild(authorDisplay);
                         }
 
+                        // Add flag button for community moderation
                         if (window.authManager.isLoggedIn() && window.authManager.getUser()?._id !== thread.author._id) {
                             const flagBtn = document.createElement('button');
                             flagBtn.className = 'flag-user-btn btn-ghost';
@@ -2018,6 +2037,10 @@
     
     <!-- Required Scripts for Immortal Nexus Avatar System -->
     <script src="../js/nexus-avatar-system.js?v=2.2"></script>
+
+    <!-- Unified Voting System -->
+    <script src="../js/shared/unifiedVoting.js?v=1.0"></script>
+    <script src="../components/shared/authorIdentityCard.js?v=1.2"></script>
 
     <!-- Error Tracking System (loads first for maximum coverage) -->
     <script src="../js/error-tracker.js?v=1.0"></script>
