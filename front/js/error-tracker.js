@@ -245,7 +245,4 @@
         getStats: ErrorTracker.getStats.bind(ErrorTracker)
     };
 
-    // Log initialization
-    console.info('Nexus Error Tracker initialized');
-
 })();
