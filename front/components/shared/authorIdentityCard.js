@@ -295,17 +295,56 @@ class AuthorIdentityCard {
     }
 
     /**
-     * Attach vote button event handlers
+     * Attach vote button event handlers with keyboard support
      */
     attachVoteHandlers(container) {
         // Handle all vote buttons and compact votes
         container.querySelectorAll('[data-action="upvote"], [data-action="challenge"]').forEach(element => {
+            // Make buttons keyboard accessible
+            element.setAttribute('tabindex', '0');
+            element.setAttribute('role', 'button');
+            element.setAttribute('aria-label', element.dataset.action === 'upvote' ? 'Upvote' : 'Challenge');
+
+            // Click handler
             element.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                this.createRippleEffect(e);
                 this.handleVote(element.dataset.action);
             });
+
+            // Keyboard support (Enter/Space)
+            element.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.createRippleEffect(e);
+                    this.handleVote(element.dataset.action);
+                }
+            });
         });
+    }
+
+    /**
+     * Create ripple effect on button click
+     */
+    createRippleEffect(event) {
+        const button = event.currentTarget;
+        const ripple = document.createElement('span');
+
+        const rect = button.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = event.clientX ? event.clientX - rect.left - size / 2 : rect.width / 2 - size / 2;
+        const y = event.clientY ? event.clientY - rect.top - size / 2 : rect.height / 2 - size / 2;
+
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = x + 'px';
+        ripple.style.top = y + 'px';
+        ripple.className = 'ripple';
+
+        button.appendChild(ripple);
+
+        setTimeout(() => ripple.remove(), 600);
     }
 
     /**
@@ -340,10 +379,34 @@ class AuthorIdentityCard {
             // Emit event for other components
             this.emitVoteEvent(action, response);
 
+            // Show success feedback
+            this.showToast(`Vote ${action === 'upvote' ? 'recorded' : 'challenged'}!`, 'success');
+
         } catch (error) {
             console.error(`[AuthorIdentityCard] Vote failed:`, error);
             this.showError('Failed to record vote');
+            this.showToast('Failed to record vote. Please try again.', 'error');
         }
+    }
+
+    /**
+     * Show toast notification
+     */
+    showToast(message, type = 'info') {
+        // Remove any existing toasts
+        document.querySelectorAll('.toast').forEach(t => t.remove());
+
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type} show`;
+        toast.textContent = message;
+
+        document.body.appendChild(toast);
+
+        // Auto-hide after 3 seconds
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
     }
 
     /**

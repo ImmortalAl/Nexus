@@ -1,0 +1,205 @@
+/* ===== IMMORTAL NEXUS Z-INDEX SYSTEM ===== */
+/* Centralized z-index management for consistent layering across the eternal realm */
+
+:root {
+    /* Base Layers (0-99) */
+    --z-hidden: -1;           /* Hidden/background elements */
+    --z-base: 1;              /* Default content */
+    --z-elevated: 2;          /* Slightly elevated content */
+    --z-float: 3;             /* Floating elements */
+
+    /* Interactive Elements (100-499) */
+    --z-dropdown: 100;        /* Dropdown menus */
+    --z-tooltip: 200;         /* Tooltips and hints */
+    --z-sticky: 250;          /* Sticky elements */
+    --z-fab: 300;            /* Floating action buttons */
+
+    /* Navigation (500-999) */
+    --z-header: 500;          /* Main header */
+    --z-nav-dropdown: 600;    /* Navigation dropdowns */
+    --z-mobile-nav: 700;      /* Mobile navigation */
+
+    /* Overlays (1000-4999) */
+    --z-overlay: 1000;        /* General overlays */
+    --z-sidebar: 1100;        /* Sidebars and panels */
+    --z-backdrop: 1200;       /* Modal backdrops */
+
+    /* Modals (5000-9999) */
+    --z-modal: 5000;          /* Standard modals */
+    --z-modal-inner: 5100;    /* Modal inner content */
+    --z-modal-dropdown: 5200; /* Dropdowns within modals */
+    --z-modal-tooltip: 5300;  /* Tooltips within modals */
+
+    /* Critical UI (10000+) */
+    --z-notification: 10000;  /* Toast notifications */
+    --z-alert: 10100;         /* Alert messages */
+    --z-system: 10200;        /* System messages */
+    --z-max: 2147483647;      /* Maximum z-index value */
+}
+
+/* Apply z-index variables to existing components */
+
+/* Headers and Navigation */
+header {
+    z-index: var(--z-header) !important;
+}
+
+.nav-dropdown,
+.dropdown-menu {
+    z-index: var(--z-nav-dropdown) !important;
+}
+
+.mobile-nav,
+.mobile-menu {
+    z-index: var(--z-mobile-nav) !important;
+}
+
+/* Floating Elements */
+.floating-buttons,
+.fab,
+.show-users-btn,
+.theme-toggle {
+    z-index: var(--z-fab) !important;
+}
+
+/* Sidebars */
+.active-users,
+.sidebar {
+    z-index: var(--z-sidebar) !important;
+}
+
+/* Modal Backdrops */
+.modal-backdrop,
+.overlay {
+    z-index: var(--z-backdrop) !important;
+}
+
+/* Modals */
+.modal,
+#blogModal,
+#soulModal,
+#messageModal,
+#counterpointModal,
+#citationModal,
+#editRelationshipModal {
+    z-index: var(--z-modal) !important;
+}
+
+.modal-content,
+.blog-modal-content,
+.modal-inner {
+    z-index: var(--z-modal-inner) !important;
+}
+
+/* Modal Close Buttons - Always on top of modal content */
+.modal .close-modal,
+.modal .close,
+.modal-header-controls {
+    z-index: calc(var(--z-modal-inner) + 10) !important;
+    position: relative;
+}
+
+/* Dropdowns within modals */
+.modal .dropdown,
+.modal .challenge-dropdown,
+.modal .select-dropdown {
+    z-index: var(--z-modal-dropdown) !important;
+}
+
+/* Notifications */
+.toast,
+.notification,
+.alert {
+    z-index: var(--z-notification) !important;
+}
+
+.system-message,
+.error-toast,
+.success-toast {
+    z-index: var(--z-system) !important;
+}
+
+/* Voting specific */
+.challenge-dropdown {
+    z-index: var(--z-dropdown) !important;
+}
+
+/* When in modal context */
+.modal .challenge-dropdown {
+    z-index: var(--z-modal-dropdown) !important;
+}
+
+/* Profile setup modals (legacy compatibility) */
+.profile-setup-modal {
+    z-index: var(--z-modal) !important;
+}
+
+.profile-setup-backdrop {
+    z-index: var(--z-backdrop) !important;
+}
+
+/* Tooltips */
+.tooltip,
+[data-tooltip]::after {
+    z-index: var(--z-tooltip) !important;
+}
+
+/* Modal tooltips */
+.modal .tooltip,
+.modal [data-tooltip]::after {
+    z-index: var(--z-modal-tooltip) !important;
+}
+
+/* Ensure proper stacking context */
+.has-backdrop {
+    position: relative;
+    z-index: var(--z-overlay);
+}
+
+/* Fix for specific problematic elements */
+.hero::before,
+.hero::after,
+.particle,
+.background-effect {
+    z-index: var(--z-hidden) !important;
+}
+
+/* Sticky elements */
+.sticky,
+.sticky-header,
+.sticky-nav {
+    z-index: var(--z-sticky) !important;
+}
+
+/* Dropdowns and popovers */
+.dropdown-content,
+.popover {
+    z-index: var(--z-dropdown) !important;
+}
+
+/* Loading spinners */
+.loading-overlay,
+.spinner-overlay {
+    z-index: var(--z-modal) !important;
+}
+
+/* Debug helper classes */
+.z-debug-max {
+    z-index: var(--z-max) !important;
+    outline: 3px solid red !important;
+}
+
+.z-debug-high {
+    z-index: var(--z-system) !important;
+    outline: 3px solid orange !important;
+}
+
+.z-debug-medium {
+    z-index: var(--z-modal) !important;
+    outline: 3px solid yellow !important;
+}
+
+.z-debug-low {
+    z-index: var(--z-base) !important;
+    outline: 3px solid green !important;
+}
