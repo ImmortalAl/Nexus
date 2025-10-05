@@ -1061,26 +1061,32 @@ function showChallengeOptions(postId) {
     `;
 
     // Find the challenge button and position dropdown
-    const challengeBtn = document.querySelector(`button[data-post-id="${postId}"].challenge-btn`) ||
-                         document.querySelector(`button[onclick*="challengePost('${postId}')"]`) ||
-                         document.getElementById('modalChallengeBtn');
+    // Try modal button first (by ID), then card buttons (by data-post-id or onclick)
+    const modalBtn = document.getElementById('modalChallengeBtn');
+    const cardBtn = document.querySelector(`button[data-post-id="${postId}"].challenge-btn`) ||
+                    document.querySelector(`button[onclick*="challengePost('${postId}')"]`);
 
-    if (challengeBtn) {
-        // Check if it's in the modal header
-        const isInModalHeader = challengeBtn.closest('.modal-header-bar');
+    const challengeBtn = (modalBtn && modalBtn.getAttribute('data-post-id') === postId) ? modalBtn : cardBtn;
 
-        if (isInModalHeader) {
-            // Position relative to modal-vote-controls for modal
-            const voteControls = challengeBtn.closest('.modal-vote-controls');
-            if (voteControls) {
-                voteControls.style.position = 'relative';
-                voteControls.appendChild(dropdown);
-            }
-        } else {
-            // Position relative to parent for card buttons
-            challengeBtn.parentElement.style.position = 'relative';
-            challengeBtn.parentElement.appendChild(dropdown);
+    if (!challengeBtn) {
+        console.error('[Challenge] Could not find challenge button for post:', postId);
+        return;
+    }
+
+    // Check if it's in the modal header
+    const isInModalHeader = challengeBtn.closest('.modal-header-bar');
+
+    if (isInModalHeader) {
+        // Position relative to modal-vote-controls for modal
+        const voteControls = challengeBtn.closest('.modal-vote-controls');
+        if (voteControls) {
+            voteControls.style.position = 'relative';
+            voteControls.appendChild(dropdown);
         }
+    } else {
+        // Position relative to parent for card buttons
+        challengeBtn.parentElement.style.position = 'relative';
+        challengeBtn.parentElement.appendChild(dropdown);
     }
 
     // Close dropdown when clicking outside
@@ -1356,14 +1362,14 @@ function challengePostFromModal() {
         return;
     }
 
-    // Update the challenge button's data-post-id
+    // Update the challenge button's data-post-id BEFORE calling challengePost
     const modalChallengeBtn = document.getElementById('modalChallengeBtn');
     if (modalChallengeBtn) {
         modalChallengeBtn.setAttribute('data-post-id', currentPostId);
     }
 
-    // Use the existing challengePost function
-    challengePost(currentPostId);
+    // Show challenge options dropdown directly
+    showChallengeOptions(currentPostId);
 }
 
 // Update modal vote buttons with post data
