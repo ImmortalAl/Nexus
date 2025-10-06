@@ -84,19 +84,31 @@ class UnifiedVotingSystem {
             case 'comment':
                 // New endpoint for comments
                 endpoint = `${this.apiUrl}/comments/${contentId}/vote`;
-                body = { action };
+                // Map 'challenge' to 'downvote' for API compatibility
+                body = { action: action === 'challenge' ? 'downvote' : action };
                 break;
 
             case 'echo':
                 // Message board posts
                 endpoint = `${this.apiUrl}/threads/${contentId}/vote`;
-                body = { action };
+                // Map 'challenge' to 'downvote' for API compatibility
+                body = { action: action === 'challenge' ? 'downvote' : action };
+                break;
+
+            case 'chronicle':
+                // Chronicles use consecrate/investigate endpoints
+                if (action === 'upvote' || action === 'consecrate') {
+                    endpoint = `${this.apiUrl}/chronicles/${contentId}/validate`;
+                } else {
+                    endpoint = `${this.apiUrl}/chronicles/${contentId}/challenge`;
+                }
                 break;
 
             default:
                 // Future-proof: use unified endpoint pattern
                 endpoint = `${this.apiUrl}/vote/${contentType}/${contentId}`;
-                body = { action };
+                // Map 'challenge' to 'downvote' for API compatibility
+                body = { action: action === 'challenge' ? 'downvote' : action };
         }
 
         const response = await fetch(endpoint, {

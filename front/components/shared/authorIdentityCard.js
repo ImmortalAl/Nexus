@@ -432,7 +432,8 @@ class AuthorIdentityCard {
                 break;
             case 'comment':
                 endpoint = `${apiUrl}/comments/${this.contentId}/vote`;
-                body = { action };
+                // Map 'challenge' to 'downvote' for API compatibility
+                body = { action: action === 'challenge' ? 'downvote' : action };
                 break;
             case 'node':
                 endpoint = `${apiUrl}/mindmap/nodes/${this.contentId}/vote`;
@@ -440,12 +441,14 @@ class AuthorIdentityCard {
                 break;
             case 'echo':
                 endpoint = `${apiUrl}/threads/${this.contentId}/vote`;
-                body = { action };
+                // Map 'challenge' to 'downvote' for API compatibility
+                body = { action: action === 'challenge' ? 'downvote' : action };
                 break;
             default:
                 // Future unified endpoint
                 endpoint = `${apiUrl}/vote/${this.contentType}/${this.contentId}`;
-                body = { action };
+                // Map 'challenge' to 'downvote' for API compatibility
+                body = { action: action === 'challenge' ? 'downvote' : action };
         }
 
         const response = await fetch(endpoint, {
