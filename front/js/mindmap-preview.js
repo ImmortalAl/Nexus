@@ -117,7 +117,6 @@ class MindmapPreview {
             nodeElement.innerHTML = `
                 <div class="node-content">
                     <h4>${node.title}</h4>
-                    <div class="node-score">${node.credibility.score}</div>
                 </div>
             `;
             

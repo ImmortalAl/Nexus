@@ -51,23 +51,6 @@ function injectActiveUsersSidebar() {
 
         floatingButtons.appendChild(showUsersBtn);
     }
-
-    // Create the theme toggle button if it doesn't exist in floating buttons
-    // This ensures consistent placement of the theme toggle
-    if (!floatingButtons.querySelector('[data-theme-toggle="true"]')) {
-        const themeToggle = document.createElement('button');
-        themeToggle.className = 'theme-toggle';
-        themeToggle.setAttribute('data-theme-toggle', 'true');
-        themeToggle.setAttribute('aria-label', 'Toggle theme');
-        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-
-        floatingButtons.appendChild(themeToggle);
-
-        // Notify themeManager about the new toggle
-        if (window.NEXUSTheme && typeof window.NEXUSTheme.connectExistingToggles === 'function') {
-            window.NEXUSTheme.connectExistingToggles();
-        }
-    }
 }
 
 function setupActiveUsersEvents() {
