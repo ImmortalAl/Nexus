@@ -673,6 +673,8 @@
                     if (authorContainer && authorContainer.children.length === 0) {
 
                         // Use AuthorIdentityCard for unified voting and display
+                        let authorElement = null;
+
                         if (window.AuthorIdentityCard) {
                             // Calculate votes (threads might have different vote structure)
                             const upvotes = thread.upvotes || thread.votes?.up || 0;
@@ -691,12 +693,12 @@
                                 showTimestamp: false
                             });
 
-                            const cardElement = identityCard.render();
-                            authorContainer.appendChild(cardElement);
+                            authorElement = identityCard.render();
+                            authorContainer.appendChild(authorElement);
 
-                        } else if (window.ImmortalNexusAvatars) {
+                        } else if (window.NexusAvatars) {
                             // Fallback to original avatar system
-                            const authorDisplay = window.ImmortalNexusAvatars.createUserDisplay({
+                            authorElement = window.NexusAvatars.createUserDisplay({
                                 username: thread.author.username || 'Anonymous',
                                 title: thread.author.title || 'Echo Author',
                                 avatarSize: 'xs',
@@ -710,19 +712,19 @@
                             });
 
                             if (thread.author._id) {
-                                authorDisplay.setAttribute('data-user-id', thread.author._id);
+                                authorElement.setAttribute('data-user-id', thread.author._id);
                             }
-                            authorContainer.appendChild(authorDisplay);
+                            authorContainer.appendChild(authorElement);
                         }
 
                         // Add flag button for community moderation
-                        if (window.authManager.isLoggedIn() && window.authManager.getUser()?._id !== thread.author._id) {
+                        if (authorElement && window.authManager.isLoggedIn() && window.authManager.getUser()?._id !== thread.author._id) {
                             const flagBtn = document.createElement('button');
                             flagBtn.className = 'flag-user-btn btn-ghost';
                             flagBtn.setAttribute('data-user-id', thread.author._id);
                             flagBtn.innerHTML = '<i class="fas fa-flag"></i>';
                             flagBtn.title = 'Flag for community review';
-                            
+
                             // Add click handler to prevent event bubbling and show flag modal
                             flagBtn.addEventListener('click', (e) => {
                                 e.stopPropagation();
@@ -731,11 +733,9 @@
                                     window.moderationSystem.showFlagModal(thread.author._id);
                                 }
                             });
-                            
-                            authorDisplay.appendChild(flagBtn);
+
+                            authorElement.appendChild(flagBtn);
                         }
-                        
-                        authorContainer.appendChild(authorDisplay);
                     }
                 }
             });
