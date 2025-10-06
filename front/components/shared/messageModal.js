@@ -135,8 +135,11 @@ function initMessageModal() {
         `;
 
         const modalContainer = document.createElement('div');
-        modalContainer.innerHTML = modalHTML;
-        document.body.appendChild(modalContainer.firstChild);
+        modalContainer.innerHTML = modalHTML.trim();
+        const modalElement = modalContainer.firstElementChild;
+        if (modalElement) {
+            document.body.appendChild(modalElement);
+        }
     }
 
     messageModal = document.getElementById('messageModal');
@@ -271,4 +274,12 @@ async function openMessageModal(username) {
 // Expose to global Nexus object
 window.NEXUS.initMessageModal = initMessageModal;
     window.NEXUS.openMessageModal = openMessageModal; // Still useful to expose for direct calls if needed
+
+// Auto-initialize when DOM is ready (as backup if nexus-core doesn't do it)
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMessageModal);
+} else {
+    // DOM is already ready
+    setTimeout(initMessageModal, 0);
+}
 })(); 

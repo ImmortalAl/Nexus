@@ -18,16 +18,19 @@ function injectActiveUsersSidebar() {
         `;
 
         const sidebarContainer = document.createElement('div');
-        sidebarContainer.innerHTML = sidebarHTML;
-        document.body.appendChild(sidebarContainer.firstChild);
+        sidebarContainer.innerHTML = sidebarHTML.trim();
+        const sidebarElement = sidebarContainer.firstElementChild;
+        if (sidebarElement) {
+            document.body.appendChild(sidebarElement);
+        }
     }
 
     // Create the overlay if it doesn't exist
     if (!document.getElementById('activeUsersOverlay')) {
-        const overlayHTML = '<div class="active-users-overlay" id="activeUsersOverlay"></div>';
-        const overlayContainer = document.createElement('div');
-        overlayContainer.innerHTML = overlayHTML;
-        document.body.appendChild(overlayContainer.firstChild);
+        const overlay = document.createElement('div');
+        overlay.className = 'active-users-overlay';
+        overlay.id = 'activeUsersOverlay';
+        document.body.appendChild(overlay);
     }
 
     // Create the floating buttons container if it doesn't exist
@@ -338,8 +341,13 @@ function updateActiveUsersButtonVisibility() {
 
 function initActiveUsers() {
     injectActiveUsersSidebar();
-    setupActiveUsersEvents();
-    updateActiveUsersButtonVisibility();
+
+    // Use setTimeout to ensure DOM updates have completed after injection
+    setTimeout(() => {
+        setupActiveUsersEvents();
+        updateActiveUsersButtonVisibility();
+    }, 0);
+
     // Listen for auth changes to update visibility
     window.addEventListener('authChange', updateActiveUsersButtonVisibility);
 }
