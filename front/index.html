@@ -95,9 +95,17 @@
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous"></noscript>
     
-    <!-- 9. OPTIMIZED FONTS (essential fonts only) -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Lato:wght@300;400;700&family=Cinzel:wght@400;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <!-- 9. OPTIMIZED FONTS with fallback -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Lato:wght@300;400;700&family=Cinzel:wght@400;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet';this.onerror=null;" onerror="console.warn('Google Fonts failed to load, using system fonts')">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Lato:wght@300;400;700&family=Cinzel:wght@400;600&display=swap"></noscript>
+
+    <!-- Fallback font definitions for offline/blocked scenarios -->
+    <style>
+        /* Define font families with comprehensive fallbacks */
+        body { font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; }
+        .font-cinzel, .nexus-username--mystical { font-family: 'Cinzel', Georgia, 'Times New Roman', serif; }
+    </style>
     
     <!-- Inline styles moved to optimized external CSS for better caching and performance -->
     
@@ -533,18 +541,18 @@
 
     <!-- Core Immortal Nexus Components -->
     <script src="components/shared/nexus-core.js?v=1.5"></script>
-    <script src="components/shared/authManager.js?v=1.3"></script>
+    <script src="components/shared/authManager.js?v=1.4"></script>
     <script src="components/shared/authModal.js?v=4.2"></script>
-    <script src="components/shared/apiClient.js?v=1.4"></script>
+    <script src="components/shared/apiClient.js?v=1.5"></script>
     <script src="components/shared/navigation.js?v=2.3"></script>
     <script src="components/shared/userMenu.js?v=7.2"></script>
-    <script src="components/shared/activeUsers.js?v=1.8"></script>
+    <script src="components/shared/activeUsers.js?v=1.9"></script>
     <script src="components/shared/messageModal.js?v=1.4"></script>
     
     <!-- Avatar System -->
     <script src="js/nexus-avatar-system.js?v=2.3"></script>
     <script src="js/main.js?v=3.6"></script>
-    <script src="js/mindmap-preview.js?v=1.3"></script>
+    <script src="js/mindmap-preview.js?v=1.4"></script>
     
     <!-- Optimized Hero Particles - Hardware Accelerated -->
     <script src="js/particleSystem.js?v=1.0"></script>
@@ -561,14 +569,26 @@
                 setTimeout(loadChroniclesHighlights, 200);
                 return;
             }
-            
-            // Fetch chronicles data from the chronicles endpoint
-            let response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/chronicles?limit=2&sort=createdAt`);
-            if (!response.ok) {
-                console.error('Chronicles API failed:', response.status, response.statusText);
-                throw new Error(`Failed to fetch chronicles from chronicles endpoint: ${response.status}`);
+
+            // Fetch chronicles data with error handling
+            let response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/chronicles?limit=2&sort=createdAt`, {
+                signal: AbortSignal.timeout(10000) // 10 second timeout
+            }).catch(err => {
+                console.warn('[Chronicles] Network error, API may be offline:', err.message);
+                return null;
+            });
+
+            if (!response) {
+                // Show offline message but keep existing content
+                console.warn('[Chronicles] Using fallback content');
+                return;
             }
-            
+
+            if (!response.ok) {
+                console.warn(`[Chronicles] HTTP ${response.status}, using fallback content`);
+                return;
+            }
+
             const data = await response.json();
             const chronicles = Array.isArray(data) ? data : (data.docs || data.data || []);
             
@@ -658,7 +678,7 @@
             sectionFooter.appendChild(readMoreBtn);
             
         } catch (error) {
-            console.error('Failed to load Chronicles highlights:', error);
+            console.warn('[Chronicles] Error loading highlights:', error.message);
             // Keep fallback content in DOM
         }
     }
@@ -882,10 +902,28 @@
                 setTimeout(loadEchoesHighlights, 200);
                 return;
             }
-            
-            // Fetch more threads for better curation selection
-            const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/threads?limit=10`);
-            if (!response.ok) throw new Error('Failed to fetch');
+
+            // Fetch more threads for better curation selection with error handling
+            const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/threads?limit=10`, {
+                signal: AbortSignal.timeout(10000) // 10 second timeout
+            }).catch(err => {
+                console.warn('[Echoes] Network error, API may be offline:', err.message);
+                return null;
+            });
+
+            if (!response) {
+                // Show offline message
+                const highlightsContainer = document.getElementById('echoesHighlights');
+                if (highlightsContainer) {
+                    highlightsContainer.innerHTML = '<div class="highlight-item"><h4>Echoes Temporarily Unavailable</h4><p>The eternal tapestry is being rewoven...</p></div>';
+                }
+                return;
+            }
+
+            if (!response.ok) {
+                console.warn(`[Echoes] HTTP ${response.status}`);
+                return;
+            }
 
             const data = await response.json();
             let allThreads = Array.isArray(data) ? data : (data.threads || data.docs || data.data || []);
@@ -1029,7 +1067,11 @@
             });
 
         } catch (error) {
-            console.error('Error loading echoes highlights:', error);
+            console.warn('[Echoes] Error loading highlights:', error.message);
+            const highlightsContainer = document.getElementById('echoesHighlights');
+            if (highlightsContainer) {
+                highlightsContainer.innerHTML = '<div class="highlight-item"><h4>Echoes Temporarily Unavailable</h4><p>The eternal tapestry is being rewoven...</p></div>';
+            }
         }
     }
     
@@ -1041,7 +1083,7 @@
     <script src="js/error-tracker.js?v=1.0"></script>
 
     <!-- Analytics Tracking System -->
-    <script src="js/analytics-tracker.js?v=2.0" async></script>
+    <script src="js/analytics-tracker.js?v=2.1" async></script>
     
 </body>
 </html>

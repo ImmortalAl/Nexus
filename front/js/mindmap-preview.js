@@ -41,22 +41,51 @@ class MindmapPreview {
     async loadPreviewData() {
         try {
             const apiBaseUrl = window.NEXUS_CONFIG?.API_BASE_URL || 'https://nexus-ytrg.onrender.com/api';
-            const response = await fetch(`${apiBaseUrl}/mindmap/preview`);
-            
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            const response = await fetch(`${apiBaseUrl}/mindmap/preview`, {
+                signal: AbortSignal.timeout(10000) // 10 second timeout
+            }).catch(err => {
+                // Handle network errors gracefully
+                if (err.name === 'AbortError') {
+                    console.warn('[Mindmap Preview] Request timed out, API may be offline');
+                } else {
+                    console.warn('[Mindmap Preview] Network error:', err.message);
+                }
+                return null;
+            });
+
+            if (!response) {
+                // Show offline message but don't throw
+                this.showOfflineMessage();
+                return;
             }
-            
+
+            if (!response.ok) {
+                console.warn(`[Mindmap Preview] HTTP ${response.status}`);
+                this.showOfflineMessage();
+                return;
+            }
+
             this.data = await response.json();
-            
+
             // Render the preview
             this.renderNodes();
             this.renderConnections();
             this.renderStats();
-            
+
         } catch (error) {
-            console.error('Failed to load preview data:', error);
-            throw error;
+            console.warn('[Mindmap Preview] Error loading data:', error.message);
+            this.showOfflineMessage();
+        }
+    }
+
+    showOfflineMessage() {
+        if (this.nodesContainer) {
+            this.nodesContainer.innerHTML = `
+                <div class="mindmap-offline-message">
+                    <i class="fas fa-wifi-slash"></i>
+                    <p>Mindmap preview temporarily unavailable</p>
+                </div>
+            `;
         }
     }
     

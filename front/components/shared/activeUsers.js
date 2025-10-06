@@ -157,19 +157,22 @@ async function populateActiveUsersList() {
                 throw new Error(`Online users endpoint failed: ${response.status}`);
             }
         } catch (onlineError) {
-            console.warn('[activeUsers.js] /users/online failed, trying fallback:', onlineError.message);
-            
-            // Fallback to general users endpoint
-            response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/users?_cb=${new Date().getTime()}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+            // Silently log the primary endpoint failure
+            console.warn('[ActiveUsers] Primary endpoint unavailable, trying fallback');
+
+            try {
+                // Fallback to general users endpoint
+                response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/users?_cb=${new Date().getTime()}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    signal: AbortSignal.timeout(5000) // 5 second timeout for fallback
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
                 }
-            });
-            
-            if (!response.ok) {
-                throw new Error(`Fallback users endpoint also failed: ${response.status} ${response.statusText}`);
-            }
             
             const allUsers = await response.json();
             
@@ -188,7 +191,11 @@ async function populateActiveUsersList() {
             } else {
                 throw new Error('Unexpected users response format');
             }
-            
+            } catch (fallbackError) {
+                // Both endpoints failed, show offline state gracefully
+                console.warn('[ActiveUsers] API unavailable, showing offline state');
+                fetchedUsers = [];
+            }
         }
 
         if (fetchedUsers && fetchedUsers.length > 0) {

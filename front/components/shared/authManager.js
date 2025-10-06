@@ -73,15 +73,17 @@ class AuthManager {
             const user = await window.apiClient.get('/users/me');
             this.currentUser = user;
         } catch (error) {
-            console.warn('[AuthManager] Token verification failed:', error);
-            // Only logout if it's specifically a 401 Unauthorized error
+            // Handle different error types appropriately
             if (error.error && error.error.includes('401') || error.status === 401) {
-                console.warn('[AuthManager] Token is invalid or expired. Clearing session.');
+                console.warn('[AuthManager] Token expired, clearing session');
                 this.logout();
+            } else if (error.name === 'TypeError' || error.message?.includes('NetworkError')) {
+                // Network error - API is offline, keep session
+                console.warn('[AuthManager] API offline, maintaining session');
+                this.currentUser = null;
             } else {
-                console.warn('[AuthManager] API error during initialization, keeping session for now:', error);
-                // For network errors or server issues, don't automatically logout
-                // Just set currentUser to null but keep the token
+                // Other errors - keep session but warn
+                console.warn('[AuthManager] Initialization error, maintaining session');
                 this.currentUser = null;
             }
             return;

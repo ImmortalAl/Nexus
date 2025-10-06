@@ -131,7 +131,8 @@
                     })
                 });
             } catch (error) {
-                console.error('Failed to track visit:', error);
+                // Silently fail - analytics should not break the app
+                console.warn('[Analytics] Visit tracking unavailable');
             }
         },
         
@@ -151,7 +152,8 @@
                     })
                 });
             } catch (error) {
-                console.error('Failed to track page view:', error);
+                // Silently fail - analytics should not break the app
+                console.warn('[Analytics] Page view tracking unavailable');
             }
         },
         
@@ -172,7 +174,8 @@
                     })
                 });
             } catch (error) {
-                console.error('Failed to track engagement:', error);
+                // Silently fail - analytics should not break the app
+                console.warn('[Analytics] Engagement tracking unavailable');
             }
         },
         

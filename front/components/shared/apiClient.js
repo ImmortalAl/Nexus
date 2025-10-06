@@ -149,7 +149,12 @@ const apiClient = {
             return data;
 
         } catch (error) {
-            console.error('[API Client] Network or request failed:', error);
+            // Log as warning instead of error for network issues
+            if (error.name === 'TypeError' && error.message.includes('NetworkError')) {
+                console.warn('[API Client] Network unavailable, API may be offline');
+            } else {
+                console.warn('[API Client] Request failed:', error.message);
+            }
             // Re-throw the error to be caught by the calling function
             throw error;
         }
