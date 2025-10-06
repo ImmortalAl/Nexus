@@ -286,7 +286,8 @@ class NexusAvatarSystem {
             customUrl = null,
             mystical = false,
             online = null,
-            classes = []
+            classes = [],
+            credibilityLevel = null // 'novice', 'contributor', 'sage', 'immortal'
         } = options;
 
         const img = document.createElement('img');
@@ -306,9 +307,15 @@ class NexusAvatarSystem {
         
         // Add optional classes
         if (mystical) img.classList.add('nexus-avatar--mystical');
-        
+
+        // Add credibility level classes
+        if (credibilityLevel) {
+            img.classList.add(`avatar-credibility-${credibilityLevel}`);
+        }
+
         // Create container for avatar + status dot
         const avatarContainer = document.createElement('div');
+        avatarContainer.className = 'avatar-wrapper';
         avatarContainer.style.position = 'relative';
         avatarContainer.style.display = 'inline-block';
         avatarContainer.appendChild(img);
@@ -360,7 +367,9 @@ class NexusAvatarSystem {
             clickable = true,
             onClick = null,
             enableUnifiedNavigation = true,
-            banned = false
+            banned = false,
+            credibilityLevel = null, // 'novice', 'contributor', 'sage', 'immortal'
+            credibilityScore = null // Numeric score for automatic tier calculation
         } = options;
 
         // Create container
@@ -373,13 +382,28 @@ class NexusAvatarSystem {
         
         container.className = containerClasses.join(' ');
 
+        // Calculate credibility level from score if not explicitly provided
+        let finalCredibilityLevel = credibilityLevel;
+        if (!credibilityLevel && credibilityScore !== null) {
+            if (credibilityScore >= 1000) {
+                finalCredibilityLevel = 'immortal';
+            } else if (credibilityScore >= 500) {
+                finalCredibilityLevel = 'sage';
+            } else if (credibilityScore >= 100) {
+                finalCredibilityLevel = 'contributor';
+            } else {
+                finalCredibilityLevel = 'novice';
+            }
+        }
+
         // Create avatar
         const avatar = this.createAvatar({
             username,
             size: avatarSize,
             customUrl: customAvatar,
             mystical,
-            online
+            online,
+            credibilityLevel: finalCredibilityLevel
         });
 
         // Create user info container
@@ -402,6 +426,14 @@ class NexusAvatarSystem {
             banIcon.title = 'This soul has been banned';
             usernameEl.appendChild(document.createTextNode(' '));
             usernameEl.appendChild(banIcon);
+        }
+
+        // Add credibility badge if applicable
+        if (finalCredibilityLevel && finalCredibilityLevel !== 'novice') {
+            const badge = document.createElement('span');
+            badge.className = `user-credibility-badge badge--${finalCredibilityLevel}`;
+            badge.textContent = finalCredibilityLevel.toUpperCase();
+            usernameEl.appendChild(badge);
         }
 
         // Create title element

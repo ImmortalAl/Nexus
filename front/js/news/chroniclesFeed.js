@@ -176,8 +176,19 @@ class ChroniclesFeed {
                 ` : ''}
                 
                 <div class="chronicle-actions">
+                    <!-- Compact Voting Strip -->
+                    <div class="compact-vote-strip" data-chronicle-id="${chronicle._id}">
+                        <button class="compact-vote-btn upvote-btn ${chronicle.userVote === 'upvote' ? 'active' : ''}" data-vote="upvote">
+                            <i class="fas fa-arrow-up"></i>
+                            <span class="compact-vote-count">${chronicle.upvotes || 0}</span>
+                        </button>
+                        <button class="compact-vote-btn challenge-btn ${chronicle.userVote === 'challenge' ? 'active' : ''}" data-vote="challenge">
+                            <i class="fas fa-shield-alt"></i>
+                            <span class="compact-vote-count">${chronicle.challenges || 0}</span>
+                        </button>
+                    </div>
                     <div class="voting-actions">
-                        <button class="action-btn consecrate" data-id="${chronicle._id}" data-action="consecrate" 
+                        <button class="action-btn consecrate" data-id="${chronicle._id}" data-action="consecrate"
                                 title="Consecrate this chronicle as eternal truth">
                             <i class="fas fa-certificate"></i>
                             <span>Consecrate</span>
@@ -207,13 +218,51 @@ class ChroniclesFeed {
     }
 
     attachChronicleEvents() {
+        // Compact voting button clicks
+        document.querySelectorAll('.compact-vote-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                e.stopPropagation(); // Prevent card click
+                const voteType = btn.dataset.vote;
+                const chronicleId = btn.closest('.compact-vote-strip').dataset.chronicleId;
+
+                try {
+                    // Use unified voting system if available
+                    if (window.unifiedVoting) {
+                        await window.unifiedVoting.vote('chronicle', chronicleId, voteType);
+
+                        // Update UI
+                        const strip = btn.closest('.compact-vote-strip');
+                        const upvoteBtn = strip.querySelector('.upvote-btn');
+                        const challengeBtn = strip.querySelector('.challenge-btn');
+
+                        // Toggle active states
+                        if (voteType === 'upvote') {
+                            upvoteBtn.classList.toggle('active');
+                            challengeBtn.classList.remove('active');
+                        } else if (voteType === 'challenge') {
+                            // Open 3-tier challenge modal
+                            if (!btn.classList.contains('active')) {
+                                this.openChallengeModal(chronicleId);
+                                return;
+                            }
+                            challengeBtn.classList.toggle('active');
+                            upvoteBtn.classList.remove('active');
+                        }
+                    }
+                } catch (error) {
+                    console.error('[Chronicles] Voting error:', error);
+                    this.showError('Failed to register vote');
+                }
+            });
+        });
+
         // Action button clicks
         document.querySelectorAll('.action-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation(); // Prevent card click
                 const action = e.target.closest('.action-btn').dataset.action;
                 const id = e.target.closest('.action-btn').dataset.id;
-                
+
                 switch(action) {
                     case 'consecrate':
                         this.consecrateChronicle(id);

@@ -73,8 +73,8 @@
     <link rel="preload" href="css/components/spinners.css?v=1.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="css/components/spinners.css?v=1.0"></noscript>
     
-    <link rel="preload" href="css/features.css?v=7.2" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="css/features.css?v=7.2"></noscript>
+    <link rel="preload" href="css/features.css?v=7.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/features.css?v=7.3"></noscript>
     
     <!-- 5. UNIFIED MODAL SYSTEM -->
     <link rel="preload" href="css/unified-modals.css?v=2.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -542,7 +542,7 @@
     <script src="components/shared/messageModal.js?v=1.4"></script>
     
     <!-- Avatar System -->
-    <script src="js/nexus-avatar-system.js?v=2.2"></script>
+    <script src="js/nexus-avatar-system.js?v=2.3"></script>
     <script src="js/main.js?v=3.6"></script>
     <script src="js/mindmap-preview.js?v=1.3"></script>
     
@@ -976,12 +976,55 @@
                     <span class="echo-replies">${replyCount} replies</span>
                 `;
                 
+                // Create minimalist voting row
+                const votingRow = document.createElement('div');
+                votingRow.className = 'minimal-vote-row';
+                votingRow.innerHTML = `
+                    <button class="minimal-vote-btn upvote-btn ${message.userVote === 'upvote' ? 'active' : ''}"
+                            data-thread-id="${message._id}" data-vote="upvote">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>${message.upvotes || 0}</span>
+                    </button>
+                    <button class="minimal-vote-btn challenge-btn ${message.userVote === 'challenge' ? 'active' : ''}"
+                            data-thread-id="${message._id}" data-vote="challenge">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>${message.challenges || 0}</span>
+                    </button>
+                `;
+
+                // Add event listeners to voting buttons
+                votingRow.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const btn = e.target.closest('.minimal-vote-btn');
+                    if (btn && window.unifiedVoting) {
+                        const voteType = btn.dataset.vote;
+                        const threadId = btn.dataset.threadId;
+                        window.unifiedVoting.vote('thread', threadId, voteType);
+
+                        // Update UI
+                        if (voteType === 'upvote') {
+                            btn.classList.toggle('active');
+                            votingRow.querySelector('.challenge-btn').classList.remove('active');
+                        } else if (voteType === 'challenge') {
+                            // Open challenge modal if not already active
+                            if (!btn.classList.contains('active') && window.unifiedVoting.openChallengeModal) {
+                                window.unifiedVoting.openChallengeModal(threadId);
+                            } else {
+                                btn.classList.toggle('active');
+                                votingRow.querySelector('.upvote-btn').classList.remove('active');
+                            }
+                        }
+                    }
+                });
+
                 // Assemble card
                 highlightCard.appendChild(title);
                 highlightCard.appendChild(content);
                 highlightCard.appendChild(userDisplay);
                 highlightCard.appendChild(metaDiv);
-                
+                highlightCard.appendChild(votingRow);
+
                 highlightsContainer.appendChild(highlightCard);
             });
 

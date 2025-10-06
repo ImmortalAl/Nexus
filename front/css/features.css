@@ -3644,3 +3644,289 @@ body .floating-buttons button.theme-toggle#themeToggle {
         display: none !important;
     }
 }
+
+/* ==========================================
+   REFINED VOTING SYSTEM - SUBTLE INTEGRATION
+   ========================================== */
+
+/* Compact Voting for Page Cards (Chronicles, Echoes) */
+.compact-vote-strip {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    background: rgba(26, 26, 51, 0.4);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 94, 120, 0.15);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.compact-vote-strip:hover {
+    background: rgba(26, 26, 51, 0.6);
+    border-color: rgba(255, 94, 120, 0.25);
+}
+
+.compact-vote-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 12px;
+}
+
+.compact-vote-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.compact-vote-btn.active {
+    background: rgba(157, 78, 221, 0.15);
+    color: var(--color-mystical-purple, #9d4edd);
+}
+
+.compact-vote-btn i {
+    font-size: 0.75rem;
+}
+
+.compact-vote-count {
+    font-weight: 600;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 0.3px;
+    min-width: 1rem;
+    text-align: center;
+}
+
+/* Minimalist Voting for Echoes Unbound */
+.minimal-vote-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    border-top: 1px solid rgba(255, 94, 120, 0.08);
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.minimal-vote-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.625rem;
+    background: transparent;
+    border: 1px solid transparent;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.825rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    border-radius: 8px;
+}
+
+.minimal-vote-btn:hover {
+    border-color: rgba(255, 94, 120, 0.2);
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 94, 120, 0.05);
+}
+
+.minimal-vote-btn.active {
+    border-color: rgba(157, 78, 221, 0.3);
+    background: rgba(157, 78, 221, 0.1);
+    color: var(--color-mystical-purple, #9d4edd);
+}
+
+.minimal-vote-btn i {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.minimal-vote-btn:hover i {
+    opacity: 1;
+}
+
+/* Chronicle Card Voting Integration */
+.chronicle-card .compact-vote-strip {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    margin-top: 0;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.chronicle-card:hover .compact-vote-strip {
+    opacity: 1;
+}
+
+/* Echo Card Voting Integration */
+.echo-highlight-card .minimal-vote-row {
+    margin-top: auto;
+    padding-top: 0.75rem;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+.echo-highlight-card:hover .minimal-vote-row {
+    opacity: 1;
+}
+
+/* Modal Voting - More Subtle */
+.modal .identity-vote-controls {
+    background: rgba(26, 26, 51, 0.3);
+    border-color: rgba(255, 94, 120, 0.15);
+    padding: 0.5rem 0.75rem;
+}
+
+.modal .identity-vote-btn {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.875rem;
+}
+
+/* 3-Tier User Avatar Credibility Styles */
+.avatar-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+/* Sage Level - Purple Glow */
+.avatar-credibility-sage {
+    border: 2px solid var(--color-mystical-purple, #9d4edd);
+    box-shadow: 0 0 12px rgba(157, 78, 221, 0.4);
+}
+
+.avatar-credibility-sage::after {
+    content: '✧';
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    font-size: 0.75rem;
+    color: var(--color-mystical-purple, #9d4edd);
+    text-shadow: 0 0 4px rgba(157, 78, 221, 0.8);
+    animation: twinkle 2s infinite;
+}
+
+/* Contributor Level - Blue Accent */
+.avatar-credibility-contributor {
+    border: 2px solid var(--color-secondary-blue, #4a9eff);
+    box-shadow: 0 0 8px rgba(74, 158, 255, 0.3);
+}
+
+/* Novice Level - Subtle Gray */
+.avatar-credibility-novice {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    opacity: 0.9;
+}
+
+/* Immortal Level - Gold Radiance */
+.avatar-credibility-immortal {
+    border: 3px solid var(--color-accent-gold, #ffca28);
+    box-shadow:
+        0 0 20px rgba(255, 202, 40, 0.5),
+        inset 0 0 10px rgba(255, 202, 40, 0.2);
+    animation: immortalGlow 3s ease-in-out infinite;
+}
+
+.avatar-credibility-immortal::after {
+    content: '♛';
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    font-size: 1rem;
+    color: var(--color-accent-gold, #ffca28);
+    text-shadow: 0 0 8px rgba(255, 202, 40, 0.9);
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes immortalGlow {
+    0%, 100% { filter: brightness(1) saturate(1); }
+    50% { filter: brightness(1.2) saturate(1.3); }
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+
+/* Credibility Badge for Username Display */
+.user-credibility-badge {
+    display: inline-block;
+    padding: 0.125rem 0.375rem;
+    margin-left: 0.375rem;
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    vertical-align: middle;
+}
+
+.badge--sage {
+    background: linear-gradient(135deg, rgba(157, 78, 221, 0.2), rgba(157, 78, 221, 0.1));
+    color: var(--color-mystical-purple, #9d4edd);
+    border: 1px solid rgba(157, 78, 221, 0.3);
+}
+
+.badge--contributor {
+    background: linear-gradient(135deg, rgba(74, 158, 255, 0.2), rgba(74, 158, 255, 0.1));
+    color: var(--color-secondary-blue, #4a9eff);
+    border: 1px solid rgba(74, 158, 255, 0.3);
+}
+
+.badge--novice {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.badge--immortal {
+    background: linear-gradient(135deg, rgba(255, 202, 40, 0.3), rgba(255, 202, 40, 0.15));
+    color: var(--color-accent-gold, #ffca28);
+    border: 1px solid rgba(255, 202, 40, 0.4);
+    animation: shimmer 2s linear infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .compact-vote-strip {
+        padding: 0.2rem 0.4rem;
+        gap: 0.375rem;
+    }
+
+    .compact-vote-btn {
+        padding: 0.2rem 0.375rem;
+        font-size: 0.75rem;
+    }
+
+    .minimal-vote-row {
+        gap: 0.5rem;
+        padding: 0.375rem 0;
+    }
+
+    .minimal-vote-btn {
+        padding: 0.3rem 0.5rem;
+        font-size: 0.775rem;
+    }
+
+    .chronicle-card .compact-vote-strip {
+        position: static;
+        margin-top: 0.75rem;
+        opacity: 0.85;
+    }
+}
