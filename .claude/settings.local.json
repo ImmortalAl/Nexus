@@ -15,7 +15,11 @@
       "Bash(node:*)",
       "Bash(npm ls:*)",
       "Bash(NODE_PATH=./back/node_modules node check-comments.js)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(for:*)",
+      "Bash(do)",
+      "Bash(basename:*)",
+      "Bash(done)"
     ],
     "deny": [],
     "ask": []

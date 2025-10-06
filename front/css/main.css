@@ -46,7 +46,7 @@
 @import url('messageboard.css');
 @import url('mindmap.css');
 @import url('profile-setup.css');
-@import url('sidebar.css');
+/* @import url('sidebar.css'); - Removed: consolidated into active-users.css */
 @import url('soul-comments.css');
 @import url('souls-listing.css');
 @import url('souls.css');
