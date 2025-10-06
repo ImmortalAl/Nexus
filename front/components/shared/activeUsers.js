@@ -1,11 +1,28 @@
-// activeUsers.js - Handles the active users sidebar
+// activeUsers.js v2.0 - Handles the active users sidebar
+// v2.0: Now dynamically injects sidebar HTML for true component sharing
 
 function injectActiveUsersSidebar() {
-    // Check if sidebar and button already exist (e.g. hardcoded in HTML)
-    // For this component, we'll assume the button (#showUsersBtn) and sidebar panel (#activeUsers)
-    // are already in the HTML (as per index.html structure).
-    // We only need to create and append the overlay if it's not there.
+    // Inject the Active Users sidebar HTML if it doesn't exist
+    // This ensures consistency across all pages using the Soul Scrolls style as the standard
 
+    if (!document.getElementById('activeUsers')) {
+        // Create the sidebar using the preferred Soul Scrolls style
+        const sidebarHTML = `
+            <aside class="active-users" id="activeUsers" aria-label="Active users panel">
+                <div class="active-users-header">
+                    <h3>Eternal Seekers</h3>
+                    <button class="close-sidebar" id="closeUsers" aria-label="Close sidebar">×</button>
+                </div>
+                <div id="userList"></div>
+            </aside>
+        `;
+
+        const sidebarContainer = document.createElement('div');
+        sidebarContainer.innerHTML = sidebarHTML;
+        document.body.appendChild(sidebarContainer.firstChild);
+    }
+
+    // Create the overlay if it doesn't exist
     if (!document.getElementById('activeUsersOverlay')) {
         const overlayHTML = '<div class="active-users-overlay" id="activeUsersOverlay"></div>';
         const overlayContainer = document.createElement('div');
@@ -13,26 +30,40 @@ function injectActiveUsersSidebar() {
         document.body.appendChild(overlayContainer.firstChild);
     }
 
-    // If showUsersBtn is missing but activeUsers sidebar exists, create the button
-    if (!document.getElementById('showUsersBtn') && document.getElementById('activeUsers')) {
-        // Check if floating-buttons container exists
-        let floatingButtons = document.querySelector('.floating-buttons');
-        
-        if (!floatingButtons) {
-            // Create floating buttons container
-            floatingButtons = document.createElement('div');
-            floatingButtons.className = 'floating-buttons';
-            document.body.appendChild(floatingButtons);
-        }
+    // Create the floating buttons container if it doesn't exist
+    let floatingButtons = document.querySelector('.floating-buttons');
+    if (!floatingButtons) {
+        floatingButtons = document.createElement('div');
+        floatingButtons.className = 'floating-buttons';
+        document.body.appendChild(floatingButtons);
+    }
 
-        // Create the show users button
+    // Create the show users button if it doesn't exist
+    if (!document.getElementById('showUsersBtn')) {
         const showUsersBtn = document.createElement('button');
         showUsersBtn.className = 'show-users-btn';
         showUsersBtn.id = 'showUsersBtn';
         showUsersBtn.setAttribute('aria-label', 'Show active users');
         showUsersBtn.innerHTML = '<i class="fas fa-users"></i>';
-        
+
         floatingButtons.appendChild(showUsersBtn);
+    }
+
+    // Create the theme toggle button if it doesn't exist in floating buttons
+    // This ensures consistent placement of the theme toggle
+    if (!floatingButtons.querySelector('[data-theme-toggle="true"]')) {
+        const themeToggle = document.createElement('button');
+        themeToggle.className = 'theme-toggle';
+        themeToggle.setAttribute('data-theme-toggle', 'true');
+        themeToggle.setAttribute('aria-label', 'Toggle theme');
+        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+
+        floatingButtons.appendChild(themeToggle);
+
+        // Notify themeManager about the new toggle
+        if (window.NEXUSTheme && typeof window.NEXUSTheme.connectExistingToggles === 'function') {
+            window.NEXUSTheme.connectExistingToggles();
+        }
     }
 }
 

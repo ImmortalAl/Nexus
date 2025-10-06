@@ -1,4 +1,5 @@
-// front/components/shared/messageModal.js - Standardized Module Pattern
+// front/components/shared/messageModal.js v1.5 - Standardized Module Pattern
+// v1.5: Now dynamically injects modal HTML for true component sharing
 
 (function() {
     window.NEXUS = window.NEXUS || {};
@@ -114,9 +115,33 @@ let messageModal, recipientNameElement, messageInputElement, messageHistoryEleme
     }
 
 function initMessageModal() {
+    // Inject the Message Modal HTML if it doesn't exist
+    if (!document.getElementById('messageModal')) {
+        const modalHTML = `
+            <div id="messageModal" class="modal" aria-hidden="true">
+                <div class="message-modal-content" role="dialog" aria-labelledby="messageTitle">
+                    <h3 id="messageTitle">Direct Message</h3>
+                    <p id="recipientName">To: Username</p>
+                    <div class="message-history" id="messageHistory"></div>
+                    <div>
+                        <input type="text" id="messageInput" placeholder="Inscribe your eternal message..." required>
+                        <div class="modal-actions">
+                            <button type="submit" id="sendMessageBtn">Send Whisper</button>
+                            <button type="button" id="closeMessageModal">Close Nexus</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const modalContainer = document.createElement('div');
+        modalContainer.innerHTML = modalHTML;
+        document.body.appendChild(modalContainer.firstChild);
+    }
+
     messageModal = document.getElementById('messageModal');
-        recipientNameElement = document.getElementById('recipientName'); 
-        messageInputElement = document.getElementById('messageInput'); 
+        recipientNameElement = document.getElementById('recipientName');
+        messageInputElement = document.getElementById('messageInput');
         messageHistoryElement = document.getElementById('messageHistory');
         sendMessageBtnElement = document.getElementById('sendMessageBtn');
         closeMessageModalBtnElement = document.getElementById('closeMessageModal');

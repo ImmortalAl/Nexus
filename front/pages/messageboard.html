@@ -38,8 +38,8 @@
     </noscript>
     
     <!-- 6. PAGE-SPECIFIC (lazy loaded) -->
-    <link rel="preload" href="../css/active-users.css?v=7.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="../css/active-users.css?v=7.1"></noscript>
+    <link rel="preload" href="../css/active-users.css?v=8.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/active-users.css?v=8.0"></noscript>
     
     <link rel="preload" href="../css/messageboard.css?v=3.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="../css/messageboard.css?v=3.1"></noscript>
@@ -60,39 +60,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.6/purify.min.js"></script>
 </head>
 <body>
-    <!-- Shared Components -->
-    <aside class="active-users" id="activeUsers" aria-label="Active users panel">
-        <div class="sidebar-header">
-            <h2>Eternal Seekers</h2>
-            <button class="close-sidebar" id="closeUsers" aria-label="Close active users panel">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div id="userList" class="user-list">
-            <!-- Active users will be populated here -->
-        </div>
-    </aside>
-    <button class="show-users-btn" id="showUsersBtn" aria-label="Show active users"><i class="fas fa-users"></i></button>
+    <!-- Active Users Sidebar, Floating Buttons, and Message Modal will be dynamically injected by shared components -->
 
     <div id="auth-modal-container">
         <!-- Populated by authModal.js -->
-    </div>
-    
-    <!-- Message Modal -->
-    <div id="messageModal" class="modal" aria-hidden="true">
-        <div class="modal-content message-modal-content" role="dialog" aria-labelledby="messageTitle">
-            <button class="modal-close" id="closeMessageModal" aria-label="Close message modal">&times;</button>
-            <h3 id="messageTitle">Direct Message</h3>
-            <p id="recipientName">To: Username</p>
-            <div class="message-history" id="messageHistory"></div>
-            <div class="message-input-section">
-                <input type="text" id="messageInput" placeholder="Inscribe your eternal message..." required>
-                <div class="modal-actions">
-                    <button type="submit" id="sendMessageBtn" class="btn btn-primary">Send Whisper</button>
-                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('closeMessageModal').click()">Close Nexus</button>
-                </div>
-            </div>
-        </div>
     </div>
     
     <header>
@@ -333,8 +304,8 @@
     <script src="../components/shared/navigation.js?v=2.3"></script>
     <script src="../components/shared/userMenu.js?v=7.2"></script>
     <script src="../components/shared/authModal.js?v=4.2"></script>
-    <script src="../components/shared/activeUsers.js?v=1.9"></script>
-    <script src="../components/shared/messageModal.js?v=1.4"></script>
+    <script src="../components/shared/activeUsers.js?v=2.0"></script>
+    <script src="../components/shared/messageModal.js?v=1.5"></script>
 
     <!-- Democracy 3.0 JavaScript -->
     <script src="../js/democracy/anonymous-submissions.js?v=1.1"></script>

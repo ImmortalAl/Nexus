@@ -31,40 +31,7 @@
     <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css"></noscript>
 </head>
 <body>
-    <!-- Active Users Sidebar (Shared Component) -->
-    <aside class="active-users" id="activeUsers" aria-label="Active users panel">
-        <div class="active-users-header">
-            <h3>Eternal Chroniclers</h3>
-            <button class="close-sidebar" id="closeUsers" aria-label="Close sidebar">×</button>
-        </div>
-        <div id="userList"></div>
-    </aside>
-
-    <!-- Floating Buttons (Shared Component) -->
-    <div class="floating-buttons">
-        <button class="show-users-btn" id="showUsersBtn" aria-label="Show active users">
-            <i class="fas fa-users"></i>
-        </button>
-        <button class="theme-toggle" data-theme-toggle="true" aria-label="Toggle theme">
-            <i class="fas fa-moon"></i>
-        </button>
-    </div>
-
-    <!-- Message Modal (Shared Component) -->
-    <div id="messageModal" class="modal" aria-hidden="true">
-        <div class="message-modal-content" role="dialog" aria-labelledby="messageTitle">
-            <h3 id="messageTitle">Direct Message</h3>
-            <p id="recipientName">To: Username</p>
-            <div class="message-history" id="messageHistory"></div>
-            <div>
-                <input type="text" id="messageInput" placeholder="Inscribe your eternal message..." required>
-                <div class="modal-actions">
-                    <button type="submit" id="sendMessageBtn">Send Whisper</button>
-                    <button type="button" id="closeMessageModal">Close Nexus</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Active Users Sidebar, Floating Buttons, and Message Modal will be dynamically injected by shared components -->
     
     <header>
         <!-- SHARED_HEADER -->
@@ -324,8 +291,8 @@
     <script src="../components/shared/navigation.js?v=2.3"></script>
     <script src="../components/shared/authModal.js?v=4.2"></script>
     <script src="../components/shared/userMenu.js?v=7.2"></script>
-    <script src="../components/shared/activeUsers.js?v=1.9"></script>
-    <script src="../components/shared/messageModal.js?v=1.4"></script>
+    <script src="../components/shared/activeUsers.js?v=2.0"></script>
+    <script src="../components/shared/messageModal.js?v=1.5"></script>
     
     <!-- Avatar System -->
     <script src="../js/nexus-avatar-system.js?v=2.3"></script>
