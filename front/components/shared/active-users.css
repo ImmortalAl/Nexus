@@ -142,76 +142,92 @@ body.sidebar-open {
     background: rgba(255, 94, 120, 0.12);
 }
 
-/* NexusAvatars System Integration - Instant Messaging Style */
-.user-item .nexus-user-display {
-    flex: 1;
-    min-width: 0;
-    gap: 0.65rem;
+/* NexusAvatars System Integration - Instant Messaging Style
+   IMPORTANT: High specificity required to override global styles.css rules */
+
+/* Active Users Sidebar Context - Override ALL NexusAvatars global styles */
+#activeUsers .user-item .nexus-user-display,
+.active-users .user-item .nexus-user-display {
+    flex: 1 !important;
+    min-width: 0 !important;
+    gap: 0.65rem !important;
+    padding: 0 !important; /* Override display size padding */
 }
 
-.user-item .nexus-avatar {
+/* Force avatar size in sidebar - override global size classes */
+#activeUsers .user-item .nexus-avatar,
+.active-users .user-item .nexus-avatar,
+#activeUsers .user-item img.nexus-avatar,
+.active-users .user-item img.nexus-avatar {
     width: 42px !important;
     height: 42px !important;
     min-width: 42px !important;
     min-height: 42px !important;
-    flex-shrink: 0;
+    flex-shrink: 0 !important;
 }
 
-.user-item .nexus-user-info {
-    flex: 1;
-    min-width: 0;
-    gap: 0.15rem;
-    display: flex;
-    flex-direction: column;
+#activeUsers .user-item .nexus-user-info,
+.active-users .user-item .nexus-user-info {
+    flex: 1 !important;
+    min-width: 0 !important;
+    gap: 0.15rem !important;
+    display: flex !important;
+    flex-direction: column !important;
 }
 
-.user-item .nexus-username {
-    font-size: 0.925rem;
-    font-weight: 600;
-    color: var(--text, #f0e6ff);
-    display: block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.3;
+#activeUsers .user-item .nexus-username,
+.active-users .user-item .nexus-username {
+    font-size: 0.925rem !important;
+    font-weight: 600 !important;
+    color: var(--text, #f0e6ff) !important;
+    display: block !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    line-height: 1.3 !important;
 }
 
-.user-item .nexus-user-title {
-    display: none; /* Hide title in compact sidebar mode */
+#activeUsers .user-item .nexus-user-title,
+.active-users .user-item .nexus-user-title {
+    display: none !important; /* Hide title in compact sidebar mode */
 }
 
-.user-item .nexus-user-status {
-    font-size: 0.8rem;
-    opacity: 0.7;
-    color: var(--text, #f0e6ff);
-    display: block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.3;
-    margin: 0;
+#activeUsers .user-item .nexus-user-status,
+.active-users .user-item .nexus-user-status {
+    font-size: 0.8rem !important;
+    opacity: 0.7 !important;
+    color: var(--text, #f0e6ff) !important;
+    display: block !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    line-height: 1.3 !important;
+    margin: 0 !important;
 }
 
-/* Online indicator dot on avatar */
-.user-item .avatar-wrapper {
-    position: relative;
+/* Online indicator dot on avatar - sidebar context */
+#activeUsers .user-item .avatar-wrapper,
+.active-users .user-item .avatar-wrapper {
+    position: relative !important;
 }
 
-.user-item .nexus-avatar[data-online="true"] {
-    position: relative;
+#activeUsers .user-item .nexus-avatar[data-online="true"],
+.active-users .user-item .nexus-avatar[data-online="true"] {
+    position: relative !important;
 }
 
-.user-item .nexus-avatar[data-online="true"]::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 12px;
-    height: 12px;
-    background: #00ff64;
-    border: 2.5px solid var(--secondary, #1a1a33);
-    border-radius: 50%;
-    box-shadow: 0 0 10px rgba(0, 255, 100, 0.7);
+#activeUsers .user-item .nexus-avatar[data-online="true"]::after,
+.active-users .user-item .nexus-avatar[data-online="true"]::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    width: 12px !important;
+    height: 12px !important;
+    background: #00ff64 !important;
+    border: 2.5px solid var(--secondary, #1a1a33) !important;
+    border-radius: 50% !important;
+    box-shadow: 0 0 10px rgba(0, 255, 100, 0.7) !important;
 }
 
 /* Legacy styles for old user-info system (kept for backwards compatibility) */
