@@ -304,7 +304,7 @@ class NexusAvatarSystem {
         img.alt = username;
         img.className = `nexus-avatar nexus-avatar--${size}`;
         img.loading = 'lazy';
-        
+
         // Add optional classes
         if (mystical) img.classList.add('nexus-avatar--mystical');
 
@@ -313,13 +313,18 @@ class NexusAvatarSystem {
             img.classList.add(`avatar-credibility-${credibilityLevel}`);
         }
 
+        // Add data-online attribute for CSS styling
+        if (online !== null) {
+            img.setAttribute('data-online', String(online));
+        }
+
         // Create container for avatar + status dot
         const avatarContainer = document.createElement('div');
         avatarContainer.className = 'avatar-wrapper';
         avatarContainer.style.position = 'relative';
         avatarContainer.style.display = 'inline-block';
         avatarContainer.appendChild(img);
-        
+
         // Add online status dot if specified
         if (online === true || online === false) {
             const statusDot = document.createElement('div');
