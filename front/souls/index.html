@@ -38,8 +38,8 @@
     <link rel="preload" href="../components/shared/active-users.css?v=9.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="../components/shared/active-users.css?v=9.0"></noscript>
     
-    <link rel="preload" href="../css/souls-listing.css?v=2.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="../css/souls-listing.css?v=2.3"></noscript>
+    <link rel="preload" href="../css/souls-listing.css?v=3.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/souls-listing.css?v=3.0"></noscript>
     
     <!-- 6. EXTERNAL RESOURCES (lazy loaded) -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous">
@@ -209,37 +209,112 @@
         }
 
         function createUserDisplay(user, additionalClass = '') {
-            if (window.NexusAvatars) {
-                const userDisplay = window.NexusAvatars.createUserDisplay({
-                    username: user.username,
-                    title: user.displayName || user.username,
-                    status: user.status || 'Eternal seeker',
-                    avatarSize: 'lg',
-                    displaySize: 'md',
-                    mystical: user.isVIP || user.role === 'admin',
-                    online: user.online,
-                    customAvatar: user.avatar,
-                    usernameStyle: 'immortal',
-                    enableUnifiedNavigation: true,
-                    banned: user.banned || false
-                });
-                
-                // Add additional class for soul status styling
-                if (additionalClass) {
-                    userDisplay.classList.add(additionalClass);
-                }
-                
-                return userDisplay;
-            } else {
-                const fallbackCard = document.createElement('div');
-                fallbackCard.className = `profile-card ${additionalClass}`;
-                fallbackCard.innerHTML = `
-                    <img src="${user.avatar || '../assets/images/default.jpg'}" alt="${user.username}">
-                    <h3>${user.displayName || user.username}</h3>
-                    <p>@${user.username}</p>
-                `;
-                return fallbackCard;
+            // Calculate credibility tier
+            const credibilityScore = user.credibilityScore || 0;
+            let credibilityTier = 'novice';
+            if (credibilityScore >= 1000) credibilityTier = 'immortal';
+            else if (credibilityScore >= 500) credibilityTier = 'sage';
+            else if (credibilityScore >= 100) credibilityTier = 'contributor';
+
+            // Create card container
+            const card = document.createElement('div');
+            card.className = `soul-profile-card ${additionalClass} credibility-${credibilityTier}`;
+
+            // Create avatar using NexusAvatars system
+            const avatar = window.NexusAvatars ? window.NexusAvatars.createAvatar({
+                username: user.username,
+                size: 'xl',
+                customUrl: user.avatar,
+                mystical: user.isVIP || user.role === 'admin',
+                online: user.online,
+                credibilityLevel: credibilityTier
+            }) : createFallbackAvatar(user);
+
+            // Create info section
+            const infoSection = document.createElement('div');
+            infoSection.className = 'soul-info';
+
+            // Username with credibility styling
+            const usernameEl = document.createElement('h3');
+            usernameEl.className = `soul-username credibility-${credibilityTier}`;
+            usernameEl.textContent = user.username;
+            if (user.banned) {
+                const banIcon = document.createElement('i');
+                banIcon.className = 'fas fa-ban';
+                banIcon.title = 'Banned';
+                usernameEl.appendChild(document.createTextNode(' '));
+                usernameEl.appendChild(banIcon);
             }
+
+            // Display name / title
+            const displayNameEl = document.createElement('p');
+            displayNameEl.className = 'soul-display-name';
+            displayNameEl.textContent = user.displayName || user.username;
+
+            // Status message
+            const statusEl = document.createElement('p');
+            statusEl.className = 'soul-status';
+            statusEl.textContent = user.status || 'Eternal seeker of truth';
+
+            // Last active
+            const lastActiveEl = document.createElement('p');
+            lastActiveEl.className = 'soul-last-active';
+            if (user.online) {
+                lastActiveEl.innerHTML = '<i class="fas fa-circle online-indicator"></i> Online now';
+            } else if (user.lastActive) {
+                const lastActiveDate = new Date(user.lastActive);
+                const daysAgo = Math.floor((Date.now() - lastActiveDate.getTime()) / (1000 * 60 * 60 * 24));
+                if (daysAgo === 0) {
+                    lastActiveEl.textContent = 'Active today';
+                } else if (daysAgo === 1) {
+                    lastActiveEl.textContent = 'Active yesterday';
+                } else if (daysAgo < 7) {
+                    lastActiveEl.textContent = `Active ${daysAgo} days ago`;
+                } else {
+                    lastActiveEl.textContent = 'Inactive';
+                }
+            } else {
+                lastActiveEl.textContent = 'Last active unknown';
+            }
+
+            // Message button
+            const messageBtn = document.createElement('button');
+            messageBtn.className = 'soul-message-btn';
+            messageBtn.innerHTML = '<i class="fas fa-envelope"></i> Message';
+            messageBtn.onclick = (e) => {
+                e.stopPropagation(); // Prevent card click
+                if (window.openMessageModal) {
+                    window.openMessageModal(user.username);
+                }
+            };
+
+            // Assemble info section
+            infoSection.appendChild(usernameEl);
+            infoSection.appendChild(displayNameEl);
+            infoSection.appendChild(statusEl);
+            infoSection.appendChild(lastActiveEl);
+            infoSection.appendChild(messageBtn);
+
+            // Assemble card
+            card.appendChild(avatar);
+            card.appendChild(infoSection);
+
+            // Click entire card to view profile (except button)
+            card.style.cursor = 'pointer';
+            card.onclick = (e) => {
+                if (e.target.closest('.soul-message-btn')) return; // Don't navigate if clicking message button
+                window.location.href = `/souls/profile.html?username=${encodeURIComponent(user.username)}`;
+            };
+
+            return card;
+        }
+
+        function createFallbackAvatar(user) {
+            const avatarEl = document.createElement('img');
+            avatarEl.className = 'soul-avatar-fallback';
+            avatarEl.src = user.avatar || '../assets/images/default.jpg';
+            avatarEl.alt = user.username;
+            return avatarEl;
         }
     </script>
     
