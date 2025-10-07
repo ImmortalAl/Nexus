@@ -22,7 +22,8 @@
       "Bash(done)",
       "Bash(do echo \"=== Processing $file ===\" grep -n \"floating-buttons\\|show-users-btn\\|active-users.*aside\\|messageModal\" /home/immortalal/sites/Nexus/front/$file)",
       "Bash(do echo \"=== $file ===\")",
-      "Bash(while read file)"
+      "Bash(while read file)",
+      "Bash(git revert:*)"
     ],
     "deny": [],
     "ask": []

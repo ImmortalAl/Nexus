@@ -215,75 +215,52 @@
 }
 
 /* ============================================================================
-   CREDIBILITY TIER STYLING - Color-coded rank system
+   CREDIBILITY TIER STYLING - 3-Tier Net Voting System
+   Based on net votes (upvotes - downvotes) from user's content
+   Matches unifiedVoting.js: elevated, neutral, below
+   NOTE: Currently uses placeholder data until backend provides aggregated votes
    ============================================================================ */
 
-/* Novice - Default (< 100) */
-.credibility-novice {
-    /* Uses default styling */
+/* Neutral - Default baseline (net votes between -2 and 9) */
+.credibility-neutral {
+    /* Uses default card styling */
 }
 
-/* Contributor - Blue/Teal (100-499) */
-.credibility-contributor {
-    border-color: rgba(64, 224, 208, 0.5) !important;
+/* Elevated - Net positive reputation (net votes >= 10) */
+.credibility-elevated {
+    /* Subtle purple/violet glow for high credibility */
+    border-color: rgba(138, 43, 226, 0.4);
 }
 
-.credibility-contributor:hover {
-    border-color: rgba(64, 224, 208, 0.7) !important;
-    box-shadow: 0 12px 30px rgba(64, 224, 208, 0.15), 0 6px 20px rgba(0, 0, 0, 0.25) !important;
+.credibility-elevated:hover {
+    border-color: rgba(138, 43, 226, 0.6);
+    box-shadow: 0 12px 30px rgba(138, 43, 226, 0.12), 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 
-.credibility-contributor .nexus-avatar,
-.credibility-contributor .soul-avatar-fallback {
-    border-color: rgba(64, 224, 208, 0.6) !important;
-}
-
-.credibility-contributor .soul-username {
-    color: #40e0d0;
-    text-shadow: 0 0 10px rgba(64, 224, 208, 0.3);
-}
-
-/* Sage - Purple/Violet (500-999) */
-.credibility-sage {
-    border-color: rgba(138, 43, 226, 0.5) !important;
-}
-
-.credibility-sage:hover {
-    border-color: rgba(138, 43, 226, 0.7) !important;
-    box-shadow: 0 12px 30px rgba(138, 43, 226, 0.15), 0 6px 20px rgba(0, 0, 0, 0.25) !important;
-}
-
-.credibility-sage .nexus-avatar,
-.credibility-sage .soul-avatar-fallback {
-    border-color: rgba(138, 43, 226, 0.6) !important;
-}
-
-.credibility-sage .soul-username {
+.credibility-elevated .soul-username {
     color: #ba55d3;
-    text-shadow: 0 0 10px rgba(138, 43, 226, 0.3);
+    text-shadow: 0 0 8px rgba(138, 43, 226, 0.25);
 }
 
-/* Immortal - Gold/Legendary (1000+) */
-.credibility-immortal {
-    border-color: rgba(255, 215, 0, 0.5) !important;
-    background: linear-gradient(135deg, rgba(26, 26, 51, 0.98), rgba(40, 35, 20, 0.95)) !important;
+/* Below - Net negative reputation (net votes <= -3) */
+.credibility-below {
+    /* Dimmed appearance for low credibility */
+    opacity: 0.7;
+    border-color: rgba(255, 94, 120, 0.25);
 }
 
-.credibility-immortal:hover {
-    border-color: rgba(255, 215, 0, 0.7) !important;
-    box-shadow: 0 12px 30px rgba(255, 215, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.25) !important;
+.credibility-below:hover {
+    opacity: 0.9;
+    border-color: rgba(255, 94, 120, 0.35);
 }
 
-.credibility-immortal .nexus-avatar,
-.credibility-immortal .soul-avatar-fallback {
-    border-color: rgba(255, 215, 0, 0.7) !important;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+.credibility-below .soul-username {
+    opacity: 0.8;
 }
 
-.credibility-immortal .soul-username {
-    color: #ffd700;
-    text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
-    font-weight: 800;
+.credibility-below .nexus-avatar,
+.credibility-below .soul-avatar-fallback {
+    opacity: 0.85;
 }
 
 .profiles-grid.loading {
@@ -527,7 +504,11 @@
 }
 
 /* ============================================================================
-   SOUL STATUS STYLING - Online/Recent/Standard
+   ACTIVITY TIER STYLING - 3-Tier Online Status System
+   Independent from credibility tiers - both can apply to same card
+   - soul-online: Currently online users (green glow, pulsing animation)
+   - soul-recent: Recently active within 7 days (pink/red accent)
+   - (none): Inactive users (default styling)
    ============================================================================ */
 
 /* Soul Online - Green glow for online users */

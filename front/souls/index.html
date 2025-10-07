@@ -38,8 +38,8 @@
     <link rel="preload" href="../components/shared/active-users.css?v=9.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="../components/shared/active-users.css?v=9.0"></noscript>
     
-    <link rel="preload" href="../css/souls-listing.css?v=3.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="../css/souls-listing.css?v=3.0"></noscript>
+    <link rel="preload" href="../css/souls-listing.css?v=4.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/souls-listing.css?v=4.0"></noscript>
     
     <!-- 6. EXTERNAL RESOURCES (lazy loaded) -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous">
@@ -209,14 +209,21 @@
         }
 
         function createUserDisplay(user, additionalClass = '') {
-            // Calculate credibility tier
-            const credibilityScore = user.credibilityScore || 0;
-            let credibilityTier = 'novice';
-            if (credibilityScore >= 1000) credibilityTier = 'immortal';
-            else if (credibilityScore >= 500) credibilityTier = 'sage';
-            else if (credibilityScore >= 100) credibilityTier = 'contributor';
+            // Calculate credibility tier based on net votes (upvotes - downvotes)
+            // TODO: Backend needs to provide aggregated voting data from user's content
+            // For now, using placeholder logic until backend endpoint exists
+            const netVotes = (user.upvotes || 0) - (user.challenges || 0);
+            let credibilityTier = 'neutral'; // Default baseline
 
-            // Create card container
+            if (netVotes >= 10) {
+                credibilityTier = 'elevated'; // Net positive reputation
+            } else if (netVotes <= -3) {
+                credibilityTier = 'below'; // Net negative reputation
+            }
+            // If between -2 and 9, remains 'neutral'
+
+            // Create card container with BOTH activity tier AND credibility tier
+            // additionalClass contains activity tier: 'soul-online', 'soul-recent', or ''
             const card = document.createElement('div');
             card.className = `soul-profile-card ${additionalClass} credibility-${credibilityTier}`;
 
