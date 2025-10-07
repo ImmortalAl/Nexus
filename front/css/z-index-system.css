@@ -63,7 +63,7 @@ header {
 }
 
 /* Sidebars */
-.active-users,
+/* .active-users z-index now managed in components/shared/active-users.css */
 .sidebar {
     z-index: var(--z-sidebar) !important;
 }

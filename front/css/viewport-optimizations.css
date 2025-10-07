@@ -615,12 +615,7 @@
         font-size: 1.1rem;
     }
 
-    .active-users {
-        width: 300px;
-        right: 2rem;
-        top: 2rem;
-        bottom: 2rem;
-    }
+    /* Active users sidebar responsive styles moved to components/shared/active-users.css */
 }
 
 /* Mobile floating elements */
@@ -637,22 +632,7 @@
         font-size: 1rem;
     }
 
-    .active-users {
-        width: calc(100vw - 2rem);
-        right: 1rem;
-        left: 1rem;
-        top: 1rem;
-        bottom: 1rem;
-        max-height: calc(100vh - 2rem);
-    }
-
-    .active-users-header {
-        padding: 1rem;
-    }
-
-    .active-users-header h3 {
-        font-size: 1.2rem;
-    }
+    /* Active users sidebar mobile styles moved to components/shared/active-users.css */
 }
 
 /* ============================================================================

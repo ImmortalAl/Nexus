@@ -3712,13 +3712,7 @@ body.user-logged-in .floating-buttons .theme-toggle {
 }
 
 /* Fix other high z-index elements that might interfere */
-.active-users {
-    z-index: var(--z-sidebar) !important;
-}
-
-.active-users.active {
-    z-index: var(--z-sidebar) !important;
-}
+/* Active users z-index now managed in components/shared/active-users.css */
 
 /* Message modal should be at same level as soul modal */
 #messageModal {

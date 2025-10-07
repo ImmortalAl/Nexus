@@ -340,9 +340,7 @@
             z-index: 2100 !important;
         }
         
-        .active-users {
-            z-index: 2000 !important;
-        }
+        /* Active users z-index now managed in components/shared/active-users.css */
         
         .mobile-nav {
             z-index: 2200 !important;
