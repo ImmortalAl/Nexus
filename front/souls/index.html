@@ -38,8 +38,8 @@
     <link rel="preload" href="../components/shared/active-users.css?v=9.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="../components/shared/active-users.css?v=9.0"></noscript>
     
-    <link rel="preload" href="../css/souls-listing.css?v=4.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="../css/souls-listing.css?v=4.0"></noscript>
+    <link rel="preload" href="../css/souls-listing.css?v=3.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/souls-listing.css?v=3.0"></noscript>
     
     <!-- 6. EXTERNAL RESOURCES (lazy loaded) -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous">
@@ -209,26 +209,12 @@
         }
 
         function createUserDisplay(user, additionalClass = '') {
-            // Calculate credibility tier based on activity/engagement
-            // This is a placeholder until backend provides aggregated vote data
-            // Tier 1 (elevated): Online users or admins
-            // Tier 2 (neutral): Recently active users (within 7 days)
-            // Tier 3 (below): Inactive users
-            let credibilityTier = 'neutral';
-
-            if (user.online || user.role === 'admin') {
-                credibilityTier = 'elevated';
-            } else if (user.lastActive || user.lastLogin) {
-                const lastActiveDate = new Date(user.lastActive || user.lastLogin);
-                const sevenDaysAgo = new Date();
-                sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-
-                if (lastActiveDate < sevenDaysAgo) {
-                    credibilityTier = 'below';
-                }
-            } else {
-                credibilityTier = 'below';
-            }
+            // Calculate credibility tier
+            const credibilityScore = user.credibilityScore || 0;
+            let credibilityTier = 'novice';
+            if (credibilityScore >= 1000) credibilityTier = 'immortal';
+            else if (credibilityScore >= 500) credibilityTier = 'sage';
+            else if (credibilityScore >= 100) credibilityTier = 'contributor';
 
             // Create card container
             const card = document.createElement('div');

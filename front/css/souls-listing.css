@@ -215,78 +215,75 @@
 }
 
 /* ============================================================================
-   CREDIBILITY TIER STYLING - 3-Tier Activity-Based System
-   Matches unifiedVoting.js tier system: elevated, neutral, below
-   NOTE: This is a temporary activity-based system. Future versions will use
-         aggregated voting data from user's content (blogs, comments, nodes)
+   CREDIBILITY TIER STYLING - Color-coded rank system
    ============================================================================ */
 
-/* Neutral - Default baseline (recently active, 0-7 days) */
-.credibility-neutral {
+/* Novice - Default (< 100) */
+.credibility-novice {
     /* Uses default styling */
 }
 
-/* Elevated - Positive tier (online users, admins) */
-.credibility-elevated {
+/* Contributor - Blue/Teal (100-499) */
+.credibility-contributor {
     border-color: rgba(64, 224, 208, 0.5) !important;
 }
 
-.credibility-elevated:hover {
+.credibility-contributor:hover {
     border-color: rgba(64, 224, 208, 0.7) !important;
     box-shadow: 0 12px 30px rgba(64, 224, 208, 0.15), 0 6px 20px rgba(0, 0, 0, 0.25) !important;
 }
 
-.credibility-elevated .nexus-avatar,
-.credibility-elevated .soul-avatar-fallback {
+.credibility-contributor .nexus-avatar,
+.credibility-contributor .soul-avatar-fallback {
     border-color: rgba(64, 224, 208, 0.6) !important;
 }
 
-.credibility-elevated .soul-username {
+.credibility-contributor .soul-username {
     color: #40e0d0;
     text-shadow: 0 0 10px rgba(64, 224, 208, 0.3);
 }
 
-/* Below - Lower tier (inactive users, > 7 days) */
-.credibility-below {
-    border-color: rgba(255, 94, 120, 0.2) !important;
-    opacity: 0.85;
+/* Sage - Purple/Violet (500-999) */
+.credibility-sage {
+    border-color: rgba(138, 43, 226, 0.5) !important;
 }
 
-.credibility-below:hover {
-    border-color: rgba(255, 94, 120, 0.35) !important;
-    box-shadow: 0 12px 30px rgba(255, 94, 120, 0.1), 0 6px 20px rgba(0, 0, 0, 0.25) !important;
-    opacity: 1;
+.credibility-sage:hover {
+    border-color: rgba(138, 43, 226, 0.7) !important;
+    box-shadow: 0 12px 30px rgba(138, 43, 226, 0.15), 0 6px 20px rgba(0, 0, 0, 0.25) !important;
 }
 
-.credibility-below .nexus-avatar,
-.credibility-below .soul-avatar-fallback {
-    border-color: rgba(255, 94, 120, 0.3) !important;
-    opacity: 0.8;
+.credibility-sage .nexus-avatar,
+.credibility-sage .soul-avatar-fallback {
+    border-color: rgba(138, 43, 226, 0.6) !important;
 }
 
-.credibility-below .soul-username {
-    opacity: 0.75;
+.credibility-sage .soul-username {
+    color: #ba55d3;
+    text-shadow: 0 0 10px rgba(138, 43, 226, 0.3);
 }
 
-/* Controversial - Special tier for highly debated content (not used for profiles) */
-.credibility-controversial {
-    border-color: rgba(255, 165, 0, 0.5) !important;
-    background: linear-gradient(135deg, rgba(26, 26, 51, 0.98), rgba(40, 30, 20, 0.95)) !important;
+/* Immortal - Gold/Legendary (1000+) */
+.credibility-immortal {
+    border-color: rgba(255, 215, 0, 0.5) !important;
+    background: linear-gradient(135deg, rgba(26, 26, 51, 0.98), rgba(40, 35, 20, 0.95)) !important;
 }
 
-.credibility-controversial:hover {
-    border-color: rgba(255, 165, 0, 0.7) !important;
-    box-shadow: 0 12px 30px rgba(255, 165, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.25) !important;
+.credibility-immortal:hover {
+    border-color: rgba(255, 215, 0, 0.7) !important;
+    box-shadow: 0 12px 30px rgba(255, 215, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.25) !important;
 }
 
-.credibility-controversial .nexus-avatar,
-.credibility-controversial .soul-avatar-fallback {
-    border-color: rgba(255, 165, 0, 0.6) !important;
+.credibility-immortal .nexus-avatar,
+.credibility-immortal .soul-avatar-fallback {
+    border-color: rgba(255, 215, 0, 0.7) !important;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
 }
 
-.credibility-controversial .soul-username {
-    color: #ffa500;
-    text-shadow: 0 0 10px rgba(255, 165, 0, 0.3);
+.credibility-immortal .soul-username {
+    color: #ffd700;
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+    font-weight: 800;
 }
 
 .profiles-grid.loading {
