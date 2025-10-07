@@ -243,7 +243,9 @@ async function populateActiveUsersList() {
                     online: isOnline,
                     customAvatar: user.avatar,
                     usernameStyle: 'immortal',
-                    enableUnifiedNavigation: true
+                    enableUnifiedNavigation: true,
+                    upvotes: user.upvotes || 0,
+                    challenges: user.challenges || 0
                 });
                 
                 // Create user item container

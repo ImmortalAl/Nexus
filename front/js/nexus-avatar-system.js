@@ -368,31 +368,44 @@ class NexusAvatarSystem {
             onClick = null,
             enableUnifiedNavigation = true,
             banned = false,
-            credibilityLevel = null, // 'novice', 'contributor', 'sage', 'immortal'
-            credibilityScore = null // Numeric score for automatic tier calculation
+            credibilityLevel = null, // 'elevated', 'neutral', 'below', 'controversial'
+            credibilityScore = null, // Numeric score for automatic tier calculation (DEPRECATED - use netVotes)
+            upvotes = null, // User's total upvotes
+            challenges = null // User's total downvotes/challenges
         } = options;
 
         // Create container
         const container = document.createElement('div');
         const containerClasses = ['nexus-user-display', `nexus-user-display--${displaySize}`];
-        
+
         if (compact) containerClasses.push('nexus-user-display--compact');
         if (banned) containerClasses.push('nexus-user-display--banned');
         if (clickable) container.style.cursor = 'pointer';
-        
+
         container.className = containerClasses.join(' ');
 
-        // Calculate credibility level from score if not explicitly provided
+        // Calculate credibility level from net votes (upvotes - challenges)
+        // Matches unifiedVoting.js 3-tier system
         let finalCredibilityLevel = credibilityLevel;
-        if (!credibilityLevel && credibilityScore !== null) {
-            if (credibilityScore >= 1000) {
-                finalCredibilityLevel = 'immortal';
-            } else if (credibilityScore >= 500) {
-                finalCredibilityLevel = 'sage';
-            } else if (credibilityScore >= 100) {
-                finalCredibilityLevel = 'contributor';
-            } else {
-                finalCredibilityLevel = 'novice';
+        if (!credibilityLevel && upvotes !== null && challenges !== null) {
+            const netVotes = upvotes - challenges;
+            const totalEngagement = upvotes + challenges;
+
+            // Controversial: High engagement, roughly equal votes
+            if (totalEngagement > 20 && Math.abs(upvotes - challenges) < 5) {
+                finalCredibilityLevel = 'controversial';
+            }
+            // Elevated: Strong positive reception
+            else if (netVotes >= 10) {
+                finalCredibilityLevel = 'elevated';
+            }
+            // Below: Significantly challenged
+            else if (netVotes <= -3) {
+                finalCredibilityLevel = 'below';
+            }
+            // Neutral: Default state
+            else {
+                finalCredibilityLevel = 'neutral';
             }
         }
 
@@ -428,8 +441,8 @@ class NexusAvatarSystem {
             usernameEl.appendChild(banIcon);
         }
 
-        // Add credibility badge if applicable
-        if (finalCredibilityLevel && finalCredibilityLevel !== 'novice') {
+        // Add credibility badge if applicable (skip neutral as it's the default)
+        if (finalCredibilityLevel && finalCredibilityLevel !== 'neutral') {
             const badge = document.createElement('span');
             badge.className = `user-credibility-badge badge--${finalCredibilityLevel}`;
             badge.textContent = finalCredibilityLevel.toUpperCase();
