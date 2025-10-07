@@ -24,7 +24,8 @@
       "Bash(do echo \"=== $file ===\")",
       "Bash(while read file)",
       "Bash(git revert:*)",
-      "Bash(xargs sed:*)"
+      "Bash(xargs sed:*)",
+      "Bash(git fetch:*)"
     ],
     "deny": [],
     "ask": []
