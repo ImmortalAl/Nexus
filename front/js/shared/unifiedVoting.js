@@ -20,8 +20,6 @@ class UnifiedVotingSystem {
         document.addEventListener('nexusVote', (e) => {
             this.notifyListeners(e.detail);
         });
-
-        console.log('[UnifiedVoting] System initialized');
     }
 
     /**
@@ -349,5 +347,3 @@ window.NEXUS.challengeContent = function(contentType, contentId) {
         return window.unifiedVoting.vote(contentType, contentId, 'challenge');
     }
 };
-
-console.log('[UnifiedVoting] API loaded and ready');

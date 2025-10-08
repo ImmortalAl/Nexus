@@ -189,11 +189,6 @@ class AuthorIdentityCard {
             // Ensure we have a valid avatar URL or use default
             const avatarUrl = this.author.avatar || this.author.customAvatar || null;
 
-            // Debug: Log what we're passing to avatar system
-            if (!avatarUrl) {
-                console.log('[AuthorIdentityCard] No avatar URL found for user:', username, this.author);
-            }
-
             const avatarElement = window.NexusAvatars.createAvatar({
                 username: username,
                 customAvatar: avatarUrl,
@@ -735,5 +730,3 @@ document.addEventListener('DOMContentLoaded', () => {
         el.replaceWith(card.render());
     });
 });
-
-console.log('[AuthorIdentityCard] Universal identity & voting system loaded v1.0.0');

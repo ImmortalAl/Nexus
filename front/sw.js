@@ -42,16 +42,12 @@ const SYNC_TAGS = {
 
 // Install event - cache static assets
 self.addEventListener('install', event => {
-  console.log('[Nexus SW] Installing service worker...');
-  
   event.waitUntil(
     caches.open(STATIC_CACHE)
       .then(cache => {
-        console.log('[Nexus SW] Caching static assets');
         return cache.addAll(STATIC_ASSETS);
       })
       .then(() => {
-        console.log('[Nexus SW] Static assets cached successfully');
         return self.skipWaiting(); // Activate immediately
       })
       .catch(error => {
@@ -62,25 +58,21 @@ self.addEventListener('install', event => {
 
 // Activate event - clean up old caches
 self.addEventListener('activate', event => {
-  console.log('[Nexus SW] Activating service worker...');
-  
   event.waitUntil(
     caches.keys()
       .then(cacheNames => {
         return Promise.all(
           cacheNames.map(cacheName => {
-            if (cacheName.startsWith('nexus-') && 
-                cacheName !== STATIC_CACHE && 
-                cacheName !== DYNAMIC_CACHE && 
+            if (cacheName.startsWith('nexus-') &&
+                cacheName !== STATIC_CACHE &&
+                cacheName !== DYNAMIC_CACHE &&
                 cacheName !== API_CACHE) {
-              console.log('[Nexus SW] Deleting old cache:', cacheName);
               return caches.delete(cacheName);
             }
           })
         );
       })
       .then(() => {
-        console.log('[Nexus SW] Service worker activated');
         return self.clients.claim(); // Take control of all pages immediately
       })
   );
@@ -268,8 +260,6 @@ function isCacheExpired(response, ttl) {
 
 // Background Sync for offline actions
 self.addEventListener('sync', event => {
-  console.log('[Nexus SW] Background sync triggered:', event.tag);
-  
   switch (event.tag) {
     case SYNC_TAGS.MESSAGE_SEND:
       event.waitUntil(syncMessages());
@@ -291,8 +281,6 @@ self.addEventListener('sync', event => {
 
 // Push notification handler
 self.addEventListener('push', event => {
-  console.log('[Nexus SW] Push notification received');
-  
   let notificationData = {
     title: 'Nexus Notification',
     body: 'You have a new update',
@@ -300,7 +288,7 @@ self.addEventListener('push', event => {
     badge: '/assets/icons/badge-72x72.png',
     tag: 'nexus-notification'
   };
-  
+
   if (event.data) {
     try {
       const data = event.data.json();
@@ -336,8 +324,6 @@ self.addEventListener('push', event => {
 
 // Notification click handler
 self.addEventListener('notificationclick', event => {
-  console.log('[Nexus SW] Notification clicked:', event.action);
-  
   event.notification.close();
   
   if (event.action === 'view' || !event.action) {
@@ -378,7 +364,6 @@ async function syncMessages() {
       });
     }
     await clearStoredData('pendingMessages');
-    console.log('[Nexus SW] Messages synced successfully');
   } catch (error) {
     console.error('[Nexus SW] Failed to sync messages:', error);
   }
@@ -398,7 +383,6 @@ async function syncBlogPosts() {
       });
     }
     await clearStoredData('pendingBlogPosts');
-    console.log('[Nexus SW] Blog posts synced successfully');
   } catch (error) {
     console.error('[Nexus SW] Failed to sync blog posts:', error);
   }
@@ -418,7 +402,6 @@ async function syncChronicleSubmissions() {
       });
     }
     await clearStoredData('pendingChronicleSubmissions');
-    console.log('[Nexus SW] Chronicle submissions synced successfully');
   } catch (error) {
     console.error('[Nexus SW] Failed to sync chronicle submissions:', error);
   }
@@ -438,7 +421,6 @@ async function syncStatusUpdates() {
       });
     }
     await clearStoredData('pendingStatusUpdates');
-    console.log('[Nexus SW] Status updates synced successfully');
   } catch (error) {
     console.error('[Nexus SW] Failed to sync status updates:', error);
   }
@@ -458,7 +440,6 @@ async function syncLikeActions() {
       });
     }
     await clearStoredData('pendingLikeActions');
-    console.log('[Nexus SW] Like actions synced successfully');
   } catch (error) {
     console.error('[Nexus SW] Failed to sync like actions:', error);
   }

@@ -228,7 +228,6 @@ async function populateActiveUsersList() {
                 
                 // Create unified user display using Nexus Avatar System
                 if (!window.NexusAvatars) {
-                    console.warn('[activeUsers.js] NexusAvatars not available yet');
                     return;
                 }
                 
