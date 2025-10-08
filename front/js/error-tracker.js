@@ -150,7 +150,7 @@
 
             try {
                 // Send to backend
-                await fetch(`${this.apiBaseUrl}/errors/report`, {
+                const response = await fetch(`${this.apiBaseUrl}/errors/report`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -173,9 +173,16 @@
                         }
                     })
                 });
+
+                // If endpoint doesn't exist (404), disable error reporting to prevent console spam
+                if (response.status === 404) {
+                    this.reportingEnabled = false;
+                    console.warn('[ErrorTracker] Error reporting endpoint not available. Error tracking disabled.');
+                    return;
+                }
             } catch (e) {
-                // Failed to send errors, add them back to queue
-                this.errorQueue = [...errors, ...this.errorQueue].slice(0, this.maxQueueSize);
+                // Network error or other fetch failure - silently fail
+                // Don't re-queue errors to prevent infinite loops
             }
         },
 
