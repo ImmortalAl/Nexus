@@ -25,7 +25,15 @@
       "Bash(while read file)",
       "Bash(git revert:*)",
       "Bash(xargs sed:*)",
-      "Bash(git fetch:*)"
+      "Bash(git fetch:*)",
+      "Bash(sort:*)",
+      "Bash(do if [ -f \"$file\" ])",
+      "Bash(then if grep -q \"z-index-system.css\" \"$file\")",
+      "Bash(then echo \"✅ $file\")",
+      "Bash(else echo \"❌ $file\")",
+      "Bash(fi)",
+      "Bash(./add-z-index-system.sh:*)",
+      "Bash(grep:*)"
     ],
     "deny": [],
     "ask": []

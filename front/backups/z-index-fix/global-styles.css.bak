@@ -1296,7 +1296,7 @@ body.light-theme .nexus-avatar {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: var(--z-modal);
+    z-index: 10000;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1726,7 +1726,7 @@ body.light-theme .nexus-avatar {
     padding: 1rem;
     max-width: 300px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    z-index: var(--z-tooltip);
+    z-index: 1000;
     display: none;
     pointer-events: none;
 }
@@ -2098,7 +2098,7 @@ body.light-theme .nexus-avatar {
     border-radius: 50%;
     cursor: pointer;
     color: var(--text);
-    z-index: var(--z-fab);
+    z-index: 250;
     transition: var(--transition);
 }
 
@@ -2409,7 +2409,7 @@ body.light-theme {
     transition: transform 0.3s ease, box-shadow 0.3s ease !important;
     animation: none !important; /* Override general .btn-primary pulse if it was causing issues */
     position: relative !important; /* Ensure z-index works if needed */
-    z-index: var(--z-elevated) !important;
+    z-index: 5 !important;
     white-space: nowrap !important; /* Prevent text wrapping */
     min-width: 140px !important;
     max-width: 200px !important;
@@ -3118,7 +3118,7 @@ main {
     position: fixed;
     bottom: 30px;
     right: 30px;
-    z-index: var(--z-tooltip);
+    z-index: 1000;
 }
 
 .floating-buttons .theme-toggle,
@@ -3174,7 +3174,7 @@ a, button, input, textarea, select, .clickable {
 /* Ensure navigation links are always on top */
 nav a {
     position: relative;
-    z-index: var(--z-nav-dropdown); /* Navigation dropdown layer */
+    z-index: 2501; /* Above header z-index */
 }
 
 /* Welcome modal CSS removed - was interfering with other modals */

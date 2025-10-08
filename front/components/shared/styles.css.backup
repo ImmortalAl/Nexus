@@ -166,7 +166,7 @@
     color: var(--text, #f0e6ff);
     cursor: pointer;
     transition: var(--transition, all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1));
-    z-index: var(--z-modal);
+    z-index: 10001;
 }
 
 .user-menu-btn:hover {
@@ -196,13 +196,13 @@
     transform: translateY(-10px);
     pointer-events: none;
     transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
-    z-index: var(--z-modal);
+    z-index: 10001;
 }
 
 /* When JS applies floating positioning, ensure it overlays all site content */
 .user-dropdown.floating {
     position: fixed !important;
-    z-index: var(--z-modal); /* Extremely high to overlay everything */
+    z-index: 99999 !important; /* Extremely high to overlay everything */
     max-height: min(60vh, 420px);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
@@ -246,7 +246,7 @@
 @media (max-width: 768px) {
     .user-menu {
         position: relative;
-        z-index: var(--z-sidebar); /* Keep this high to be above header */
+        z-index: 2501; /* Keep this high to be above header */
         overflow: visible;
     }
     
@@ -329,7 +329,7 @@
     font-size: 1.8rem;
     cursor: pointer;
     display: none; /* Hidden by default, shown in media query */
-    z-index: var(--z-header);
+    z-index: 1001;
     padding: 0.5rem;
     line-height: 1;
     transition: var(--transition, all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1));
@@ -348,7 +348,7 @@
     width: 250px;
     height: 100vh;
     background: var(--gradient-secondary, linear-gradient(to bottom, #1a1a33, rgba(26, 26, 51, 0.95)));
-    z-index: var(--z-sidebar);
+    z-index: 3600;
     padding: 1.5rem 1rem;
     box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
     overflow-y: auto;
@@ -456,7 +456,7 @@
     height: 100%;
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(2px);
-    z-index: var(--z-backdrop);
+    z-index: 3500;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1);
@@ -478,7 +478,7 @@
     display: none;
     align-items: center;
     justify-content: center;
-    z-index: var(--z-modal);
+    z-index: 100000;
     opacity: 0;
     transition: opacity 0.3s ease;
     backdrop-filter: blur(5px);
@@ -494,6 +494,7 @@
 
 .modal .modal-content {
     position: relative;
+    z-index: 12001;
     pointer-events: auto;
 }
 
@@ -511,7 +512,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: var(--z-modal);
+    z-index: 99999 !important;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -664,7 +665,7 @@
     justify-content: center;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1);
     backdrop-filter: blur(10px);
-    position: relative;
+    z-index: 20002;
 }
 
 .soul-modal .modal-content .close-modal:hover {
@@ -827,7 +828,7 @@
 
 /* Ensure message modal has highest z-index */
 #messageModal {
-    z-index: var(--z-modal); /* Higher than sidebar z-index to ensure it's always on top */
+    z-index: 100001; /* Higher than sidebar z-index to ensure it's always on top */
 }
 
 #messageModal .message-modal-content {
@@ -1160,7 +1161,7 @@ body.light-theme #messageModal .message-modal-content::before { /* Adjust messag
         align-items: center !important;
         justify-content: center !important;
         cursor: pointer !important;
-        z-index: var(--z-modal);
+        z-index: 999999 !important;
         transition: all 0.2s ease !important;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
     }
@@ -1317,7 +1318,7 @@ body.light-theme .user-dropdown .divider {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: var(--z-modal);
+    z-index: 99999;
     opacity: 0;
     visibility: hidden;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1348,7 +1349,7 @@ body.light-theme .user-dropdown .divider {
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
-    position: relative;
+    z-index: 99999;
     isolation: isolate;
 }
 
@@ -1363,6 +1364,7 @@ body.light-theme .user-dropdown .divider {
     border-bottom: 1px solid var(--border-light, #2d1b4e);
     position: relative;
     overflow: hidden;
+    z-index: 99999;
     isolation: isolate;
 }
 
@@ -1405,7 +1407,7 @@ body.light-theme .user-dropdown .divider {
     justify-content: center;
     font-size: var(--text-lg, 1.125rem);
     transition: all 0.1s ease;
-    position: relative;
+    z-index: 100000;
     isolation: isolate;
     transform: translateZ(0);
 }
@@ -2524,3 +2526,40 @@ body.light-theme .user-dropdown .divider {
 
 
 
+/* CRITICAL: Fix for Soul Modal z-index issues */
+#soulModal,
+.soul-modal {
+    z-index: 99999 !important;
+}
+
+#soulModal.active,
+.soul-modal.active {
+    display: flex !important;
+    z-index: 99999 !important;
+}
+
+.soul-modal .modal-content {
+    z-index: 100000 !important;
+}
+
+/* Ensure close button is clickable */
+.soul-modal .close-modal {
+    z-index: 100001 !important;
+    position: absolute !important;
+}
+
+// Ensure body allows overflow for fixed elements
+body {
+    overflow: visible !important;
+}
+
+// Mobile fixes
+@media (max-width: 768px) {
+    body {
+        overflow: visible !important;
+    }
+    
+    .user-dropdown {
+        z-index: 99999 !important;
+    }
+}
