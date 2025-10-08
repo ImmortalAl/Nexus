@@ -465,13 +465,19 @@ class ChroniclesFeed {
 
     async consecrateChronicle(id) {
         try {
-            // Use unified voting if available, otherwise fall back to direct API
-            if (window.unifiedVoting) {
-                await window.unifiedVoting.vote('chronicle', id, 'upvote');
-            } else {
-                const response = await window.apiClient.post(`/chronicles/${id}/validate`);
-                this.updateVotingUI(id, 'consecrate', response);
+            // Use unified voting system
+            const response = await window.unifiedVoting.vote('chronicle', id, 'upvote');
+
+            // Listen for vote updates to update UI
+            if (!this.voteListener) {
+                this.voteListener = window.unifiedVoting.addListener((detail) => {
+                    if (detail.contentType === 'chronicle') {
+                        this.updateVotingUIFromUnified(detail.contentId, detail.votes);
+                    }
+                });
             }
+
+            this.updateVotingUIFromUnified(id, response);
         } catch (error) {
             console.error('Error consecrating chronicle:', error);
             this.showError('Failed to consecrate chronicle.');
@@ -480,21 +486,64 @@ class ChroniclesFeed {
 
     async investigateChronicle(id) {
         try {
-            // Use unified voting if available, otherwise fall back to direct API
-            if (window.unifiedVoting) {
-                // Open 3-tier challenge modal for investigate
-                if (window.unifiedVoting.openChallengeModal) {
-                    window.unifiedVoting.openChallengeModal(id);
-                } else {
-                    await window.unifiedVoting.vote('chronicle', id, 'challenge');
-                }
-            } else {
-                const response = await window.apiClient.post(`/chronicles/${id}/challenge`);
-                this.updateVotingUI(id, 'investigate', response);
+            // Use unified voting system
+            const response = await window.unifiedVoting.vote('chronicle', id, 'challenge');
+
+            // Set up listener if not already done
+            if (!this.voteListener) {
+                this.voteListener = window.unifiedVoting.addListener((detail) => {
+                    if (detail.contentType === 'chronicle') {
+                        this.updateVotingUIFromUnified(detail.contentId, detail.votes);
+                    }
+                });
             }
+
+            this.updateVotingUIFromUnified(id, response);
         } catch (error) {
             console.error('Error investigating chronicle:', error);
             this.showError('Failed to investigate chronicle.');
+        }
+    }
+
+    updateVotingUIFromUnified(chronicleId, votingData) {
+        // Update card buttons with unified voting response
+        const cardConsecrateBtn = document.querySelector(`.chronicle-card[data-id="${chronicleId}"] .action-btn.consecrate .count`);
+        const cardInvestigateBtn = document.querySelector(`.chronicle-card[data-id="${chronicleId}"] .action-btn.investigate .count`);
+
+        if (cardConsecrateBtn) cardConsecrateBtn.textContent = votingData.upvotes || 0;
+        if (cardInvestigateBtn) cardInvestigateBtn.textContent = votingData.challenges || 0;
+
+        // Update modal buttons if modal is open
+        const modalConsecrateCount = document.getElementById('modalConsecrateCount');
+        const modalInvestigateCount = document.getElementById('modalInvestigateCount');
+
+        if (modalConsecrateCount) modalConsecrateCount.textContent = `(${votingData.upvotes || 0})`;
+        if (modalInvestigateCount) modalInvestigateCount.textContent = `(${votingData.challenges || 0})`;
+
+        // Update active states
+        const cardConsecrateButton = document.querySelector(`.chronicle-card[data-id="${chronicleId}"] .action-btn.consecrate`);
+        const cardInvestigateButton = document.querySelector(`.chronicle-card[data-id="${chronicleId}"] .action-btn.investigate`);
+        const modalConsecrateButton = document.getElementById('modalConsecrateBtn');
+        const modalInvestigateButton = document.getElementById('modalInvestigateBtn');
+
+        // Remove all active states first
+        [cardConsecrateButton, cardInvestigateButton, modalConsecrateButton, modalInvestigateButton].forEach(btn => {
+            if (btn) btn.classList.remove('active');
+        });
+
+        // Add active state based on user's current vote
+        if (votingData.userUpvoted) {
+            if (cardConsecrateButton) cardConsecrateButton.classList.add('active');
+            if (modalConsecrateButton) modalConsecrateButton.classList.add('active');
+        } else if (votingData.userChallenged) {
+            if (cardInvestigateButton) cardInvestigateButton.classList.add('active');
+            if (modalInvestigateButton) modalInvestigateButton.classList.add('active');
+        }
+
+        // Update credibility tier if needed
+        const chronicleCard = document.querySelector(`.chronicle-card[data-id="${chronicleId}"]`);
+        if (chronicleCard && votingData.credibilityTier) {
+            chronicleCard.dataset.credibility = votingData.credibilityTier;
         }
     }
 

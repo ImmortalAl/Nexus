@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting System Test - Immortal Nexus</title>
+    <style>
+        body {
+            background: #0d0d1a;
+            color: #f0e6ff;
+            font-family: 'Montserrat', sans-serif;
+            padding: 2rem;
+        }
+        .test-section {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            border: 1px solid #ff5e78;
+            border-radius: 8px;
+        }
+        .test-result {
+            margin: 1rem 0;
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+        .success { background: rgba(92, 184, 92, 0.2); }
+        .error { background: rgba(255, 94, 120, 0.2); }
+        .warning { background: rgba(255, 193, 7, 0.2); }
+        h1 { color: #ff5e78; }
+        button {
+            background: #ff5e78;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0.5rem;
+        }
+        button:hover { background: #ff8f00; }
+    </style>
+</head>
+<body>
+    <h1>🔧 Immortal Nexus - Voting System Test Suite</h1>
+
+    <div class="test-section">
+        <h2>System Status</h2>
+        <div id="systemStatus"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Page Integration Status</h2>
+        <div id="pageStatus"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Manual Tests</h2>
+        <button onclick="testBlogVote()">Test Blog Vote</button>
+        <button onclick="testEchoVote()">Test Echo Vote</button>
+        <button onclick="testChronicleVote()">Test Chronicle Vote</button>
+        <button onclick="testCommentVote()">Test Comment Vote</button>
+        <button onclick="testNodeVote()">Test Node Vote</button>
+        <div id="testResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>API Endpoint Tests</h2>
+        <button onclick="testAllEndpoints()">Test All Endpoints</button>
+        <div id="endpointResults"></div>
+    </div>
+
+    <!-- Load dependencies -->
+    <script>
+        // Mock config if needed
+        window.NEXUS_CONFIG = {
+            API_BASE_URL: 'https://nexus-ytrg.onrender.com/api'
+        };
+    </script>
+    <script src="js/shared/unifiedVoting.js?v=1.2"></script>
+
+    <script>
+        // Test functions
+        async function checkSystemStatus() {
+            const statusDiv = document.getElementById('systemStatus');
+            let html = '';
+
+            // Check if unifiedVoting is loaded
+            if (window.unifiedVoting) {
+                html += '<div class="test-result success">✅ UnifiedVoting system loaded</div>';
+            } else {
+                html += '<div class="test-result error">❌ UnifiedVoting system NOT loaded</div>';
+            }
+
+            // Check if token exists
+            const token = localStorage.getItem('sessionToken');
+            if (token) {
+                html += '<div class="test-result success">✅ User authenticated (token found)</div>';
+            } else {
+                html += '<div class="test-result warning">⚠️ No authentication token (voting will require login)</div>';
+            }
+
+            // Check API availability
+            try {
+                const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/health`, {
+                    method: 'GET',
+                    signal: AbortSignal.timeout(5000)
+                });
+                if (response.ok) {
+                    html += '<div class="test-result success">✅ API server is reachable</div>';
+                } else {
+                    html += '<div class="test-result warning">⚠️ API server responded with status: ' + response.status + '</div>';
+                }
+            } catch (error) {
+                html += '<div class="test-result error">❌ API server unreachable: ' + error.message + '</div>';
+            }
+
+            statusDiv.innerHTML = html;
+        }
+
+        async function checkPageIntegration() {
+            const statusDiv = document.getElementById('pageStatus');
+            const pages = [
+                { name: 'index.html', hasVoting: true },
+                { name: 'pages/blog.html', hasVoting: true },
+                { name: 'pages/messageboard.html', hasVoting: true },
+                { name: 'pages/news.html', hasVoting: true },
+                { name: 'pages/mindmap.html', hasVoting: true },
+                { name: 'souls/index.html', hasVoting: false },
+                { name: 'souls/profile.html', hasVoting: false }
+            ];
+
+            let html = '<table style="width: 100%"><tr><th>Page</th><th>UnifiedVoting.js</th><th>Expected Voting</th></tr>';
+
+            for (const page of pages) {
+                try {
+                    const response = await fetch(page.name);
+                    const text = await response.text();
+                    const hasUnifiedVoting = text.includes('unifiedVoting.js');
+
+                    html += '<tr>';
+                    html += `<td>${page.name}</td>`;
+                    html += `<td>${hasUnifiedVoting ? '✅ Loaded' : '❌ Not loaded'}</td>`;
+                    html += `<td>${page.hasVoting ? 'Yes' : 'No'}</td>`;
+                    html += '</tr>';
+                } catch (error) {
+                    html += `<tr><td>${page.name}</td><td colspan="2">⚠️ Could not check</td></tr>`;
+                }
+            }
+
+            html += '</table>';
+            statusDiv.innerHTML = html;
+        }
+
+        async function testBlogVote() {
+            const resultsDiv = document.getElementById('testResults');
+            try {
+                // This would need a real blog ID
+                const result = await window.unifiedVoting.vote('blog', 'test-blog-id', 'upvote');
+                resultsDiv.innerHTML = '<div class="test-result success">✅ Blog vote test: ' + JSON.stringify(result) + '</div>';
+            } catch (error) {
+                resultsDiv.innerHTML = '<div class="test-result error">❌ Blog vote failed: ' + error.message + '</div>';
+            }
+        }
+
+        async function testEchoVote() {
+            const resultsDiv = document.getElementById('testResults');
+            try {
+                const result = await window.unifiedVoting.vote('echo', 'test-thread-id', 'upvote');
+                resultsDiv.innerHTML = '<div class="test-result success">✅ Echo vote test: ' + JSON.stringify(result) + '</div>';
+            } catch (error) {
+                resultsDiv.innerHTML = '<div class="test-result error">❌ Echo vote failed: ' + error.message + '</div>';
+            }
+        }
+
+        async function testChronicleVote() {
+            const resultsDiv = document.getElementById('testResults');
+            try {
+                const result = await window.unifiedVoting.vote('chronicle', 'test-chronicle-id', 'upvote');
+                resultsDiv.innerHTML = '<div class="test-result success">✅ Chronicle vote test: ' + JSON.stringify(result) + '</div>';
+            } catch (error) {
+                resultsDiv.innerHTML = '<div class="test-result error">❌ Chronicle vote failed: ' + error.message + '</div>';
+            }
+        }
+
+        async function testCommentVote() {
+            const resultsDiv = document.getElementById('testResults');
+            try {
+                const result = await window.unifiedVoting.vote('comment', 'test-comment-id', 'upvote');
+                resultsDiv.innerHTML = '<div class="test-result success">✅ Comment vote test: ' + JSON.stringify(result) + '</div>';
+            } catch (error) {
+                resultsDiv.innerHTML = '<div class="test-result error">❌ Comment vote failed: ' + error.message + '</div>';
+            }
+        }
+
+        async function testNodeVote() {
+            const resultsDiv = document.getElementById('testResults');
+            try {
+                const result = await window.unifiedVoting.vote('node', 'test-node-id', 'upvote');
+                resultsDiv.innerHTML = '<div class="test-result success">✅ Node vote test: ' + JSON.stringify(result) + '</div>';
+            } catch (error) {
+                resultsDiv.innerHTML = '<div class="test-result error">❌ Node vote failed: ' + error.message + '</div>';
+            }
+        }
+
+        async function testAllEndpoints() {
+            const resultsDiv = document.getElementById('endpointResults');
+            const token = localStorage.getItem('sessionToken');
+
+            if (!token) {
+                resultsDiv.innerHTML = '<div class="test-result warning">⚠️ No token - cannot test endpoints</div>';
+                return;
+            }
+
+            const endpoints = [
+                { name: 'Blogs', url: '/blogs', method: 'GET' },
+                { name: 'Threads', url: '/threads', method: 'GET' },
+                { name: 'Chronicles', url: '/chronicles', method: 'GET' },
+                { name: 'Mindmap Nodes', url: '/mindmap/nodes', method: 'GET' }
+            ];
+
+            let html = '';
+            for (const endpoint of endpoints) {
+                try {
+                    const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}${endpoint.url}`, {
+                        method: endpoint.method,
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        },
+                        signal: AbortSignal.timeout(5000)
+                    });
+
+                    if (response.ok) {
+                        html += `<div class="test-result success">✅ ${endpoint.name}: OK (${response.status})</div>`;
+                    } else {
+                        html += `<div class="test-result warning">⚠️ ${endpoint.name}: ${response.status}</div>`;
+                    }
+                } catch (error) {
+                    html += `<div class="test-result error">❌ ${endpoint.name}: ${error.message}</div>`;
+                }
+            }
+
+            resultsDiv.innerHTML = html;
+        }
+
+        // Run tests on load
+        document.addEventListener('DOMContentLoaded', () => {
+            checkSystemStatus();
+            checkPageIntegration();
+        });
+    </script>
+</body>
+</html>

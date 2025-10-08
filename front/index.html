@@ -525,6 +525,9 @@
 
     <!-- Avatar System (MUST load before activeUsers.js) -->
     <script src="js/nexus-avatar-system.js?v=3.1"></script>
+    
+    <!-- Unified Voting System -->
+    <script src="js/shared/unifiedVoting.js?v=1.2"></script>
 
     <!-- Active Users (depends on nexus-avatar-system.js) -->
     <script src="components/shared/activeUsers.js?v=2.3"></script>
@@ -1016,7 +1019,7 @@
                     if (btn && window.unifiedVoting) {
                         const voteType = btn.dataset.vote;
                         const threadId = btn.dataset.threadId;
-                        window.unifiedVoting.vote('thread', threadId, voteType);
+                        window.unifiedVoting.vote('echo', threadId, voteType);
 
                         // Update UI
                         if (voteType === 'upvote') {

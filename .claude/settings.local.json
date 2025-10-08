@@ -33,7 +33,8 @@
       "Bash(else echo \"❌ $file\")",
       "Bash(fi)",
       "Bash(./add-z-index-system.sh:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(./add-unified-voting.sh:*)"
     ],
     "deny": [],
     "ask": []
