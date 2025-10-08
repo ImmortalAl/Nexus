@@ -409,8 +409,8 @@ class AuthorIdentityCard {
      */
     async submitVote(action) {
         // Use the UnifiedVoting system if available
-        if (window.UnifiedVoting) {
-            return await window.UnifiedVoting.vote(this.contentType, this.contentId, action);
+        if (window.unifiedVoting) {
+            return await window.unifiedVoting.vote(this.contentType, this.contentId, action);
         }
 
         // Fallback to direct API call with correct endpoints
