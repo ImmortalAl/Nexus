@@ -1,0 +1,477 @@
+/**
+ * Immortal Nexus - Light Theme Design System
+ * "Immortal Dawn" - Modern App with Eternal Soul
+ *
+ * Philosophy: Maintain purple/pink/gold mysticism in a clean, modern light theme
+ * Status: Chronicles newspaper style is preserved separately
+ *
+ * IMPORTANT: This file applies to ALL pages EXCEPT:
+ * - news.html (Boundless Chronicles) - uses boundless-chronicles.css light theme
+ * Chronicles has its own newspaper aesthetic and must not be overridden.
+ */
+
+/* Skip Chronicles pages - they have their own perfect light theme */
+.chronicles-main,
+.chronicles-container,
+.chronicles-header,
+.chronicle-card {
+    /* Chronicles uses boundless-chronicles.css - don't override */
+}
+
+/* ============================================================================
+   IMMORTAL DAWN COLOR PALETTE
+   ============================================================================ */
+
+body.light-theme {
+    /* Primary Backgrounds - Soft lavender-tinted whites */
+    --immortal-dawn-bg: #fdfcff;
+    --immortal-surface: #f8f6fc;
+    --immortal-surface-hover: #f0ebf8;
+    --immortal-surface-active: #e9d5ff;
+
+    /* Core Brand Colors - Vivid and modern */
+    --immortal-primary: #7c3aed;        /* Royal purple */
+    --immortal-primary-dark: #6d28d9;   /* Deep purple */
+    --immortal-primary-light: #a78bfa;  /* Soft purple */
+    --immortal-primary-pale: #ddd6fe;   /* Very soft purple */
+
+    --immortal-accent: #ec4899;         /* Hot pink */
+    --immortal-accent-dark: #db2777;    /* Deep pink */
+    --immortal-accent-light: #f9a8d4;   /* Soft pink */
+
+    --immortal-gold: #f59e0b;           /* Amber gold */
+    --immortal-gold-light: #fbbf24;     /* Bright gold */
+    --immortal-gold-dark: #d97706;      /* Deep gold */
+
+    /* Text Colors - Readable purples */
+    --immortal-text: #1e1b4b;           /* Deep indigo - primary text */
+    --immortal-text-secondary: #4c1d95; /* Purple - secondary text */
+    --immortal-text-muted: #7c3aed;     /* Soft purple - muted text */
+    --immortal-text-link: #7c3aed;      /* Links */
+
+    /* Borders & Separators */
+    --immortal-border: #e9d5ff;         /* Lavender */
+    --immortal-border-medium: #c4b5fd;  /* Medium purple */
+    --immortal-border-strong: #a78bfa;  /* Strong purple */
+
+    /* Shadows - Purple-tinted for cohesion */
+    --immortal-shadow-sm: 0 1px 2px rgba(124, 58, 237, 0.05);
+    --immortal-shadow-md: 0 4px 12px rgba(124, 58, 237, 0.08);
+    --immortal-shadow-lg: 0 8px 24px rgba(124, 58, 237, 0.12);
+    --immortal-shadow-xl: 0 12px 36px rgba(124, 58, 237, 0.15);
+
+    /* Status Colors - Adjusted for light backgrounds */
+    --immortal-success: #10b981;
+    --immortal-success-bg: #d1fae5;
+    --immortal-warning: #f59e0b;
+    --immortal-warning-bg: #fef3c7;
+    --immortal-error: #ef4444;
+    --immortal-error-bg: #fee2e2;
+    --immortal-info: #7c3aed;
+    --immortal-info-bg: #f3e8ff;
+
+    /* Override base theme variables with Immortal Dawn palette */
+    --primary: #7c3aed;
+    --secondary: #f8f6fc;
+    --accent: #ec4899;
+
+    --text: #1e1b4b;
+    --text-secondary: #4c1d95;
+    --text-muted: #7c3aed;
+
+    --background: #fdfcff;
+    --background-secondary: #f8f6fc;
+    --background-tertiary: #f0ebf8;
+
+    --hover: #f0ebf8;
+    --active: #e9d5ff;
+    --focus: #a78bfa;
+
+    --border: #e9d5ff;
+    --border-light: #f3e8ff;
+    --shadow: rgba(124, 58, 237, 0.08);
+}
+
+/* ============================================================================
+   BASE ELEMENTS
+   ============================================================================ */
+
+body.light-theme {
+    background: linear-gradient(135deg, #fdfcff 0%, #f8f6fc 100%);
+    color: var(--immortal-text);
+}
+
+/* ============================================================================
+   TYPOGRAPHY
+   ============================================================================ */
+
+body.light-theme h1,
+body.light-theme h2,
+body.light-theme h3,
+body.light-theme h4,
+body.light-theme h5,
+body.light-theme h6 {
+    color: var(--immortal-text);
+}
+
+body.light-theme a {
+    color: var(--immortal-primary);
+    transition: color 0.2s ease;
+}
+
+body.light-theme a:hover {
+    color: var(--immortal-primary-dark);
+}
+
+/* ============================================================================
+   BUTTONS - Modern Immortal Style
+   ============================================================================ */
+
+body.light-theme .btn,
+body.light-theme button:not(.close-modal):not(.theme-toggle) {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+body.light-theme .btn-primary,
+body.light-theme .action-btn.btn-primary {
+    background: linear-gradient(135deg, var(--immortal-primary) 0%, var(--immortal-primary-dark) 100%);
+    color: #ffffff;
+    border: none;
+    box-shadow: var(--immortal-shadow-sm);
+}
+
+body.light-theme .btn-primary:hover,
+body.light-theme .action-btn.btn-primary:hover {
+    background: linear-gradient(135deg, var(--immortal-primary-dark) 0%, #5b21b6 100%);
+    box-shadow: var(--immortal-shadow-md);
+    transform: translateY(-1px);
+}
+
+body.light-theme .btn-secondary,
+body.light-theme .action-btn.btn-secondary {
+    background: transparent;
+    color: var(--immortal-primary);
+    border: 2px solid var(--immortal-primary);
+}
+
+body.light-theme .btn-secondary:hover,
+body.light-theme .action-btn.btn-secondary:hover {
+    background: var(--immortal-primary-pale);
+    border-color: var(--immortal-primary-dark);
+    transform: translateY(-1px);
+}
+
+body.light-theme .btn-accent {
+    background: linear-gradient(135deg, var(--immortal-accent) 0%, var(--immortal-accent-dark) 100%);
+    color: #ffffff;
+    border: none;
+    box-shadow: var(--immortal-shadow-sm);
+}
+
+body.light-theme .btn-accent:hover {
+    background: linear-gradient(135deg, var(--immortal-accent-dark) 0%, #be185d 100%);
+    box-shadow: var(--immortal-shadow-md);
+    transform: translateY(-1px);
+}
+
+/* ============================================================================
+   CARDS & CONTAINERS
+   ============================================================================ */
+
+body.light-theme .card,
+body.light-theme .container,
+body.light-theme .content-box {
+    background: #ffffff;
+    border: 1px solid var(--immortal-border);
+    border-radius: 12px;
+    box-shadow: var(--immortal-shadow-sm);
+    transition: all 0.2s ease;
+}
+
+body.light-theme .card:hover,
+body.light-theme .container:hover {
+    box-shadow: var(--immortal-shadow-md);
+    border-color: var(--immortal-border-medium);
+}
+
+/* ============================================================================
+   HEADER & NAVIGATION
+   ============================================================================ */
+
+body.light-theme header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--immortal-border);
+    box-shadow: var(--immortal-shadow-sm);
+}
+
+body.light-theme nav a {
+    color: var(--immortal-text);
+    transition: color 0.2s ease;
+}
+
+body.light-theme nav a:hover,
+body.light-theme nav a.active {
+    color: var(--immortal-primary);
+}
+
+/* ============================================================================
+   MODALS
+   ============================================================================ */
+
+body.light-theme .modal-content {
+    background: #ffffff;
+    border: 1px solid var(--immortal-border);
+    border-radius: 16px;
+    box-shadow: var(--immortal-shadow-xl);
+}
+
+body.light-theme .modal-header {
+    background: linear-gradient(135deg, #fdfcff 0%, #f8f6fc 100%);
+    border-bottom: 1px solid var(--immortal-border);
+    color: var(--immortal-text);
+}
+
+body.light-theme .modal-overlay {
+    background: rgba(124, 58, 237, 0.1);
+    backdrop-filter: blur(4px);
+}
+
+/* ============================================================================
+   FORMS & INPUTS
+   ============================================================================ */
+
+body.light-theme input,
+body.light-theme textarea,
+body.light-theme select {
+    background: #ffffff;
+    border: 2px solid var(--immortal-border);
+    color: var(--immortal-text);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+body.light-theme input:focus,
+body.light-theme textarea:focus,
+body.light-theme select:focus {
+    border-color: var(--immortal-primary);
+    box-shadow: 0 0 0 3px var(--immortal-primary-pale);
+    outline: none;
+}
+
+body.light-theme input::placeholder,
+body.light-theme textarea::placeholder {
+    color: var(--immortal-text-muted);
+    opacity: 0.6;
+}
+
+/* ============================================================================
+   FLOATING BUTTONS & INTERACTIVE ELEMENTS
+   ============================================================================ */
+
+body.light-theme .floating-buttons button,
+body.light-theme .fab {
+    background: linear-gradient(135deg, var(--immortal-primary) 0%, var(--immortal-primary-dark) 100%);
+    color: #ffffff;
+    box-shadow: var(--immortal-shadow-md);
+    border: none;
+}
+
+body.light-theme .floating-buttons button:hover,
+body.light-theme .fab:hover {
+    background: linear-gradient(135deg, var(--immortal-primary-dark) 0%, #5b21b6 100%);
+    box-shadow: var(--immortal-shadow-lg);
+    transform: translateY(-2px);
+}
+
+/* ============================================================================
+   FOOTER
+   ============================================================================ */
+
+body.light-theme footer {
+    background: linear-gradient(135deg, #f8f6fc 0%, #f0ebf8 100%);
+    color: var(--immortal-text-secondary);
+    border-top: 1px solid var(--immortal-border);
+    box-shadow: 0 -4px 12px rgba(124, 58, 237, 0.04);
+}
+
+body.light-theme footer a {
+    color: var(--immortal-primary);
+}
+
+body.light-theme footer a:hover {
+    color: var(--immortal-primary-dark);
+}
+
+/* ============================================================================
+   STATUS BADGES & TAGS
+   ============================================================================ */
+
+body.light-theme .badge,
+body.light-theme .tag {
+    border-radius: 6px;
+    font-weight: 500;
+    padding: 4px 12px;
+    font-size: 0.875rem;
+}
+
+body.light-theme .badge-primary {
+    background: var(--immortal-primary-pale);
+    color: var(--immortal-primary-dark);
+}
+
+body.light-theme .badge-accent {
+    background: var(--immortal-accent-light);
+    color: var(--immortal-accent-dark);
+}
+
+body.light-theme .badge-success {
+    background: var(--immortal-success-bg);
+    color: #047857;
+}
+
+body.light-theme .badge-warning {
+    background: var(--immortal-warning-bg);
+    color: #92400e;
+}
+
+body.light-theme .badge-error {
+    background: var(--immortal-error-bg);
+    color: #991b1b;
+}
+
+/* ============================================================================
+   LOADING STATES & SPINNERS
+   ============================================================================ */
+
+body.light-theme .spinner,
+body.light-theme .loading-spinner {
+    border-top-color: var(--immortal-primary);
+    border-right-color: var(--immortal-accent);
+}
+
+body.light-theme .loading-text {
+    color: var(--immortal-text-secondary);
+}
+
+/* ============================================================================
+   SCROLLBARS (Webkit)
+   ============================================================================ */
+
+body.light-theme ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+body.light-theme ::-webkit-scrollbar-track {
+    background: var(--immortal-surface);
+}
+
+body.light-theme ::-webkit-scrollbar-thumb {
+    background: var(--immortal-border-medium);
+    border-radius: 6px;
+    border: 2px solid var(--immortal-surface);
+}
+
+body.light-theme ::-webkit-scrollbar-thumb:hover {
+    background: var(--immortal-primary-light);
+}
+
+/* ============================================================================
+   SELECTION
+   ============================================================================ */
+
+body.light-theme ::selection {
+    background: var(--immortal-primary-pale);
+    color: var(--immortal-primary-dark);
+}
+
+/* ============================================================================
+   TRANSITIONS & ANIMATIONS
+   ============================================================================ */
+
+body.light-theme * {
+    transition-property: background-color, border-color, color, box-shadow;
+    transition-duration: 0.2s;
+    transition-timing-function: ease;
+}
+
+/* ============================================================================
+   ACCESSIBILITY FOCUS STATES
+   ============================================================================ */
+
+body.light-theme *:focus-visible {
+    outline: 2px solid var(--immortal-primary);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px var(--immortal-primary-pale);
+}
+
+/* ============================================================================
+   UTILITY CLASSES
+   ============================================================================ */
+
+body.light-theme .text-primary {
+    color: var(--immortal-primary) !important;
+}
+
+body.light-theme .text-accent {
+    color: var(--immortal-accent) !important;
+}
+
+body.light-theme .text-muted {
+    color: var(--immortal-text-muted) !important;
+}
+
+body.light-theme .bg-surface {
+    background: var(--immortal-surface) !important;
+}
+
+body.light-theme .bg-white {
+    background: #ffffff !important;
+}
+
+body.light-theme .border-immortal {
+    border-color: var(--immortal-border) !important;
+}
+
+/* ============================================================================
+   SHADOWS UTILITY
+   ============================================================================ */
+
+body.light-theme .shadow-sm {
+    box-shadow: var(--immortal-shadow-sm) !important;
+}
+
+body.light-theme .shadow-md {
+    box-shadow: var(--immortal-shadow-md) !important;
+}
+
+body.light-theme .shadow-lg {
+    box-shadow: var(--immortal-shadow-lg) !important;
+}
+
+body.light-theme .shadow-xl {
+    box-shadow: var(--immortal-shadow-xl) !important;
+}
+
+/* ============================================================================
+   GRADIENT UTILITIES
+   ============================================================================ */
+
+body.light-theme .gradient-primary {
+    background: linear-gradient(135deg, var(--immortal-primary) 0%, var(--immortal-primary-dark) 100%) !important;
+}
+
+body.light-theme .gradient-accent {
+    background: linear-gradient(135deg, var(--immortal-accent) 0%, var(--immortal-accent-dark) 100%) !important;
+}
+
+body.light-theme .gradient-gold {
+    background: linear-gradient(135deg, var(--immortal-gold) 0%, var(--immortal-gold-dark) 100%) !important;
+}
+
+body.light-theme .gradient-surface {
+    background: linear-gradient(135deg, #fdfcff 0%, #f8f6fc 100%) !important;
+}

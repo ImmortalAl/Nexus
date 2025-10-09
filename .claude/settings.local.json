@@ -38,7 +38,9 @@
       "Read(//c/**)",
       "Bash(ls:*)",
       "Bash(claude-code plan)",
-      "Bash(exit 0)"
+      "Bash(exit 0)",
+      "Bash(if grep -q \"base-theme.css\" \"$file\")",
+      "Bash(then)"
     ],
     "deny": [],
     "ask": []
