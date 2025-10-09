@@ -124,7 +124,7 @@ class BlogUI {
     renderPosts(posts, containerId = 'blogPostsContainer') {
         const container = document.getElementById(containerId);
         if (!container) {
-            console.error('[BlogUI] Container not found:', containerId);
+            logger.debug('BlogUI', `Container not found: ${containerId} - not on list page`);
             return;
         }
 

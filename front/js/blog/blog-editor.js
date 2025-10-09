@@ -31,7 +31,7 @@ class BlogEditor {
     initializeEditor() {
         const editorContainer = document.getElementById('scrollEditor');
         if (!editorContainer) {
-            console.error('[BlogEditor] Editor container not found');
+            logger.debug('BlogEditor', 'Editor container not found - not on editor page');
             return;
         }
 
