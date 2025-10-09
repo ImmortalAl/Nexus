@@ -90,7 +90,9 @@ class UnifiedVotingSystem {
                 // Message board posts
                 endpoint = `${this.apiUrl}/threads/${contentId}/vote`;
                 // Map 'challenge' to 'downvote' for API compatibility
-                body = { action: action === 'challenge' ? 'downvote' : action };
+                const mappedAction = action === 'challenge' ? 'downvote' : action;
+                body = { action: mappedAction };
+                console.log(`[UnifiedVoting] Echo vote: ${action} → ${mappedAction}`, body);
                 break;
 
             case 'chronicle':
