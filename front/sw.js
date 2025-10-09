@@ -1,8 +1,11 @@
 // Nexus Service Worker - PWA Core Functionality
-const CACHE_VERSION = 'nexus-v1.2.3'; // Incremented version to bust cache
+// Enhanced with better caching, offline support, and performance
+const CACHE_VERSION = 'nexus-v1.3.0'; // Incremented version to bust cache
 const STATIC_CACHE = `nexus-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `nexus-dynamic-${CACHE_VERSION}`;
 const API_CACHE = `nexus-api-${CACHE_VERSION}`;
+const IMAGE_CACHE = `nexus-images-${CACHE_VERSION}`;
+const FONT_CACHE = `nexus-fonts-${CACHE_VERSION}`;
 
 // Static assets to cache immediately
 const STATIC_ASSETS = [
@@ -66,13 +69,17 @@ self.addEventListener('activate', event => {
             if (cacheName.startsWith('nexus-') &&
                 cacheName !== STATIC_CACHE &&
                 cacheName !== DYNAMIC_CACHE &&
-                cacheName !== API_CACHE) {
+                cacheName !== API_CACHE &&
+                cacheName !== IMAGE_CACHE &&
+                cacheName !== FONT_CACHE) {
+              console.log('[Nexus SW] Deleting old cache:', cacheName);
               return caches.delete(cacheName);
             }
           })
         );
       })
       .then(() => {
+        console.log('[Nexus SW] Service Worker activated, taking control');
         return self.clients.claim(); // Take control of all pages immediately
       })
   );
@@ -82,25 +89,37 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   const request = event.request;
   const url = new URL(request.url);
-  
+
   // Skip non-GET requests for caching
   if (request.method !== 'GET') {
     return;
   }
-  
+
   // Handle API requests
-  if (url.pathname.startsWith('/api/')) {
+  if (url.pathname.startsWith('/api/') || url.hostname.includes('nexus-ytrg.onrender.com')) {
     event.respondWith(handleApiRequest(request));
     return;
   }
-  
+
+  // Handle images
+  if (request.destination === 'image' || /\.(jpg|jpeg|png|gif|webp|svg|ico)$/i.test(url.pathname)) {
+    event.respondWith(handleImage(request));
+    return;
+  }
+
+  // Handle fonts
+  if (request.destination === 'font' || /\.(woff|woff2|ttf|eot)$/i.test(url.pathname)) {
+    event.respondWith(handleFont(request));
+    return;
+  }
+
   // Handle static assets
   if (STATIC_ASSETS.some(asset => url.pathname === asset || url.pathname.endsWith(asset))) {
     event.respondWith(handleStaticAsset(request));
     return;
   }
-  
-  // Handle dynamic content (HTML pages, images, etc.)
+
+  // Handle dynamic content (HTML pages, CSS, JS)
   event.respondWith(handleDynamicContent(request));
 });
 
@@ -147,17 +166,38 @@ async function handleDynamicContent(request) {
     return await staleWhileRevalidate(request, DYNAMIC_CACHE);
   } catch (error) {
     console.error('[Nexus SW] Dynamic content request failed:', error);
-    
+
     // For HTML pages, return offline page if available
-    if (request.headers.get('accept').includes('text/html')) {
+    if (request.headers.get('accept')?.includes('text/html')) {
       const offlineResponse = await caches.match('/offline.html');
-      return offlineResponse || new Response('You are offline', { 
+      return offlineResponse || new Response('You are offline', {
         status: 503,
         headers: { 'Content-Type': 'text/html' }
       });
     }
-    
+
     return new Response('Offline - content unavailable', { status: 503 });
+  }
+}
+
+// Image handler - cache first with long TTL
+async function handleImage(request) {
+  try {
+    return await cacheFirst(request, IMAGE_CACHE, 604800000); // 7 days
+  } catch (error) {
+    console.error('[Nexus SW] Image request failed:', error);
+    // Return placeholder image or empty response
+    return new Response('', { status: 503, statusText: 'Image unavailable' });
+  }
+}
+
+// Font handler - cache first with very long TTL (fonts rarely change)
+async function handleFont(request) {
+  try {
+    return await cacheFirst(request, FONT_CACHE, 2592000000); // 30 days
+  } catch (error) {
+    console.error('[Nexus SW] Font request failed:', error);
+    return new Response('', { status: 503, statusText: 'Font unavailable' });
   }
 }
 
