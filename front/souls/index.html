@@ -317,8 +317,8 @@
             messageBtn.innerHTML = '<i class="fas fa-envelope"></i> Message';
             messageBtn.onclick = (e) => {
                 e.stopPropagation(); // Prevent card click
-                if (window.openMessageModal) {
-                    window.openMessageModal(user.username);
+                if (window.NEXUS?.openMessageModal) {
+                    window.NEXUS.openMessageModal(user.username);
                 }
             };
 
