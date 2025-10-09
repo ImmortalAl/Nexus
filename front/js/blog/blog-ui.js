@@ -121,7 +121,7 @@ class BlogUI {
     /**
      * Render multiple posts to container
      */
-    renderPosts(posts, containerId = 'blogPostsContainer') {
+    renderPosts(posts, containerId = 'blogList') {
         const container = document.getElementById(containerId);
         if (!container) {
             logger.debug('BlogUI', `Container not found: ${containerId} - not on list page`);
@@ -262,7 +262,7 @@ class BlogUI {
      */
     showLoadingState() {
         this.isLoading = true;
-        const container = document.getElementById('blogPostsContainer');
+        const container = document.getElementById('blogList');
         if (container) {
             container.innerHTML = `
                 <div class="loading-state">
@@ -284,7 +284,7 @@ class BlogUI {
      * Show error state
      */
     showErrorState(message) {
-        const container = document.getElementById('blogPostsContainer');
+        const container = document.getElementById('blogList');
         if (container) {
             container.innerHTML = `
                 <div class="error-state">
