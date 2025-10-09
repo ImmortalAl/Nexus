@@ -379,8 +379,19 @@ class AuthorIdentityCard {
 
         } catch (error) {
             console.error(`[AuthorIdentityCard] Vote failed:`, error);
-            this.showError('Failed to record vote');
-            this.showToast('Failed to record vote. Please try again.', 'error');
+
+            // Check for specific error messages to provide better UX
+            const errorMessage = error.message || '';
+
+            if (errorMessage.includes('cannot vote on your own')) {
+                this.showToast('You cannot vote on your own content', 'info');
+            } else if (errorMessage.includes('already voted')) {
+                this.showToast('You have already voted on this content', 'info');
+            } else if (errorMessage.includes('Authentication') || errorMessage.includes('login')) {
+                this.showToast('Please log in to vote', 'warning');
+            } else {
+                this.showToast('Failed to record vote. Please try again.', 'error');
+            }
         }
     }
 

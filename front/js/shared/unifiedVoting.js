@@ -55,7 +55,16 @@ class UnifiedVotingSystem {
             return response;
 
         } catch (error) {
-            console.error('[UnifiedVoting] Vote failed:', error);
+            // Only log actual errors, not expected user errors (own content, already voted, etc.)
+            const errorMessage = error.message || '';
+            const isUserError = errorMessage.includes('cannot vote on your own') ||
+                               errorMessage.includes('already voted') ||
+                               errorMessage.includes('Authentication');
+
+            if (!isUserError) {
+                console.error('[UnifiedVoting] Vote failed:', error);
+            }
+
             throw error;
         }
     }

@@ -36,7 +36,9 @@
       "Bash(grep:*)",
       "Bash(./add-unified-voting.sh:*)",
       "Read(//c/**)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(claude-code plan)",
+      "Bash(exit 0)"
     ],
     "deny": [],
     "ask": []
