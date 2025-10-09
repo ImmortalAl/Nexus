@@ -41,10 +41,6 @@ class BlogUI {
         const dislikes = post.dislikes || 0;
         const commentsCount = post.commentsCount || 0;
 
-        // Check if post is bookmarked
-        const bookmarkedPosts = JSON.parse(localStorage.getItem('bookmarkedPosts') || '[]');
-        const isBookmarked = bookmarkedPosts.includes(post._id);
-
         // Check if current user is author
         const currentUser = window.BlogAPI?.getCurrentUser();
         const isAuthor = currentUser && currentUser.id === authorId;
@@ -82,32 +78,18 @@ class BlogUI {
                 </div>
 
                 <div class="post-footer">
-                    <div class="post-stats">
-                        <span class="stat">
-                            <i class="fas fa-thumbs-up"></i>
-                            <span class="like-count">${likes}</span>
-                        </span>
-                        <span class="stat">
-                            <i class="fas fa-shield-alt"></i>
-                            <span class="challenge-count">${dislikes}</span>
-                        </span>
-                        <span class="stat">
-                            <i class="fas fa-comment"></i>
-                            <span>${commentsCount}</span>
-                        </span>
-                    </div>
-
                     <div class="post-interactions">
-                        <button class="like-btn" onclick="window.BlogVoting.likePost('${post._id}')" title="Upvote">
+                        <button class="vote-btn like-btn" onclick="window.BlogVoting.likePost('${post._id}')" title="Upvote">
                             <i class="fas fa-thumbs-up"></i>
+                            <span class="vote-count">${likes}</span>
                         </button>
-                        <button class="challenge-btn" onclick="window.BlogVoting.challengePost('${post._id}')" title="Challenge">
+                        <button class="vote-btn challenge-btn" onclick="window.BlogVoting.challengePost('${post._id}')" title="Challenge">
                             <i class="fas fa-shield-alt"></i>
+                            <span class="vote-count">${dislikes}</span>
                         </button>
-                        <button class="bookmark-btn ${isBookmarked ? 'bookmarked' : ''}"
-                                onclick="window.BlogUI.toggleBookmark('${post._id}')"
-                                title="${isBookmarked ? 'Remove bookmark' : 'Bookmark'}">
-                            <i class="fas fa-bookmark"></i>
+                        <button class="comment-btn" onclick="window.BlogModal.open('${post._id}')" title="View comments">
+                            <i class="fas fa-comment"></i>
+                            <span class="vote-count">${commentsCount}</span>
                         </button>
                         <button class="share-btn" onclick="window.BlogUI.sharePost('${post._id}')" title="Share">
                             <i class="fas fa-share-alt"></i>
@@ -296,45 +278,6 @@ class BlogUI {
                     </button>
                 </div>
             `;
-        }
-    }
-
-    /**
-     * Toggle bookmark for a post
-     */
-    toggleBookmark(postId) {
-        let bookmarkedPosts = JSON.parse(localStorage.getItem('bookmarkedPosts') || '[]');
-        const index = bookmarkedPosts.indexOf(postId);
-
-        if (index > -1) {
-            // Remove bookmark
-            bookmarkedPosts.splice(index, 1);
-            this.updateBookmarkButton(postId, false);
-        } else {
-            // Add bookmark
-            bookmarkedPosts.push(postId);
-            this.updateBookmarkButton(postId, true);
-        }
-
-        localStorage.setItem('bookmarkedPosts', JSON.stringify(bookmarkedPosts));
-    }
-
-    /**
-     * Update bookmark button state
-     */
-    updateBookmarkButton(postId, isBookmarked) {
-        const postCard = document.getElementById(postId);
-        if (!postCard) return;
-
-        const bookmarkBtn = postCard.querySelector('.bookmark-btn');
-        if (bookmarkBtn) {
-            if (isBookmarked) {
-                bookmarkBtn.classList.add('bookmarked');
-                bookmarkBtn.title = 'Remove bookmark';
-            } else {
-                bookmarkBtn.classList.remove('bookmarked');
-                bookmarkBtn.title = 'Bookmark';
-            }
         }
     }
 
@@ -560,4 +503,3 @@ window.BlogUIClass = BlogUI;
 // Export functions for backward compatibility
 window.loadBlogPage = (page) => blogUI.loadPage(page);
 window.sharePost = (postId) => blogUI.sharePost(postId);
-window.toggleBookmark = (postId) => blogUI.toggleBookmark(postId);

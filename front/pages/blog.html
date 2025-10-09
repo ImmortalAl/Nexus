@@ -23,13 +23,53 @@
     <link rel="stylesheet" href="../css/light-theme-immortal.css?v=1.0">
     <link rel="stylesheet" href="../css/mobile-enhanced.css?v=1.0">
 
+    <!-- EMERGENCY INLINE BLOG CARD STYLES - BYPASS ASYNC LOADING ISSUES -->
+    <style>
+    /* Force dark mystical card backgrounds immediately */
+    .blog-post-card {
+        background: linear-gradient(135deg,
+            rgba(26, 26, 51, 0.98),
+            rgba(42, 64, 102, 0.95),
+            rgba(13, 13, 26, 0.97)
+        ) !important;
+        border: 2px solid rgba(255, 94, 120, 0.4) !important;
+        border-radius: 20px !important;
+        padding: 2rem !important;
+        box-shadow:
+            0 12px 40px rgba(0, 0, 0, 0.7),
+            0 6px 20px rgba(255, 94, 120, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1),
+            inset 0 -1px 0 rgba(255, 94, 120, 0.1) !important;
+        backdrop-filter: blur(15px) !important;
+        position: relative;
+        margin-bottom: 2rem;
+    }
+
+    /* Container background */
+    .scroll-archive {
+        background: transparent !important;
+    }
+
+    #blogList {
+        background: transparent !important;
+    }
+
+    /* Ensure page background is dark */
+    body {
+        background: #0d0d1a !important;
+    }
+    </style>
+
     <!-- 2. CRITICAL CSS - Above-fold essentials loaded synchronously -->
     <link rel="stylesheet" href="../css/critical.css?v=7.1">
     <link rel="stylesheet" href="../css/blog-critical.css?v=7.1">
-    
+
     <!-- 3. GLOBAL STYLES - Site-wide styles loaded synchronously -->
     <link rel="stylesheet" href="../css/styles.css?v=10.6">
-    
+
+    <!-- 3.5. BLOG CARDS - CRITICAL for above-fold rendering (synchronous load) -->
+    <link rel="stylesheet" href="../css/blog-cards.css?v=4.4">
+
     <!-- 4. PROGRESSIVE LOADING - Non-critical CSS loaded asynchronously -->
     <link rel="preload" href="../css/layout.css?v=8.2" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="../css/layout.css?v=8.2"></noscript>
@@ -73,9 +113,8 @@
     <noscript><link rel="stylesheet" href="../components/shared/active-users.css?v=12.0"></noscript>
     
     <!-- Blog-specific modules (lazy loaded) -->
-    <link rel="preload" href="../css/blog-cards.css?v=4.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="../css/blog-cards.css?v=4.3"></noscript>
-    
+    <!-- blog-cards.css now loaded synchronously above -->
+
     <link rel="preload" href="../css/blog-modal.css?v=4.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="../css/blog-modal.css?v=4.0"></noscript>
     
@@ -281,7 +320,7 @@
     <script src="../js/blog/blog-comments.js?v=1.1"></script>
     <script src="../js/blog/blog-editor.js?v=1.1"></script>
     <script src="../js/blog/blog-modal.js?v=1.0"></script>
-    <script src="../js/blog/blog-ui.js?v=1.3"></script>
+    <script src="../js/blog/blog-ui.js?v=1.4"></script>
 
     <!-- Blog Main Module (Load last - orchestrator) -->
     <script src="../js/blog.js?v=6.0"></script>
