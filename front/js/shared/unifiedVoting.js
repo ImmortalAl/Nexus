@@ -65,6 +65,7 @@ class UnifiedVotingSystem {
      * Routes to appropriate endpoint until unified backend is ready
      */
     async submitVoteToAPI(contentType, contentId, action, token) {
+        console.log(`[UnifiedVoting] submitVoteToAPI called with:`, { contentType, contentId, action });
         let endpoint, method = 'POST', body = {};
 
         switch (contentType) {
