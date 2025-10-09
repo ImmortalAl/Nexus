@@ -92,7 +92,8 @@ class UnifiedVotingSystem {
                 endpoint = `${this.apiUrl}/threads/${contentId}/vote`;
                 // Map 'challenge' to 'downvote' for API compatibility
                 const mappedAction = action === 'challenge' ? 'downvote' : action;
-                body = { action: mappedAction };
+                // Backend expects 'vote' field, not 'action'
+                body = { vote: mappedAction };
                 console.log(`[UnifiedVoting] Echo vote: ${action} → ${mappedAction}`, body);
                 break;
 
