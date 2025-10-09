@@ -34,7 +34,9 @@
       "Bash(fi)",
       "Bash(./add-z-index-system.sh:*)",
       "Bash(grep:*)",
-      "Bash(./add-unified-voting.sh:*)"
+      "Bash(./add-unified-voting.sh:*)",
+      "Read(//c/**)",
+      "Bash(ls:*)"
     ],
     "deny": [],
     "ask": []

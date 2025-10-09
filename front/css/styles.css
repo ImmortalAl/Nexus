@@ -2521,7 +2521,7 @@ main {
 }
 
 .highlight-card {
-    background: linear-gradient(135deg, 
+    background: linear-gradient(135deg,
                 rgba(13, 13, 26, 0.95) 0%,
                 rgba(26, 26, 51, 0.98) 30%,
                 rgba(37, 37, 74, 0.95) 70%,
@@ -2529,7 +2529,7 @@ main {
     border-radius: 24px;
     padding: 0;
     border: 2px solid transparent;
-    overflow: hidden;
+    overflow: visible;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
@@ -2752,7 +2752,7 @@ main {
     flex: 1;
     position: relative;
     border-radius: 12px;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .highlight-card .highlight-item:hover {
@@ -3230,7 +3230,7 @@ nav a {
     transition: var(--transition);
     text-align: center;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     min-height: 400px;
     display: flex;
     flex-direction: column;
