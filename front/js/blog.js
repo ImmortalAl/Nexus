@@ -1,1997 +1,247 @@
+/**
+ * Blog Main Module - Orchestrator for the Immortal Nexus Blog System
+ * Part of the Immortal Nexus Blog System
+ *
+ * This module serves as the main entry point and coordinator for all blog functionality.
+ * It initializes and coordinates the following modules:
+ * - blog-api.js (API interactions)
+ * - blog-modal.js (Modal management)
+ * - blog-voting.js (Voting/challenge system)
+ * - blog-comments.js (Comments system)
+ * - blog-editor.js (Rich text editing)
+ * - blog-ui.js (UI rendering and state)
+ *
+ * IMPORTANT: All functionality has been extracted to dedicated modules.
+ * This file now only handles initialization and coordination.
+ */
 
-// Embedded jwt-decode
-function jwt_decode(token) {
+// ============================================================================
+// INITIALIZATION
+// ============================================================================
+
+/**
+ * Initialize the blog system
+ */
+async function initializeBlog() {
+    console.log('[Blog] Initializing Immortal Nexus Blog System...');
+
+    // Verify all required modules are loaded
+    if (!verifyModules()) {
+        console.error('[Blog] Failed to load required modules');
+        showErrorState('Failed to load blog system. Please refresh the page.');
+        return;
+    }
+
+    // Initialize each module
     try {
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
-        return JSON.parse(jsonPayload);
-    } catch (e) {
-        throw new Error('Invalid JWT token');
+        // Initialize editor if Quill is available
+        if (typeof Quill !== 'undefined') {
+            window.BlogEditor.initializeEditor();
+        }
+
+        // Initialize voting system
+        window.BlogVoting.init();
+
+        // Initialize UI and load posts
+        await window.BlogUI.init();
+
+        console.log('[Blog] Blog system initialized successfully');
+
+        // Setup URL parameter handling (for direct post links)
+        handleUrlParameters();
+
+    } catch (error) {
+        console.error('[Blog] Initialization error:', error);
+        showErrorState('Failed to initialize blog system: ' + error.message);
     }
 }
 
-const BLOG_API_BASE_URL = window.NEXUS_CONFIG?.API_BASE_URL || 'https://nexus-ytrg.onrender.com/api';
+/**
+ * Verify all required modules are loaded
+ */
+function verifyModules() {
+    const requiredModules = [
+        'BlogAPI',
+        'BlogModal',
+        'BlogVoting',
+        'BlogComments',
+        'BlogEditor',
+        'BlogUI'
+    ];
 
-// const activeUsers = document.getElementById('activeUsers'); // Handled by activeUsers.js
-// const showUsersBtn = document.getElementById('showUsersBtn'); // Handled by activeUsers.js
-// const closeUsersBtn = document.getElementById('closeUsers'); // Handled by activeUsers.js
-let blogList = null;
-let scrollObserver = null;
+    const missingModules = requiredModules.filter(module => !window[module]);
 
-let currentPage = 1;
-let isLoading = false;
-let hasMore = true;
-const PAGE_LIMIT = 10;
-let blogPosts = {}; // Store full blog data for modal display
-let currentPostId = null; // Track current post for sharing
-let commentsSystem = null; // Track current comments system
-
-// Check token validity
-function isTokenValid(token) {
-    if (!token) return false;
-    try {
-        const decoded = jwt_decode(token);
-        const now = Math.floor(Date.now() / 1000);
-        return decoded.exp > now && decoded.id;
-    } catch (error) {
-        console.error('Token decode error:', error.message);
+    if (missingModules.length > 0) {
+        console.error('[Blog] Missing required modules:', missingModules);
         return false;
     }
+
+    console.log('[Blog] All required modules loaded ✓');
+    return true;
 }
 
-// Create excerpt from content
-function createExcerpt(content, maxLength = 150) {
-    const textContent = content.replace(/<[^>]*>/g, ''); // Strip HTML
-    return textContent.length > maxLength 
-        ? textContent.substring(0, maxLength) + '...'
-        : textContent;
-}
+/**
+ * Handle URL parameters (e.g., ?post=123)
+ */
+function handleUrlParameters() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('post');
 
-// Fetch blog posts with pagination
-async function fetchBlogPosts(page = 1) {
-    if (isLoading || !hasMore) {
-        return;
+    if (postId) {
+        // Open modal for specific post
+        setTimeout(() => {
+            window.BlogModal.open(postId);
+        }, 500);
     }
-    
-    isLoading = true;
-    showLoadingCrystal();
-    
-    const fetchUrl = `${BLOG_API_BASE_URL}/blogs?page=${page}&limit=${PAGE_LIMIT}`;
-    
-    try {
-        const response = await fetch(fetchUrl, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' }
-        });
-        
-        
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.error || `HTTP ${response.status}: Failed to fetch blog posts`);
-        }
-        
-        const result = await response.json();
-        
-        const posts = result.docs || result; // Handle both paginated and simple array responses
-        
-        if (posts.length === 0 && currentPage === 1) {
-            blogList.innerHTML = '<p class="empty-message">No scrolls have been written yet. The chamber awaits the first whisper...</p>';
-            hasMore = false;
-        } else {
-            posts.forEach(post => {
-                if (!post.author) {
-                    return;
-                }
-                const postElement = document.createElement('div');
-                postElement.className = 'blog-post';
-                postElement.id = post._id;
-                
-                const authorAvatar = post.author.avatar || '/assets/images/default.jpg';
-                const authorDisplayName = post.author.displayName || post.author.username;
-                const excerpt = createExcerpt(post.content);
-                const formattedDate = new Date(post.createdAt).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
-                
-                // Create unified author display using Nexus Avatar System
-                const authorDisplay = window.NexusAvatars.createUserDisplay({
-                    username: post.author.username,
-                    title: post.author.title || 'Scroll Author',
-                    avatarSize: 'md',
-                    displaySize: 'sm',
-                    compact: true,
-                    mystical: post.author.isVIP || post.author.role === 'admin',
-                    online: post.author.online,
-                    customAvatar: post.author.avatar,
-                    usernameStyle: 'immortal',
-                    enableUnifiedNavigation: true
-                });
-                
-                // Build post structure with DOM elements
-                const titleEl = document.createElement('h3');
-                titleEl.textContent = post.title;
-                
-                const contentEl = document.createElement('div');
-                contentEl.className = 'content';
-                contentEl.innerHTML = excerpt;
-                
-                // Check if current user is the author for delete button
-                const token = localStorage.getItem('token');
-                let canDelete = false;
-                if (token && isTokenValid(token)) {
-                    try {
-                        const decoded = jwt_decode(token);
-                        canDelete = decoded.id === post.author._id || decoded.role === 'admin';
-                    } catch (error) {
-                        console.error('Token decode error:', error);
-                    }
-                }
+}
 
-                const scrollFooter = document.createElement('div');
-                scrollFooter.className = 'scroll-footer';
-                
-                const deleteButton = canDelete ? 
-                    `<button class="delete-btn" data-post-id="${post._id}" onclick="event.stopPropagation(); confirmDeletePost('${post._id}')" title="Delete this scroll">
-                        <i class="fas fa-trash"></i>
-                    </button>` : '';
+/**
+ * Show error state
+ */
+function showErrorState(message) {
+    const container = document.getElementById('blogPostsContainer');
+    if (container) {
+        container.innerHTML = `
+            <div class="error-state">
+                <i class="fas fa-exclamation-triangle fa-3x"></i>
+                <h3>Oops!</h3>
+                <p>${message}</p>
+                <button class="btn btn-primary" onclick="window.location.reload()">
+                    <i class="fas fa-redo"></i> Refresh Page
+                </button>
+            </div>
+        `;
+    }
+}
 
-                scrollFooter.innerHTML = `
-                    <p class="date">${formattedDate}</p>
-                    <div class="post-actions">
-                        <div class="like-dislike-buttons">
-                            <button class="like-btn" data-post-id="${post._id}" onclick="event.stopPropagation(); likePost('${post._id}')">
-                                <i class="fas fa-heart"></i> <span class="like-count">${post.likes ? post.likes.length : 0}</span>
-                            </button>
-                            <button class="challenge-btn" data-post-id="${post._id}" onclick="event.stopPropagation(); challengePost('${post._id}')" title="Challenge this scroll">
-                                <i class="fas fa-bolt"></i> <span class="challenge-count">${post.dislikes ? post.dislikes.length : 0}</span>
-                            </button>
-                        </div>
-                        <div class="scroll-controls">
-                            <button class="whisper-link" onclick="event.stopPropagation(); sharePost('${post._id}')">
-                                🔗 Share this scroll
-                            </button>
-                            ${deleteButton}
-                        </div>
-                    </div>
-                `;
-                
-                // Assemble the post element
-                postElement.appendChild(authorDisplay);
-                postElement.appendChild(titleEl);
-                postElement.appendChild(contentEl);
-                postElement.appendChild(scrollFooter);
-                
-                // Store full post data
-                blogPosts[post._id] = post;
-                
-                // Make post clickable with proper event handling
-                const handlePostClick = function(e) {
-                    // Don't open modal if clicking on links or buttons
-                    if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('button') || e.target.closest('a')) {
-                        return;
-                    }
-                    e.preventDefault();
-                    e.stopPropagation();
-                    openBlogModal(post._id);
-                };
+// ============================================================================
+// EVENT LISTENERS
+// ============================================================================
 
-                // Add click event only (remove touchend to prevent scroll conflicts)
-                postElement.addEventListener('click', handlePostClick);
-                
-                // Add touch handling that doesn't conflict with scrolling
-                let touchStartY = 0;
-                let touchStartTime = 0;
-                
-                postElement.addEventListener('touchstart', function(e) {
-                    touchStartY = e.touches[0].clientY;
-                    touchStartTime = Date.now();
-                }, { passive: true });
-                
-                postElement.addEventListener('touchend', function(e) {
-                    const touchEndY = e.changedTouches[0].clientY;
-                    const touchEndTime = Date.now();
-                    const touchDuration = touchEndTime - touchStartTime;
-                    const touchDistance = Math.abs(touchEndY - touchStartY);
-                    
-                    // Only trigger if it's a tap (short duration, minimal movement)
-                    if (touchDuration < 300 && touchDistance < 10) {
-                        // Don't open modal if touching links or buttons
-                        if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.closest('button') || e.target.closest('a')) {
-                            return;
-                        }
-                        e.preventDefault();
-                        e.stopPropagation();
-                        openBlogModal(post._id);
-                    }
-                }, { passive: false });
-                
-                
-                blogList.appendChild(postElement);
-            });
-            
-            // Check if we have more pages
-            if (result.totalPages && currentPage >= result.totalPages) {
-                hasMore = false;
-            } else if (!result.totalPages && posts.length < PAGE_LIMIT) {
-                hasMore = false;
+/**
+ * Setup global event listeners
+ */
+function setupEventListeners() {
+    // Close modals on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            // Close blog modal
+            const blogModal = document.getElementById('fullBlogModal');
+            if (blogModal && blogModal.style.display === 'flex') {
+                window.BlogModal.close();
+            }
+
+            // Close editor modal
+            const editorModal = document.getElementById('createScrollModal');
+            if (editorModal && editorModal.style.display === 'flex') {
+                window.BlogEditor.closeEditorModal();
+            }
+
+            // Close counterpoint modal
+            const counterpointModal = document.getElementById('counterpointModal');
+            if (counterpointModal && counterpointModal.style.display === 'flex') {
+                window.BlogVoting.closeCounterpointModal();
             }
         }
-    } catch (error) {
-        console.error('Error fetching blog posts:', error);
-        if (currentPage === 1) {
-            blogList.innerHTML = `
-                <div class="error-message">
-                    <p>Error loading scrolls: ${error.message}</p>
-                    <p>The ancient texts seem to be misplaced. Please try again later.</p>
-                </div>
-            `;
-        }
-        hasMore = false;
-    } finally {
-        hideLoadingCrystal();
-        isLoading = false;
-    }
-}
-
-function showLoadingCrystal() {
-    if (scrollObserver) {
-        scrollObserver.style.display = 'block';
-        scrollObserver.classList.add('active');
-    }
-}
-
-function hideLoadingCrystal() {
-    if (scrollObserver) {
-        scrollObserver.style.display = 'none';
-        scrollObserver.classList.remove('active');
-    }
-}
-
-// Intersection Observer for infinite scroll
-const observer = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting && !isLoading && hasMore) {
-        currentPage++;
-        fetchBlogPosts(currentPage);
-    }
-}, { threshold: 1.0 });
-
-function initBlog() {
-    blogList = document.getElementById('blogList');
-    scrollObserver = document.getElementById('scroll-observer');
-
-    // Safety check: ensure blog modal isn't blocking clicks on page load
-    const blogModal = document.getElementById('blogModal');
-    if (blogModal) {
-        blogModal.classList.remove('show');
-        blogModal.style.display = 'none';
-        blogModal.style.opacity = '0';
-        blogModal.style.visibility = 'hidden';
-        blogModal.style.pointerEvents = 'none';
-        document.body.classList.remove('modal-open');
-    }
-
-    if (!blogList) {
-        return;
-    }
-
-    if (scrollObserver) {
-        observer.observe(scrollObserver);
-    }
-
-    fetchBlogPosts(1);
-}
-
-// Create blog post (for compatibility with existing forms)
-async function createBlog() {
-    const titleInput = document.getElementById('blogTitle');
-    const contentInput = document.getElementById('blogContent');
-    const errorElement = document.getElementById('blogFormError');
-    const token = localStorage.getItem('sessionToken');
-
-    if (errorElement) errorElement.style.display = 'none';
-    
-    if (!isTokenValid(token)) {
-        if (errorElement) {
-            errorElement.textContent = 'Please log in to share a scroll';
-            errorElement.style.display = 'block';
-        }
-        if (window.NEXUS && window.NEXUS.openSoulModal) {
-            window.NEXUS.openSoulModal('login');
-        }
-        return;
-    }
-
-    const title = titleInput?.value.trim();
-    const content = contentInput?.value.trim();
-    
-    if (!title || !content) {
-        if (errorElement) {
-            errorElement.textContent = 'Title and content are required';
-            errorElement.style.display = 'block';
-        }
-        return;
-    }
-
-    try {
-        const response = await fetch(`${BLOG_API_BASE_URL}/blogs`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ title, content })
-        });
-        
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.error || `HTTP ${response.status}: Failed to post scroll`);
-        }
-        
-        if (titleInput) titleInput.value = '';
-        if (contentInput) contentInput.value = '';
-        
-        // Refresh blog list
-        currentPage = 1;
-        isLoading = false;
-        hasMore = true;
-        blogList.innerHTML = '';
-        fetchBlogPosts(currentPage);
-        
-    } catch (error) {
-        console.error('Error creating blog:', error);
-        if (errorElement) {
-            errorElement.textContent = `Failed to post scroll: ${error.message}`;
-            errorElement.style.display = 'block';
-        }
-    }
-}
-
-// Removed fetchOnlineUsers function as activeUsers.js should handle the shared sidebar.
-
-// Fetch a single blog post by ID
-async function fetchBlogPost(postId) {
-    // Check if we have it cached
-    if (blogPosts[postId] && blogPosts[postId].content) {
-        return blogPosts[postId];
-    }
-    
-    // Check if it exists in window.blogPosts (from profile page)
-    if (window.blogPosts && window.blogPosts[postId]) {
-        blogPosts[postId] = window.blogPosts[postId];
-        return window.blogPosts[postId];
-    }
-    
-    try {
-        const url = `${BLOG_API_BASE_URL}/blogs/${postId}`;
-        
-        const response = await fetch(url, {
-            headers: {
-                'Cache-Control': 'no-cache, no-store, must-revalidate',
-                'Pragma': 'no-cache'
-            }
-        });
-        
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error(`[Blog] API request failed:`, {
-                status: response.status,
-                url: url,
-                error: errorText
-            });
-            throw new Error(`Failed to fetch blog post: ${response.status} - ${errorText}`);
-        }
-        
-        const post = await response.json();
-        
-        blogPosts[post._id] = post;
-        return post;
-    } catch (error) {
-        console.error('[Blog] Error fetching post:', error);
-        console.error('[Blog] Current API base URL:', BLOG_API_BASE_URL);
-        return null;
-    }
-}
-
-// Enhanced modal functionality variables
-
-// Enhanced openBlogModal with loading states and new features
-async function openBlogModal(postId) {
-    // Prevent duplicate calls
-    if (window._blogModalOpening) {
-        return;
-    }
-    
-    window._blogModalOpening = true;
-    currentPostId = postId;
-    
-    // Get modal element first and check if it exists
-    const modal = document.getElementById('blogModal');
-    if (!modal) {
-        console.error('Blog modal element not found');
-        window._blogModalOpening = false;
-        document.body.classList.remove('modal-open');
-        return;
-    }
-
-    // Show modal and loading state immediately
-    showModalWithLoading(modal);
-    
-    // Fetch the post data
-    let post;
-    try {
-        post = await fetchBlogPost(postId);
-    } catch (error) {
-        console.error('[Blog] Error fetching post:', error);
-        hideModalLoading(modal);
-        window._blogModalOpening = false;
-        document.body.classList.remove('modal-open');
-        return;
-    }
-    
-    if (!post) {
-        console.error('No post data returned for ID:', postId);
-        hideModalLoading(modal);
-        window._blogModalOpening = false;
-        document.body.classList.remove('modal-open');
-        return;
-    }
-
-    // Hide loading and show content
-    hideModalLoading(modal);
-    populateModalContent(modal, post);
-    
-    // Setup enhanced features
-    setupKeyboardNavigation();
-    
-    // Initialize comments system
-    initializeCommentsSystem(postId);
-    
-    window._blogModalOpening = false;
-}
-
-function showModalWithLoading(modal) {
-    // Remove any inline display style
-    modal.removeAttribute('style');
-    modal.classList.add('show');
-    modal.setAttribute('aria-hidden', 'false');
-    modal.style.zIndex = '10000';
-    document.body.classList.add('modal-open');
-    
-    // Add click-outside-to-close functionality
-    setupModalClickOutside(modal);
-    
-    // Show loading state
-    const modalLoading = document.getElementById('modalLoading');
-    const modalBody = document.getElementById('modalBody');
-    
-    if (modalLoading) modalLoading.style.display = 'flex';
-    if (modalBody) modalBody.style.display = 'none';
-}
-
-function hideModalLoading(modal) {
-    const modalLoading = document.getElementById('modalLoading');
-    const modalBody = document.getElementById('modalBody');
-    
-    if (modalLoading) modalLoading.style.display = 'none';
-    if (modalBody) modalBody.style.display = 'block';
-}
-
-// Helper function to make URLs clickable in text
-function linkifyContent(html) {
-    // URL regex pattern that matches http(s) URLs
-    const urlPattern = /(\b(https?):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
-
-    // Replace URLs with clickable links
-    return html.replace(urlPattern, function(url) {
-        // Don't linkify if already in an <a> tag
-        return '<a href="' + url + '" target="_blank" rel="noopener noreferrer" class="auto-link">' + url + '</a>';
     });
-}
 
-function populateModalContent(modal, post) {
-    // Check essential modal elements
-    const essentialElements = {
-        'modal-title': document.getElementById('modal-title'),
-        'modal-content': document.getElementById('modal-content')
-    };
-
-    const missingEssential = [];
-    for (const [id, element] of Object.entries(essentialElements)) {
-        if (!element) {
-            missingEssential.push(id);
-        }
-    }
-
-    if (missingEssential.length > 0) {
-        console.error('Missing essential modal elements:', missingEssential);
-        return;
-    }
-
-    // Update modal content
-    try {
-        essentialElements['modal-title'].textContent = post.title;
-
-        // Show category if present
-        if (post.category) {
-            const categoryBadge = document.createElement('span');
-            categoryBadge.className = 'category-badge';
-            categoryBadge.textContent = post.category;
-            essentialElements['modal-title'].appendChild(categoryBadge);
-        }
-
-        // Make URLs clickable in the content
-        essentialElements['modal-content'].innerHTML = linkifyContent(post.content);
-        
-        // Update author info using AuthorIdentityCard
-        updateAuthorInfoWithIdentityCard(post);
-
-        // Show edit button if user is the author
-        updateEditButton(post);
-
-        // Vote buttons are now part of AuthorIdentityCard (no separate update needed)
-
-        // Load author's other scrolls
-        loadAuthorOtherScrolls(post.author._id, post._id);
-
-    } catch (error) {
-        console.error('Error updating modal content:', error);
-        return;
-    }
-}
-
-function updateReadingStats(content) {
-    const textContent = content.replace(/<[^>]*>/g, ''); // Strip HTML
-    const wordCount = textContent.split(/\s+/).filter(word => word.length > 0).length;
-    const readingTime = Math.ceil(wordCount / 200); // Average reading speed
-    
-    const readingTimeEl = document.getElementById('readingTime');
-    const wordCountEl = document.getElementById('wordCount');
-    
-    if (readingTimeEl) {
-        readingTimeEl.textContent = `${readingTime} min read`;
-    }
-    
-    if (wordCountEl) {
-        wordCountEl.textContent = `${wordCount} words`;
-    }
-}
-
-function updateAuthorInfoWithIdentityCard(post) {
-    const modalHeaderBar = document.getElementById('blogModalHeader');
-    if (!modalHeaderBar) {
-        console.error('[Blog] Modal header bar not found');
-        return;
-    }
-
-    // Clear existing content except close button
-    const closeBtn = modalHeaderBar.querySelector('.modal-header-controls');
-    modalHeaderBar.innerHTML = '';
-
-    // Create AuthorIdentityCard with voting
-    if (window.AuthorIdentityCard) {
-        // Calculate votes from arrays (blog-specific format)
-        const upvotes = Array.isArray(post.likes) ? post.likes.length : (post.likes || 0);
-        const challenges = Array.isArray(post.dislikes) ? post.dislikes.length : (post.dislikes || 0);
-
-        // Check if current user has voted
-        let userUpvoted = false;
-        let userChallenged = false;
-
-        const token = localStorage.getItem('sessionToken');
-        if (token) {
-            try {
-                const decoded = jwt_decode(token);
-                const userId = decoded.id;
-                userUpvoted = Array.isArray(post.likes) && post.likes.includes(userId);
-                userChallenged = Array.isArray(post.dislikes) && post.dislikes.includes(userId);
-            } catch (e) {
-                // Token decode failed
-            }
-        }
-
-        const identityCard = new AuthorIdentityCard({
-            author: post.author,
-            contentType: 'blog',
-            contentId: post._id,
-            timestamp: post.createdAt,
-            upvotes: upvotes,
-            challenges: challenges,
-            userUpvoted: userUpvoted,
-            userChallenged: userChallenged,
-            size: 'md',
-            variant: 'header',
-            showVoting: true,
-            showTimestamp: true,
-            enableChallenge: true // Enable 3-tier challenge for blogs
-        });
-
-        const cardElement = identityCard.render();
-
-        // Store reference for updates
-        window.currentModalIdentityCard = identityCard;
-
-        // Add card to header
-        modalHeaderBar.appendChild(cardElement);
-
-        // Re-add close button
-        if (closeBtn) {
-            modalHeaderBar.appendChild(closeBtn);
-        }
-
-        // Listen for vote updates
-        if (window.unifiedVoting) {
-            window.modalVoteListener = window.unifiedVoting.addListener((detail) => {
-                if (detail.contentType === 'blog' && detail.contentId === post._id) {
-                    identityCard.updateVoteState(detail.votes);
-                    identityCard.refreshVoteDisplay();
-                }
-            });
-        }
-    } else {
-        // Fallback to old system
-        updateAuthorInfo(post);
-        updateModalVoteButtons(post);
-    }
-}
-
-// Keep old function for backward compatibility
-function updateAuthorInfo(post) {
-    // Existing author info logic from the original function
-    const modalAuthorContainer = document.querySelector('.modal-author-info');
-    const fallbackContainer = document.querySelector('.scroll-author');
-
-    if (modalAuthorContainer && window.NexusAvatars) {
-        modalAuthorContainer.innerHTML = '';
-        const modalAuthorDisplay = window.NexusAvatars.createUserDisplay({
-            username: post.author.username,
-            displayName: post.author.displayName || post.author.username,
-            title: post.author.title || 'Scroll Author',
-            status: `Chronicled on ${new Date(post.createdAt).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            })}`,
-            avatarSize: 'xl',
-            displaySize: 'lg',
-            mystical: post.author.isVIP || post.author.role === 'admin',
-            online: post.author.online,
-            customAvatar: post.author.avatar,
-            usernameStyle: 'immortal',
-            enableUnifiedNavigation: true,
-            showStatus: true,
-            compact: false
-        });
-
-        modalAuthorContainer.appendChild(modalAuthorDisplay);
-
-        if (fallbackContainer) {
-            fallbackContainer.style.display = 'none';
-        }
-    } else {
-        console.warn('Nexus Avatar System not available, using fallback author display');
-        
-        if (fallbackContainer) {
-            fallbackContainer.style.display = 'flex';
-        }
-        
-        const fallbackElements = {
-            'modal-author-avatar': document.getElementById('modal-author-avatar'),
-            'modal-author-link': document.getElementById('modal-author-link'),
-            'modal-author-name-link': document.getElementById('modal-author-name-link'),
-            'modal-date': document.getElementById('modal-date')
-        };
-        
-        const authorAvatar = post.author.avatar || '/assets/images/default.jpg';
-        const authorDisplayName = post.author.displayName || post.author.username;
-        const authorLink = `/souls/${post.author.username}.html`;
-        
-        if (fallbackElements['modal-author-avatar']) {
-            fallbackElements['modal-author-avatar'].src = authorAvatar;
-            fallbackElements['modal-author-avatar'].alt = `${authorDisplayName}'s avatar`;
-        }
-        if (fallbackElements['modal-author-link']) {
-            fallbackElements['modal-author-link'].href = authorLink;
-        }
-        if (fallbackElements['modal-author-name-link']) {
-            fallbackElements['modal-author-name-link'].href = authorLink;
-            fallbackElements['modal-author-name-link'].textContent = authorDisplayName;
-        }
-        if (fallbackElements['modal-date']) {
-            fallbackElements['modal-date'].textContent = new Date(post.createdAt).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-        }
-        
-        if (modalAuthorContainer) {
-            modalAuthorContainer.style.display = 'none';
-        }
-    }
-}
-
-// Load author's other scrolls
-async function loadAuthorOtherScrolls(authorId, currentPostId) {
-    const otherScrollsContainer = document.getElementById('authorOtherScrolls');
-    if (!otherScrollsContainer) {
-        // Create the container if it doesn't exist
-        const modalBody = document.getElementById('modalBody');
-        if (!modalBody) return;
-        
-        const container = document.createElement('div');
-        container.id = 'authorOtherScrolls';
-        container.className = 'author-other-scrolls';
-        container.innerHTML = '<h3>More scrolls from this soul</h3><div class="other-scrolls-list"></div>';
-        modalBody.appendChild(container);
-    }
-    
-    try {
-        const response = await fetch(`${BLOG_API_BASE_URL}/blogs?author=${authorId}&limit=5`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' }
-        });
-        
-        if (!response.ok) {
-            throw new Error('Failed to fetch author scrolls');
-        }
-        
-        const result = await response.json();
-        const posts = result.docs || result;
-        
-        // Filter out current post and render others
-        const otherPosts = posts.filter(post => post._id !== currentPostId);
-        
-        const listContainer = document.querySelector('.other-scrolls-list');
-        if (!listContainer) return;
-        
-        if (otherPosts.length === 0) {
-            listContainer.innerHTML = '<p class="no-other-scrolls">No other scrolls from this author yet.</p>';
-        } else {
-            listContainer.innerHTML = '';
-            otherPosts.forEach(post => {
-                const scrollItem = document.createElement('div');
-                scrollItem.className = 'other-scroll-item';
-                scrollItem.innerHTML = `
-                    <h4>${post.title}</h4>
-                    <p class="scroll-date">${new Date(post.createdAt).toLocaleDateString()}</p>
-                `;
-                scrollItem.onclick = () => {
-                    // Close current modal and open new one
-                    closeBlogModal();
-                    setTimeout(() => openBlogModal(post._id), 300);
-                };
-                listContainer.appendChild(scrollItem);
-            });
-        }
-    } catch (error) {
-        console.error('Error loading author scrolls:', error);
-        const listContainer = document.querySelector('.other-scrolls-list');
-        if (listContainer) {
-            listContainer.innerHTML = '<p class="error-loading">Failed to load other scrolls.</p>';
-        }
-    }
-}
-
-function updateEditButton(post) {
-    const editBtn = document.getElementById('editPostBtn');
-    const deleteBtn = document.getElementById('deletePostBtn');
-    const token = localStorage.getItem('token') || localStorage.getItem('sessionToken');
-    
-    if (isTokenValid(token)) {
-        try {
-            const decodedToken = jwt_decode(token);
-            const isAuthor = post.author.username === decodedToken.username || post.author._id === decodedToken.id;
-            const isAdmin = decodedToken.role === 'admin';
-            const canEdit = isAuthor;
-            const canDelete = isAuthor || isAdmin;
-            
-            if (editBtn) {
-                editBtn.style.display = canEdit ? 'inline-flex' : 'none';
-            }
-            if (deleteBtn) {
-                deleteBtn.style.display = canDelete ? 'inline-flex' : 'none';
-            }
-        } catch (error) {
-            console.error('[blog.js] Error checking permissions:', error);
-            if (editBtn) editBtn.style.display = 'none';
-            if (deleteBtn) deleteBtn.style.display = 'none';
-        }
-    } else {
-        if (editBtn) editBtn.style.display = 'none';
-        if (deleteBtn) deleteBtn.style.display = 'none';
-    }
-}
-
-function setupReadingProgress() {
-    const modalBody = document.getElementById('modalBody');
-    const progressFill = document.querySelector('.progress-fill');
-    
-    if (!modalBody || !progressFill) return;
-    
-    modalBody.addEventListener('scroll', () => {
-        const scrollTop = modalBody.scrollTop;
-        const scrollHeight = modalBody.scrollHeight - modalBody.clientHeight;
-        const progress = (scrollTop / scrollHeight) * 100;
-        
-        progressFill.style.width = `${Math.min(progress, 100)}%`;
-        progressFill.parentElement.setAttribute('aria-valuenow', Math.round(progress));
-    });
-}
-
-function setupKeyboardNavigation() {
-    document.addEventListener('keydown', handleModalKeyboard);
-}
-
-function handleModalKeyboard(e) {
-    const modal = document.getElementById('blogModal');
-    if (!modal || !modal.classList.contains('show')) return;
-    
-    switch(e.key) {
-        case 'Escape':
-            e.preventDefault();
-            closeBlogModal();
-            break;
-    }
-}
-
-function initializeCommentsSystem(postId) {
-    // Initialize comments system
-    setTimeout(() => {
-        if (window.NEXUS && window.NEXUS.CommentsSystem) {
-            try {
-                if (commentsSystem) {
-                    commentsSystem = null;
-                }
-                commentsSystem = new window.NEXUS.CommentsSystem('blog', postId, 'blogComments');
-            } catch (error) {
-                console.error('Error initializing comments:', error);
-            }
-        }
-    }, 100);
-}
-
-// New enhanced features
-function copyPostLink() {
-    const postUrl = `${window.location.origin}/pages/blog.html?id=${currentPostId}`;
-    
-    if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(postUrl).then(() => {
-            showNotification('✨ Link copied to clipboard!', 'success');
-        }).catch(() => {
-            fallbackCopyText(postUrl);
-        });
-    } else {
-        fallbackCopyText(postUrl);
-    }
-}
-
-function fallbackCopyText(text) {
-    const textArea = document.createElement('textarea');
-    textArea.value = text;
-    document.body.appendChild(textArea);
-    textArea.select();
-    
-    try {
-        document.execCommand('copy');
-        showNotification('✨ Link copied to clipboard!', 'success');
-    } catch (err) {
-        showNotification('📋 Copy failed. Link: ' + text, 'error');
-    }
-    
-    document.body.removeChild(textArea);
-}
-
-function toggleTextSize(direction) {
-    const modalBody = document.getElementById('modalBody');
-    if (!modalBody) return;
-    
-    if (direction === 'larger' || (direction === undefined && currentTextSize === 'normal')) {
-        modalBody.classList.add('large-text');
-        currentTextSize = 'large';
-        showNotification('📖 Text size increased', 'info');
-    } else {
-        modalBody.classList.remove('large-text');
-        currentTextSize = 'normal';
-        showNotification('📖 Text size reset', 'info');
-    }
-}
-
-function bookmarkPost() {
-    if (!currentPostId) return;
-    
-    const isBookmarked = bookmarkedPosts.includes(currentPostId);
-    const bookmarkBtn = document.querySelector('.bookmark-btn');
-    
-    if (isBookmarked) {
-        bookmarkedPosts = bookmarkedPosts.filter(id => id !== currentPostId);
-        if (bookmarkBtn) {
-            bookmarkBtn.classList.remove('bookmarked');
-            bookmarkBtn.innerHTML = '<i class="far fa-bookmark"></i>';
-        }
-        showNotification('🔖 Bookmark removed', 'info');
-    } else {
-        bookmarkedPosts.push(currentPostId);
-        if (bookmarkBtn) {
-            bookmarkBtn.classList.add('bookmarked');
-            bookmarkBtn.innerHTML = '<i class="fas fa-bookmark"></i>';
-        }
-        showNotification('🔖 Post bookmarked!', 'success');
-    }
-    
-    localStorage.setItem('bookmarkedPosts', JSON.stringify(bookmarkedPosts));
-}
-
-function updateBookmarkState(postId) {
-    const bookmarkBtn = document.querySelector('.bookmark-btn');
-    if (!bookmarkBtn) return;
-    
-    const isBookmarked = bookmarkedPosts.includes(postId);
-    if (isBookmarked) {
-        bookmarkBtn.classList.add('bookmarked');
-        bookmarkBtn.innerHTML = '<i class="fas fa-bookmark"></i>';
-    } else {
-        bookmarkBtn.classList.remove('bookmarked');
-        bookmarkBtn.innerHTML = '<i class="far fa-bookmark"></i>';
-    }
-}
-
-function showNotification(message, type = 'info') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `modal-notification ${type}`;
-    notification.textContent = message;
-    notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: ${type === 'success' ? 'rgba(76, 175, 80, 0.9)' : 
-                     type === 'error' ? 'rgba(244, 67, 54, 0.9)' : 'rgba(255, 94, 120, 0.9)'};
-        color: white;
-        padding: 1rem 1.5rem;
-        border-radius: 8px;
-        font-size: 0.9rem;
-        font-weight: 600;
-        z-index: 10002;
-        opacity: 0;
-        transform: translateX(100%);
-        transition: all 0.3s ease;
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    `;
-    
-    document.body.appendChild(notification);
-    
-    // Animate in
-    setTimeout(() => {
-        notification.style.opacity = '1';
-        notification.style.transform = 'translateX(0)';
-    }, 10);
-    
-    // Remove after delay
-    setTimeout(() => {
-        notification.style.opacity = '0';
-        notification.style.transform = 'translateX(100%)';
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
-            }
-        }, 300);
-    }, 3000);
-}
-
-// Enhanced closeBlogModal
-function closeBlogModal() {
-    const modal = document.getElementById('blogModal');
-    if (modal) {
-        modal.classList.remove('show');
-        modal.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('modal-open');
-    }
-    
-    // Clean up event listeners
-    document.removeEventListener('keydown', handleModalKeyboard);
-    cleanupModalClickOutside();
-    
-    // Clean up comments system
-    if (commentsSystem) {
-        commentsSystem = null;
-    }
-    
-    // Reset the opening flag
-    window._blogModalOpening = false;
-}
-
-// Click-outside-to-close functionality
-let modalClickOutsideHandler = null;
-
-function setupModalClickOutside(modal) {
-    // Remove any existing handler first
-    cleanupModalClickOutside();
-    
-    // Create new handler
-    modalClickOutsideHandler = function(event) {
-        // Only close if clicking directly on the modal background (not on modal content)
-        if (event.target === modal) {
-            closeBlogModal();
-        }
-    };
-    
-    // Add the click listener to the modal
-    modal.addEventListener('click', modalClickOutsideHandler);
-}
-
-function cleanupModalClickOutside() {
-    if (modalClickOutsideHandler) {
-        const modal = document.getElementById('blogModal');
-        if (modal) {
-            modal.removeEventListener('click', modalClickOutsideHandler);
-        }
-        modalClickOutsideHandler = null;
-    }
-}
-
-// Share current post  
-function shareCurrentPost() {
-    if (currentPostId) {
-        sharePost(currentPostId);
-    }
-}
-
-// Share post by ID - Clean URL only
-function sharePost(postId) {
-    const post = blogPosts[postId];
-    if (!post) {
-        console.error('Post not found for sharing:', postId);
-        return;
-    }
-    
-    const shareUrl = `${window.location.origin}${window.location.pathname}#scroll-${postId}`;
-    
-    // Copy clean URL to clipboard without metadata
-    if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(shareUrl).then(() => {
-            alert('Link copied');
-        }).catch(() => {
-            prompt('Copy link:', shareUrl);
-        });
-    } else {
-        // Fallback: show the clean link for manual copy
-        prompt('Copy link:', shareUrl);
-    }
-}
-
-
-
-// Like a blog post
-async function likePost(postId) {
-    const token = localStorage.getItem('sessionToken');
-    if (!isTokenValid(token)) {
-        if (window.NEXUS && window.NEXUS.openSoulModal) {
-            window.NEXUS.openSoulModal('login');
-        }
-        return;
-    }
-
-    try {
-        const response = await fetch(`${BLOG_API_BASE_URL}/blogs/${postId}/like`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.error || `Failed to like post`);
-        }
-
-        const result = await response.json();
-        updateLikeButtons(postId, result);
-
-        // Update cached post data
-        if (blogPosts[postId]) {
-            blogPosts[postId].likes = result.likes;
-            blogPosts[postId].dislikes = result.dislikes;
-        }
-
-        // Update modal if open for this post
-        if (currentPostId === postId) {
-            updateModalVoteButtonsFromResult(result);
-        }
-    } catch (error) {
-        console.error('Error liking post:', error);
-        alert('Failed to like post: ' + error.message);
-    }
-}
-
-// Challenge a blog post with 3-tier response system
-async function challengePost(postId) {
-    const token = localStorage.getItem('sessionToken');
-    if (!isTokenValid(token)) {
-        if (window.NEXUS && window.NEXUS.openSoulModal) {
-            window.NEXUS.openSoulModal('login');
-        }
-        return;
-    }
-
-    // Show challenge options dropdown
-    showChallengeOptions(postId);
-}
-
-// Show challenge options dropdown
-function showChallengeOptions(postId) {
-    // Remove any existing challenge dropdown
-    const existingDropdown = document.querySelector('.challenge-dropdown');
-    if (existingDropdown) {
-        existingDropdown.remove();
-    }
-
-    // Create challenge dropdown
-    const dropdown = document.createElement('div');
-    dropdown.className = 'challenge-dropdown';
-    dropdown.innerHTML = `
-        <div class="challenge-options">
-            <button onclick="quickDownvote('${postId}')" class="challenge-option">
-                <i class="fas fa-thumbs-down"></i> Quick Downvote
-            </button>
-            <button onclick="openCounterpoint('${postId}')" class="challenge-option">
-                <i class="fas fa-comment-dots"></i> Write Counter-point
-            </button>
-            <button onclick="createFormalDebate('${postId}')" class="challenge-option">
-                <i class="fas fa-gavel"></i> Create Formal Debate
-            </button>
-        </div>
-    `;
-
-    // Find the challenge button and position dropdown
-    // Try modal button first (by ID), then card buttons (by data-post-id or onclick)
-    const modalBtn = document.getElementById('modalChallengeBtn');
-    const cardBtn = document.querySelector(`button[data-post-id="${postId}"].challenge-btn`) ||
-                    document.querySelector(`button[onclick*="challengePost('${postId}')"]`);
-
-    const challengeBtn = (modalBtn && modalBtn.getAttribute('data-post-id') === postId) ? modalBtn : cardBtn;
-
-    if (!challengeBtn) {
-        console.error('[Challenge] Could not find challenge button for post:', postId);
-        return;
-    }
-
-    // Check if it's in the modal header
-    const isInModalHeader = challengeBtn.closest('.modal-header-bar');
-
-    if (isInModalHeader) {
-        // Position relative to modal-vote-controls for modal
-        const voteControls = challengeBtn.closest('.modal-vote-controls');
-        if (voteControls) {
-            voteControls.style.position = 'relative';
-            voteControls.appendChild(dropdown);
-        }
-    } else {
-        // Position relative to parent for card buttons
-        challengeBtn.parentElement.style.position = 'relative';
-        challengeBtn.parentElement.appendChild(dropdown);
-    }
-
-    // Close dropdown when clicking outside
-    setTimeout(() => {
-        document.addEventListener('click', function closeDropdown(e) {
-            if (!dropdown.contains(e.target) && !challengeBtn.contains(e.target)) {
-                dropdown.remove();
-                document.removeEventListener('click', closeDropdown);
-            }
-        });
-    }, 100);
-}
-
-// Quick downvote (old dislike functionality)
-async function quickDownvote(postId) {
-    const token = localStorage.getItem('sessionToken');
-    
-    // Remove dropdown
-    const dropdown = document.querySelector('.challenge-dropdown');
-    if (dropdown) dropdown.remove();
-
-    try {
-        const response = await fetch(`${BLOG_API_BASE_URL}/blogs/${postId}/dislike`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.error || `Failed to downvote post`);
-        }
-
-        const result = await response.json();
-        updateLikeButtons(postId, result);
-
-        // Update cached post data
-        if (blogPosts[postId]) {
-            blogPosts[postId].likes = result.likes;
-            blogPosts[postId].dislikes = result.dislikes;
-        }
-
-        // Update modal buttons if modal is open for this post
-        if (currentPostId === postId) {
-            updateModalVoteButtonsFromResult(result);
-        }
-
-        showNotification('Downvoted', 'info');
-    } catch (error) {
-        console.error('Error downvoting post:', error);
-        alert('Failed to downvote post: ' + error.message);
-    }
-}
-
-// Open counterpoint modal
-function openCounterpoint(postId) {
-    // Remove dropdown
-    const dropdown = document.querySelector('.challenge-dropdown');
-    if (dropdown) dropdown.remove();
-
-    // Set post ID in hidden field
-    const counterpointPostIdInput = document.getElementById('counterpointPostId');
-    if (counterpointPostIdInput) {
-        counterpointPostIdInput.value = postId;
-    }
-
-    // Clear previous input
-    const counterpointText = document.getElementById('counterpointText');
-    const counterpointSources = document.getElementById('counterpointSources');
-    if (counterpointText) counterpointText.value = '';
-    if (counterpointSources) counterpointSources.value = '';
-
-    // Show modal
-    const modal = document.getElementById('counterpointModal');
-    if (modal) {
-        modal.style.display = 'flex';
-        modal.setAttribute('aria-hidden', 'false');
-
-        // Focus on textarea
-        setTimeout(() => {
-            if (counterpointText) counterpointText.focus();
-        }, 100);
-    }
-}
-
-// Close counterpoint modal
-function closeCounterpointModal() {
-    const modal = document.getElementById('counterpointModal');
-    if (modal) {
-        modal.style.display = 'none';
-        modal.setAttribute('aria-hidden', 'true');
-    }
-}
-
-// Submit counterpoint
-async function submitCounterpoint(event) {
-    event.preventDefault();
-
-    const token = localStorage.getItem('sessionToken');
-    if (!token) {
-        alert('You must be logged in to submit a counterpoint');
-        return;
-    }
-
-    const postId = document.getElementById('counterpointPostId')?.value;
-    const counterpointText = document.getElementById('counterpointText')?.value.trim();
-    const counterpointSources = document.getElementById('counterpointSources')?.value.trim();
-
-    if (!postId || !counterpointText) {
-        alert('Please provide a counterpoint');
-        return;
-    }
-
-    // Format comment with counterpoint prefix and sources
-    let commentContent = `🗡️ **Counterpoint:**\n\n${counterpointText}`;
-
-    if (counterpointSources) {
-        const sourcesList = counterpointSources.split('\n').filter(s => s.trim());
-        if (sourcesList.length > 0) {
-            commentContent += '\n\n**Sources:**';
-            sourcesList.forEach(source => {
-                commentContent += `\n• ${source.trim()}`;
-            });
-        }
-    }
-
-    try {
-        const response = await fetch(`${BLOG_API_BASE_URL}/comments`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                content: commentContent,
-                targetType: 'blog',
-                targetId: postId,
-                isCounterpoint: true
-            })
-        });
-
-        if (!response.ok) {
-            let errorMessage = 'Failed to submit counterpoint';
-            try {
-                const errorData = await response.json();
-                errorMessage = errorData.message || errorMessage;
-            } catch (e) {
-                // Response is not JSON, use status text
-                errorMessage = response.statusText || errorMessage;
-            }
-            throw new Error(errorMessage);
-        }
-
-        // Close modal and refresh comments
-        closeCounterpointModal();
-
-        // Reload comments if we're viewing this post and comments system exists
-        if (currentPostId === postId && commentsSystem) {
-            await commentsSystem.loadComments();
-        }
-
-        showNotification('Counterpoint submitted successfully!', 'success');
-    } catch (error) {
-        console.error('Error submitting counterpoint:', error);
-        alert('Failed to submit counterpoint: ' + error.message);
-    }
-}
-
-// Create formal debate in Clash of Immortals
-async function createFormalDebate(postId) {
-    const token = localStorage.getItem('sessionToken');
-    const post = blogPosts[postId];
-    
-    // Remove dropdown
-    const dropdown = document.querySelector('.challenge-dropdown');
-    if (dropdown) dropdown.remove();
-
-    if (!post) {
-        alert('Unable to create debate: Post not found');
-        return;
-    }
-
-    try {
-        const response = await fetch(`${BLOG_API_BASE_URL}/debates/from-scroll`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                sourceScrollId: postId,
-                scrollTitle: post.title,
-                originalAuthorId: post.author._id
-            })
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.error || 'Failed to create debate');
-        }
-
-        const result = await response.json();
-        showNotification('Debate created! Redirecting to Clash of Immortals...', 'success');
-        
-        // Redirect to debate page after short delay
-        setTimeout(() => {
-            window.location.href = `/pages/debate.html#debate-${result.debateId}`;
-        }, 2000);
-    } catch (error) {
-        console.error('Error creating debate:', error);
-        alert('Failed to create debate: ' + error.message);
-    }
-}
-
-// Backward compatibility - redirect old dislikePost calls to challengePost
-function dislikePost(postId) {
-    challengePost(postId);
-}
-
-// Vote from modal (upvote/downvote)
-async function voteFromModal(voteType) {
-    if (!currentPostId) {
-        console.error('No current post ID');
-        return;
-    }
-
-    const token = localStorage.getItem('sessionToken');
-    if (!isTokenValid(token)) {
-        if (window.NEXUS && window.NEXUS.openSoulModal) {
-            window.NEXUS.openSoulModal('login');
-        }
-        return;
-    }
-
-    try {
-        const endpoint = voteType === 'like' ? 'like' : 'dislike';
-        const response = await fetch(`${BLOG_API_BASE_URL}/blogs/${currentPostId}/${endpoint}`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.error || `Failed to ${voteType} post`);
-        }
-
-        const result = await response.json();
-
-        // Update both the card and modal
-        updateLikeButtons(currentPostId, result);
-        updateModalVoteButtonsFromResult(result);
-
-        // Update the post data in cache
-        if (blogPosts[currentPostId]) {
-            blogPosts[currentPostId].likes = result.likes ? result.likes.length || result.likes : 0;
-            blogPosts[currentPostId].dislikes = result.dislikes ? result.dislikes.length || result.dislikes : 0;
-        }
-    } catch (error) {
-        console.error(`Error ${voteType} post:`, error);
-        alert(`Failed to ${voteType} post: ` + error.message);
-    }
-}
-
-// Challenge post from modal
-function challengePostFromModal() {
-    if (!currentPostId) {
-        console.error('No current post ID');
-        return;
-    }
-
-    const token = localStorage.getItem('sessionToken');
-    if (!isTokenValid(token)) {
-        if (window.NEXUS && window.NEXUS.openSoulModal) {
-            window.NEXUS.openSoulModal('login');
-        }
-        return;
-    }
-
-    // Update the challenge button's data-post-id BEFORE calling challengePost
-    const modalChallengeBtn = document.getElementById('modalChallengeBtn');
-    if (modalChallengeBtn) {
-        modalChallengeBtn.setAttribute('data-post-id', currentPostId);
-    }
-
-    // Show challenge options dropdown directly
-    showChallengeOptions(currentPostId);
-}
-
-// Update modal vote buttons with post data
-function updateModalVoteButtons(post) {
-    const upvoteCount = document.getElementById('modalUpvoteCount');
-    const challengeCount = document.getElementById('modalChallengeCount');
-    const upvoteBtn = document.getElementById('modalUpvoteBtn');
-    const challengeBtn = document.getElementById('modalChallengeBtn');
-
-    if (upvoteCount) {
-        const likes = post.likes ? (Array.isArray(post.likes) ? post.likes.length : post.likes) : 0;
-        upvoteCount.textContent = likes;
-    }
-
-    if (challengeCount) {
-        const dislikes = post.dislikes ? (Array.isArray(post.dislikes) ? post.dislikes.length : post.dislikes) : 0;
-        challengeCount.textContent = dislikes;
-    }
-
-    // Set the data-post-id attribute on challenge button
-    if (challengeBtn && post._id) {
-        challengeBtn.setAttribute('data-post-id', post._id);
-    }
-
-    // Check if current user has voted
-    const token = localStorage.getItem('sessionToken');
-    if (token && isTokenValid(token)) {
-        try {
-            const decoded = jwt_decode(token);
-            const userId = decoded.id;
-
-            // Check if user liked (use both 'active' and 'voted' for compatibility)
-            if (upvoteBtn && post.likes && Array.isArray(post.likes)) {
-                if (post.likes.includes(userId)) {
-                    upvoteBtn.classList.add('voted', 'active');
+    // Setup "Create New Scroll" button
+    const createScrollBtn = document.getElementById('createScrollBtn');
+    if (createScrollBtn) {
+        createScrollBtn.addEventListener('click', () => {
+            const token = localStorage.getItem('sessionToken');
+            if (!window.BlogAPI.isTokenValid(token)) {
+                // Prompt login
+                if (window.NEXUS && window.NEXUS.openSoulModal) {
+                    window.NEXUS.openSoulModal('login');
                 } else {
-                    upvoteBtn.classList.remove('voted', 'active');
+                    alert('Please log in to create a scroll');
                 }
+            } else {
+                window.BlogEditor.openCreateModal();
             }
-
-            // Check if user challenged/disliked (use both 'active' and 'voted' for compatibility)
-            if (challengeBtn && post.dislikes && Array.isArray(post.dislikes)) {
-                if (post.dislikes.includes(userId)) {
-                    challengeBtn.classList.add('voted', 'active');
-                } else {
-                    challengeBtn.classList.remove('voted', 'active');
-                }
-            }
-        } catch (e) {
-            console.error('Error decoding token:', e);
-        }
-    }
-}
-
-// Update modal vote buttons from API result
-function updateModalVoteButtonsFromResult(result) {
-    const upvoteCount = document.getElementById('modalUpvoteCount');
-    const challengeCount = document.getElementById('modalChallengeCount');
-    const upvoteBtn = document.getElementById('modalUpvoteBtn');
-    const challengeBtn = document.getElementById('modalChallengeBtn');
-
-    if (upvoteCount && result.likes !== undefined) {
-        upvoteCount.textContent = result.likes;
-    }
-
-    if (challengeCount && result.dislikes !== undefined) {
-        challengeCount.textContent = result.dislikes;
-    }
-
-    // Update button states (use both 'active' and 'voted' for compatibility)
-    if (upvoteBtn) {
-        if (result.userLiked) {
-            upvoteBtn.classList.add('voted', 'active');
-        } else {
-            upvoteBtn.classList.remove('voted', 'active');
-        }
-    }
-
-    if (challengeBtn) {
-        if (result.userDisliked) {
-            challengeBtn.classList.add('voted', 'active');
-        } else {
-            challengeBtn.classList.remove('voted', 'active');
-        }
-    }
-}
-
-// Update like/dislike button states
-function updateLikeButtons(postId, result) {
-    const postElement = document.getElementById(postId);
-    if (!postElement) return;
-
-    const likeBtn = postElement.querySelector('.like-btn');
-    // Look for challenge-btn (new) or dislike-btn (legacy)
-    const challengeBtn = postElement.querySelector('.challenge-btn') || postElement.querySelector('.dislike-btn');
-    const likeCount = postElement.querySelector('.like-count');
-    // Look for challenge-count (new) or dislike-count (legacy)
-    const challengeCount = postElement.querySelector('.challenge-count') || postElement.querySelector('.dislike-count');
-
-    if (likeCount) likeCount.textContent = result.likes;
-    if (challengeCount) challengeCount.textContent = result.dislikes;
-
-    // Update button states (use both 'active' and 'voted' for compatibility)
-    if (likeBtn) {
-        if (result.userLiked) {
-            likeBtn.classList.add('active', 'voted');
-        } else {
-            likeBtn.classList.remove('active', 'voted');
-        }
-    }
-
-    if (challengeBtn) {
-        if (result.userDisliked) {
-            challengeBtn.classList.add('active', 'voted');
-        } else {
-            challengeBtn.classList.remove('active', 'voted');
-        }
-    }
-}
-
-// Edit current post
-function editCurrentPost() {
-    if (currentPostId) {
-        editPost(currentPostId);
-    }
-}
-
-// Edit post by ID
-async function editPost(postId) {
-    const token = localStorage.getItem('sessionToken');
-    if (!isTokenValid(token)) {
-        if (window.NEXUS && window.NEXUS.openSoulModal) {
-            window.NEXUS.openSoulModal('login');
-        }
-        return;
-    }
-
-    // Get the current post data
-    const post = blogPosts[postId];
-    if (!post) {
-        console.error('[blog.js] No post data found for editing:', postId);
-        return;
-    }
-
-    // Check if user is the author
-    const decodedToken = jwt_decode(token);
-    if (post.author.username !== decodedToken.username && post.author._id !== decodedToken.id) {
-        alert('You can only edit your own scrolls.');
-        return;
-    }
-
-    // Create edit form
-    const modalContent = document.getElementById('modal-content');
-    const modalTitle = document.getElementById('modal-title');
-    
-    if (!modalContent || !modalTitle) {
-        console.error('[blog.js] Modal elements not found for editing');
-        return;
-    }
-
-    // Store original content
-    const originalTitle = modalTitle.textContent;
-    const originalContent = modalContent.innerHTML;
-
-    // Create edit form with rich text editor
-    modalTitle.innerHTML = `
-        <input type="text" id="edit-title" value="${post.title}" 
-               style="width: 100%; background: linear-gradient(135deg, rgba(26, 26, 51, 0.95), rgba(42, 64, 102, 0.9)); 
-                      border: 2px solid rgba(255, 94, 120, 0.4); border-radius: 12px; 
-                      padding: 1rem; font-family: 'Cinzel', serif; 
-                      font-size: clamp(1.2rem, 3vw, 1.8rem); font-weight: 700; 
-                      color: var(--text); text-align: center; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);">
-    `;
-
-    modalContent.innerHTML = `
-        <div style="margin-bottom: 2rem;">
-            <div id="edit-content-container"></div>
-        </div>
-        <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
-            <button id="save-edit-btn"
-                    style="background: linear-gradient(135deg, rgba(255, 94, 120, 0.9), rgba(255, 202, 40, 0.8)); 
-                           color: var(--primary); border: 2px solid rgba(255, 94, 120, 0.4); 
-                           padding: 0.9rem 2rem; border-radius: 30px; cursor: pointer; 
-                           font-weight: 700; font-family: 'Cinzel', serif; font-size: 1rem;
-                           min-height: 50px; transition: var(--transition-smooth);
-                           text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-                           box-shadow: 0 6px 20px rgba(255, 94, 120, 0.4), 0 3px 10px rgba(0, 0, 0, 0.3);">
-                ✅ Save Changes
-            </button>
-            <button id="cancel-edit-btn"
-                    style="background: linear-gradient(135deg, rgba(26, 26, 51, 0.9), rgba(42, 64, 102, 0.8)); 
-                           color: var(--accent); border: 2px solid var(--accent); 
-                           padding: 0.75rem 1.75rem; border-radius: 30px; cursor: pointer; 
-                           font-weight: 600; font-family: 'Cinzel', serif; font-size: 0.95rem;
-                           min-height: 46px; transition: var(--transition-smooth);
-                           text-shadow: 0 0 8px rgba(255, 94, 120, 0.3);
-                           box-shadow: 0 4px 16px rgba(255, 94, 120, 0.2), 0 2px 8px rgba(0, 0, 0, 0.3);">
-                ❌ Cancel
-            </button>
-        </div>
-    `;
-
-    // Initialize rich text editor with post content
-    window.currentEditEditor = new NexusRichTextEditor('edit-content-container', {
-        placeholder: 'Edit your eternal thoughts...',
-        theme: 'snow'
-    });
-    
-    // Set the content after editor is initialized
-    setTimeout(() => {
-        if (window.currentEditEditor) {
-            window.currentEditEditor.setContent(post.content);
-            window.currentEditEditor.focus();
-        }
-    }, 100);
-
-    // Add event listeners for buttons (replacing inline onclick)
-    document.getElementById('save-edit-btn').addEventListener('click', () => savePostEdit(postId));
-    document.getElementById('cancel-edit-btn').addEventListener('click', () => {
-        cancelPostEdit(postId, originalTitle, originalContent);
-    });
-}
-
-// Save post edit
-async function savePostEdit(postId) {
-    const token = localStorage.getItem('sessionToken');
-    const titleInput = document.getElementById('edit-title');
-    
-    if (!titleInput || !window.currentEditEditor) {
-        console.error('[blog.js] Edit form elements not found');
-        return;
-    }
-    
-    const newTitle = titleInput.value.trim();
-    const newContent = window.currentEditEditor.getContent().trim();
-    const textContent = window.currentEditEditor.getText().trim();
-    
-    if (!newTitle || !textContent) {
-        alert('Title and content are required');
-        return;
-    }
-    
-    try {
-        const response = await fetch(`${BLOG_API_BASE_URL}/blogs/${postId}`, {
-            method: 'PUT',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ title: newTitle, content: newContent })
         });
-        
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.error || `HTTP ${response.status}: Failed to update scroll`);
-        }
-        
-        const updatedPost = await response.json();
-        
-        // Update cached post data
-        blogPosts[postId] = updatedPost;
-        
-        // Update the modal display
-        document.getElementById('modal-title').textContent = updatedPost.title;
-        document.getElementById('modal-content').innerHTML = updatedPost.content;
-        
-        // Update the post in the blog list if visible
-        const postElement = document.getElementById(postId);
-        if (postElement) {
-            const titleElement = postElement.querySelector('h3');
-            const contentElement = postElement.querySelector('.content');
-            if (titleElement) titleElement.textContent = updatedPost.title;
-            if (contentElement) contentElement.innerHTML = createExcerpt(updatedPost.content);
-        }
-        
-        // Clean up rich text editor
-        if (window.currentEditEditor) {
-            window.currentEditEditor.destroy();
-            window.currentEditEditor = null;
-        }
-        
-        alert('Scroll updated successfully!');
-        
-    } catch (error) {
-        console.error('[blog.js] Error updating post:', error);
-        alert(`Failed to update scroll: ${error.message}`);
     }
-}
 
-// Cancel post edit
-function cancelPostEdit(postId, originalTitle, originalContent) {
-    // Clean up rich text editor
-    if (window.currentEditEditor) {
-        window.currentEditEditor.destroy();
-        window.currentEditEditor = null;
-    }
-    
-    // Restore original content
-    document.getElementById('modal-title').textContent = originalTitle;
-    document.getElementById('modal-content').innerHTML = originalContent;
-}
-
-
-// Enhanced modal functionality - remove duplicate declarations
-
-// Duplicate functions removed - kept the enhanced versions above
-
-// Export functions to global scope for compatibility
-window.createBlog = createBlog;
-window.openBlogModal = openBlogModal;
-window.closeBlogModal = closeBlogModal;
-window.sharePost = sharePost;
-window.shareCurrentPost = shareCurrentPost;
-window.likePost = likePost;
-window.dislikePost = dislikePost;
-window.challengePost = challengePost;
-window.challengePostFromModal = challengePostFromModal;
-window.showChallengeOptions = showChallengeOptions;
-window.quickDownvote = quickDownvote;
-window.openCounterpoint = openCounterpoint;
-window.createFormalDebate = createFormalDebate;
-window.voteFromModal = voteFromModal;
-window.editCurrentPost = editCurrentPost;
-window.editPost = editPost;
-window.savePostEdit = savePostEdit;
-window.cancelPostEdit = cancelPostEdit;
-
-// Export new enhanced functions
-window.copyPostLink = copyPostLink;
-window.closeCounterpointModal = closeCounterpointModal;
-window.submitCounterpoint = submitCounterpoint;
-
-// ALWAYS check for auto-open regardless of page type - multiple triggers to ensure it runs
-// Immediate check
-setTimeout(checkAutoOpen, 100);
-
-// DOM ready check
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', checkAutoOpen);
-    document.addEventListener('DOMContentLoaded', () => {
-        // Attach counterpoint form submit handler
-        const counterpointForm = document.getElementById('counterpointForm');
-        if (counterpointForm) {
-            counterpointForm.addEventListener('submit', submitCounterpoint);
-        }
+    // Setup modal close buttons
+    const modalCloseButtons = document.querySelectorAll('.close-modal, .close-btn');
+    modalCloseButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const modal = e.target.closest('.modal');
+            if (modal) {
+                modal.style.display = 'none';
+                modal.setAttribute('aria-hidden', 'true');
+            }
+        });
     });
-} else {
-    checkAutoOpen();
-    // Attach counterpoint form submit handler
-    const counterpointForm = document.getElementById('counterpointForm');
-    if (counterpointForm) {
-        counterpointForm.addEventListener('submit', submitCounterpoint);
-    }
 }
 
-// Backup check after window load
-window.addEventListener('load', checkAutoOpen);
+// ============================================================================
+// BACKWARD COMPATIBILITY LAYER
+// ============================================================================
 
-// Handle hash changes for direct navigation
-window.addEventListener('hashchange', () => {
-    if (window.location.hash && window.location.hash.startsWith('#scroll-')) {
-        const postId = window.location.hash.replace('#scroll-', '');
-        if (postId) {
-            openBlogModal(postId);
-        }
-    }
+/**
+ * Legacy function wrappers for backward compatibility
+ * These functions delegate to the new modular system
+ */
+
+// Blog post operations
+window.fetchBlogPosts = (page) => window.BlogUI.loadPage(page);
+window.openBlogModal = (postId) => window.BlogModal.open(postId);
+window.closeBlogModal = () => window.BlogModal.close();
+
+// Voting operations
+window.likePost = (postId) => window.BlogVoting.likePost(postId);
+window.challengePost = (postId) => window.BlogVoting.challengePost(postId);
+window.dislikePost = (postId) => window.BlogVoting.challengePost(postId); // Legacy alias
+
+// Editor operations
+window.openCreateScrollModal = () => window.BlogEditor.openCreateModal();
+window.openEditScrollModal = (postId) => window.BlogEditor.openEditModal(postId);
+window.closeScrollModal = () => window.BlogEditor.closeEditorModal();
+
+// Comment operations
+window.loadBlogComments = (postId) => window.BlogComments.loadComments(postId);
+
+// Sharing and bookmarks
+window.sharePost = (postId) => window.BlogUI.sharePost(postId);
+window.toggleBookmark = (postId) => window.BlogUI.toggleBookmark(postId);
+
+// Delete operations
+window.confirmDeletePost = (postId) => window.BlogVoting.confirmDeletePost(postId);
+window.confirmDeleteCurrentPost = () => window.BlogVoting.confirmDeleteCurrentPost();
+
+// ============================================================================
+// AUTO-INITIALIZATION
+// ============================================================================
+
+/**
+ * Auto-initialize when DOM is ready
+ */
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log('[Blog] DOM loaded, initializing...');
+
+    // Setup event listeners
+    setupEventListeners();
+
+    // Initialize blog system
+    await initializeBlog();
 });
 
-// Auto-initialization disabled for pages like profile where blog is not the main feature
-
-if (!window.location.pathname.includes('/souls/') && !window.location.pathname.includes('/profile/')) {
-    // Initialize blog functionality when DOM is loaded
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            initBlog();
-        });
-    } else {
-        initBlog();
-    }
-} else {
+/**
+ * Fallback initialization if DOMContentLoaded already fired
+ */
+if (document.readyState === 'interactive' || document.readyState === 'complete') {
+    console.log('[Blog] DOM already loaded, initializing immediately...');
+    setupEventListeners();
+    initializeBlog();
 }
 
-// Separate function to handle auto-opening from highlights
-function checkAutoOpen() {
-    // Check for hash fragment first (from shared links like #scroll-123)
-    let hashPostId = null;
-    if (window.location.hash && window.location.hash.startsWith('#scroll-')) {
-        hashPostId = window.location.hash.replace('#scroll-', '');
-    }
+// ============================================================================
+// EXPORTS
+// ============================================================================
 
-    // Check for URL parameter (from profile links)
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlPostId = urlParams.get('id');
+// Export initialization function for manual initialization if needed
+window.initializeBlog = initializeBlog;
 
-    // Check for sessionStorage (from internal navigation)
-    const sessionPostId = sessionStorage.getItem('openScrollId');
-
-    // Use hash if present, then URL parameter, then session storage
-    const autoOpenScrollId = hashPostId || urlPostId || sessionPostId;
-
-    if (autoOpenScrollId) {
-        // Clear session storage if we used it
-        if (sessionPostId) {
-            sessionStorage.removeItem('openScrollId');
-        }
-
-
-        // Wait for all systems to be ready
-        const attemptAutoOpen = (attempts = 0) => {
-            if (!window.NexusAvatars) {
-                if (attempts < 20) {
-                    setTimeout(() => attemptAutoOpen(attempts + 1), 500);
-                }
-                return;
-            }
-
-            // Check if modal exists
-            const modal = document.getElementById('blogModal');
-            if (!modal) {
-                if (attempts < 20) {
-                    setTimeout(() => attemptAutoOpen(attempts + 1), 500);
-                }
-                return;
-            }
-
-            try {
-                openBlogModal(autoOpenScrollId);
-
-                // Clean up URL if we used URL parameter (but keep hash for sharing)
-                if (urlPostId && !hashPostId) {
-                    // Remove the ?id= parameter from URL without page reload
-                    const newUrl = window.location.pathname + window.location.hash;
-                    window.history.replaceState({}, document.title, newUrl);
-                }
-            } catch (error) {
-                console.error('Error opening modal:', error);
-            }
-            
-            // Also try fetching the post if it's not cached
-            if (!blogPosts[autoOpenScrollId]) {
-                fetchBlogPost(autoOpenScrollId).then(post => {
-                    if (post) {
-                        openBlogModal(autoOpenScrollId);
-                    }
-                });
-            }
-        };
-        
-        setTimeout(() => attemptAutoOpen(), 2000);
-    }
-}
-
-
-// Delete functionality
-async function deletePost(postId) {
-    const token = localStorage.getItem('token') || localStorage.getItem('sessionToken');
-    if (!token) {
-        alert('You must be logged in to delete posts.');
-        return false;
-    }
-
-    try {
-        const response = await fetch(`${BLOG_API_BASE_URL}/blogs/${postId}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.error || `Failed to delete post: ${response.status}`);
-        }
-
-        return true;
-    } catch (error) {
-        console.error('Error deleting post:', error);
-        alert('Failed to delete scroll: ' + error.message);
-        return false;
-    }
-}
-
-function confirmDeletePost(postId) {
-    const post = blogPosts[postId];
-    if (!post) {
-        alert('Post not found.');
-        return;
-    }
-
-    const confirmMessage = `Are you sure you want to permanently delete the scroll "${post.title}"?\n\nThis action cannot be undone.`;
-    
-    if (confirm(confirmMessage)) {
-        deletePost(postId).then(success => {
-            if (success) {
-                // Remove from UI
-                const postElement = document.getElementById(postId);
-                if (postElement) {
-                    postElement.remove();
-                }
-                
-                // Remove from cache
-                delete blogPosts[postId];
-                
-                // Show success message
-                alert('Scroll has been permanently deleted.');
-                
-                // Close modal if it's open
-                if (currentPostId === postId) {
-                    closeBlogModal();
-                }
-            }
-        });
-    }
-}
-
-function confirmDeleteCurrentPost() {
-    if (currentPostId) {
-        confirmDeletePost(currentPostId);
-    }
-}
-
-// Export new functions to global scope
-window.copyPostLink = copyPostLink;
-window.deletePost = deletePost;
-window.confirmDeletePost = confirmDeletePost;
-window.confirmDeleteCurrentPost = confirmDeleteCurrentPost;
-
+console.log('[Blog] Blog system module loaded ✓');
