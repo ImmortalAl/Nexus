@@ -40,7 +40,14 @@
       "Bash(claude-code plan)",
       "Bash(exit 0)",
       "Bash(if grep -q \"base-theme.css\" \"$file\")",
-      "Bash(then)"
+      "Bash(then)",
+      "Bash(then if ! grep -q \"mobile-enhanced.css\" \"$file\")",
+      "Bash(then sed -i '/<link.*light-theme-immortal\\.css/a\\    <link rel=\"\"stylesheet\"\" href=\"\"css/mobile-enhanced.css?v=1.0\"\">' \"$file\")",
+      "Bash(then if grep -q \"light-theme-immortal.css\" \"$file\")",
+      "Bash(then sed -i '/light-theme-immortal\\.css/a\\    <link rel=\"\"stylesheet\"\" href=\"\"../css/mobile-enhanced.css?v=1.0\"\">' \"$file\")",
+      "Bash(echo:*)",
+      "Bash(do if [ -f \"$dir/index.html\" ])",
+      "Bash(then sed -i '/light-theme-immortal\\.css/a\\    <link rel=\"\"stylesheet\"\" href=\"\"../css/mobile-enhanced.css?v=1.0\"\">' \"$dir/index.html\")"
     ],
     "deny": [],
     "ask": []

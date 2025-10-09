@@ -1,0 +1,620 @@
+/**
+ * Mobile Responsiveness Enhancements - Immortal Nexus
+ * Comprehensive mobile fixes and improvements
+ *
+ * Breakpoints:
+ * - Mobile: 0-640px
+ * - Tablet: 641-1024px
+ * - Desktop: 1025px+
+ */
+
+/* ============================================================================
+   TOUCH TARGET IMPROVEMENTS
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    /* Ensure all buttons meet minimum touch target size (44x44px) */
+    button,
+    .btn,
+    a.button,
+    input[type="button"],
+    input[type="submit"] {
+        min-height: 44px;
+        min-width: 44px;
+        padding: 12px 20px;
+    }
+
+    /* Icon-only buttons */
+    button:not(:has(span)),
+    .icon-btn {
+        min-width: 48px;
+        min-height: 48px;
+        padding: 12px;
+    }
+
+    /* Links with icons */
+    a {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+    }
+}
+
+/* ============================================================================
+   TEXT READABILITY
+   ============================================================================ */
+
+@media (max-width: 640px) {
+    /* Prevent tiny text on mobile */
+    body {
+        font-size: 16px !important; /* Prevents zoom on iOS */
+        line-height: 1.6;
+    }
+
+    h1 {
+        font-size: 1.75rem;
+        line-height: 1.2;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        line-height: 1.3;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+        line-height: 1.4;
+    }
+
+    p {
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+
+    /* Prevent horizontal scrolling from long words */
+    body, p, div, article {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+    }
+}
+
+/* ============================================================================
+   NAVIGATION & HEADER
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    /* Hamburger menu improvements */
+    .mobile-menu-toggle {
+        min-width: 48px;
+        min-height: 48px;
+        font-size: 24px;
+    }
+
+    /* Mobile nav */
+    nav {
+        max-height: calc(100vh - 60px);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    nav a {
+        padding: 16px 24px;
+        font-size: 18px;
+    }
+
+    /* User menu on mobile */
+    .user-menu {
+        position: fixed;
+        top: 60px;
+        right: 0;
+        width: 280px;
+        max-height: calc(100vh - 60px);
+        overflow-y: auto;
+    }
+}
+
+/* ============================================================================
+   MODALS
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    .modal {
+        padding: 0;
+        align-items: flex-end;
+    }
+
+    .modal-content {
+        width: 100%;
+        max-width: 100%;
+        max-height: 90vh;
+        margin: 0;
+        border-radius: 16px 16px 0 0;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .modal-header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: inherit;
+        padding: 16px;
+    }
+
+    .modal-body {
+        padding: 20px 16px;
+    }
+
+    .modal-footer {
+        position: sticky;
+        bottom: 0;
+        background: inherit;
+        padding: 16px;
+        border-top: 1px solid var(--border);
+    }
+
+    /* Close button mobile positioning */
+    .close-modal,
+    .modal-close {
+        min-width: 44px;
+        min-height: 44px;
+        font-size: 24px;
+    }
+}
+
+/* ============================================================================
+   FORMS & INPUTS
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    input,
+    textarea,
+    select {
+        font-size: 16px !important; /* Prevents zoom on iOS */
+        min-height: 44px;
+        padding: 12px 16px;
+    }
+
+    textarea {
+        min-height: 120px;
+    }
+
+    /* Form groups */
+    .form-group {
+        margin-bottom: 24px;
+    }
+
+    label {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    /* Stack form buttons */
+    .form-actions,
+    .modal-actions {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .form-actions button,
+    .modal-actions button {
+        width: 100%;
+    }
+}
+
+/* ============================================================================
+   CARDS & CONTAINERS
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    .card,
+    .container,
+    .content-box {
+        margin: 16px 8px;
+        padding: 16px;
+        border-radius: 12px;
+    }
+
+    /* Blog post cards */
+    .blog-post-card {
+        padding: 16px;
+    }
+
+    .blog-post-card .post-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    /* Chronicle cards */
+    .chronicle-card {
+        padding: 16px;
+    }
+
+    /* Echo/message cards */
+    .echo-card,
+    .message-card {
+        padding: 16px;
+    }
+}
+
+/* ============================================================================
+   TABLES
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    /* Make tables scrollable */
+    table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        white-space: nowrap;
+    }
+
+    /* Stack table rows */
+    .responsive-table {
+        border: 0;
+    }
+
+    .responsive-table thead {
+        display: none;
+    }
+
+    .responsive-table tr {
+        display: block;
+        margin-bottom: 16px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+    }
+
+    .responsive-table td {
+        display: block;
+        text-align: right;
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border-light);
+    }
+
+    .responsive-table td:before {
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+    }
+
+    .responsive-table td:last-child {
+        border-bottom: 0;
+    }
+}
+
+/* ============================================================================
+   IMAGES & MEDIA
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Avatar sizes */
+    .avatar,
+    .author-avatar {
+        width: 40px;
+        height: 40px;
+    }
+
+    .avatar-large {
+        width: 80px;
+        height: 80px;
+    }
+
+    /* Embedded videos */
+    iframe,
+    video {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+/* ============================================================================
+   GRID LAYOUTS
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    /* Single column on mobile */
+    .grid,
+    .souls-grid,
+    .blog-grid,
+    .chronicle-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    /* 2-column layouts become 1 column */
+    .two-column {
+        grid-template-columns: 1fr;
+    }
+
+    /* Sidebar layouts stack */
+    .main-with-sidebar {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        order: 2; /* Content first, sidebar second */
+    }
+}
+
+/* ============================================================================
+   ACTIVE USERS SIDEBAR
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    #activeUsersAside {
+        position: fixed;
+        right: -100%;
+        top: 0;
+        height: 100vh;
+        width: 280px;
+        max-width: 85vw;
+        transition: right 0.3s ease;
+        z-index: 1100;
+        box-shadow: -4px 0 12px rgba(0, 0, 0, 0.2);
+    }
+
+    #activeUsersAside.open {
+        right: 0;
+    }
+
+    /* Show users button on mobile */
+    #showUsersBtn {
+        display: flex !important;
+    }
+}
+
+/* ============================================================================
+   FLOATING BUTTONS
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    .floating-buttons {
+        bottom: 16px;
+        right: 16px;
+        gap: 12px;
+    }
+
+    .floating-buttons button,
+    .fab {
+        width: 56px;
+        height: 56px;
+        font-size: 20px;
+    }
+
+    /* Stack floating buttons vertically */
+    .floating-buttons {
+        flex-direction: column-reverse;
+    }
+}
+
+/* ============================================================================
+   PAGINATION
+   ============================================================================ */
+
+@media (max-width: 640px) {
+    .pagination {
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+    }
+
+    .page-btn {
+        min-width: 40px;
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    /* Hide some page numbers on mobile */
+    .page-btn:not(.active):not(:first-child):not(:last-child) {
+        display: none;
+    }
+
+    /* Show only current, prev, next, first, last */
+    .page-btn.active,
+    .page-btn:first-child,
+    .page-btn:last-child,
+    .page-btn:has(i) {
+        display: inline-flex;
+    }
+}
+
+/* ============================================================================
+   COMMENTS
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    .comment {
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+
+    .comment-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .comment-avatar {
+        width: 36px;
+        height: 36px;
+    }
+
+    .comment-replies {
+        margin-left: 20px;
+        border-left: 2px solid var(--border);
+        padding-left: 12px;
+    }
+}
+
+/* ============================================================================
+   FOOTER
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    footer {
+        padding: 32px 16px;
+        text-align: center;
+    }
+
+    footer .footer-links {
+        flex-direction: column;
+        gap: 16px;
+    }
+}
+
+/* ============================================================================
+   SCROLL BEHAVIORS
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    /* Prevent horizontal scroll */
+    body {
+        overflow-x: hidden;
+    }
+
+    /* Smooth scrolling for mobile */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* Better scroll snap for carousels */
+    .carousel,
+    .scroll-container {
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .carousel-item {
+        scroll-snap-align: center;
+    }
+}
+
+/* ============================================================================
+   LOADING STATES
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    .loading-spinner {
+        padding: 40px 20px;
+    }
+
+    .loading-text {
+        font-size: 14px;
+    }
+}
+
+/* ============================================================================
+   ERROR MESSAGES
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    .error-boundary-ui,
+    .toast,
+    .notification {
+        left: 8px;
+        right: 8px;
+        max-width: calc(100vw - 16px);
+        bottom: 8px;
+    }
+}
+
+/* ============================================================================
+   UTILITIES
+   ============================================================================ */
+
+/* Hide on mobile */
+.hide-mobile {
+    display: none !important;
+}
+
+/* Show only on mobile */
+.show-mobile {
+    display: block !important;
+}
+
+@media (min-width: 769px) {
+    .hide-mobile {
+        display: block !important;
+    }
+
+    .show-mobile {
+        display: none !important;
+    }
+}
+
+/* Touch-friendly spacing */
+@media (max-width: 768px) {
+    .touch-spacing > * + * {
+        margin-top: 16px;
+    }
+}
+
+/* ============================================================================
+   SAFE AREAS (iOS Notch Support)
+   ============================================================================ */
+
+@supports (padding: max(0px)) {
+    @media (max-width: 768px) {
+        body {
+            padding-left: max(0px, env(safe-area-inset-left));
+            padding-right: max(0px, env(safe-area-inset-right));
+        }
+
+        header {
+            padding-top: max(0px, env(safe-area-inset-top));
+        }
+
+        .modal-content {
+            padding-bottom: max(20px, env(safe-area-inset-bottom));
+        }
+
+        .floating-buttons {
+            bottom: max(16px, env(safe-area-inset-bottom));
+        }
+    }
+}
+
+/* ============================================================================
+   PERFORMANCE OPTIMIZATIONS
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    /* Disable animations on low-end devices */
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+
+    /* Reduce transform layers on mobile */
+    * {
+        will-change: auto;
+    }
+
+    /* Only animate transforms and opacity */
+    * {
+        transition-property: transform, opacity;
+    }
+}
