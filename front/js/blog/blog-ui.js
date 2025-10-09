@@ -34,7 +34,7 @@ class BlogUI {
 
         const authorName = post.author?.displayName || post.author?.username || 'Anonymous';
         const authorId = post.author?._id || '';
-        const avatarUrl = post.author?.avatar || '/images/default-avatar.png';
+        const avatarUrl = post.author?.avatar || '/assets/images/default.jpg';
         const excerpt = post.excerpt || this.createExcerpt(post.content);
         const timestamp = this.formatDate(post.createdAt);
         const likes = post.likes || 0;

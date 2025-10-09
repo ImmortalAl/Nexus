@@ -94,7 +94,7 @@ class BlogComments {
     createCommentElement(comment) {
         const authorName = comment.author?.displayName || comment.author?.username || 'Anonymous';
         const authorId = comment.author?._id || '';
-        const avatarUrl = comment.author?.avatar || '/images/default-avatar.png';
+        const avatarUrl = comment.author?.avatar || '/assets/images/default.jpg';
         const timestamp = this.formatTimestamp(comment.createdAt);
         const isCounterpoint = comment.isCounterpoint || comment.content?.includes('🗡️ **Counterpoint:**');
 
