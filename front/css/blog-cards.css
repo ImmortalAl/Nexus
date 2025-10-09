@@ -1,7 +1,8 @@
 /* Blog Card Components - Soul Scrolls Design System */
 
 /* ===== IMMORTAL SCROLL CARDS ===== */
-.blog-post {
+.blog-post,
+.blog-post-card {
     /* Epic immortal scroll styling */
     background: linear-gradient(135deg, 
         rgba(26, 26, 51, 0.98), 
@@ -24,7 +25,8 @@
 }
 
 /* Mystical glow effect */
-.blog-post::before {
+.blog-post::before,
+.blog-post-card::before {
     content: '';
     position: absolute;
     top: -2px;
@@ -56,7 +58,8 @@
     }
 }
 
-.blog-post:hover {
+.blog-post:hover,
+.blog-post-card:hover {
     transform: translateY(-8px) scale(1.03);
     box-shadow: 
         0 20px 60px rgba(0, 0, 0, 0.9),
@@ -71,12 +74,14 @@
     );
 }
 
-.blog-post:hover::before {
+.blog-post:hover::before,
+.blog-post-card:hover::before {
     opacity: 1;
 }
 
 
-.blog-post:focus-within {
+.blog-post:focus-within,
+.blog-post-card:focus-within {
     outline: 3px solid rgba(255, 94, 120, 0.8);
     outline-offset: 2px;
 }
@@ -164,7 +169,9 @@
 
 /* ===== CARD CONTENT ===== */
 .scroll-title,
-.blog-post h3 {
+.blog-post h3,
+.blog-post-card h3,
+.blog-post-card .post-title {
     color: rgba(255, 255, 255, 0.95);
     font-family: 'Cinzel', serif;
     font-size: clamp(1.1rem, 2.5vw, 1.4rem);
@@ -179,7 +186,8 @@
 }
 
 .scroll-excerpt,
-.blog-post .content {
+.blog-post .content,
+.blog-post-card .post-excerpt {
     color: rgba(255, 255, 255, 0.85);
     font-size: 0.95rem;
     line-height: 1.6;
