@@ -89,62 +89,113 @@ class BlogComments {
     }
 
     /**
-     * Create HTML for a single comment
+     * Create HTML for a single comment using authorIdentityCard
      */
     createCommentElement(comment) {
-        const authorName = comment.author?.displayName || comment.author?.username || 'Anonymous';
-        const authorId = comment.author?._id || '';
-        const avatarUrl = comment.author?.avatar || '/assets/images/default.jpg';
-        const timestamp = this.formatTimestamp(comment.createdAt);
         const isCounterpoint = comment.isCounterpoint || comment.content?.includes('🗡️ **Counterpoint:**');
-
-        // Extract avatar letter for fallback
-        const avatarLetter = authorName.charAt(0).toUpperCase();
-
-        // Check if current user can delete this comment
         const currentUser = window.BlogAPI?.getCurrentUser();
-        const canDelete = currentUser && (currentUser.id === authorId || currentUser.role === 'admin');
+        const canDelete = currentUser && (currentUser.id === comment.author?._id || currentUser.role === 'admin');
 
-        let commentHTML = `
-            <div class="comment ${isCounterpoint ? 'counterpoint-comment' : ''}" data-comment-id="${comment._id}">
-                <div class="comment-header">
-                    <div class="comment-author-info">
-                        <div class="comment-avatar" data-user-id="${authorId}">
-                            <img src="${avatarUrl}"
-                                 alt="${authorName}"
-                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div class="avatar-fallback" style="display: none;">
-                                ${avatarLetter}
-                            </div>
-                        </div>
-                        <div class="comment-meta">
-                            <span class="comment-author">${authorName}</span>
-                            ${isCounterpoint ? '<span class="counterpoint-badge">🗡️ Counterpoint</span>' : ''}
-                            <span class="comment-timestamp">${timestamp}</span>
-                        </div>
+        // Create comment container
+        const commentDiv = document.createElement('div');
+        commentDiv.className = `comment ${isCounterpoint ? 'counterpoint-comment' : ''}`;
+        commentDiv.setAttribute('data-comment-id', comment._id);
+
+        // Create unified author display WITH VOTING using AuthorIdentityCard
+        let authorDisplay;
+
+        if (window.AuthorIdentityCard) {
+            // NEW UNIFIED SYSTEM WITH VOTING!
+            const identityCard = new AuthorIdentityCard({
+                author: comment.author,
+                contentType: 'comment',
+                contentId: comment._id,
+                timestamp: comment.createdAt,
+                upvotes: comment.upvotes || comment.likes || 0,
+                challenges: comment.downvotes || comment.dislikes || 0,
+                userUpvoted: comment.userUpvoted || comment.userLiked || false,
+                userChallenged: comment.userDownvoted || comment.userDisliked || false,
+                size: 'sm',
+                variant: 'inline',
+                showVoting: true,
+                showTimestamp: true,
+                enableChallenge: true,
+                simpleDownvote: true // Use simple downvote for comments (not 3-tier challenge)
+            });
+
+            authorDisplay = identityCard.render();
+
+            // Listen for vote updates
+            if (window.unifiedVoting) {
+                const unsubscribe = window.unifiedVoting.addListener((detail) => {
+                    if (detail.contentType === 'comment' && detail.contentId === comment._id) {
+                        identityCard.updateVoteState(detail.votes);
+                        identityCard.refreshVoteDisplay();
+                    }
+                });
+                commentDiv._unsubscribeVoting = unsubscribe;
+            }
+        } else {
+            // Fallback to custom HTML (OLD SYSTEM)
+            const authorName = comment.author?.displayName || comment.author?.username || 'Anonymous';
+            const authorId = comment.author?._id || '';
+            const timestamp = this.formatTimestamp(comment.createdAt);
+            const avatarLetter = authorName.charAt(0).toUpperCase();
+
+            authorDisplay = document.createElement('div');
+            authorDisplay.className = 'comment-author-info';
+            authorDisplay.innerHTML = `
+                <div class="comment-avatar" data-user-id="${authorId}">
+                    <img src="${comment.author?.avatar || '/assets/images/default.jpg'}"
+                         alt="${authorName}"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="avatar-fallback" style="display: none;">
+                        ${avatarLetter}
                     </div>
-                    ${canDelete ? `
-                        <button class="comment-delete-btn" onclick="window.BlogComments.deleteComment('${comment._id}')" title="Delete comment">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    ` : ''}
                 </div>
-                <div class="comment-content">
-                    ${this.formatCommentContent(comment.content)}
+                <div class="comment-meta">
+                    <span class="comment-author">${authorName}</span>
+                    ${isCounterpoint ? '<span class="counterpoint-badge">🗡️ Counterpoint</span>' : ''}
+                    <span class="comment-timestamp">${timestamp}</span>
                 </div>
-            </div>
-        `;
+            `;
+        }
+
+        // Create comment header with author display and actions
+        const commentHeader = document.createElement('div');
+        commentHeader.className = 'comment-header';
+        commentHeader.appendChild(authorDisplay);
+
+        // Add delete button if user can delete
+        if (canDelete) {
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'comment-delete-btn';
+            deleteBtn.title = 'Delete comment';
+            deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+            deleteBtn.onclick = () => window.BlogComments.deleteComment(comment._id);
+            commentHeader.appendChild(deleteBtn);
+        }
+
+        // Create comment content
+        const commentContent = document.createElement('div');
+        commentContent.className = 'comment-content';
+        commentContent.innerHTML = this.formatCommentContent(comment.content);
+
+        // Assemble comment
+        commentDiv.appendChild(commentHeader);
+        commentDiv.appendChild(commentContent);
 
         // Add replies if they exist
         if (comment.replies && comment.replies.length > 0) {
-            commentHTML += '<div class="comment-replies">';
+            const repliesDiv = document.createElement('div');
+            repliesDiv.className = 'comment-replies';
             comment.replies.forEach(reply => {
-                commentHTML += this.createCommentElement(reply);
+                repliesDiv.appendChild(this.createCommentElement(reply));
             });
-            commentHTML += '</div>';
+            commentDiv.appendChild(repliesDiv);
         }
 
-        return commentHTML;
+        return commentDiv.outerHTML;
     }
 
     /**

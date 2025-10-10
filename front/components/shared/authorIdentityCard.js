@@ -29,6 +29,7 @@ class AuthorIdentityCard {
         this.showTimestamp = options.showTimestamp !== false;
         this.showCredibility = options.showCredibility !== false;
         this.enableChallenge = options.enableChallenge !== false;
+        this.simpleDownvote = options.simpleDownvote || false; // Use simple downvote instead of 3-tier challenge
 
         // Credibility data (if available)
         this.authorCredibility = options.authorCredibility || null;
@@ -245,6 +246,10 @@ class AuthorIdentityCard {
         const upvoteClass = this.votes.userUpvoted ? 'voted active' : '';
         const challengeClass = this.votes.userChallenged ? 'voted active' : '';
 
+        // Determine button icon and label based on voting mode
+        const challengeIcon = this.simpleDownvote ? 'fa-chevron-down' : 'fa-bolt';
+        const challengeLabel = this.simpleDownvote ? 'Downvote' : 'Challenge';
+
         return `
             <div class="identity-vote-controls">
                 <button class="identity-vote-btn upvote-btn ${upvoteClass}"
@@ -256,12 +261,12 @@ class AuthorIdentityCard {
                     <span class="vote-count">${this.formatVoteCount(this.votes.upvotes)}</span>
                 </button>
                 ${this.enableChallenge ? `
-                    <button class="identity-vote-btn challenge-btn ${challengeClass}"
+                    <button class="identity-vote-btn challenge-btn ${this.simpleDownvote ? 'downvote-btn' : ''} ${challengeClass}"
                             data-action="challenge"
                             data-content-type="${this.contentType}"
                             data-content-id="${this.contentId}"
-                            aria-label="Challenge this ${this.contentType}">
-                        <i class="fas fa-bolt"></i>
+                            aria-label="${challengeLabel} this ${this.contentType}">
+                        <i class="fas ${challengeIcon}"></i>
                         <span class="vote-count">${this.formatVoteCount(this.votes.challenges)}</span>
                     </button>
                 ` : ''}
