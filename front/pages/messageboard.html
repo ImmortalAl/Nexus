@@ -1214,50 +1214,83 @@
         });
 
         function enhanceReplies(replies) {
-            if (!window.ImmortalNexusAvatars) return;
+            if (!window.AuthorIdentityCard && !window.ImmortalNexusAvatars) return;
 
             replies.forEach((reply) => {
                 const replyElement = document.querySelector(`.reply[data-id='${reply._id}']`);
                 if (replyElement && reply.author) {
                     const authorContainer = replyElement.querySelector('.reply-author-info');
                     if (authorContainer && authorContainer.children.length === 0) {
-                        const authorDisplay = window.ImmortalNexusAvatars.createUserDisplay({
-                            username: reply.author.username || 'Anonymous',
-                            title: 'Echo Responder',
-                            avatarSize: 'xs',
-                            displaySize: 'xs',
-                            compact: true,
-                            mystical: reply.author.isVIP || reply.author.role === 'admin',
-                            online: reply.author.online,
-                            customAvatar: reply.author.avatar,
-                            usernameStyle: 'immortal',
-                            enableUnifiedNavigation: true
-                        });
+                        let authorElement = null;
 
-                        if (reply.author._id) {
-                            authorDisplay.setAttribute('data-user-id', reply.author._id);
-                        }
+                        // Use AuthorIdentityCard for unified voting and display
+                        if (window.AuthorIdentityCard) {
+                            const upvotes = reply.upvotes || reply.votes?.up || 0;
+                            const challenges = reply.downvotes || reply.votes?.down || 0;
 
-                        if (window.authManager.isLoggedIn() && window.authManager.getUser()?._id !== reply.author._id) {
-                            const flagBtn = document.createElement('button');
-                            flagBtn.className = 'flag-user-btn btn-ghost';
-                            flagBtn.setAttribute('data-user-id', reply.author._id);
-                            flagBtn.innerHTML = '<i class="fas fa-flag"></i>';
-                            flagBtn.title = 'Flag for community review';
-                            
-                            // Add click handler to prevent event bubbling and show flag modal
-                            flagBtn.addEventListener('click', (e) => {
-                                e.stopPropagation();
-                                e.preventDefault();
-                                if (window.moderationSystem) {
-                                    window.moderationSystem.showFlagModal(reply.author._id);
-                                }
+                            // Get threadId from parent element for voting
+                            const replyMain = replyElement.querySelector('.reply-main');
+                            const threadId = replyMain?.dataset.threadId;
+
+                            const identityCard = new AuthorIdentityCard({
+                                author: reply.author,
+                                contentType: 'reply',
+                                contentId: reply._id,
+                                parentId: threadId, // threadId required for reply voting
+                                timestamp: reply.createdAt,
+                                upvotes: upvotes,
+                                challenges: challenges,
+                                size: 'xs',
+                                variant: 'inline',
+                                showVoting: true,
+                                showTimestamp: false,
+                                enableChallenge: true,
+                                simpleDownvote: true // Simple downvote for replies
                             });
-                            
-                            authorDisplay.appendChild(flagBtn);
+
+                            authorElement = identityCard.render();
+                            authorContainer.appendChild(authorElement);
+
+                        } else if (window.ImmortalNexusAvatars) {
+                            // Fallback to basic avatar system
+                            authorElement = window.ImmortalNexusAvatars.createUserDisplay({
+                                username: reply.author.username || 'Anonymous',
+                                title: 'Echo Responder',
+                                avatarSize: 'xs',
+                                displaySize: 'xs',
+                                compact: true,
+                                mystical: reply.author.isVIP || reply.author.role === 'admin',
+                                online: reply.author.online,
+                                customAvatar: reply.author.avatar,
+                                usernameStyle: 'immortal',
+                                enableUnifiedNavigation: true
+                            });
+
+                            if (reply.author._id) {
+                                authorElement.setAttribute('data-user-id', reply.author._id);
+                            }
+
+                            if (window.authManager.isLoggedIn() && window.authManager.getUser()?._id !== reply.author._id) {
+                                const flagBtn = document.createElement('button');
+                                flagBtn.className = 'flag-user-btn btn-ghost';
+                                flagBtn.setAttribute('data-user-id', reply.author._id);
+                                flagBtn.innerHTML = '<i class="fas fa-flag"></i>';
+                                flagBtn.title = 'Flag for community review';
+
+                                // Add click handler to prevent event bubbling and show flag modal
+                                flagBtn.addEventListener('click', (e) => {
+                                    e.stopPropagation();
+                                    e.preventDefault();
+                                    if (window.moderationSystem) {
+                                        window.moderationSystem.showFlagModal(reply.author._id);
+                                    }
+                                });
+
+                                authorElement.appendChild(flagBtn);
+                            }
+
+                            authorContainer.appendChild(authorElement);
                         }
-                        
-                        authorContainer.appendChild(authorDisplay);
                     }
                 }
             });
@@ -1278,14 +1311,7 @@
                 
                 return `
                 <div class="reply ${reply.isAnonymous ? 'anonymous' : ''}" data-id="${reply._id}">
-                     <div class="thread-voting reply-voting">
-                        <button class="vote-btn ${!isAuthenticated || isAuthor ? 'disabled' : ''}" data-action="upvote-reply" aria-label="Upvote" ${!isAuthenticated || isAuthor ? 'disabled' : ''} ${isAuthor ? 'title="You cannot vote on your own replies"' : ''}>
-                            <i class="fas fa-arrow-up"></i>
-                        </button>
-                        <button class="vote-btn ${!isAuthenticated || isAuthor ? 'disabled' : ''}" data-action="downvote-reply" aria-label="Downvote" ${!isAuthenticated || isAuthor ? 'disabled' : ''} ${isAuthor ? 'title="You cannot vote on your own replies"' : ''}>
-                            <i class="fas fa-arrow-down"></i>
-                        </button>
-                    </div>
+                    <!-- Voting now handled by AuthorIdentityCard in reply-author-info -->
                     <div class="reply-main" data-thread-id="${threadId}">
                         <div class="reply-author-info"></div>
                         <div class="reply-content" id="reply-content-${reply._id}">

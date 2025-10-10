@@ -478,6 +478,10 @@ router.post('/:threadId/replies/:replyId/vote', auth, async (req, res) => {
         res.json({
             message: 'Vote recorded',
             newScore,
+            upvotes: reply.votes.upvotes.length,
+            downvotes: reply.votes.downvotes.length,
+            userUpvoted: !!reply.votes.upvotes.find(v => v.user.toString() === userId),
+            userDownvoted: !!reply.votes.downvotes.find(v => v.user.toString() === userId),
             userVote: existingUpvote ? 'upvote' : (existingDownvote ? 'downvote' : null)
         });
     } catch (error) {

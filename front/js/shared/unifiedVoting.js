@@ -24,11 +24,12 @@ class UnifiedVotingSystem {
 
     /**
      * Submit vote for any content type
-     * @param {string} contentType - 'blog', 'comment', 'echo', 'node'
+     * @param {string} contentType - 'blog', 'comment', 'echo', 'node', 'reply'
      * @param {string} contentId - ID of the content
      * @param {string} action - 'upvote' or 'challenge'
+     * @param {string} parentId - Optional parent ID (e.g., threadId for replies)
      */
-    async vote(contentType, contentId, action) {
+    async vote(contentType, contentId, action, parentId = null) {
         const token = localStorage.getItem('sessionToken');
         if (!token) {
             this.requireAuth();
@@ -39,7 +40,7 @@ class UnifiedVotingSystem {
 
         try {
             // For now, use existing endpoints until backend is unified
-            const response = await this.submitVoteToAPI(contentType, contentId, action, token);
+            const response = await this.submitVoteToAPI(contentType, contentId, action, token, parentId);
 
             // Cache the result
             this.cache.set(cacheKey, response);
@@ -73,8 +74,8 @@ class UnifiedVotingSystem {
      * Submit vote based on content type
      * Routes to appropriate endpoint until unified backend is ready
      */
-    async submitVoteToAPI(contentType, contentId, action, token) {
-        console.log(`[UnifiedVoting] submitVoteToAPI called with:`, { contentType, contentId, action });
+    async submitVoteToAPI(contentType, contentId, action, token, parentId = null) {
+        console.log(`[UnifiedVoting] submitVoteToAPI called with:`, { contentType, contentId, action, parentId });
         let endpoint, method = 'POST', body = {};
 
         switch (contentType) {
@@ -104,6 +105,17 @@ class UnifiedVotingSystem {
                 // Backend expects 'vote' field, not 'action'
                 body = { vote: mappedAction };
                 console.log(`[UnifiedVoting] Echo vote: ${action} → ${mappedAction}`, body);
+                break;
+
+            case 'reply':
+                // Message board thread replies
+                if (!parentId) {
+                    throw new Error('parentId (threadId) required for reply voting');
+                }
+                endpoint = `${this.apiUrl}/threads/${parentId}/replies/${contentId}/vote`;
+                // Backend expects 'vote' field
+                body = { vote: action === 'challenge' ? 'downvote' : action };
+                console.log(`[UnifiedVoting] Reply vote: ${action} (thread: ${parentId})`, body);
                 break;
 
             case 'chronicle':

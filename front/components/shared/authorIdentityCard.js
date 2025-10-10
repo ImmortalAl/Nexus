@@ -10,8 +10,9 @@ class AuthorIdentityCard {
     constructor(options = {}) {
         // Core properties
         this.author = options.author || {};
-        this.contentType = options.contentType; // 'blog', 'comment', 'echo', 'node'
+        this.contentType = options.contentType; // 'blog', 'comment', 'echo', 'node', 'reply'
         this.contentId = options.contentId;
+        this.parentId = options.parentId; // For nested content (e.g., threadId for replies)
         this.timestamp = options.timestamp || new Date();
 
         // Voting data
@@ -426,7 +427,7 @@ class AuthorIdentityCard {
     async submitVote(action) {
         // Use the UnifiedVoting system if available
         if (window.unifiedVoting) {
-            return await window.unifiedVoting.vote(this.contentType, this.contentId, action);
+            return await window.unifiedVoting.vote(this.contentType, this.contentId, action, this.parentId);
         }
 
         // Fallback to direct API call with correct endpoints
