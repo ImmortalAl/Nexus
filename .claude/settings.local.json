@@ -47,7 +47,10 @@
       "Bash(then sed -i '/light-theme-immortal\\.css/a\\    <link rel=\"\"stylesheet\"\" href=\"\"../css/mobile-enhanced.css?v=1.0\"\">' \"$file\")",
       "Bash(echo:*)",
       "Bash(do if [ -f \"$dir/index.html\" ])",
-      "Bash(then sed -i '/light-theme-immortal\\.css/a\\    <link rel=\"\"stylesheet\"\" href=\"\"../css/mobile-enhanced.css?v=1.0\"\">' \"$dir/index.html\")"
+      "Bash(then sed -i '/light-theme-immortal\\.css/a\\    <link rel=\"\"stylesheet\"\" href=\"\"../css/mobile-enhanced.css?v=1.0\"\">' \"$dir/index.html\")",
+      "Bash(authorId)",
+      "Bash(userId)",
+      "Bash(getElementById \")"
     ],
     "deny": [],
     "ask": []

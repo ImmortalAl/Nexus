@@ -231,14 +231,7 @@
     position: relative;
     text-align: center;
     z-index: 2;
-}
-
-.title-backdrop {
-    position: absolute;
-    top: -30px;
-    left: -60px;
-    right: -60px;
-    bottom: -30px;
+    padding: 2rem 3rem;
     background: linear-gradient(135deg,
         rgba(26, 26, 51, 0.3),
         rgba(42, 64, 102, 0.2),
@@ -247,8 +240,11 @@
     border-radius: 20px;
     border: 1px solid rgba(255, 94, 120, 0.2);
     backdrop-filter: blur(10px);
-    z-index: -1;
     animation: backdropShimmer 6s ease-in-out infinite;
+}
+
+.title-backdrop {
+    display: none; /* No longer needed */
 }
 
 @keyframes backdropShimmer {
@@ -363,11 +359,8 @@
         font-size: clamp(2rem, 8vw, 3rem);
     }
     
-    .title-backdrop {
-        top: -15px;
-        left: -20px;
-        right: -20px;
-        bottom: -15px;
+    .main-title-container {
+        padding: 1.5rem 2rem;
     }
 }
 

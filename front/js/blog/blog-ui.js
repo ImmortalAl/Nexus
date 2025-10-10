@@ -46,7 +46,7 @@ class BlogUI {
         const isAuthor = currentUser && currentUser.id === authorId;
 
         return `
-            <article class="blog-post-card" id="${post._id}">
+            <article class="blog-post-card" data-post-id="${post._id}">
                 <div class="post-header">
                     <div class="author-info">
                         <img src="${avatarUrl}" alt="${authorName}" class="author-avatar">
