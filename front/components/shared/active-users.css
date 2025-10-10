@@ -48,6 +48,11 @@ aside#activeUsers.active-users.active {
     visibility: visible !important; /* Ensure visibility when active */
 }
 
+/* When sidebar is active AND a modal is open, keep sidebar above modal */
+body:has(.modal.active) aside#activeUsers.active-users.active {
+    z-index: var(--z-sidebar-with-modal) !important; /* Above modals to stay accessible */
+}
+
 /* Force sidebar to close - overrides all other rules including .active */
 aside#activeUsers.active-users.force-close {
     right: -340px !important; /* Force hidden – wins against all other overrides */

@@ -489,10 +489,11 @@
 .modal[aria-hidden="false"] {
     display: flex !important;
     opacity: 1;
-    pointer-events: auto;
+    pointer-events: auto; /* Allow clicks - sidebar has higher z-index so it's still accessible */
 }
 
-.modal .modal-content {
+.modal .modal-content,
+.modal .message-modal-content {
     position: relative;
     pointer-events: auto;
 }

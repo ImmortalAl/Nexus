@@ -201,18 +201,13 @@ async function openMessageModal(username) {
     currentRecipientUsername = username;
         if(recipientNameElement) recipientNameElement.textContent = `To: ${username}`;
         if(messageHistoryElement) messageHistoryElement.innerHTML = '<p class="modal-loading">Loading eternal whispers...</p>';
-    
-    // Close active users sidebar if open (prevents z-index conflicts on mobile)
-    const activeUsersSidebar = document.getElementById('activeUsers');
-    const activeUsersOverlay = document.getElementById('activeUsersOverlay');
-    if (activeUsersSidebar && activeUsersSidebar.classList.contains('active')) {
-        activeUsersSidebar.classList.remove('active');
-        if (activeUsersOverlay) activeUsersOverlay.classList.remove('active');
-    }
-    
+
+    // DON'T close active users sidebar - CSS now handles z-index properly
+    // Sidebar stays visible and above modal for easy access to other users
+
     messageModal.classList.add('active');
     messageModal.setAttribute('aria-hidden', 'false');
-    messageModal.style.zIndex = '999999'; // Force highest z-index to override any CSS conflicts
+    // DON'T set inline z-index - let CSS z-index system handle it properly
     document.body.style.overflow = 'hidden';
 
     if (messageInputElement) {

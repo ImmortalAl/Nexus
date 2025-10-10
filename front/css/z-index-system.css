@@ -26,6 +26,7 @@
 
     /* Modals (5000-9999) */
     --z-modal: 5000;          /* Standard modals */
+    --z-sidebar-with-modal: 5500; /* Sidebar when displayed with modal */
     --z-modal-inner: 5100;    /* Modal inner content */
     --z-modal-dropdown: 5200; /* Dropdowns within modals */
     --z-modal-tooltip: 5300;  /* Tooltips within modals */
