@@ -590,6 +590,8 @@
         rgba(255, 94, 120, 0.4),
         transparent
     ) 1;
+    font-size: 0; /* Hide any text nodes */
+    overflow: hidden; /* Prevent text overflow */
 }
 
 /* Hide any text nodes or unwanted content in post-footer */
@@ -599,6 +601,10 @@
 
 .post-footer > *:not(.post-interactions) {
     display: none !important;
+}
+
+.post-interactions {
+    font-size: 1rem; /* Reset font-size for buttons */
 }
 
 .post-stats {

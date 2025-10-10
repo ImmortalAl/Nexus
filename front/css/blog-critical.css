@@ -235,10 +235,10 @@
 
 .title-backdrop {
     position: absolute;
-    top: -20px;
-    left: -40px;
-    right: -40px;
-    bottom: -20px;
+    top: -30px;
+    left: -60px;
+    right: -60px;
+    bottom: -30px;
     background: linear-gradient(135deg,
         rgba(26, 26, 51, 0.3),
         rgba(42, 64, 102, 0.2),
@@ -291,15 +291,15 @@
 }
 
 .title-word.scrolls {
-    background: linear-gradient(45deg, 
-        #4fc3f7, 
-        #29b6f6, 
-        #03a9f4, 
-        #0288d1);
+    background: linear-gradient(45deg,
+        #ff5e78,
+        #ffca28,
+        #ff8f00,
+        #ff5722);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: scrollsGlow 3s ease-in-out infinite alternate;
+    animation: soulGlow 3s ease-in-out infinite alternate;
     animation-delay: 1s;
 }
 
