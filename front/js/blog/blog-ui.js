@@ -51,9 +51,13 @@ class BlogUI {
             <article class="blog-post-card" data-post-id="${post._id}">
                 <div class="post-header">
                     <div class="author-info">
-                        <img src="${avatarUrl}" alt="${authorName}" class="author-avatar">
+                        <a href="/souls/profile.html?username=${post.author?.username || ''}" class="author-avatar-link">
+                            <img src="${avatarUrl}" alt="${authorName}" class="author-avatar">
+                        </a>
                         <div class="author-details">
-                            <span class="author-name">${authorName}</span>
+                            <a href="/souls/profile.html?username=${post.author?.username || ''}" class="author-name-link">
+                                <span class="author-name">${authorName}</span>
+                            </a>
                             <span class="post-date">${timestamp}</span>
                         </div>
                     </div>

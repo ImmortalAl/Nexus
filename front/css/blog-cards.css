@@ -105,6 +105,12 @@
     border-bottom: 1px solid rgba(255, 94, 120, 0.15);
 }
 
+/* Author avatar link */
+.author-avatar-link {
+    display: block;
+    text-decoration: none;
+}
+
 .author-avatar {
     width: 42px;
     height: 42px;
@@ -131,12 +137,14 @@
     transition: opacity 0.3s ease;
 }
 
+.author-avatar-link:hover .author-avatar,
 .author-avatar:hover {
     border-color: rgba(255, 94, 120, 0.8);
     transform: scale(1.05);
     box-shadow: 0 0 20px rgba(255, 94, 120, 0.4);
 }
 
+.author-avatar-link:hover .author-avatar::before,
 .author-avatar:hover::before {
     opacity: 1;
 }
@@ -150,6 +158,12 @@
 
 .author-avatar:hover img {
     transform: scale(1.1);
+}
+
+/* Author name link styling */
+.author-name-link {
+    text-decoration: none;
+    cursor: pointer;
 }
 
 .author-name {
@@ -166,6 +180,7 @@
     background-clip: text;
 }
 
+.author-name-link:hover .author-name,
 .author-name:hover {
     background: linear-gradient(135deg, rgba(255, 94, 120, 1), rgba(255, 202, 40, 0.9));
     -webkit-background-clip: text;
