@@ -202,12 +202,12 @@
 }
 
 .modal-header-bar .challenge-dropdown {
-    position: absolute;
-    top: calc(100% + 0.5rem);
-    right: 0;
+    position: fixed; /* Changed from absolute to escape all container boundaries */
+    top: auto; /* Will be set via JS */
+    right: auto; /* Will be set via JS */
     left: auto;
     bottom: auto;
-    z-index: 200;
+    z-index: 10001; /* Above modal z-index */
     margin: 0;
 }
 

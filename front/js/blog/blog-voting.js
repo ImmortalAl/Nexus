@@ -123,6 +123,12 @@ class BlogVoting {
             if (voteControls) {
                 voteControls.style.position = 'relative';
                 voteControls.appendChild(dropdown);
+
+                // Position fixed dropdown based on button position
+                const rect = challengeBtn.getBoundingClientRect();
+                dropdown.style.position = 'fixed';
+                dropdown.style.top = `${rect.bottom + 8}px`;
+                dropdown.style.left = `${rect.left}px`;
             }
         } else {
             challengeBtn.parentElement.style.position = 'relative';
