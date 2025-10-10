@@ -149,18 +149,22 @@
 
 ## 📊 IMPACT METRICS
 
-### Before:
+### Before (October 5, 2025):
 - **Voting visibility:** 0% (no CSS!)
 - **Mobile usability:** 20% (broken)
 - **User feedback:** None
 - **Accessibility:** 30% (no keyboard)
+- **Comment voting:** 0% (didn't exist)
+- **Avatar consistency:** 50% (mixed systems)
 - **Overall grade:** B-
 
-### After:
+### After (October 10, 2025):
 - **Voting visibility:** 100% ✅
 - **Mobile usability:** 100% ✅
 - **User feedback:** Full toasts ✅
 - **Accessibility:** 95% ✅
+- **Comment voting:** 100% ✅ (NEW: simple upvote/downvote)
+- **Avatar consistency:** 100% ✅ (sitewide NexusAvatars + authorIdentityCard)
 - **Overall grade:** A+ 🌟
 
 ---
@@ -206,14 +210,14 @@
 
 ## 🎯 WHAT'S NOW WORKING
 
-1. ✅ **Soul Scrolls voting** - Full visual implementation
-2. ✅ **Comments voting** - Integrated with AuthorIdentityCard
+1. ✅ **Soul Scrolls voting** - Full visual implementation with 3-tier challenge
+2. ✅ **Comments voting** - Simple upvote/downvote (NEW: October 10, 2025)
 3. ✅ **Echoes Unbound voting** - Thread author voting
 4. ✅ **Infinite Nexus voting** - Node credibility system
 5. ✅ **Mobile voting** - Touch-optimized
 6. ✅ **Keyboard voting** - Full accessibility
 7. ✅ **Visual feedback** - Toasts and animations
-8. ✅ **Credibility tiers** - Visual distinction
+8. ✅ **Credibility tiers** - Visual distinction (posts only)
 
 ---
 

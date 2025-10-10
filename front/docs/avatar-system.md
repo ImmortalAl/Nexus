@@ -308,6 +308,27 @@ Use `nexus-avatar--mystical` for:
 
 ### Comment System Integration
 ```javascript
+// ✅ CURRENT SYSTEM (v2.0+): Using AuthorIdentityCard with voting
+const identityCard = new AuthorIdentityCard({
+    author: comment.author,
+    contentType: 'comment',
+    contentId: comment._id,
+    timestamp: comment.createdAt,
+    upvotes: comment.upvotes || 0,
+    challenges: comment.downvotes || 0,
+    userUpvoted: comment.userUpvoted || false,
+    userChallenged: comment.userDownvoted || false,
+    size: 'sm',
+    variant: 'inline',
+    showVoting: true,
+    showTimestamp: true,
+    enableChallenge: true,
+    simpleDownvote: true // ✨ NEW: Simple upvote/downvote for comments
+});
+
+const commentDisplay = identityCard.render();
+
+// ❌ DEPRECATED (v1.x): Old avatar-only system (no voting)
 const commentUser = window.NexusAvatars.createUserDisplay({
     username: comment.author.username,
     title: 'Eternal Soul',
@@ -444,14 +465,21 @@ Before deploying avatar system changes:
 
 ## Updates and Versioning
 
-**Current Version**: 2.0
+**Current Version**: 2.1
+
+### Version 2.1 Features (October 10, 2025)
+- ✅ **AuthorIdentityCard integration** for all comments
+- ✅ **Simple downvote mode** for comments (`simpleDownvote: true`)
+- ✅ **Unified voting system** integrated with comments
+- ✅ **Sitewide avatar consistency** - all comments use NexusAvatars
+- ✅ **Comment voting** - upvote + downvote (not 3-tier challenge)
+- ✅ **blog-comments.js v2.0** - Complete rewrite using authorIdentityCard
 
 ### Version 2.0 Features
 - ✅ Unique color generation based on username hashing
 - ✅ Enhanced online status system with DOM element approach
 - ✅ Unified profile navigation with keyboard shortcuts
 - ✅ Profile preview modal system
-- 🚧 CSS dependency consolidation (in progress)
 - ✅ Comprehensive troubleshooting documentation
 - ✅ AI development guidelines
 
