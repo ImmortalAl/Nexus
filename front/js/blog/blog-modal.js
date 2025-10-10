@@ -136,8 +136,8 @@ class BlogModal {
         this.cleanupClickOutside();
 
         // Clean up vote listener
-        if (this.voteListener && window.unifiedVoting) {
-            window.unifiedVoting.removeListener(this.voteListener);
+        if (this.voteListener) {
+            this.voteListener(); // Call unsubscribe function
             this.voteListener = null;
         }
 
@@ -278,7 +278,7 @@ class BlogModal {
 
             // Listen for vote updates
             if (window.unifiedVoting) {
-                this.voteListener = window.unifiedVoting.addListener((detail) => {
+                this.voteListener = window.unifiedVoting.on((detail) => {
                     if (detail.contentType === 'blog' && detail.contentId === post._id) {
                         identityCard.updateVoteState(detail.votes);
                         identityCard.refreshVoteDisplay();
