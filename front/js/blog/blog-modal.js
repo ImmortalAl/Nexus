@@ -278,7 +278,7 @@ class BlogModal {
 
             // Listen for vote updates
             if (window.unifiedVoting) {
-                this.voteListener = window.unifiedVoting.on((detail) => {
+                this.voteListener = window.unifiedVoting.addListener((detail) => {
                     if (detail.contentType === 'blog' && detail.contentId === post._id) {
                         identityCard.updateVoteState(detail.votes);
                         identityCard.refreshVoteDisplay();
