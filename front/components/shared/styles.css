@@ -1,3 +1,4 @@
+/* v7.2 */
 /* Immortal Nexus Shared Component Styles */
 
 /* Main Navigation Styles */
@@ -482,20 +483,22 @@
     opacity: 0;
     transition: opacity 0.3s ease;
     backdrop-filter: blur(5px);
-    pointer-events: none;
+    pointer-events: none; /* Overlay itself doesn't capture clicks */
 }
 
 .modal.active,
 .modal[aria-hidden="false"] {
     display: flex !important;
     opacity: 1;
-    pointer-events: auto; /* Allow clicks - sidebar has higher z-index so it's still accessible */
+    /* DO NOT set pointer-events: auto - it blocks sidebar! */
+    /* Let clicks pass through overlay to elements beneath */
 }
 
 .modal .modal-content,
 .modal .message-modal-content {
     position: relative;
-    pointer-events: auto;
+    pointer-events: auto; /* Only modal content captures clicks */
+    /* This allows sidebar (lower z-index) to receive clicks through transparent overlay */
 }
 
 /* Styles for the content box within a generic modal */
