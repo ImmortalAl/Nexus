@@ -23,6 +23,12 @@
     position: relative;
     overflow: visible; /* Changed from hidden to allow dropdown to show */
     backdrop-filter: blur(15px);
+    z-index: 1; /* Default stacking */
+}
+
+/* Elevate card when dropdown is active */
+.blog-post-card.has-active-dropdown {
+    z-index: 10000 !important; /* Above all other cards */
 }
 
 /* Mystical glow effect */

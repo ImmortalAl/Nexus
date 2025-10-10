@@ -116,6 +116,7 @@ class BlogVoting {
 
         // Position dropdown
         const isInModalHeader = challengeBtn.closest('.modal-header-bar');
+        let parentCard = null;
 
         if (isInModalHeader) {
             const voteControls = challengeBtn.closest('.modal-vote-controls');
@@ -126,6 +127,12 @@ class BlogVoting {
         } else {
             challengeBtn.parentElement.style.position = 'relative';
             challengeBtn.parentElement.appendChild(dropdown);
+
+            // Elevate parent card z-index to ensure dropdown appears above other cards
+            parentCard = challengeBtn.closest('.blog-post-card');
+            if (parentCard) {
+                parentCard.classList.add('has-active-dropdown');
+            }
         }
 
         // Close dropdown when clicking outside
@@ -133,6 +140,10 @@ class BlogVoting {
             document.addEventListener('click', function closeDropdown(e) {
                 if (!dropdown.contains(e.target) && !challengeBtn.contains(e.target)) {
                     dropdown.remove();
+                    // Remove elevated z-index from parent card
+                    if (parentCard) {
+                        parentCard.classList.remove('has-active-dropdown');
+                    }
                     document.removeEventListener('click', closeDropdown);
                 }
             });
