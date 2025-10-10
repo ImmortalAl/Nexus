@@ -119,17 +119,15 @@ class BlogVoting {
         let parentCard = null;
 
         if (isInModalHeader) {
-            const voteControls = challengeBtn.closest('.modal-vote-controls');
-            if (voteControls) {
-                voteControls.style.position = 'relative';
-                voteControls.appendChild(dropdown);
+            // Append to body to escape ALL clipping contexts (modal border-radius, etc.)
+            document.body.appendChild(dropdown);
 
-                // Position fixed dropdown based on button position
-                const rect = challengeBtn.getBoundingClientRect();
-                dropdown.style.position = 'fixed';
-                dropdown.style.top = `${rect.bottom + 8}px`;
-                dropdown.style.left = `${rect.left}px`;
-            }
+            // Position fixed dropdown based on button position
+            const rect = challengeBtn.getBoundingClientRect();
+            dropdown.style.position = 'fixed';
+            dropdown.style.top = `${rect.bottom + 8}px`;
+            dropdown.style.left = `${rect.left}px`;
+            dropdown.style.zIndex = '999999'; // Above everything
         } else {
             challengeBtn.parentElement.style.position = 'relative';
             challengeBtn.parentElement.appendChild(dropdown);
