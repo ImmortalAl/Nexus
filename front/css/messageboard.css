@@ -1073,8 +1073,40 @@ section {
     font-weight: 600;
     color: var(--accent);
     margin-bottom: 0.4rem;
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     font-size: 0.9rem;
+}
+
+#threadComposerModal .label-icon {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+#threadComposerModal .label-text {
+    flex: 1;
+}
+
+#threadComposerModal .label-required {
+    color: #ff5e78;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+#threadComposerModal .label-optional {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.85rem;
+    font-weight: normal;
+    font-style: italic;
+}
+
+#threadComposerModal .field-hint {
+    display: block;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 0.3rem;
+    font-style: italic;
 }
 
 #threadComposerModal .form-group input,

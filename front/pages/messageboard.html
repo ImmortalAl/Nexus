@@ -45,8 +45,8 @@
     <link rel="preload" href="../components/shared/active-users.css?v=2.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="../components/shared/active-users.css?v=2.1"></noscript>
     
-    <link rel="preload" href="../css/messageboard.css?v=3.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="../css/messageboard.css?v=3.1"></noscript>
+    <link rel="preload" href="../css/messageboard.css?v=3.2" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/messageboard.css?v=3.2"></noscript>
     
     <!-- Democracy 3.0 Styles -->
     <link rel="preload" href="../css/democracy.css?v=1.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -166,18 +166,30 @@
             <div class="modal-body">
             <form id="threadForm">
                 <div class="form-group">
-                    <label for="threadTitle">Title</label>
-                    <input type="text" id="threadTitle" name="title" required>
+                    <label for="threadTitle">
+                        <span class="label-icon">✨</span>
+                        <span class="label-text">Thread Title</span>
+                        <span class="label-required">*</span>
+                    </label>
+                    <input type="text" id="threadTitle" name="title" required placeholder="Enter a compelling title for your echo..." maxlength="200">
+                    <span class="field-hint">Maximum 200 characters</span>
                 </div>
                 <div class="form-group">
-                    <label for="threadCategory">Category</label>
+                    <label for="threadCategory">
+                        <span class="label-icon">🌌</span>
+                        <span class="label-text">Category</span>
+                        <span class="label-required">*</span>
+                    </label>
                     <select id="threadCategory" name="category" required>
-                        <option value="Ideas">Ideas</option>
-                        <option value="Debates">Debates</option>
-                        <option value="Trades">Trades</option>
-                        <option value="Events">Events</option>
-                        <option value="Governance">Governance</option>
-                        <option value="Anonymous Whispers">Anonymous Whispers</option>
+                        <option value="">-- Select a Category --</option>
+                        <option value="Eternal Discourse">⚡ Eternal Discourse</option>
+                        <option value="Sacred Debates">⚔️ Sacred Debates</option>
+                        <option value="Nexus Commerce">💎 Nexus Commerce</option>
+                        <option value="Temporal Events">🌟 Temporal Events</option>
+                        <option value="Governance Council">👑 Governance Council</option>
+                        <option value="Mystic Whispers">🎭 Mystic Whispers</option>
+                        <option value="Soul Manifestos">📜 Soul Manifestos</option>
+                        <option value="Technical Codex">⚙️ Technical Codex</option>
                     </select>
                 </div>
                 
@@ -255,10 +267,15 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="threadTags">Tags (comma-separated)</label>
-                    <input type="text" id="threadTags" name="tags">
+                    <label for="threadTags">
+                        <span class="label-icon">🏷️</span>
+                        <span class="label-text">Tags</span>
+                        <span class="label-optional">(optional)</span>
+                    </label>
+                    <input type="text" id="threadTags" name="tags" placeholder="philosophy, discussion, community (comma-separated)">
+                    <span class="field-hint">Add tags to help others find your echo</span>
                 </div>
-                
+
                 <!-- Anonymous Toggle (will be shown/hidden by JavaScript) -->
                 <div id="threadComposerAnonymous" class="anonymous-toggle" style="display: none;">
                     <label class="toggle-container">
@@ -269,16 +286,28 @@
                         </span>
                     </label>
                     <div class="anonymous-info">
-                        <small>Your identity will be hidden from other users while maintaining accountability.</small>
+                        <small><i class="fas fa-info-circle"></i> Your identity will be hidden from other users while maintaining accountability.</small>
                     </div>
                 </div>
-                    <div class="form-group">
-                        <label>Content</label>
-                <div id="editor"></div>
-                    </div>
-                    <div class="form-actions">
-                <button type="submit" class="btn btn-primary">Post Thread</button>
-                    </div>
+
+                <div class="form-group">
+                    <label for="editor">
+                        <span class="label-icon">📝</span>
+                        <span class="label-text">Content</span>
+                        <span class="label-required">*</span>
+                    </label>
+                    <div id="editor"></div>
+                    <span class="field-hint">Share your thoughts, ideas, or questions with the community</span>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Post Echo
+                    </button>
+                    <button type="button" id="cancelThreadBtn" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
             </form>
             </div>
         </div>
@@ -820,8 +849,9 @@
         function handleCategoryChange() {
             const categorySelect = threadForm.elements.category;
             const governanceOptions = document.getElementById('governanceOptions');
-            
-            if (categorySelect.value === 'Governance') {
+
+            // Show governance options for "Governance Council" category
+            if (categorySelect.value === 'Governance Council') {
                 governanceOptions.style.display = 'block';
             } else {
                 governanceOptions.style.display = 'none';
@@ -1309,6 +1339,11 @@
         });
 
         document.getElementById('closeComposer').addEventListener('click', () => {
+            closeComposerModal();
+        });
+
+        // Cancel button handler
+        document.getElementById('cancelThreadBtn').addEventListener('click', () => {
             closeComposerModal();
         });
 
