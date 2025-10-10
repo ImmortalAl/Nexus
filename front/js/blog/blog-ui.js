@@ -124,8 +124,34 @@ class BlogUI {
         const postsHTML = posts.map(post => this.renderPostCard(post)).join('');
         container.innerHTML = postsHTML;
 
+        // Clean up any stray text nodes in post-footer
+        this.cleanupPostFooters();
+
         // Apply scroll animations
         this.applyScrollAnimations();
+    }
+
+    /**
+     * Clean up any stray text nodes in post footers
+     */
+    cleanupPostFooters() {
+        const postFooters = document.querySelectorAll('.post-footer');
+        postFooters.forEach(footer => {
+            // Remove any text nodes that aren't inside .post-interactions
+            const childNodes = Array.from(footer.childNodes);
+            childNodes.forEach(node => {
+                // If it's a text node and not whitespace-only
+                if (node.nodeType === Node.TEXT_NODE && node.textContent.trim() !== '') {
+                    console.log('[BlogUI] Removing stray text node:', node.textContent);
+                    node.remove();
+                }
+                // If it's not the post-interactions div, remove it
+                if (node.nodeType === Node.ELEMENT_NODE && !node.classList.contains('post-interactions')) {
+                    console.log('[BlogUI] Removing non-interactions element:', node);
+                    node.remove();
+                }
+            });
+        });
     }
 
     /**
