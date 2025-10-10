@@ -1976,7 +1976,7 @@
             }
         }
 
-        // Event delegation for voting
+        // Event delegation for voting - NOW USING UNIFIED VOTING SYSTEM
         document.querySelector('.lyceum-grid').addEventListener('click', async (e) => {
             const voteBtn = e.target.closest('.vote-btn');
             if (!voteBtn) return;
@@ -1989,8 +1989,8 @@
             const isReply = voteBtn.closest('.reply');
             const element = isReply || voteBtn.closest('.thread');
             const id = element.dataset.id;
-            
-            let voteType, endpoint;
+
+            let voteType;
 
             if (action.includes('upvote')) {
                 voteType = 'upvote';
@@ -2000,32 +2000,32 @@
                 return;
             }
 
-            endpoint = isReply 
-                ? `/threads/${element.closest('.reply-main').dataset.threadId}/replies/${id}/vote` 
-                : `/threads/${id}/vote`;
-            
             try {
-                const response = await window.apiClient.post(endpoint, { vote: voteType });
-                
-                // Hide vote count since you don't want scores displayed
-                const voteCountElement = element.querySelector('.vote-count');
-                if (voteCountElement) {
-                    voteCountElement.style.display = 'none';
-                }
+                // Use unified voting system for threads
+                // Note: unifiedVoting doesn't yet support replies, so fall back for those
+                if (isReply) {
+                    const threadId = element.closest('.reply-main').dataset.threadId;
+                    const endpoint = `/threads/${threadId}/replies/${id}/vote`;
+                    const response = await window.apiClient.post(endpoint, { vote: voteType });
 
-                // Update active button state based on current vote
-                element.querySelectorAll('.vote-btn.active').forEach(btn => btn.classList.remove('active'));
-                
-                if (response.currentVote) {
-                    // User has an active vote
-                    const activeBtn = element.querySelector(`[data-action*="${response.currentVote}"]`);
-                    if (activeBtn) {
-                        activeBtn.classList.add('active');
+                    // Update button states
+                    element.querySelectorAll('.vote-btn.active').forEach(btn => btn.classList.remove('active'));
+                    if (response.currentVote) {
+                        const activeBtn = element.querySelector(`[data-action*="${response.currentVote}"]`);
+                        if (activeBtn) activeBtn.classList.add('active');
                     }
+                } else {
+                    // Use unified voting for threads
+                    await window.unifiedVoting.vote('echo', id, voteType);
+
+                    // Update button states (unifiedVoting doesn't return normalized response yet)
+                    element.querySelectorAll('.vote-btn.active').forEach(btn => btn.classList.remove('active'));
+                    voteBtn.classList.add('active');
                 }
 
             } catch (error) {
-                alert(`Error: ${error.error || 'Could not cast vote.'}`);
+                console.error('[Messageboard] Vote error:', error);
+                alert(`Error: ${error.message || error.error || 'Could not cast vote.'}`);
             }
         });
 
