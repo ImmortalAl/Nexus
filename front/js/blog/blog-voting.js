@@ -325,13 +325,19 @@ class BlogVoting {
      * Update vote buttons in post list
      */
     updateVoteButtons(postId, result) {
-        const postElement = document.getElementById(postId);
-        if (!postElement) return;
+        // Find post by data-post-id attribute
+        const postElement = document.querySelector(`[data-post-id="${postId}"]`);
+        if (!postElement) {
+            console.warn('[BlogVoting] Could not find post element for:', postId);
+            return;
+        }
 
         const likeBtn = postElement.querySelector('.like-btn');
         const challengeBtn = postElement.querySelector('.challenge-btn') || postElement.querySelector('.dislike-btn');
-        const likeCount = postElement.querySelector('.like-count');
-        const challengeCount = postElement.querySelector('.challenge-count') || postElement.querySelector('.dislike-count');
+
+        // Find vote count spans inside the buttons
+        const likeCount = likeBtn?.querySelector('.vote-count');
+        const challengeCount = challengeBtn?.querySelector('.vote-count');
 
         if (likeCount) likeCount.textContent = result.likes;
         if (challengeCount) challengeCount.textContent = result.dislikes;
