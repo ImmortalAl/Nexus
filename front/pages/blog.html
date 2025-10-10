@@ -28,21 +28,41 @@
     /* Force dark mystical card backgrounds immediately */
     .blog-post-card {
         background: linear-gradient(135deg,
-            rgba(26, 26, 51, 0.98),
-            rgba(42, 64, 102, 0.95),
+            rgba(13, 13, 26, 0.98),
+            rgba(26, 26, 51, 0.95),
             rgba(13, 13, 26, 0.97)
         ) !important;
-        border: 2px solid rgba(255, 94, 120, 0.4) !important;
+        border: 2px solid rgba(255, 94, 120, 0.5) !important;
         border-radius: 20px !important;
         padding: 2rem !important;
         box-shadow:
-            0 12px 40px rgba(0, 0, 0, 0.7),
-            0 6px 20px rgba(255, 94, 120, 0.15),
-            inset 0 1px 0 rgba(255, 255, 255, 0.1),
-            inset 0 -1px 0 rgba(255, 94, 120, 0.1) !important;
+            0 12px 40px rgba(0, 0, 0, 0.8),
+            0 6px 20px rgba(255, 94, 120, 0.2),
+            0 0 60px rgba(255, 94, 120, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05),
+            inset 0 -1px 0 rgba(255, 94, 120, 0.2) !important;
         backdrop-filter: blur(15px) !important;
         position: relative;
         margin-bottom: 2rem;
+    }
+
+    /* Card text contrast */
+    .blog-post-card .post-title {
+        color: #fff !important;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8) !important;
+    }
+
+    .blog-post-card .post-excerpt {
+        color: rgba(255, 255, 255, 0.9) !important;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6) !important;
+    }
+
+    .blog-post-card .author-name {
+        color: rgba(255, 255, 255, 0.95) !important;
+    }
+
+    .blog-post-card .post-date {
+        color: rgba(255, 255, 255, 0.7) !important;
     }
 
     /* Container background */
@@ -68,7 +88,7 @@
     <link rel="stylesheet" href="../css/styles.css?v=10.6">
 
     <!-- 3.5. BLOG CARDS - CRITICAL for above-fold rendering (synchronous load) -->
-    <link rel="stylesheet" href="../css/blog-cards.css?v=4.4">
+    <link rel="stylesheet" href="../css/blog-cards.css?v=4.5">
 
     <!-- 4. PROGRESSIVE LOADING - Non-critical CSS loaded asynchronously -->
     <link rel="preload" href="../css/layout.css?v=8.2" as="style" onload="this.onload=null;this.rel='stylesheet'">

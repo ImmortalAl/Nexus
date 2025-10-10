@@ -3,20 +3,21 @@
 /* ===== IMMORTAL SCROLL CARDS ===== */
 .blog-post,
 .blog-post-card {
-    /* Epic immortal scroll styling */
-    background: linear-gradient(135deg, 
-        rgba(26, 26, 51, 0.98), 
-        rgba(42, 64, 102, 0.95), 
+    /* Epic immortal scroll styling - DARKER mystical theme */
+    background: linear-gradient(135deg,
+        rgba(13, 13, 26, 0.98),
+        rgba(26, 26, 51, 0.95),
         rgba(13, 13, 26, 0.97)
     );
-    border: 2px solid rgba(255, 94, 120, 0.4);
+    border: 2px solid rgba(255, 94, 120, 0.5);
     border-radius: 20px;
     padding: 2rem;
-    box-shadow: 
-        0 12px 40px rgba(0, 0, 0, 0.7),
-        0 6px 20px rgba(255, 94, 120, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1),
-        inset 0 -1px 0 rgba(255, 94, 120, 0.1);
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.8),
+        0 6px 20px rgba(255, 94, 120, 0.2),
+        0 0 60px rgba(255, 94, 120, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        inset 0 -1px 0 rgba(255, 94, 120, 0.2);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     cursor: pointer;
     position: relative;
@@ -60,16 +61,17 @@
 
 .blog-post:hover,
 .blog-post-card:hover {
-    transform: translateY(-8px) scale(1.03);
-    box-shadow: 
+    transform: translateY(-8px) scale(1.02);
+    box-shadow:
         0 20px 60px rgba(0, 0, 0, 0.9),
         0 12px 40px rgba(255, 94, 120, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 0 80px rgba(255, 94, 120, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
         inset 0 -1px 0 rgba(255, 94, 120, 0.3);
     border-color: rgba(255, 94, 120, 0.8);
-    background: linear-gradient(135deg, 
-        rgba(26, 26, 51, 1), 
-        rgba(42, 64, 102, 0.98), 
+    background: linear-gradient(135deg,
+        rgba(13, 13, 26, 1),
+        rgba(26, 26, 51, 0.98),
         rgba(13, 13, 26, 0.99)
     );
 }
@@ -172,31 +174,28 @@
 .blog-post h3,
 .blog-post-card h3,
 .blog-post-card .post-title {
-    color: rgba(255, 255, 255, 0.95);
+    color: #ffffff;
     font-family: 'Cinzel', serif;
-    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    font-size: clamp(1.2rem, 2.5vw, 1.5rem);
     font-weight: 600;
     margin: 0 0 0.75rem 0;
     line-height: 1.3;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    background: linear-gradient(135deg, rgba(255, 94, 120, 0.9), rgba(255, 202, 40, 0.8));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 94, 120, 0.3);
+    /* Removed gradient text - solid white for better readability */
 }
 
 .scroll-excerpt,
 .blog-post .content,
 .blog-post-card .post-excerpt {
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(255, 255, 255, 0.9);
     font-size: 0.95rem;
-    line-height: 1.6;
+    line-height: 1.7;
     margin-bottom: 1rem;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
 }
 
 /* ===== CARD FOOTER ===== */
