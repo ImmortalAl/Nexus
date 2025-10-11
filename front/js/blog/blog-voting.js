@@ -126,7 +126,9 @@ class BlogVoting {
             const rect = challengeBtn.getBoundingClientRect();
             dropdown.style.position = 'fixed';
             dropdown.style.top = `${rect.bottom + 8}px`;
+            dropdown.style.bottom = 'auto'; // Override CSS default bottom: 100%
             dropdown.style.left = `${rect.left}px`;
+            dropdown.style.right = 'auto'; // Override CSS default right: 0
             dropdown.style.zIndex = '999999'; // Above everything
         } else {
             challengeBtn.parentElement.style.position = 'relative';
