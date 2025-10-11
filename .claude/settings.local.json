@@ -55,7 +55,8 @@
       "Bash(git gc:*)",
       "Bash(git remote get-url:*)",
       "Bash(GIT_CURL_VERBOSE=1 git fetch origin main)",
-      "Bash(git merge:*)"
+      "Bash(git merge:*)",
+      "Bash(claude --version)"
     ],
     "deny": [],
     "ask": []
