@@ -50,7 +50,12 @@
       "Bash(then sed -i '/light-theme-immortal\\.css/a\\    <link rel=\"\"stylesheet\"\" href=\"\"../css/mobile-enhanced.css?v=1.0\"\">' \"$dir/index.html\")",
       "Bash(authorId)",
       "Bash(userId)",
-      "Bash(getElementById \")"
+      "Bash(getElementById \")",
+      "Bash(git config:*)",
+      "Bash(git gc:*)",
+      "Bash(git remote get-url:*)",
+      "Bash(GIT_CURL_VERBOSE=1 git fetch origin main)",
+      "Bash(git merge:*)"
     ],
     "deny": [],
     "ask": []
