@@ -125,11 +125,24 @@ class BlogVoting {
             // Position fixed dropdown based on button position
             const rect = challengeBtn.getBoundingClientRect();
             dropdown.style.position = 'fixed';
-            dropdown.style.top = `${rect.bottom + 8}px`;
-            dropdown.style.bottom = 'auto'; // Override CSS default bottom: 100%
             dropdown.style.left = `${rect.left}px`;
             dropdown.style.right = 'auto'; // Override CSS default right: 0
             dropdown.style.zIndex = '999999'; // Above everything
+
+            // Check if there's enough space below the button
+            const dropdownHeight = 200; // Estimated height
+            const spaceBelow = window.innerHeight - rect.bottom;
+            const spaceAbove = rect.top;
+
+            if (spaceBelow >= dropdownHeight || spaceBelow > spaceAbove) {
+                // Position below button
+                dropdown.style.top = `${rect.bottom + 8}px`;
+                dropdown.style.bottom = 'auto';
+            } else {
+                // Position above button
+                dropdown.style.bottom = `${window.innerHeight - rect.top + 8}px`;
+                dropdown.style.top = 'auto';
+            }
         } else {
             challengeBtn.parentElement.style.position = 'relative';
             challengeBtn.parentElement.appendChild(dropdown);
