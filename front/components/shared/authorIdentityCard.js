@@ -579,10 +579,27 @@ class AuthorIdentityCard {
             </div>
         `;
 
-        // Position relative to challenge button
+        // Position relative to challenge button but append to body to escape clipping
         const challengeBtn = this.element.querySelector('.challenge-btn');
         if (challengeBtn) {
-            challengeBtn.parentElement.appendChild(dropdown);
+            // Append dropdown to body to escape all container constraints
+            document.body.appendChild(dropdown);
+            
+            // Position dropdown relative to button
+            this.positionDropdown(dropdown, challengeBtn);
+            
+            // Reposition on scroll/resize
+            const repositionHandler = () => this.positionDropdown(dropdown, challengeBtn);
+            window.addEventListener('scroll', repositionHandler, { passive: true });
+            window.addEventListener('resize', repositionHandler);
+            
+            // Clean up event listeners when dropdown is removed
+            const originalRemove = dropdown.remove.bind(dropdown);
+            dropdown.remove = () => {
+                window.removeEventListener('scroll', repositionHandler);
+                window.removeEventListener('resize', repositionHandler);
+                originalRemove();
+            };
         }
 
         // Attach handlers
@@ -603,6 +620,40 @@ class AuthorIdentityCard {
                 }
             });
         }, 100);
+    }
+
+    /**
+     * Position dropdown relative to button
+     */
+    positionDropdown(dropdown, button) {
+        if (!dropdown || !button) return;
+        
+        const rect = button.getBoundingClientRect();
+        const dropdownWidth = dropdown.offsetWidth || 220;
+        const dropdownHeight = dropdown.offsetHeight || 200;
+        const gutter = 10;
+        
+        let top = rect.bottom + gutter;
+        let left = rect.right - dropdownWidth;
+        
+        // Adjust if dropdown would go off-screen
+        const maxLeft = Math.max(0, window.innerWidth - dropdownWidth - gutter);
+        const maxTop = Math.max(0, window.innerHeight - dropdownHeight - gutter);
+        
+        if (left < gutter) left = gutter;
+        if (left > maxLeft) left = maxLeft;
+        
+        // If dropdown would go below viewport, position above button
+        if (top > maxTop) {
+            top = rect.top - dropdownHeight - gutter;
+        }
+        
+        dropdown.style.position = 'fixed';
+        dropdown.style.top = `${Math.round(top)}px`;
+        dropdown.style.left = `${Math.round(left)}px`;
+        dropdown.style.right = 'auto';
+        dropdown.style.bottom = 'auto';
+        dropdown.style.zIndex = '10001'; // Above modal
     }
 
     /**

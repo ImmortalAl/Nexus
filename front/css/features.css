@@ -2625,10 +2625,12 @@ body .floating-buttons button.theme-toggle#themeToggle {
 
 /* --- Challenge Dropdown --- */
 .identity-challenge-dropdown {
-    position: absolute;
-    top: calc(100% + 0.5rem);
-    right: 0;
-    z-index: 1000;
+    position: fixed !important; /* Force fixed positioning to escape containers */
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    z-index: 10001 !important; /* Above modal z-index */
     background: linear-gradient(135deg,
         rgba(26, 26, 51, 0.98),
         rgba(42, 64, 102, 0.95)
@@ -2641,6 +2643,8 @@ body .floating-buttons button.theme-toggle#themeToggle {
         0 0 20px rgba(255, 94, 120, 0.3);
     min-width: 200px;
     backdrop-filter: blur(10px);
+    max-height: 300px;
+    overflow-y: auto;
 }
 
 .challenge-option {
