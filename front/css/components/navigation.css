@@ -523,3 +523,19 @@
     border-color: var(--accent);
   }
 }
+
+@media (max-width: 800px) {
+    .full-title {
+        display: none !important;
+    }
+    .short-title {
+        display: block !important;
+        font-size: 1.4rem; /* Reduce font size for better fit */
+    }
+    .main-nav {
+        display: none !important;
+    }
+    .logo i {
+        font-size: 1.5rem; /* Smaller logo icon */
+    }
+}

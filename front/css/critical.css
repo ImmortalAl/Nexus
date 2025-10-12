@@ -617,12 +617,18 @@ nav a {
         box-sizing: border-box !important;
         position: relative !important; /* Ensure positioning context */
         overflow: visible !important;
+        /* MOBILE DEVICE SPECIFIC FIXES */
+        min-width: 0 !important;
+        width: 100% !important;
     }
     .logo { 
         grid-column: 1; 
         max-width: 120px !important;
         overflow: hidden !important;
         position: relative !important; /* Reset any absolute positioning */
+        /* MOBILE DEVICE FIX */
+        min-width: 80px !important;
+        flex-shrink: 0 !important;
     }
     .header-controls { 
         grid-column: 3; 
@@ -640,6 +646,10 @@ nav a {
         flex-shrink: 0 !important;
         overflow: visible !important;
         transform: none !important; /* Reset any transforms */
+        /* MOBILE DEVICE SPECIFIC */
+        min-width: 100px !important;
+        width: auto !important;
+        height: auto !important;
     }
     .user-menu, .user-menu-btn { 
         margin: 0 !important; 
@@ -655,6 +665,10 @@ nav a {
         transform: none !important; /* Reset any transforms */
         float: none !important; /* Reset any floats */
         clear: none !important; /* Reset any clears */
+        /* MOBILE DEVICE SPECIFIC */
+        display: inline-flex !important;
+        align-items: center !important;
+        vertical-align: top !important;
     }
     .mobile-nav-toggle {
         width: 36px !important;
@@ -668,5 +682,36 @@ nav a {
         transform: none !important;
         float: none !important;
         clear: none !important;
+        /* MOBILE DEVICE SPECIFIC */
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        vertical-align: top !important;
+    }
+    
+    /* FORCE MOBILE BROWSER COMPLIANCE */
+    body {
+        -webkit-text-size-adjust: 100% !important;
+        -moz-text-size-adjust: 100% !important;
+        -ms-text-size-adjust: 100% !important;
+        text-size-adjust: 100% !important;
+    }
+}
+
+/* ANDROID DEVICE SPECIFIC FIXES */
+@supports (-webkit-touch-callout: none) {
+    @media (max-width: 900px) {
+        header {
+            /* Force hardware acceleration for Android devices */
+            -webkit-transform: translateZ(0) !important;
+            transform: translateZ(0) !important;
+            -webkit-backface-visibility: hidden !important;
+            backface-visibility: hidden !important;
+        }
+        .header-controls {
+            /* Ensure proper rendering on Android */
+            -webkit-transform: translateZ(0) !important;
+            transform: translateZ(0) !important;
+        }
     }
 }

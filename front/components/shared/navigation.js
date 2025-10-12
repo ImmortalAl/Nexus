@@ -156,41 +156,101 @@ function injectCompleteHeader() {
                 headerElement.style.zIndex = '2500';
             }
 
-            // FORCE GRID LAYOUT ON MOBILE TO PREVENT USER MENU SPILLING
-            const isMobile = window.innerWidth <= 900;
-            if (isMobile) {
-                console.log('Applying mobile grid layout fix...');
-                headerElement.style.display = 'grid';
-                headerElement.style.gridTemplateColumns = 'auto 1fr auto';
-                headerElement.style.alignItems = 'center';
-                headerElement.style.justifyContent = 'space-between';
-                headerElement.style.flexWrap = 'nowrap';
-
-                // Force header-controls to right side
-                const headerControls = headerElement.querySelector('.header-controls');
-                if (headerControls) {
-                    headerControls.style.gridColumn = '3';
-                    headerControls.style.justifySelf = 'end';
-                    headerControls.style.display = 'inline-flex';
-                    headerControls.style.alignItems = 'center';
-                    headerControls.style.gap = '0.5rem';
-                    headerControls.style.flexWrap = 'nowrap';
-                }
-
-                // Force logo to left side
-                const logo = headerElement.querySelector('.logo');
-                if (logo) {
-                    logo.style.gridColumn = '1';
-                }
-
-                // Force user menu to stay inline
-                const userMenu = headerElement.querySelector('.user-menu');
-                if (userMenu) {
-                    userMenu.style.display = 'inline-flex';
-                    userMenu.style.alignItems = 'center';
-                    userMenu.style.flexShrink = '0';
-                }
+        // FORCE GRID LAYOUT ON MOBILE TO PREVENT USER MENU SPILLING
+        const screenWidth = window.innerWidth;
+        const isMobile = screenWidth <= 900;
+        const isRealMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const devicePixelRatio = window.devicePixelRatio || 1;
+        
+        console.log(`Screen width: ${screenWidth}px, isMobile: ${isMobile}, isRealMobile: ${isRealMobile}, devicePixelRatio: ${devicePixelRatio}`);
+        
+        if (isMobile || isRealMobile) {
+            console.log('Applying mobile grid layout fix...');
+            headerElement.style.display = 'grid';
+            headerElement.style.gridTemplateColumns = 'auto 1fr auto';
+            headerElement.style.alignItems = 'center';
+            headerElement.style.justifyContent = 'space-between';
+            headerElement.style.flexWrap = 'nowrap';
+            
+            // MOBILE DEVICE SPECIFIC DEBUGGING
+            headerElement.style.minWidth = '0';
+            headerElement.style.width = '100%';
+            headerElement.style.position = 'relative';
+            
+            // Force header-controls to right side
+            const headerControls = headerElement.querySelector('.header-controls');
+            if (headerControls) {
+                console.log('Applying header-controls mobile fix...');
+                headerControls.style.gridColumn = '3';
+                headerControls.style.justifySelf = 'end';
+                headerControls.style.display = 'inline-flex';
+                headerControls.style.alignItems = 'center';
+                headerControls.style.gap = '0.5rem';
+                headerControls.style.flexWrap = 'nowrap';
+                
+                // MOBILE DEVICE SPECIFIC
+                headerControls.style.minWidth = '100px';
+                headerControls.style.width = 'auto';
+                headerControls.style.height = 'auto';
+                headerControls.style.position = 'relative';
+                headerControls.style.top = '0';
+                headerControls.style.left = '0';
+                headerControls.style.right = '0';
+                headerControls.style.bottom = '0';
+                headerControls.style.transform = 'none';
+                headerControls.style.float = 'none';
             }
+
+            // Force logo to left side
+            const logo = headerElement.querySelector('.logo');
+            if (logo) {
+                console.log('Applying logo mobile fix...');
+                logo.style.gridColumn = '1';
+                logo.style.minWidth = '80px';
+                logo.style.flexShrink = '0';
+                logo.style.position = 'relative';
+            }
+
+            // Force user menu to stay inline
+            const userMenu = headerElement.querySelector('.user-menu');
+            if (userMenu) {
+                console.log('Applying user-menu mobile fix...');
+                userMenu.style.display = 'inline-flex';
+                userMenu.style.alignItems = 'center';
+                userMenu.style.flexShrink = '0';
+                userMenu.style.verticalAlign = 'top';
+                userMenu.style.position = 'relative';
+                userMenu.style.top = '0';
+                userMenu.style.left = '0';
+                userMenu.style.right = '0';
+                userMenu.style.bottom = '0';
+                userMenu.style.transform = 'none';
+                userMenu.style.float = 'none';
+            }
+            
+            // MOBILE NAV TOGGLE
+            const mobileToggle = headerElement.querySelector('.mobile-nav-toggle');
+            if (mobileToggle) {
+                console.log('Applying mobile-nav-toggle mobile fix...');
+                mobileToggle.style.display = 'inline-flex';
+                mobileToggle.style.alignItems = 'center';
+                mobileToggle.style.justifyContent = 'center';
+                mobileToggle.style.verticalAlign = 'top';
+                mobileToggle.style.position = 'relative';
+                mobileToggle.style.top = '0';
+                mobileToggle.style.left = '0';
+                mobileToggle.style.right = '0';
+                mobileToggle.style.bottom = '0';
+                mobileToggle.style.transform = 'none';
+                mobileToggle.style.float = 'none';
+            }
+            
+            // FORCE WEBKIT COMPLIANCE FOR FAIRPHONE
+            document.body.style.webkitTextSizeAdjust = '100%';
+            document.body.style.mozTextSizeAdjust = '100%';
+            document.body.style.msTextSizeAdjust = '100%';
+            document.body.style.textSizeAdjust = '100%';
+        }
         }, 500);
         
         // Re-setup mobile navigation events after injecting new HTML

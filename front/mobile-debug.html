@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mobile Debug - Immortal Nexus</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #000;
+            color: #fff;
+            line-height: 1.4;
+        }
+        .debug-info {
+            background: #333;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .test-header {
+            background: #222;
+            padding: 10px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+            border: 2px solid #666;
+        }
+        .logo {
+            background: #444;
+            padding: 8px;
+            border-radius: 3px;
+            min-width: 80px;
+        }
+        .middle {
+            background: #555;
+            padding: 8px;
+            text-align: center;
+        }
+        .controls {
+            background: #666;
+            padding: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            min-width: 100px;
+            justify-content: end;
+        }
+        .btn {
+            background: #777;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        pre {
+            background: #111;
+            padding: 10px;
+            border-radius: 3px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Mobile Debug Tool</h1>
+    <p>This page helps diagnose mobile layout issues on your Fairphone.</p>
+    
+    <div class="debug-info">
+        <strong>Device Information:</strong>
+        <pre id="deviceInfo"></pre>
+    </div>
+    
+    <div class="debug-info">
+        <strong>Viewport Information:</strong>
+        <pre id="viewportInfo"></pre>
+    </div>
+    
+    <div class="debug-info">
+        <strong>CSS Media Query Tests:</strong>
+        <pre id="mediaQueries"></pre>
+    </div>
+    
+    <div class="debug-info">
+        <strong>Test Header Layout:</strong>
+        <div class="test-header">
+            <div class="logo">Logo</div>
+            <div class="middle">Middle Space</div>
+            <div class="controls">
+                <button class="btn">☰</button>
+                <button class="btn">User ▼</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function updateDebugInfo() {
+            // Device Info
+            const deviceInfo = document.getElementById('deviceInfo');
+            deviceInfo.textContent = JSON.stringify({
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                language: navigator.language,
+                cookieEnabled: navigator.cookieEnabled,
+                onLine: navigator.onLine
+            }, null, 2);
+            
+            // Viewport Info
+            const viewportInfo = document.getElementById('viewportInfo');
+            viewportInfo.textContent = JSON.stringify({
+                screenWidth: screen.width,
+                screenHeight: screen.height,
+                screenAvailWidth: screen.availWidth,
+                screenAvailHeight: screen.availHeight,
+                screenColorDepth: screen.colorDepth,
+                screenPixelDepth: screen.pixelDepth,
+                windowInnerWidth: window.innerWidth,
+                windowInnerHeight: window.innerHeight,
+                windowOuterWidth: window.outerWidth,
+                windowOuterHeight: window.outerHeight,
+                devicePixelRatio: window.devicePixelRatio,
+                documentClientWidth: document.documentElement.clientWidth,
+                documentClientHeight: document.documentElement.clientHeight,
+                bodyOffsetWidth: document.body.offsetWidth,
+                bodyOffsetHeight: document.body.offsetHeight
+            }, null, 2);
+            
+            // Media Query Tests
+            const mediaQueries = document.getElementById('mediaQueries');
+            const tests = [
+                'max-width: 768px',
+                'max-width: 800px',
+                'max-width: 850px',
+                'max-width: 900px',
+                'max-width: 920px',
+                'max-width: 1024px',
+                'min-device-pixel-ratio: 2',
+                '-webkit-min-device-pixel-ratio: 2',
+                'orientation: portrait',
+                'orientation: landscape'
+            ];
+            
+            const results = {};
+            tests.forEach(query => {
+                results[query] = window.matchMedia(`(${query})`).matches;
+            });
+            
+            mediaQueries.textContent = JSON.stringify(results, null, 2);
+        }
+        
+        // Update on load
+        updateDebugInfo();
+        
+        // Update on resize
+        window.addEventListener('resize', updateDebugInfo);
+        window.addEventListener('orientationchange', () => {
+            setTimeout(updateDebugInfo, 100);
+        });
+        
+        // Auto-refresh every 2 seconds
+        setInterval(updateDebugInfo, 2000);
+        
+    </script>
+</body>
+</html>
