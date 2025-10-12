@@ -693,9 +693,16 @@ a:focus, button:focus, input:focus, textarea:focus {
    ============================================================================ */
 
 /* Prevent any element from causing horizontal scroll */
-* {
+/* EXCEPTION: Exclude header, navigation, and flex container elements that need precise sizing */
+*:not(header):not(header *):not(.header-controls):not(.header-controls *):not(.user-menu):not(.user-menu *):not(.mobile-nav-toggle):not(.logo):not(.logo *) {
     box-sizing: border-box;
     max-width: 100%;
+}
+
+/* Ensure header elements can flex properly without width constraints */
+header, header *, .header-controls, .header-controls *, .user-menu, .user-menu *, .mobile-nav-toggle, .logo, .logo * {
+    box-sizing: border-box;
+    /* NO max-width constraint - let flex handle sizing */
 }
 
 html, body {
