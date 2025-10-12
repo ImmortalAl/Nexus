@@ -32,15 +32,15 @@ function generateCompleteHeaderHTML(currentPath) {
                 </div>
             </a>
         </div>
-        <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation">
-            <i class="fas fa-bars"></i>
-        </button>
         <nav class="main-nav">
             <ul>
                 ${mainNavHTML}
             </ul>
         </nav>
         <div class="header-controls">
+            <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
             <div class="user-menu" id="userMenuContainer"></div>
             <div class="header-auth-buttons" id="headerAuthButtonsContainer" style="display: none;"></div>
         </div>

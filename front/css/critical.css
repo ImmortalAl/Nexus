@@ -210,23 +210,6 @@ header {
     height: auto !important; /* Ensure height adjusts automatically */
 }
 
-/* CRITICAL FIX: Mobile header layout when main-nav is hidden */
-@media (max-width: 768px) {
-    header {
-        justify-content: flex-start; /* Prevent compression of elements */
-        gap: 1rem; /* Add space between elements */
-    }
-    
-    .mobile-nav-toggle {
-        margin-left: auto !important; /* Push hamburger to right */
-        margin-right: 1rem !important; /* Space from edge */
-    }
-    
-    .header-controls {
-        margin-left: 0 !important; /* Remove auto margin that pushes it right */
-        margin-right: 1rem !important; /* Space from edge */
-    }
-}
 
 body.light-theme header {
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.92), rgba(240, 240, 245, 0.92));
@@ -384,10 +367,8 @@ nav.main-nav a.active span::after {
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding-right: 1.5rem; /* Add padding to controls container for spacing from edge */
-    overflow: visible; /* Allow dropdowns to overflow */
-    margin-left: auto; /* Ensure header-controls stays right-aligned */
-    flex-shrink: 0; /* Prevent shrinking when space is tight */
+    padding-right: 1.5rem;
+    overflow: visible;
 }
 
 /* Header Auth Buttons (for logged-out state) */
