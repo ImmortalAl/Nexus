@@ -189,6 +189,7 @@ main {
 /* Header Structure */
 header {
     display: flex;
+    flex-wrap: nowrap; /* CRITICAL: Prevent wrapping to keep all elements on one row */
     justify-content: space-between;
     align-items: center;
     padding: 0; /* Flush with edges - internal spacing handled by logo/controls containers */
@@ -232,6 +233,8 @@ body.dark-theme {
 
 .logo {
     padding-left: 1.5rem; /* Add padding to logo container for spacing from edge */
+    flex-shrink: 0; /* Prevent logo from shrinking */
+    max-width: none; /* Override viewport-optimizations.css universal max-width */
 }
 
 .logo a {
@@ -365,10 +368,13 @@ nav.main-nav a.active span::after {
 /* Header Controls Wrapper */
 .header-controls {
     display: flex;
+    flex-wrap: nowrap; /* CRITICAL: Prevent wrapping of hamburger and user menu */
     align-items: center;
     gap: 1rem;
     padding-right: 1.5rem;
     overflow: visible;
+    flex-shrink: 0; /* Prevent controls from shrinking */
+    max-width: none; /* Override viewport-optimizations.css universal max-width */
 }
 
 /* Header Auth Buttons (for logged-out state) */

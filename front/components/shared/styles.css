@@ -135,6 +135,8 @@
     height: 44px;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0; /* Prevent hamburger from shrinking */
+    max-width: none; /* Override viewport-optimizations.css universal max-width */
 }
 
 .mobile-nav-toggle:hover {
@@ -181,6 +183,8 @@
 /* User Menu Styles */
 .user-menu {
     position: relative;
+    flex-shrink: 0; /* Prevent user menu from shrinking */
+    max-width: none; /* Override viewport-optimizations.css universal max-width */
 }
 
 .user-menu-btn {
