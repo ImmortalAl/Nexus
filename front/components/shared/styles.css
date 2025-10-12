@@ -150,7 +150,7 @@
     color: #ff5e78;
 }
 
-@media (max-width: 920px) {
+@media (max-width: 800px) {
     /* Header padding moved to critical.css to prevent conflicts */
 
     .full-title {
@@ -166,7 +166,7 @@
     }
 
     .mobile-nav-toggle {
-        display: block !important;
+        display: flex !important;
         opacity: 1;
         visibility: visible;
     }

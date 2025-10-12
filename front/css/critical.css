@@ -402,7 +402,7 @@ nav.main-nav a.active span::after {
    ========================================== */
 
 /* For Header & Main Nav responsiveness */
-@media (max-width: 920px) {
+@media (max-width: 800px) {
     .logo {
         padding-left: 1rem; /* Reduce padding for smaller screens */
     }
@@ -421,6 +421,13 @@ nav.main-nav a.active span::after {
 }
 
 /* Additional responsive breakpoints for header */
+@media (max-width: 800px) {
+    /* CRITICAL: Hide main nav earlier to prevent user menu wrapping */
+    nav.main-nav {
+        display: none !important;
+    }
+}
+
 @media (max-width: 768px) {
     header {
         min-height: 60px; /* Reduced height for smaller screens */
@@ -428,10 +435,6 @@ nav.main-nav a.active span::after {
         overflow-y: visible; /* Allow dropdowns to overflow vertically */
     }
     
-    /* CRITICAL: Hide main nav on mobile to prevent overlap with mobile toggle */
-    nav.main-nav {
-        display: none !important;
-    }
     .logo {
         padding-left: 0.75rem; /* Further reduce padding */
     }
