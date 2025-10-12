@@ -422,26 +422,35 @@ nav.main-nav a.active span::after {
 
 /* Additional responsive breakpoints for header */
 @media (max-width: 850px) {
-    /* Force single row and earlier collapse to avoid wrap near ~770px */
+    /* FORCE ABSOLUTE SINGLE ROW - NO WRAPPING ALLOWED */
     header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 0.25rem; /* Tighter gap */
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 0.25rem !important;
         flex-wrap: nowrap !important;
-        min-height: 55px; /* Shorter header */
-        padding: 0.5rem 1rem; /* Less vertical padding */
+        min-height: 55px !important;
+        padding: 0.5rem 1rem !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+        position: relative !important;
     }
 
     .logo {
-        flex: 1 1 auto;
-        padding-left: 0.5rem; /* Less padding */
+        flex: 1 1 auto !important;
+        padding-left: 0.5rem !important;
+        min-width: 0 !important; /* Allow shrinking */
+        max-width: calc(100vw - 200px) !important; /* Leave room for controls */
     }
 
     .short-title {
         display: block !important;
-        font-size: 1.1rem; /* Smaller font */
-        font-weight: 400; /* Lighter weight */
+        font-size: 1.1rem !important;
+        font-weight: 400 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        max-width: 100% !important;
     }
 
     .full-title {
@@ -449,33 +458,59 @@ nav.main-nav a.active span::after {
     }
 
     .logo i {
-        font-size: 1.3rem; /* Smaller icon */
-        margin-right: 0.4rem;
+        font-size: 1.3rem !important;
+        margin-right: 0.4rem !important;
+        flex-shrink: 0 !important;
     }
 
     .header-controls {
-        flex: 0 0 auto;
-        display: flex;
-        align-items: center;
-        gap: 0.25rem; /* Tighter gap */
-        padding-right: 0.5rem; /* Less padding */
-        position: relative;
-        overflow: visible;
+        flex: 0 0 auto !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.25rem !important;
+        padding-right: 0.5rem !important;
+        position: relative !important;
+        overflow: visible !important;
         flex-wrap: nowrap !important;
+        flex-shrink: 0 !important;
+        min-width: 0 !important;
+    }
+
+    .user-menu {
+        flex: 0 0 auto !important;
+        display: flex !important;
+        align-items: center !important;
+        position: relative !important;
+        overflow: visible !important;
+        flex-shrink: 0 !important;
     }
 
     .user-menu-btn {
-        padding: 0.3rem 0.6rem; /* Smaller button */
-        font-size: 0.85rem; /* Smaller text */
+        padding: 0.3rem 0.6rem !important;
+        font-size: 0.85rem !important;
+        display: flex !important;
+        align-items: center !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
     }
 
     .user-menu-btn img {
-        width: 24px; /* Smaller avatar */
-        height: 24px;
+        width: 24px !important;
+        height: 24px !important;
+        flex-shrink: 0 !important;
     }
 
     nav.main-nav {
         display: none !important;
+    }
+
+    /* FORCE NO FLOATING OR POSITIONING ISSUES */
+    .user-menu,
+    .user-menu-btn,
+    .header-controls {
+        float: none !important;
+        clear: none !important;
+        position: relative !important;
     }
 }
 
@@ -570,4 +605,25 @@ a, button, input, textarea, select, .clickable {
 nav a {
     position: relative;
     z-index: 2501; /* Above header z-index */
+}
+
+/* Grid header layout for mobile to guarantee single row and right-aligned controls */
+@media (max-width: 900px) {
+    header {
+        display: grid !important;
+        grid-template-columns: auto 1fr auto !important;
+        align-items: center !important;
+    }
+    .logo { grid-column: 1; }
+    .header-controls { 
+        grid-column: 3; 
+        justify-self: end; 
+        display: inline-flex !important; 
+        align-items: center; 
+        gap: 0.5rem; 
+        position: relative !important; 
+        top: auto !important; 
+        margin: 0 !important;
+    }
+    .user-menu, .user-menu-btn { margin: 0 !important; }
 }
