@@ -11,17 +11,15 @@
     
     <!-- 1. THEME FOUNDATION (MUST BE FIRST) -->
     <link rel="stylesheet" href="../css/base-theme.css?v=1.0">
-    <link rel="stylesheet" href="../css/light-theme-immortal.css?v=1.0">
-    <link rel="stylesheet" href="../css/mobile-enhanced.css?v=1.0">
     
     <!-- 2. CRITICAL CSS - Above-fold essentials loaded synchronously -->
     <link rel="stylesheet" href="../css/critical.css?v=7.1">
     
     <!-- 3. GLOBAL STYLES - Site-wide styling -->
-    <link rel="stylesheet" href="../css/styles.css?v=7.1">
+    <link rel="stylesheet" href="../css/styles.css?v=10.0">
     
     <!-- 4. SHARED COMPONENTS -->
-    <link rel="stylesheet" href="../components/shared/styles.css?v=7.1">
+    <link rel="stylesheet" href="../components/shared/styles.css?v=14.8">
     <link rel="stylesheet" href="../css/unified-modals.css?v=2.0">
     <link rel="stylesheet" href="../css/components/buttons.css?v=1.1">
     <link rel="stylesheet" href="../css/components/spinners.css?v=1.0">
@@ -42,11 +40,11 @@
     </noscript>
     
     <!-- 6. PAGE-SPECIFIC (lazy loaded) -->
-    <link rel="preload" href="../components/shared/active-users.css?v=2.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="../components/shared/active-users.css?v=2.1"></noscript>
+    <link rel="preload" href="../css/active-users.css?v=7.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/active-users.css?v=7.1"></noscript>
     
-    <link rel="preload" href="../css/messageboard.css?v=3.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="../css/messageboard.css?v=3.3"></noscript>
+    <link rel="preload" href="../css/messageboard.css?v=2.2" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/messageboard.css?v=2.2"></noscript>
     
     <!-- Democracy 3.0 Styles -->
     <link rel="preload" href="../css/democracy.css?v=1.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -64,10 +62,39 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.6/purify.min.js"></script>
 </head>
 <body>
-    <!-- Active Users Sidebar, Floating Buttons, and Message Modal will be dynamically injected by shared components -->
+    <!-- Shared Components -->
+    <aside class="active-users" id="activeUsers" aria-label="Active users panel">
+        <div class="sidebar-header">
+            <h2>Eternal Seekers</h2>
+            <button class="close-sidebar" id="closeUsers" aria-label="Close active users panel">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="userList" class="user-list">
+            <!-- Active users will be populated here -->
+        </div>
+    </aside>
+    <button class="show-users-btn" id="showUsersBtn" aria-label="Show active users"><i class="fas fa-users"></i></button>
 
     <div id="auth-modal-container">
         <!-- Populated by authModal.js -->
+    </div>
+    
+    <!-- Message Modal -->
+    <div id="messageModal" class="modal" aria-hidden="true">
+        <div class="modal-content message-modal-content" role="dialog" aria-labelledby="messageTitle">
+            <button class="modal-close" id="closeMessageModal" aria-label="Close message modal">&times;</button>
+            <h3 id="messageTitle">Direct Message</h3>
+            <p id="recipientName">To: Username</p>
+            <div class="message-history" id="messageHistory"></div>
+            <div class="message-input-section">
+                <input type="text" id="messageInput" placeholder="Inscribe your eternal message..." required>
+                <div class="modal-actions">
+                    <button type="submit" id="sendMessageBtn" class="btn btn-primary">Send Whisper</button>
+                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('closeMessageModal').click()">Close Nexus</button>
+                </div>
+            </div>
+        </div>
     </div>
     
     <header>
@@ -81,50 +108,16 @@
         </section>
         <div class="lyceum-grid">
             <aside class="lyceum-column categories-column" id="lyceum-categories" aria-label="Message categories">
-                <h3 class="categories-header">
-                    <span class="header-text">Eternal Realms</span>
-                    <button class="category-collapse-toggle" id="categoryCollapseBtn" aria-label="Toggle category view">
-                        <i class="fas fa-compress-alt"></i>
-                    </button>
-                </h3>
+                <h3>Categories</h3>
                 <nav>
-                    <ul class="immortal-categories">
-                        <li><a href="#" data-category="all" class="category-link active" data-icon="🌌" data-short="ALL">
-                            <span class="category-icon">🌌</span>
-                            <span class="category-name">All Echoes</span>
-                        </a></li>
-                        <li><a href="#" data-category="Eternal Discourse" class="category-link" data-icon="⚡" data-short="ED">
-                            <span class="category-icon">⚡</span>
-                            <span class="category-name">Eternal Discourse</span>
-                        </a></li>
-                        <li><a href="#" data-category="Sacred Debates" class="category-link" data-icon="⚔️" data-short="SD">
-                            <span class="category-icon">⚔️</span>
-                            <span class="category-name">Sacred Debates</span>
-                        </a></li>
-                        <li><a href="#" data-category="Nexus Commerce" class="category-link" data-icon="💎" data-short="NC">
-                            <span class="category-icon">💎</span>
-                            <span class="category-name">Nexus Commerce</span>
-                        </a></li>
-                        <li><a href="#" data-category="Temporal Events" class="category-link" data-icon="🌟" data-short="TE">
-                            <span class="category-icon">🌟</span>
-                            <span class="category-name">Temporal Events</span>
-                        </a></li>
-                        <li><a href="#" data-category="Governance Council" class="category-link" data-icon="👑" data-short="GC">
-                            <span class="category-icon">👑</span>
-                            <span class="category-name">Governance Council</span>
-                        </a></li>
-                        <li><a href="#" data-category="Mystic Whispers" class="category-link" data-icon="🎭" data-short="MW">
-                            <span class="category-icon">🎭</span>
-                            <span class="category-name">Mystic Whispers</span>
-                        </a></li>
-                        <li><a href="#" data-category="Soul Manifestos" class="category-link" data-icon="📜" data-short="SM">
-                            <span class="category-icon">📜</span>
-                            <span class="category-name">Soul Manifestos</span>
-                        </a></li>
-                        <li><a href="#" data-category="Technical Codex" class="category-link" data-icon="⚙️" data-short="TC">
-                            <span class="category-icon">⚙️</span>
-                            <span class="category-name">Technical Codex</span>
-                        </a></li>
+                    <ul>
+                        <li><a href="#" data-category="all" class="active">All Echoes</a></li>
+                        <li><a href="#" data-category="Ideas">Ideas</a></li>
+                        <li><a href="#" data-category="Debates">Debates</a></li>
+                        <li><a href="#" data-category="Trades">Trades</a></li>
+                        <li><a href="#" data-category="Events">Events</a></li>
+                        <li><a href="#" data-category="Governance">Governance</a></li>
+                        <li><a href="#" data-category="Anonymous Whispers">Anonymous Whispers</a></li>
                     </ul>
                 </nav>
             </aside>
@@ -166,30 +159,18 @@
             <div class="modal-body">
             <form id="threadForm">
                 <div class="form-group">
-                    <label for="threadTitle">
-                        <span class="label-icon">✨</span>
-                        <span class="label-text">Thread Title</span>
-                        <span class="label-required">*</span>
-                    </label>
-                    <input type="text" id="threadTitle" name="title" required placeholder="Enter a compelling title for your echo..." maxlength="200">
-                    <span class="field-hint">Maximum 200 characters</span>
+                    <label for="threadTitle">Title</label>
+                    <input type="text" id="threadTitle" name="title" required>
                 </div>
                 <div class="form-group">
-                    <label for="threadCategory">
-                        <span class="label-icon">🌌</span>
-                        <span class="label-text">Category</span>
-                        <span class="label-required">*</span>
-                    </label>
+                    <label for="threadCategory">Category</label>
                     <select id="threadCategory" name="category" required>
-                        <option value="">-- Select a Category --</option>
-                        <option value="Eternal Discourse">⚡ Eternal Discourse</option>
-                        <option value="Sacred Debates">⚔️ Sacred Debates</option>
-                        <option value="Nexus Commerce">💎 Nexus Commerce</option>
-                        <option value="Temporal Events">🌟 Temporal Events</option>
-                        <option value="Governance Council">👑 Governance Council</option>
-                        <option value="Mystic Whispers">🎭 Mystic Whispers</option>
-                        <option value="Soul Manifestos">📜 Soul Manifestos</option>
-                        <option value="Technical Codex">⚙️ Technical Codex</option>
+                        <option value="Ideas">Ideas</option>
+                        <option value="Debates">Debates</option>
+                        <option value="Trades">Trades</option>
+                        <option value="Events">Events</option>
+                        <option value="Governance">Governance</option>
+                        <option value="Anonymous Whispers">Anonymous Whispers</option>
                     </select>
                 </div>
                 
@@ -267,15 +248,10 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="threadTags">
-                        <span class="label-icon">🏷️</span>
-                        <span class="label-text">Tags</span>
-                        <span class="label-optional">(optional)</span>
-                    </label>
-                    <input type="text" id="threadTags" name="tags" placeholder="philosophy, discussion, community (comma-separated)">
-                    <span class="field-hint">Add tags to help others find your echo</span>
+                    <label for="threadTags">Tags (comma-separated)</label>
+                    <input type="text" id="threadTags" name="tags">
                 </div>
-
+                
                 <!-- Anonymous Toggle (will be shown/hidden by JavaScript) -->
                 <div id="threadComposerAnonymous" class="anonymous-toggle" style="display: none;">
                     <label class="toggle-container">
@@ -286,28 +262,16 @@
                         </span>
                     </label>
                     <div class="anonymous-info">
-                        <small><i class="fas fa-info-circle"></i> Your identity will be hidden from other users while maintaining accountability.</small>
+                        <small>Your identity will be hidden from other users while maintaining accountability.</small>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="editor">
-                        <span class="label-icon">📝</span>
-                        <span class="label-text">Content</span>
-                        <span class="label-required">*</span>
-                    </label>
-                    <div id="editor"></div>
-                    <span class="field-hint">Share your thoughts, ideas, or questions with the community</span>
-                </div>
-
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-paper-plane"></i> Post Echo
-                    </button>
-                    <button type="button" id="cancelThreadBtn" class="btn btn-secondary">
-                        <i class="fas fa-times"></i> Cancel
-                    </button>
-                </div>
+                    <div class="form-group">
+                        <label>Content</label>
+                <div id="editor"></div>
+                    </div>
+                    <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Post Thread</button>
+                    </div>
             </form>
             </div>
         </div>
@@ -330,21 +294,15 @@
 
     <!-- Core Immortal Nexus Components -->
     <script src="../components/shared/config.js?v=2.0"></script>
-    <script src="../js/shared/logger.js?v=1.0"></script>
-    <script src="../js/shared/errorBoundary.js?v=1.0"></script>
-    <script src="../components/shared/apiClient.js?v=1.5"></script>
-    <script src="../components/shared/authManager.js?v=1.4"></script>
+    <script src="../components/shared/apiClient.js?v=1.4"></script>
+    <script src="../components/shared/authManager.js?v=1.2"></script>
     <script src="../components/shared/nexus-core.js?v=1.5"></script>
     <script src="../components/shared/themeManager.js?v=2.2"></script>
     <script src="../components/shared/navigation.js?v=2.1"></script>
     <script src="../components/shared/userMenu.js?v=7.2"></script>
     <script src="../components/shared/authModal.js?v=4.2"></script>
-
-    <!-- Avatar System (MUST load before activeUsers.js) -->
-    <script src="../js/nexus-avatar-system.js?v=3.1"></script>
-
-    <script src="../components/shared/activeUsers.js?v=2.3"></script>
-    <script src="../components/shared/messageModal.js?v=2.0"></script>
+    <script src="../components/shared/activeUsers.js?v=1.8"></script>
+    <script src="../components/shared/messageModal.js?v=1.4"></script>
 
     <!-- Democracy 3.0 JavaScript -->
     <script src="../js/democracy/anonymous-submissions.js?v=1.1"></script>
@@ -634,13 +592,19 @@
         threadList.innerHTML = threads.map(thread => {
             const currentUser = window.authManager.getUser();
             const isAuthor = isAuthenticated && currentUser && thread.author && currentUser._id === thread.author._id;
-            const isAdmin = isAuthenticated && currentUser && (currentUser.role === 'admin' || currentUser.username === 'ImmortalAl');
             const createdDate = new Date(thread.createdAt).toLocaleDateString();
             const lastActive = thread.updatedAt ? new Date(thread.updatedAt).toLocaleDateString() : createdDate;
             
             return `
             <div class="thread ${thread.isAnonymous ? 'anonymous' : ''}" data-id="${thread._id}">
-                <!-- Voting will be integrated with AuthorIdentityCard -->
+                <div class="thread-voting">
+                    <button class="vote-btn ${!isAuthenticated ? 'disabled' : ''}" data-action="upvote-thread" aria-label="Upvote" ${!isAuthenticated ? 'disabled' : ''}>
+                        <i class="fas fa-arrow-up"></i>
+                    </button>
+                    <button class="vote-btn ${!isAuthenticated ? 'disabled' : ''}" data-action="downvote-thread" aria-label="Downvote" ${!isAuthenticated ? 'disabled' : ''}>
+                        <i class="fas fa-arrow-down"></i>
+                    </button>
+                </div>
                 <div class="thread-main">
                     <h4 class="thread-title">
                         ${escapeHTML(thread.title)}
@@ -660,8 +624,6 @@
                     <div class="thread-actions">
                         ${isAuthor && !thread.isAnonymous ? `
                             <button class="btn btn-secondary btn-sm edit-thread-btn" data-action="edit-thread"><i class="fas fa-edit"></i> Edit</button>
-                        ` : ''}
-                        ${(isAuthor && !thread.isAnonymous) || isAdmin ? `
                             <button class="btn btn-danger btn-sm delete-thread-btn" data-action="delete-thread" data-thread-id="${thread._id}"><i class="fas fa-trash"></i> Delete</button>
                         ` : ''}
                         ${thread.tags && thread.tags.length > 0 ? `
@@ -674,67 +636,39 @@
             </div>
         `}).join('');
         
-        // After creating the HTML, add AuthorIdentityCards with integrated voting
+        // After creating the HTML, add unified user displays
         setTimeout(() => {
+            if (!window.ImmortalNexusAvatars) return;
+
             threads.forEach(thread => {
                 const threadElement = threadList.querySelector(`.thread[data-id='${thread._id}']`);
                 if (threadElement && thread.author) {
                     const authorContainer = threadElement.querySelector('.thread-author-info');
                     if (authorContainer && authorContainer.children.length === 0) {
+                        const authorDisplay = window.ImmortalNexusAvatars.createUserDisplay({
+                            username: thread.author.username || 'Anonymous',
+                            title: thread.author.title || 'Echo Author',
+                            avatarSize: 'xs',
+                            displaySize: 'xs',
+                            compact: true,
+                            mystical: thread.author.isVIP || thread.author.role === 'admin',
+                            online: thread.author.online,
+                            customAvatar: thread.author.avatar,
+                            usernameStyle: 'immortal',
+                            enableUnifiedNavigation: true
+                        });
 
-                        // Use AuthorIdentityCard for unified voting and display
-                        let authorElement = null;
-
-                        if (window.AuthorIdentityCard) {
-                            // Calculate votes (threads might have different vote structure)
-                            const upvotes = thread.upvotes || thread.votes?.up || 0;
-                            const challenges = thread.downvotes || thread.votes?.down || 0;
-
-                            const identityCard = new AuthorIdentityCard({
-                                author: thread.author,
-                                contentType: 'echo',
-                                contentId: thread._id,
-                                timestamp: thread.createdAt,
-                                upvotes: upvotes,
-                                challenges: challenges,
-                                size: 'sm',
-                                variant: 'inline',
-                                showVoting: true,
-                                showTimestamp: false
-                            });
-
-                            authorElement = identityCard.render();
-                            authorContainer.appendChild(authorElement);
-
-                        } else if (window.NexusAvatars) {
-                            // Fallback to original avatar system
-                            authorElement = window.NexusAvatars.createUserDisplay({
-                                username: thread.author.username || 'Anonymous',
-                                title: thread.author.title || 'Echo Author',
-                                avatarSize: 'xs',
-                                displaySize: 'xs',
-                                compact: true,
-                                mystical: thread.author.isVIP || thread.author.role === 'admin',
-                                online: thread.author.online,
-                                customAvatar: thread.author.avatar,
-                                usernameStyle: 'immortal',
-                                enableUnifiedNavigation: true
-                            });
-
-                            if (thread.author._id) {
-                                authorElement.setAttribute('data-user-id', thread.author._id);
-                            }
-                            authorContainer.appendChild(authorElement);
+                        if (thread.author._id) {
+                            authorDisplay.setAttribute('data-user-id', thread.author._id);
                         }
 
-                        // Add flag button for community moderation
-                        if (authorElement && window.authManager.isLoggedIn() && window.authManager.getUser()?._id !== thread.author._id) {
+                        if (window.authManager.isLoggedIn() && window.authManager.getUser()?._id !== thread.author._id) {
                             const flagBtn = document.createElement('button');
                             flagBtn.className = 'flag-user-btn btn-ghost';
                             flagBtn.setAttribute('data-user-id', thread.author._id);
                             flagBtn.innerHTML = '<i class="fas fa-flag"></i>';
                             flagBtn.title = 'Flag for community review';
-
+                            
                             // Add click handler to prevent event bubbling and show flag modal
                             flagBtn.addEventListener('click', (e) => {
                                 e.stopPropagation();
@@ -743,9 +677,11 @@
                                     window.moderationSystem.showFlagModal(thread.author._id);
                                 }
                             });
-
-                            authorElement.appendChild(flagBtn);
+                            
+                            authorDisplay.appendChild(flagBtn);
                         }
+                        
+                        authorContainer.appendChild(authorDisplay);
                     }
                 }
             });
@@ -779,49 +715,10 @@
         return str ? str.replace(/[&<>"']/g, match => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[match])) : '';
     };
 
-    // Dynamic Layout System - Immortal Nexus
-    let isThreadReading = false;
-    let isCategoriesCollapsed = false;
-
-    function updateLayoutClasses() {
-        const lyceumGrid = document.querySelector('.lyceum-grid');
-        const categoriesColumn = document.getElementById('lyceum-categories');
-
-        lyceumGrid.classList.toggle('thread-reading-mode', isThreadReading);
-        lyceumGrid.classList.toggle('categories-collapsed', isCategoriesCollapsed);
-        categoriesColumn.classList.toggle('collapsed', isCategoriesCollapsed);
-    }
-
-    function enterReadingMode() {
-        isThreadReading = true;
-        updateLayoutClasses();
-    }
-
-    function exitReadingMode() {
-        isThreadReading = false;
-        updateLayoutClasses();
-    }
-
-    function toggleCategoriesCollapse() {
-        isCategoriesCollapsed = !isCategoriesCollapsed;
-        updateLayoutClasses();
-
-        // Update toggle button icon
-        const toggleBtn = document.getElementById('categoryCollapseBtn');
-        const icon = toggleBtn.querySelector('i');
-        icon.className = isCategoriesCollapsed ? 'fas fa-expand-alt' : 'fas fa-compress-alt';
-    }
-
     document.addEventListener('DOMContentLoaded', () => {
         threadList = document.getElementById('threadList');
         threadComposer = document.getElementById('threadComposer');
         threadForm = document.getElementById('threadForm');
-
-        // Initialize category collapse functionality
-        const categoryCollapseBtn = document.getElementById('categoryCollapseBtn');
-        if (categoryCollapseBtn) {
-            categoryCollapseBtn.addEventListener('click', toggleCategoriesCollapse);
-        }
         
         const quill = new Quill('#editor', {
             theme: 'snow',
@@ -849,9 +746,8 @@
         function handleCategoryChange() {
             const categorySelect = threadForm.elements.category;
             const governanceOptions = document.getElementById('governanceOptions');
-
-            // Show governance options for "Governance Council" category
-            if (categorySelect.value === 'Governance Council') {
+            
+            if (categorySelect.value === 'Governance') {
                 governanceOptions.style.display = 'block';
             } else {
                 governanceOptions.style.display = 'none';
@@ -873,41 +769,27 @@
         // Initial category change handler
         handleCategoryChange();
 
-        // Add click handlers for category navigation with new category names
-        document.querySelectorAll('.category-link').forEach(categoryLink => {
+        // Add click handlers for category navigation
+        document.querySelectorAll('[data-category]').forEach(categoryLink => {
             categoryLink.addEventListener('click', (e) => {
                 e.preventDefault();
-
+                
                 // Remove active state from all category links
-                document.querySelectorAll('.category-link').forEach(link => link.classList.remove('active'));
-
+                document.querySelectorAll('[data-category]').forEach(link => link.classList.remove('active'));
+                
                 // Add active state to clicked link
                 categoryLink.classList.add('active');
-
-                // Get category name - map new names to old backend categories
+                
+                // Get category name
                 const categoryName = categoryLink.dataset.category;
-                const categoryMapping = {
-                    'all': '',
-                    'Eternal Discourse': 'Ideas',
-                    'Sacred Debates': 'Debates',
-                    'Nexus Commerce': 'Trades',
-                    'Temporal Events': 'Events',
-                    'Governance Council': 'Governance',
-                    'Mystic Whispers': 'Anonymous Whispers',
-                    'Soul Manifestos': 'Ideas', // Could be new category later
-                    'Technical Codex': 'Ideas' // Could be new category later
-                };
-
-                currentCategory = categoryMapping[categoryName] || '';
-
-                // Exit reading mode when switching categories
-                exitReadingMode();
-
+                currentCategory = categoryName === 'all' ? '' : categoryName;
+                
+                
                 // Hide active thread column when switching categories
                 document.getElementById('lyceum-active-thread').style.display = 'none';
-
+                
                 // Special handling for Governance category
-                if (currentCategory === 'Governance') {
+                if (categoryName === 'Governance') {
                     window.displayGovernanceInterface();
                 } else {
                     // Fetch regular threads for other categories
@@ -944,7 +826,6 @@
         document.getElementById('closeActiveThread').addEventListener('click', () => {
             document.getElementById('lyceum-active-thread').style.display = 'none';
             document.querySelectorAll('.thread.active').forEach(t => t.classList.remove('active'));
-            exitReadingMode(); // Exit reading mode when closing thread
         });
 
         // Set first category as active by default and fetch threads
@@ -1030,10 +911,7 @@
                 document.querySelectorAll('.thread.active').forEach(th => th.classList.remove('active'));
                 // Add active class to the clicked thread
                 threadElement.classList.add('active');
-
-                // Enter reading mode for focused thread view
-                enterReadingMode();
-
+                
                 // Show and load the active thread column
                 const activeThreadContainer = document.getElementById('lyceum-active-thread');
                 activeThreadContainer.style.display = 'block';
@@ -1214,83 +1092,50 @@
         });
 
         function enhanceReplies(replies) {
-            if (!window.AuthorIdentityCard && !window.ImmortalNexusAvatars) return;
+            if (!window.ImmortalNexusAvatars) return;
 
             replies.forEach((reply) => {
                 const replyElement = document.querySelector(`.reply[data-id='${reply._id}']`);
                 if (replyElement && reply.author) {
                     const authorContainer = replyElement.querySelector('.reply-author-info');
                     if (authorContainer && authorContainer.children.length === 0) {
-                        let authorElement = null;
+                        const authorDisplay = window.ImmortalNexusAvatars.createUserDisplay({
+                            username: reply.author.username || 'Anonymous',
+                            title: 'Echo Responder',
+                            avatarSize: 'xs',
+                            displaySize: 'xs',
+                            compact: true,
+                            mystical: reply.author.isVIP || reply.author.role === 'admin',
+                            online: reply.author.online,
+                            customAvatar: reply.author.avatar,
+                            usernameStyle: 'immortal',
+                            enableUnifiedNavigation: true
+                        });
 
-                        // Use AuthorIdentityCard for unified voting and display
-                        if (window.AuthorIdentityCard) {
-                            const upvotes = reply.upvotes || reply.votes?.up || 0;
-                            const challenges = reply.downvotes || reply.votes?.down || 0;
-
-                            // Get threadId from parent element for voting
-                            const replyMain = replyElement.querySelector('.reply-main');
-                            const threadId = replyMain?.dataset.threadId;
-
-                            const identityCard = new AuthorIdentityCard({
-                                author: reply.author,
-                                contentType: 'reply',
-                                contentId: reply._id,
-                                parentId: threadId, // threadId required for reply voting
-                                timestamp: reply.createdAt,
-                                upvotes: upvotes,
-                                challenges: challenges,
-                                size: 'xs',
-                                variant: 'inline',
-                                showVoting: true,
-                                showTimestamp: false,
-                                enableChallenge: true,
-                                simpleDownvote: true // Simple downvote for replies
-                            });
-
-                            authorElement = identityCard.render();
-                            authorContainer.appendChild(authorElement);
-
-                        } else if (window.ImmortalNexusAvatars) {
-                            // Fallback to basic avatar system
-                            authorElement = window.ImmortalNexusAvatars.createUserDisplay({
-                                username: reply.author.username || 'Anonymous',
-                                title: 'Echo Responder',
-                                avatarSize: 'xs',
-                                displaySize: 'xs',
-                                compact: true,
-                                mystical: reply.author.isVIP || reply.author.role === 'admin',
-                                online: reply.author.online,
-                                customAvatar: reply.author.avatar,
-                                usernameStyle: 'immortal',
-                                enableUnifiedNavigation: true
-                            });
-
-                            if (reply.author._id) {
-                                authorElement.setAttribute('data-user-id', reply.author._id);
-                            }
-
-                            if (window.authManager.isLoggedIn() && window.authManager.getUser()?._id !== reply.author._id) {
-                                const flagBtn = document.createElement('button');
-                                flagBtn.className = 'flag-user-btn btn-ghost';
-                                flagBtn.setAttribute('data-user-id', reply.author._id);
-                                flagBtn.innerHTML = '<i class="fas fa-flag"></i>';
-                                flagBtn.title = 'Flag for community review';
-
-                                // Add click handler to prevent event bubbling and show flag modal
-                                flagBtn.addEventListener('click', (e) => {
-                                    e.stopPropagation();
-                                    e.preventDefault();
-                                    if (window.moderationSystem) {
-                                        window.moderationSystem.showFlagModal(reply.author._id);
-                                    }
-                                });
-
-                                authorElement.appendChild(flagBtn);
-                            }
-
-                            authorContainer.appendChild(authorElement);
+                        if (reply.author._id) {
+                            authorDisplay.setAttribute('data-user-id', reply.author._id);
                         }
+
+                        if (window.authManager.isLoggedIn() && window.authManager.getUser()?._id !== reply.author._id) {
+                            const flagBtn = document.createElement('button');
+                            flagBtn.className = 'flag-user-btn btn-ghost';
+                            flagBtn.setAttribute('data-user-id', reply.author._id);
+                            flagBtn.innerHTML = '<i class="fas fa-flag"></i>';
+                            flagBtn.title = 'Flag for community review';
+                            
+                            // Add click handler to prevent event bubbling and show flag modal
+                            flagBtn.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                if (window.moderationSystem) {
+                                    window.moderationSystem.showFlagModal(reply.author._id);
+                                }
+                            });
+                            
+                            authorDisplay.appendChild(flagBtn);
+                        }
+                        
+                        authorContainer.appendChild(authorDisplay);
                     }
                 }
             });
@@ -1302,16 +1147,16 @@
             }
             
             const repliesHTML = replies.map((reply, index) => {
-                const currentUser = window.authManager.getUser();
-                const isAuthenticated = window.authManager.isLoggedIn();
-                const isAuthor = isAuthenticated && currentUser && reply.author && currentUser._id === reply.author._id;
-                const isAdmin = isAuthenticated && currentUser && (currentUser.role === 'admin' || currentUser.username === 'ImmortalAl');
+                const isAuthor = window.authManager.isLoggedIn() && window.authManager.getUser()?._id === reply.author?._id;
                 const hasSubsequentReplies = index < replies.length - 1; // Check if there are replies after this one
                 const canEdit = isAuthor && !reply.isAnonymous && !hasSubsequentReplies;
                 
                 return `
                 <div class="reply ${reply.isAnonymous ? 'anonymous' : ''}" data-id="${reply._id}">
-                    <!-- Voting now handled by AuthorIdentityCard in reply-author-info -->
+                     <div class="thread-voting reply-voting">
+                        <button class="vote-btn" data-action="upvote-reply" aria-label="Upvote"><i class="fas fa-arrow-up"></i></button>
+                        <button class="vote-btn" data-action="downvote-reply" aria-label="Downvote"><i class="fas fa-arrow-down"></i></button>
+                    </div>
                     <div class="reply-main" data-thread-id="${threadId}">
                         <div class="reply-author-info"></div>
                         <div class="reply-content" id="reply-content-${reply._id}">
@@ -1321,7 +1166,7 @@
                         </div>
                         <div class="reply-actions">
                             ${canEdit ? `<button class="btn btn-secondary btn-xs edit-reply-btn" data-action="edit-reply" data-reply-id="${reply._id}" data-thread-id="${threadId}"><i class="fas fa-edit"></i> Edit</button>` : ''}
-                            ${(isAuthor && !reply.isAnonymous) || isAdmin ? `<button class="btn btn-danger btn-xs delete-reply-btn" data-action="delete-reply" data-reply-id="${reply._id}" data-thread-id="${threadId}"><i class="fas fa-trash"></i> Delete</button>` : ''}
+                            ${isAuthor && !reply.isAnonymous ? `<button class="btn btn-danger btn-xs delete-reply-btn" data-action="delete-reply" data-reply-id="${reply._id}" data-thread-id="${threadId}"><i class="fas fa-trash"></i> Delete</button>` : ''}
                             ${reply.editHistory && reply.editHistory.length > 0 ? `<button class="btn btn-secondary btn-xs view-edit-history-btn" data-action="view-edit-history" data-reply-id="${reply._id}"><i class="fas fa-history"></i> History (${reply.editHistory.length})</button>` : ''}
                         </div>
                         ${reply.author && reply.author.status && !reply.isAnonymous ? `<div class="user-status-signature"><i class="fas fa-comment-dots"></i> ${escapeHTML(reply.author.status)}</div>` : ''}
@@ -1365,11 +1210,6 @@
         });
 
         document.getElementById('closeComposer').addEventListener('click', () => {
-            closeComposerModal();
-        });
-
-        // Cancel button handler
-        document.getElementById('cancelThreadBtn').addEventListener('click', () => {
             closeComposerModal();
         });
 
@@ -2002,7 +1842,7 @@
             }
         }
 
-        // Event delegation for voting - NOW USING UNIFIED VOTING SYSTEM
+        // Event delegation for voting
         document.querySelector('.lyceum-grid').addEventListener('click', async (e) => {
             const voteBtn = e.target.closest('.vote-btn');
             if (!voteBtn) return;
@@ -2015,8 +1855,8 @@
             const isReply = voteBtn.closest('.reply');
             const element = isReply || voteBtn.closest('.thread');
             const id = element.dataset.id;
-
-            let voteType;
+            
+            let voteType, endpoint;
 
             if (action.includes('upvote')) {
                 voteType = 'upvote';
@@ -2026,32 +1866,32 @@
                 return;
             }
 
+            endpoint = isReply 
+                ? `/threads/${element.closest('.reply-main').dataset.threadId}/replies/${id}/vote` 
+                : `/threads/${id}/vote`;
+            
             try {
-                // Use unified voting system for threads
-                // Note: unifiedVoting doesn't yet support replies, so fall back for those
-                if (isReply) {
-                    const threadId = element.closest('.reply-main').dataset.threadId;
-                    const endpoint = `/threads/${threadId}/replies/${id}/vote`;
-                    const response = await window.apiClient.post(endpoint, { vote: voteType });
+                const response = await window.apiClient.post(endpoint, { vote: voteType });
+                
+                // Hide vote count since you don't want scores displayed
+                const voteCountElement = element.querySelector('.vote-count');
+                if (voteCountElement) {
+                    voteCountElement.style.display = 'none';
+                }
 
-                    // Update button states
-                    element.querySelectorAll('.vote-btn.active').forEach(btn => btn.classList.remove('active'));
-                    if (response.currentVote) {
-                        const activeBtn = element.querySelector(`[data-action*="${response.currentVote}"]`);
-                        if (activeBtn) activeBtn.classList.add('active');
+                // Update active button state based on current vote
+                element.querySelectorAll('.vote-btn.active').forEach(btn => btn.classList.remove('active'));
+                
+                if (response.currentVote) {
+                    // User has an active vote
+                    const activeBtn = element.querySelector(`[data-action*="${response.currentVote}"]`);
+                    if (activeBtn) {
+                        activeBtn.classList.add('active');
                     }
-                } else {
-                    // Use unified voting for threads
-                    await window.unifiedVoting.vote('echo', id, voteType);
-
-                    // Update button states (unifiedVoting doesn't return normalized response yet)
-                    element.querySelectorAll('.vote-btn.active').forEach(btn => btn.classList.remove('active'));
-                    voteBtn.classList.add('active');
                 }
 
             } catch (error) {
-                console.error('[Messageboard] Vote error:', error);
-                alert(`Error: ${error.message || error.error || 'Could not cast vote.'}`);
+                alert(`Error: ${error.error || 'Could not cast vote.'}`);
             }
         });
 
@@ -2078,15 +1918,14 @@
         });
     });
     </script>
-
-    <!-- Unified Voting System -->
-    <script src="../js/shared/unifiedVoting.js?v=1.6"></script>
-    <script src="../components/shared/authorIdentityCard.js?v=1.4"></script>
+    
+    <!-- Required Scripts for Immortal Nexus Avatar System -->
+    <script src="../js/nexus-avatar-system.js?v=2.2"></script>
 
     <!-- Error Tracking System (loads first for maximum coverage) -->
-    <script src="../js/error-tracker.js?v=1.1"></script>
+    <script src="../js/error-tracker.js?v=1.0"></script>
 
     <!-- Analytics Tracking System -->
-    <script src="../js/analytics-tracker.js?v=2.1" async></script>
+    <script src="../js/analytics-tracker.js?v=1.3" async></script>
 </body>
 </html>
