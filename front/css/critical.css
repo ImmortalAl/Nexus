@@ -421,10 +421,51 @@ nav.main-nav a.active span::after {
 }
 
 /* Additional responsive breakpoints for header */
-@media (max-width: 800px) {
-    /* CRITICAL: Hide main nav earlier to prevent user menu wrapping */
-    nav.main-nav {
-        display: none !important;
+@media (max-width: 820px) {
+    /* Force single row and earlier collapse to avoid wrap near ~770px */
+    header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        flex-wrap: nowrap !important;
+        min-height: 60px;
+    }
+
+    .logo { 
+        flex: 1 1 auto; 
+        min-width: 0; /* Allow title to shrink */
+    }
+
+    .title-stack, .short-title, .full-title { 
+        min-width: 0; 
+        white-space: nowrap; 
+        overflow: hidden; 
+        text-overflow: ellipsis; 
+    }
+
+    .short-title { 
+        display: block !important; 
+        font-size: 1.3rem; 
+    }
+
+    .full-title { 
+        display: none !important; 
+    }
+
+    .header-controls { 
+        flex: 0 0 auto; 
+        display: flex; 
+        align-items: center; 
+        gap: 0.5rem; 
+        padding-right: 0.75rem; 
+        position: relative; 
+        overflow: visible; 
+        flex-wrap: nowrap !important; 
+    }
+
+    nav.main-nav { 
+        display: none !important; 
     }
 }
 

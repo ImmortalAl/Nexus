@@ -2600,6 +2600,21 @@ body.light-theme .user-dropdown .divider {
     }
 }
 
+@media (max-width: 820px) {
+    header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        flex-wrap: nowrap !important;
+    }
+
+    .mobile-nav-toggle { order: 0; flex: 0 0 auto; }
+    .logo { order: 1; flex: 1 1 auto; min-width: 0; }
+    .header-controls { order: 2; flex: 0 0 auto; flex-wrap: nowrap !important; }
+    .user-menu { flex: 0 0 auto; }
+}
+
 
 
 
