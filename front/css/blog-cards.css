@@ -322,11 +322,14 @@
 /* Modern Challenge Dropdown System */
 .challenge-dropdown {
     position: absolute;
-    bottom: 100%;
+    top: calc(100% + 8px); /* Position below the button to avoid bounding box */
     right: 0;
-    margin-bottom: 8px;
-    z-index: 9999; /* High z-index to appear above all cards */
+    margin-top: 0;
+    margin-bottom: 0;
+    z-index: var(--z-modal); /* Use high z-index from system */
     animation: dropdownSlide 0.2s ease-out;
+    max-height: 300px; /* Prevent too tall */
+    overflow-y: auto; /* Scroll if needed */
 }
 
 @keyframes dropdownSlide {

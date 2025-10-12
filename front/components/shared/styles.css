@@ -291,12 +291,14 @@
         position: relative;
         overflow: visible;
         z-index: auto; /* Reset z-index */
+        flex-wrap: nowrap; /* Add no-wrap */
     }
     
     .user-menu {
         position: relative;
         z-index: var(--z-sidebar); /* Keep this high to be above header */
         overflow: visible;
+        flex: 0 0 auto; /* Don't grow or shrink */
     }
     
     .user-menu-btn {
@@ -319,7 +321,6 @@
     }
     
     .user-dropdown {
-        /* Revert to base styles and let the 'floating' class handle fixed positioning */
         position: absolute;
         top: calc(100% + 10px);
         right: 0;
@@ -2570,6 +2571,32 @@ body.light-theme .user-dropdown .divider {
         font-size: 1rem;
         min-height: 48px;
         border-radius: 8px;
+    }
+}
+
+/* Update mobile dropdown positioning */
+@media (max-width: 768px) {
+    .user-dropdown {
+        top: calc(100% + 2px); /* Reduce offset for better header placement */
+        right: -10px; /* Slight offset to align better */
+        width: 220px; /* Slightly wider for mobile */
+        z-index: var(--z-modal); /* High z-index */
+        box-shadow: 0 4px 20px rgba(0,0,0,0.4); /* Stronger shadow for visibility */
+    }
+    
+    .user-dropdown.floating {
+        position: fixed !important;
+        max-width: 90vw;
+    }
+    
+    header {
+        position: relative;
+        z-index: var(--z-header); /* Ensure header is high */
+        overflow: visible !important;
+    }
+    
+    .header-controls {
+        overflow: visible !important;
     }
 }
 

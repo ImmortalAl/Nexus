@@ -381,46 +381,45 @@
   }
 }
 
+/* Mobile Header Layout */
 @media (max-width: 768px) {
-  /* Header padding moved to critical.css to prevent conflicts */
-  
-  .main-nav {
-    display: none;
-  }
-  
-  .mobile-nav-toggle {
-    display: flex;
-  }
-  
-  .header-controls {
-    gap: var(--space-xs); /* Even tighter on mobile */
-    padding-right: var(--space-md); /* Reduce right padding */
-  }
-  
-  .short-title {
-    display: block;
-    font-size: var(--font-xl);
-  }
-  
-  .full-title {
-    display: none;
-  }
-  
-  .logo i {
-    font-size: var(--font-2xl);
-  }
-  
-  .floating-buttons {
-    bottom: var(--space-lg);
-    right: var(--space-lg);
-  }
-  
-  .show-users-btn,
-  .theme-toggle {
-    width: 48px;
-    height: 48px;
-    font-size: var(--font-base);
-  }
+    header {
+        padding: var(--space-xs) var(--space-md);
+        min-height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: nowrap; /* Prevent wrapping */
+        gap: var(--space-sm);
+    }
+    
+    .site-title {
+        flex: 1 1 auto;
+        text-align: center;
+        margin: 0 var(--space-sm);
+    }
+    
+    .mobile-nav-toggle {
+        order: 1;
+        flex: 0 0 auto;
+    }
+    
+    .header-controls {
+        order: 2;
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        gap: var(--space-xs);
+    }
+    
+    .user-menu {
+        flex: 0 0 auto;
+    }
+    
+    .user-menu-btn {
+        padding: var(--space-xs);
+        font-size: var(--font-sm);
+    }
 }
 
 /* Specific fix for small mobile where overlap occurs */
