@@ -121,6 +121,33 @@
     margin-left: 1rem;
 }
 
+/* Mobile Navigation Toggle - MISSING STYLES ADDED */
+.mobile-nav-toggle {
+    display: none;
+    background: none;
+    border: 1px solid rgba(255, 94, 120, 0.3);
+    border-radius: 8px;
+    color: var(--text);
+    padding: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-nav-toggle:hover {
+    background: rgba(255, 94, 120, 0.1);
+    border-color: #ff5e78;
+    transform: scale(1.05);
+}
+
+.mobile-nav-toggle i {
+    font-size: 1.2rem;
+    color: #ff5e78;
+}
+
 @media (max-width: 920px) {
     /* Header padding moved to critical.css to prevent conflicts */
 
@@ -245,17 +272,22 @@
 
 /* Mobile fixes for user dropdown - AGGRESSIVE OVERRIDES */
 @media (max-width: 768px) {
+    .mobile-nav-toggle {
+        display: flex; /* SHOW THE HAMBURGER MENU */
+    }
+    
+    .header-controls {
+        gap: 0.5rem; /* REDUCE GAP TO PREVENT OVERLAP */
+        margin-left: 0.5rem; /* REDUCE MARGIN */
+        position: relative;
+        overflow: visible;
+        z-index: auto; /* Reset z-index */
+    }
+    
     .user-menu {
         position: relative;
         z-index: var(--z-sidebar); /* Keep this high to be above header */
         overflow: visible;
-    }
-    
-    /* Ensure header-controls doesn't clip dropdown */
-    .header-controls {
-        position: relative;
-        overflow: visible;
-        z-index: auto; /* Reset z-index */
     }
     
     .user-menu-btn {
