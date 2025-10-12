@@ -368,6 +368,8 @@ nav.main-nav a.active span::after {
     gap: 1rem;
     padding-right: 1.5rem; /* Add padding to controls container for spacing from edge */
     overflow: visible; /* Allow dropdowns to overflow */
+    margin-left: auto; /* Ensure header-controls stays right-aligned */
+    flex-shrink: 0; /* Prevent shrinking when space is tight */
 }
 
 /* Header Auth Buttons (for logged-out state) */

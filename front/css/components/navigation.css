@@ -135,6 +135,8 @@
   display: flex;
   align-items: center;
   gap: var(--space-md);
+  order: 20; /* Ensure it appears after mobile-nav-toggle */
+  margin-left: var(--space-sm); /* Add spacing between mobile toggle and controls */
 }
 
 /* === MOBILE NAVIGATION TOGGLE === */
@@ -151,6 +153,8 @@
   height: 44px;
   align-items: center;
   justify-content: center;
+  margin-left: auto; /* Push to right side when main-nav is hidden */
+  order: 10; /* Ensure it appears after logo but before header-controls */
 }
 
 .mobile-nav-toggle:hover {
@@ -383,6 +387,13 @@
   
   .mobile-nav-toggle {
     display: flex;
+    margin-left: auto; /* Reset margin to push it right */
+    margin-right: 0; /* Remove any right margin */
+  }
+  
+  .header-controls {
+    margin-left: var(--space-md); /* Increase spacing on mobile */
+    order: 20; /* Maintain order */
   }
   
   .short-title {

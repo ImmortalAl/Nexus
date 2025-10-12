@@ -56,7 +56,16 @@
       "Bash(git remote get-url:*)",
       "Bash(GIT_CURL_VERBOSE=1 git fetch origin main)",
       "Bash(git merge:*)",
-      "Bash(claude --version)"
+      "Bash(claude --version)",
+      "Bash(claude update)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "Bash(npm install:*)",
+      "Bash(curl:*)",
+      "Bash(bash:*)",
+      "Bash(npm update:*)",
+      "Bash(rm:*)",
+      "Bash(rg:*)",
+      "Bash(sed:*)"
     ],
     "deny": [],
     "ask": []
