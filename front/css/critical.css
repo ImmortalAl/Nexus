@@ -191,7 +191,6 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: nowrap; /* CRITICAL: Prevent wrapping to new line */
     padding: 0; /* Flush with edges - internal spacing handled by logo/controls containers */
     margin: 0; /* Ensure no default browser margins */
     background: var(--gradient-secondary);

@@ -280,13 +280,11 @@
     }
     
     .header-controls {
-        gap: 1rem; /* INCREASE gap - 0.5rem was too tight */
-        padding-right: 1rem; /* Add right padding for breathing room */
+        gap: 0.5rem; /* Smaller gap for tight mobile space */
+        padding-right: 0.5rem; /* Reduce padding for mobile */
         position: relative;
         overflow: visible;
         z-index: auto; /* Reset z-index */
-        flex-wrap: nowrap; /* CRITICAL: Prevent elements wrapping to new line */
-        flex-shrink: 0; /* Don't let it shrink and push elements out */
     }
     
     .user-menu {
