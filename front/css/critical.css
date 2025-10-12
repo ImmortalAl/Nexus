@@ -421,6 +421,11 @@ nav.main-nav a.active span::after {
         overflow-x: hidden; /* Prevent horizontal overflow only */
         overflow-y: visible; /* Allow dropdowns to overflow vertically */
     }
+    
+    /* CRITICAL: Hide main nav on mobile to prevent overlap with mobile toggle */
+    nav.main-nav {
+        display: none !important;
+    }
     .logo {
         padding-left: 0.75rem; /* Further reduce padding */
     }
