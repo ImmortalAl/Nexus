@@ -274,14 +274,19 @@
 @media (max-width: 768px) {
     .mobile-nav-toggle {
         display: flex; /* SHOW THE HAMBURGER MENU */
+        width: 40px; /* Smaller hamburger menu */
+        height: 40px;
+        padding: 6px;
     }
     
     .header-controls {
-        gap: 0.5rem; /* REDUCE GAP TO PREVENT OVERLAP */
-        margin-left: 0.5rem; /* REDUCE MARGIN */
+        gap: 1rem; /* INCREASE gap - 0.5rem was too tight */
+        padding-right: 1rem; /* Add right padding for breathing room */
         position: relative;
         overflow: visible;
         z-index: auto; /* Reset z-index */
+        flex-wrap: nowrap; /* CRITICAL: Prevent elements wrapping to new line */
+        flex-shrink: 0; /* Don't let it shrink and push elements out */
     }
     
     .user-menu {
@@ -300,6 +305,13 @@
         align-items: center;
         justify-content: center;
         position: relative;
+        padding: 0.4rem 0.8rem; /* Reduce padding for mobile */
+        font-size: 0.9rem; /* Slightly smaller font */
+    }
+    
+    .user-menu-btn img {
+        width: 28px; /* Smaller avatar */
+        height: 28px;
     }
     
     .user-dropdown {
