@@ -613,17 +613,37 @@ nav a {
         display: grid !important;
         grid-template-columns: auto 1fr auto !important;
         align-items: center !important;
+        max-width: 100vw !important;
+        box-sizing: border-box !important;
     }
-    .logo { grid-column: 1; }
+    .logo { 
+        grid-column: 1; 
+        max-width: 120px !important;
+        overflow: hidden !important;
+    }
     .header-controls { 
         grid-column: 3; 
         justify-self: end; 
         display: inline-flex !important; 
         align-items: center; 
-        gap: 0.5rem; 
+        gap: 0.25rem !important;
         position: relative !important; 
         top: auto !important; 
         margin: 0 !important;
+        max-width: 150px !important; /* LIMIT WIDTH */
+        flex-shrink: 0 !important;
+        overflow: visible !important;
     }
-    .user-menu, .user-menu-btn { margin: 0 !important; }
+    .user-menu, .user-menu-btn { 
+        margin: 0 !important; 
+        flex-shrink: 0 !important;
+        max-width: 120px !important; /* LIMIT USER MENU WIDTH */
+        overflow: hidden !important;
+        white-space: nowrap !important;
+    }
+    .mobile-nav-toggle {
+        width: 36px !important;
+        height: 36px !important;
+        flex-shrink: 0 !important;
+    }
 }

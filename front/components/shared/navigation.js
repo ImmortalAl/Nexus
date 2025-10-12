@@ -159,6 +159,42 @@ function injectCompleteHeader() {
                 headerElement.style.top = '0';
                 headerElement.style.zIndex = '2500';
             }
+
+            // FORCE GRID LAYOUT ON MOBILE TO PREVENT USER MENU SPILLING
+            const isMobile = window.innerWidth <= 900;
+            if (isMobile) {
+                console.log('Applying mobile grid layout fix...');
+                headerElement.style.display = 'grid';
+                headerElement.style.gridTemplateColumns = 'auto 1fr auto';
+                headerElement.style.alignItems = 'center';
+                headerElement.style.justifyContent = 'space-between';
+                headerElement.style.flexWrap = 'nowrap';
+
+                // Force header-controls to right side
+                const headerControls = headerElement.querySelector('.header-controls');
+                if (headerControls) {
+                    headerControls.style.gridColumn = '3';
+                    headerControls.style.justifySelf = 'end';
+                    headerControls.style.display = 'inline-flex';
+                    headerControls.style.alignItems = 'center';
+                    headerControls.style.gap = '0.5rem';
+                    headerControls.style.flexWrap = 'nowrap';
+                }
+
+                // Force logo to left side
+                const logo = headerElement.querySelector('.logo');
+                if (logo) {
+                    logo.style.gridColumn = '1';
+                }
+
+                // Force user menu to stay inline
+                const userMenu = headerElement.querySelector('.user-menu');
+                if (userMenu) {
+                    userMenu.style.display = 'inline-flex';
+                    userMenu.style.alignItems = 'center';
+                    userMenu.style.flexShrink = '0';
+                }
+            }
         }, 500);
         
         // Re-setup mobile navigation events after injecting new HTML
