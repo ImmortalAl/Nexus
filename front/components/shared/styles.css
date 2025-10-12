@@ -1,4 +1,4 @@
-/* v7.2 */
+/* v7.6 */
 /* Immortal Nexus Shared Component Styles */
 
 /* Main Navigation Styles */
@@ -183,6 +183,8 @@
 /* User Menu Styles */
 .user-menu {
     position: relative;
+    display: flex; /* CRITICAL: Align contents horizontally */
+    align-items: center; /* CRITICAL: Center contents vertically */
     flex-shrink: 0; /* Prevent user menu from shrinking */
     max-width: none; /* Override viewport-optimizations.css universal max-width */
 }
