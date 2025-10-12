@@ -374,6 +374,13 @@
   }
 }
 
+/* Gap fix: Handle the 640px-768px range properly */
+@media (max-width: 800px) {
+  .header-controls {
+    gap: var(--space-sm); /* Tighter spacing as screen gets smaller */
+  }
+}
+
 @media (max-width: 768px) {
   /* Header padding moved to critical.css to prevent conflicts */
   
@@ -383,6 +390,11 @@
   
   .mobile-nav-toggle {
     display: flex;
+  }
+  
+  .header-controls {
+    gap: var(--space-xs); /* Even tighter on mobile */
+    padding-right: var(--space-md); /* Reduce right padding */
   }
   
   .short-title {
@@ -408,6 +420,30 @@
     width: 48px;
     height: 48px;
     font-size: var(--font-base);
+  }
+}
+
+/* Specific fix for small mobile where overlap occurs */
+@media (max-width: 640px) {
+  .header-controls {
+    padding-right: var(--space-sm);
+    gap: var(--space-xs);
+  }
+  
+  .mobile-nav-toggle {
+    width: 40px;
+    height: 40px;
+    padding: var(--space-xs);
+  }
+  
+  .user-menu-btn {
+    padding: var(--space-xs) var(--space-sm);
+    font-size: var(--font-sm);
+  }
+  
+  .user-menu-btn img {
+    width: 28px;
+    height: 28px;
   }
 }
 
