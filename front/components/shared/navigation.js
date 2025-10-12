@@ -56,10 +56,6 @@ function generateCompleteHeaderHTML(currentPath) {
             </div>
             <ul class="mobile-nav-list">
                 ${mobileNavHTML}
-                <div class="divider"></div>
-                <a href="#" id="mobileThemeToggle" data-theme-toggle="true">
-                    <i class="fas fa-moon"></i> <span id="mobileThemeToggleText">Light Mode</span>
-                </a>
             </ul>
         </nav>
     `;
