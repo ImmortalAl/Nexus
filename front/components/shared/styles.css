@@ -150,7 +150,7 @@
     color: #ff5e78;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
     /* Header padding moved to critical.css to prevent conflicts */
 
     .full-title {
