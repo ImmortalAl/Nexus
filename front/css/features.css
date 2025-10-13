@@ -1452,10 +1452,11 @@ body .floating-buttons button.theme-toggle#themeToggle {
 }
 
 .soul-highlight-card:hover {
-    transform: translateY(-2px);
-    border-color: rgba(255, 94, 120, 0.15);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15),
-                0 0 0 1px rgba(255, 94, 120, 0.05);
+    transform: translateY(-4px);
+    border-color: rgba(255, 94, 120, 0.2);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(255, 94, 120, 0.1),
+                0 0 40px rgba(255, 94, 120, 0.05);
 }
 
 .soul-highlight-card:hover::before {
@@ -1525,7 +1526,19 @@ body .floating-buttons button.theme-toggle#themeToggle {
 }
 
 .soul-highlight-card:hover .soul-display-container::before {
-    opacity: 0.6;
+    opacity: 0.8;
+}
+
+.soul-card-founder:hover {
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(255, 202, 40, 0.15),
+                0 0 50px rgba(255, 202, 40, 0.08);
+}
+
+.soul-card-featured:hover {
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(74, 222, 128, 0.15),
+                0 0 50px rgba(74, 222, 128, 0.08);
 }
 
 .loading-soul {
@@ -1575,7 +1588,7 @@ body .floating-buttons button.theme-toggle#themeToggle {
     display: inline-flex !important;
     box-sizing: border-box;
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     text-decoration: none;
     align-items: center;
     justify-content: center;
@@ -1597,33 +1610,26 @@ body .floating-buttons button.theme-toggle#themeToggle {
     background: linear-gradient(135deg, #4ade80, #60a5fa) !important;
 }
 
-.soul-profile-btn {
-    background: linear-gradient(135deg, rgba(26, 26, 51, 0.9), rgba(42, 64, 102, 0.8));
-    border: 2px solid var(--accent);
-}
-
 .soul-highlight-card .soul-message-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 5px 16px rgba(255, 94, 120, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 94, 120, 0.4), 0 0 20px rgba(255, 94, 120, 0.2);
+    background: linear-gradient(135deg, #ff6b85, #ffa0b3) !important;
+    filter: brightness(1.1);
 }
 
 .soul-highlight-card .soul-profile-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 5px 16px rgba(42, 64, 102, 0.3);
-    border-color: rgba(255, 94, 120, 0.4) !important;
-    background: rgba(42, 64, 102, 0.9) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(42, 64, 102, 0.4), 0 0 20px rgba(255, 94, 120, 0.15);
+    border-color: rgba(255, 94, 120, 0.5) !important;
+    background: linear-gradient(135deg, #2a2a4d, #3a5080) !important;
+    filter: brightness(1.15);
 }
 
 .soul-card-featured .soul-message-btn:hover {
-    box-shadow: 0 5px 16px rgba(74, 222, 128, 0.3);
-}
-
-.soul-card-featured .soul-message-btn {
-    background: linear-gradient(135deg, #4ade80, #60a5fa);
-}
-
-.soul-card-featured .soul-message-btn:hover {
-    box-shadow: 0 8px 25px rgba(74, 222, 128, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(74, 222, 128, 0.4), 0 0 20px rgba(96, 165, 250, 0.2);
+    background: linear-gradient(135deg, #5ee89a, #70b0ff) !important;
+    filter: brightness(1.1);
 }
 
 /* Agora Preview Section */
