@@ -94,124 +94,152 @@ body.light-theme .debate-position h4 {
 }
 
 /* ==========================================
-   CONTAINER CARDS (Editorial Choice / Recent Posts)
-   Refined, Elegant, Subtle Styling
+   CONTAINER CARDS - Ethereal Glow Luxe Edition
+   (Editorial Choice / Recent Posts / Soul Scrolls)
+
+   Design Philosophy:
+   - FLOATING cards with layered shadows for depth
+   - LUXURIOUS neon border glow on hover
+   - VERTICAL gradients (top-to-bottom) for richness
+   - ENHANCED glassmorphism with blur + saturation
+   - BOLD typography (1.2rem, weight 700)
+   - NO accent lines - pure luxe minimalism
+
+   Visual Impact: High-end nightclub meets luxury spa
    ========================================== */
 
 .highlight-card {
-    background: rgba(13, 13, 26, 0.5);
-    border: 1px solid rgba(var(--accent-rgb, 255, 94, 120), 0.15);
-    border-radius: 12px;
+    /* Rich VERTICAL gradient background - deep and luxurious */
+    background: linear-gradient(180deg,
+        rgba(13, 13, 26, 0.95) 0%,
+        rgba(26, 26, 51, 0.9) 50%,
+        rgba(13, 13, 26, 0.95) 100%);
+
+    /* Subtle border for structure */
+    border: 1px solid rgba(var(--accent-rgb, 255, 94, 120), 0.2);
+    border-radius: 16px;
     padding: 0;
-    margin-bottom: 2.5rem;
+    margin-bottom: 3rem;  /* More breathing room for floating effect */
     position: relative;
     overflow: hidden;
-    backdrop-filter: blur(10px);
-    box-shadow:
-        0 4px 16px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.03);
-    transition: all 0.3s ease;
 
-    /* Force 2D rendering - prevent transform bugs */
-    transform: none !important;
+    /* ENHANCED GLASSMORPHISM - frosted luxury */
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+
+    /* LAYERED SHADOWS - creates floating effect with DEPTH */
+    box-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.5),                      /* Deep shadow (float) */
+        0 4px 16px rgba(0, 0, 0, 0.3),                       /* Mid shadow (depth) */
+        0 2px 8px rgba(0, 0, 0, 0.2),                        /* Close shadow (lift) */
+        0 0 2px rgba(var(--accent-rgb, 255, 94, 120), 0.1), /* Subtle accent glow */
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);            /* Top glass highlight */
+
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);  /* Smooth luxury transition */
+
+    /* Enable floating transform */
+    transform: translateY(0);
     transform-style: flat !important;
     perspective: none !important;
 }
 
-/* Subtle border glow on hover only */
+/* LUXURIOUS NEON GLOW - appears on hover like magic */
 .highlight-card::before {
     content: '';
     position: absolute;
-    top: -1px;
-    left: -1px;
-    right: -1px;
-    bottom: -1px;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+
+    /* Gradient border glow - pink/gold luxury palette */
     background: linear-gradient(135deg,
-                rgba(var(--accent-rgb, 255, 94, 120), 0.3) 0%,
-                rgba(255, 202, 40, 0.2) 50%,
-                rgba(var(--accent-rgb, 255, 94, 120), 0.3) 100%);
-    border-radius: 17px;
+        rgba(var(--accent-rgb, 255, 94, 120), 0.6) 0%,
+        rgba(255, 202, 40, 0.5) 25%,
+        rgba(var(--accent-rgb, 255, 94, 120), 0.6) 50%,
+        rgba(255, 202, 40, 0.5) 75%,
+        rgba(var(--accent-rgb, 255, 94, 120), 0.6) 100%);
+
+    border-radius: 18px;
     z-index: -1;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    opacity: 0;  /* Hidden by default */
+    filter: blur(4px);  /* Soft neon glow effect */
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Subtle hover effect */
+/* Activate luxe glow on hover */
 .highlight-card:hover::before {
-    opacity: 0.5;
+    opacity: 1;  /* Full neon glory */
 }
 
+/* HOVER STATE - Card floats up with enhanced shadows */
 .highlight-card:hover {
-    border-color: rgba(var(--accent-rgb, 255, 94, 120), 0.3);
+    border-color: rgba(var(--accent-rgb, 255, 94, 120), 0.4);
+    transform: translateY(-8px);  /* Float up on hover */
+
+    /* DRAMATIC shadow enhancement - more depth on hover */
     box-shadow:
-        0 8px 24px rgba(0, 0, 0, 0.4),
-        0 2px 8px rgba(var(--accent-rgb, 255, 94, 120), 0.1),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        0 20px 60px rgba(0, 0, 0, 0.6),                       /* Deeper float */
+        0 8px 24px rgba(0, 0, 0, 0.4),                        /* Enhanced depth */
+        0 4px 12px rgba(var(--accent-rgb, 255, 94, 120), 0.3), /* Accent glow */
+        0 0 40px rgba(var(--accent-rgb, 255, 94, 120), 0.15),  /* Soft outer glow */
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);              /* Brighter glass highlight */
 }
 
-/* Card Header - Typography-First, No Background */
+/* Card Header - Pure Typography, No Distractions */
 .highlight-card .card-header {
     background: transparent;
-    padding: 1.5rem 2rem 1rem 2rem;
-    border-bottom: 1px solid rgba(var(--accent-rgb, 255, 94, 120), 0.12);
+    padding: 2rem 2.5rem 1.25rem 2.5rem;
+    border-bottom: 1px solid rgba(var(--accent-rgb, 255, 94, 120), 0.15);
     position: relative;
 }
 
-/* Subtle top accent line */
-.highlight-card .card-header::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 2rem;
-    right: 2rem;
-    height: 2px;
-    background: linear-gradient(90deg,
-                rgba(var(--accent-rgb, 255, 94, 120), 0.4) 0%,
-                rgba(255, 202, 40, 0.3) 50%,
-                rgba(var(--accent-rgb, 255, 94, 120), 0.4) 100%);
-    border-radius: 2px;
-}
+/* NO ::before PSEUDO-ELEMENT - Accent line completely removed! */
+/* Typography is the hero - no competing visual elements */
 
-/* Editorial title - minimal and refined */
+/* BOLD LUXE TYPOGRAPHY - Commands attention */
 .highlight-card .card-header h3 {
-    margin: 0 0 0.4rem 0;
-    font-size: 1.1rem;
-    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    font-size: 1.2rem;           /* Larger, bolder presence */
+    font-weight: 700;            /* Heavy weight for impact */
     font-family: 'Montserrat', sans-serif;
-    letter-spacing: 0.01em;
-    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: 0.02em;
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);  /* Subtle depth for text */
 }
 
+/* Icon with luxe glow effect */
 .highlight-card .card-header h3 i {
-    font-size: 1rem;
-    opacity: 0.7;
-    margin-right: 0.5rem;
-    color: rgba(var(--accent-rgb, 255, 94, 120), 0.8);
+    font-size: 1.1rem;
+    opacity: 0.85;
+    margin-right: 0.6rem;
+    color: rgba(var(--accent-rgb, 255, 94, 120), 0.9);
+    filter: drop-shadow(0 0 8px rgba(var(--accent-rgb, 255, 94, 120), 0.4));
 }
 
-/* Subtle description text */
+/* Refined description text */
 .highlight-card .card-header p {
     margin: 0;
-    font-size: 0.85rem;
-    opacity: 0.7;
-    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    opacity: 0.75;
+    color: rgba(255, 255, 255, 0.75);
     font-weight: 400;
     font-family: 'Lato', sans-serif;
-    letter-spacing: 0.005em;
-    line-height: 1.5;
+    letter-spacing: 0.01em;
+    line-height: 1.6;
 }
 
-/* Card Content Area - More Whitespace */
+/* Card Content Area - Generous spacing for luxury feel */
 .highlight-card .card-content {
-    padding: 2rem;
+    padding: 2.5rem;
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.75rem;
     position: relative;
 }
 
-/* Individual items inside containers */
+/* Individual items inside containers - clean foundation */
 .highlight-card .highlight-item {
     background: transparent;
     border: none;
@@ -222,77 +250,91 @@ body.light-theme .debate-position h4 {
     display: block;
     position: relative;
     overflow: visible;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Subtle hover effect for items */
+/* LUXE hover effect for items - soft glow highlight */
 .highlight-card .highlight-item:hover {
     background: linear-gradient(135deg,
-                rgba(255, 94, 120, 0.05) 0%,
-                rgba(255, 202, 40, 0.04) 100%);
-    border-radius: 12px;
-    padding: 1rem;
-    margin: -1rem;
-}
-
-/* Subtle avatar glow on card hover */
-.highlight-card:hover .nexus-avatar {
-    border-color: rgba(255, 202, 40, 0.6) !important;
+                rgba(255, 94, 120, 0.08) 0%,
+                rgba(255, 202, 40, 0.06) 100%);
+    border-radius: 14px;
+    padding: 1.25rem;
+    margin: -1.25rem;
     box-shadow:
-        0 0 12px rgba(var(--accent-rgb, 255, 94, 120), 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15);
-    transition: all 0.3s ease;
+        0 4px 16px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-/* Loading and Empty States - Refined */
+/* ETHEREAL avatar glow on card hover - magical effect */
+.highlight-card:hover .nexus-avatar {
+    border-color: rgba(255, 202, 40, 0.7) !important;
+    box-shadow:
+        0 0 16px rgba(var(--accent-rgb, 255, 94, 120), 0.4),
+        0 0 8px rgba(255, 202, 40, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Loading and Empty States - Ethereal Luxe */
 .highlight-card .highlight-item.loading {
     text-align: center;
     color: var(--text-muted);
     font-style: italic;
-    opacity: 0.7;
-    padding: 2rem 1rem;
+    opacity: 0.75;
+    padding: 3rem 1.5rem;
+    position: relative;
 }
 
+/* Luxe loading spinner with glow */
 .highlight-card .highlight-item.loading::before {
     content: '';
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 32px;
-    height: 32px;
-    border: 2px solid rgba(var(--accent-rgb, 255, 94, 120), 0.15);
+    width: 36px;
+    height: 36px;
+    border: 3px solid rgba(var(--accent-rgb, 255, 94, 120), 0.2);
     border-top-color: var(--accent);
     border-radius: 50%;
     animation: cardSpinner 1s linear infinite;
+    filter: drop-shadow(0 0 8px rgba(var(--accent-rgb, 255, 94, 120), 0.4));
 }
 
 @keyframes cardSpinner {
     100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
+/* Empty state with luxe glass effect */
 .highlight-card .highlight-item.empty {
     text-align: center;
     color: var(--text-muted);
-    padding: 2rem 1.5rem;
-    background: rgba(var(--accent-rgb, 255, 94, 120), 0.03);
-    border-radius: 12px;
-    border: 1px dashed rgba(var(--accent-rgb, 255, 94, 120), 0.15);
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg,
+        rgba(var(--accent-rgb, 255, 94, 120), 0.05) 0%,
+        rgba(255, 202, 40, 0.03) 100%);
+    border-radius: 14px;
+    border: 1px dashed rgba(var(--accent-rgb, 255, 94, 120), 0.2);
+    backdrop-filter: blur(10px);
 }
 
 .highlight-card .highlight-item.empty::before {
     content: '📜';
     display: block;
-    font-size: 1.5rem;
-    margin-bottom: 0.75rem;
-    opacity: 0.4;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
 }
 
 .highlight-card .highlight-item.empty small {
     display: block;
-    margin-top: 0.75rem;
-    font-size: 0.85rem;
-    opacity: 0.6;
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    opacity: 0.65;
     font-style: italic;
+    letter-spacing: 0.01em;
 }
 
 /* Transform Overrides - Prevent 3D Issues */
@@ -316,25 +358,91 @@ body.light-theme .debate-position h4 {
     -webkit-backface-visibility: hidden;
 }
 
-/* Responsive Design for Container Cards - Typography-First */
+/* Responsive Design - Ethereal Glow Luxe on All Devices */
+/* Tablet Breakpoint - Maintain luxe feel with adjusted spacing */
 @media (max-width: 768px) {
     .highlight-card {
-        border-radius: 10px;
-        margin-bottom: 2rem;
+        border-radius: 14px;
+        margin-bottom: 2.5rem;
+        /* Slightly reduced shadows for smaller screens */
+        box-shadow:
+            0 8px 32px rgba(0, 0, 0, 0.45),
+            0 4px 12px rgba(0, 0, 0, 0.3),
+            0 2px 6px rgba(0, 0, 0, 0.2),
+            0 0 2px rgba(var(--accent-rgb, 255, 94, 120), 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .highlight-card:hover {
+        transform: translateY(-6px);  /* Slightly less float on tablet */
+        box-shadow:
+            0 16px 48px rgba(0, 0, 0, 0.55),
+            0 6px 20px rgba(0, 0, 0, 0.4),
+            0 3px 10px rgba(var(--accent-rgb, 255, 94, 120), 0.25),
+            0 0 32px rgba(var(--accent-rgb, 255, 94, 120), 0.12),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
 
     .highlight-card .card-header {
-        padding: 1.25rem 1.5rem 0.875rem 1.5rem;
+        padding: 1.75rem 2rem 1rem 2rem;
     }
 
-    .highlight-card .card-header::before {
-        left: 1.5rem;
-        right: 1.5rem;
+    .highlight-card .card-header h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.4rem;
+    }
+
+    .highlight-card .card-header h3 i {
+        font-size: 1rem;
+    }
+
+    .highlight-card .card-header p {
+        font-size: 0.85rem;
+    }
+
+    .highlight-card .card-content {
+        padding: 2rem;
+        gap: 1.5rem;
+    }
+}
+
+/* Mobile Breakpoint - Compact luxe for small screens */
+@media (max-width: 480px) {
+    .highlight-card {
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        /* Optimized shadows for mobile */
+        box-shadow:
+            0 6px 24px rgba(0, 0, 0, 0.4),
+            0 3px 10px rgba(0, 0, 0, 0.3),
+            0 1px 4px rgba(0, 0, 0, 0.2),
+            0 0 1px rgba(var(--accent-rgb, 255, 94, 120), 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .highlight-card:hover {
+        transform: translateY(-4px);  /* Subtle float on mobile */
+        box-shadow:
+            0 12px 36px rgba(0, 0, 0, 0.5),
+            0 4px 16px rgba(0, 0, 0, 0.35),
+            0 2px 8px rgba(var(--accent-rgb, 255, 94, 120), 0.2),
+            0 0 24px rgba(var(--accent-rgb, 255, 94, 120), 0.1),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .highlight-card .card-header {
+        padding: 1.5rem 1.5rem 0.875rem 1.5rem;
     }
 
     .highlight-card .card-header h3 {
         font-size: 1.05rem;
-        margin-bottom: 0.35rem;
+        font-weight: 700;  /* Keep bold on mobile */
+        margin-bottom: 0.4rem;
+    }
+
+    .highlight-card .card-header h3 i {
+        font-size: 0.95rem;
+        margin-right: 0.5rem;
     }
 
     .highlight-card .card-header p {
@@ -342,49 +450,15 @@ body.light-theme .debate-position h4 {
     }
 
     .highlight-card .card-content {
-        padding: 1.5rem;
+        padding: 1.75rem;
         gap: 1.25rem;
     }
-}
 
-@media (max-width: 480px) {
-    .highlight-card {
-        border-radius: 8px;
-        margin-bottom: 1.5rem;
-    }
-
-    .highlight-card .card-header {
-        padding: 1rem 1.25rem 0.75rem 1.25rem;
-    }
-
-    .highlight-card .card-header::before {
-        left: 1.25rem;
-        right: 1.25rem;
-        height: 1.5px;
-    }
-
-    .highlight-card .card-header h3 {
-        font-size: 1rem;
-        margin-bottom: 0.3rem;
-    }
-
-    .highlight-card .card-header h3 i {
-        font-size: 0.95rem;
-        margin-right: 0.4rem;
-    }
-
-    .highlight-card .card-header p {
-        font-size: 0.75rem;
-    }
-
-    .highlight-card .card-content {
-        padding: 1.25rem;
-        gap: 1rem;
-    }
-
+    /* Adjusted hover effect for mobile */
     .highlight-card .highlight-item:hover {
-        padding: 0.75rem;
-        margin: -0.75rem;
+        padding: 1rem;
+        margin: -1rem;
+        border-radius: 12px;
     }
 }
 
