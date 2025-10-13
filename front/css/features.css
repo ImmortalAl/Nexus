@@ -1460,7 +1460,7 @@ body .floating-buttons button.theme-toggle#themeToggle {
 }
 
 .soul-highlight-card:hover::before {
-    opacity: 1;
+    opacity: 0.3;
 }
 
 .soul-card-founder {
@@ -1525,8 +1525,25 @@ body .floating-buttons button.theme-toggle#themeToggle {
     transition: opacity 0.3s ease;
 }
 
+.soul-display-container::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center,
+                transparent 30%,
+                rgba(0, 0, 0, 0.3) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 0;
+}
+
 .soul-highlight-card:hover .soul-display-container::before {
     opacity: 0.8;
+}
+
+.soul-highlight-card:hover .soul-display-container::after {
+    opacity: 1;
 }
 
 .soul-card-founder:hover {
@@ -1539,6 +1556,26 @@ body .floating-buttons button.theme-toggle#themeToggle {
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2),
                 0 0 0 1px rgba(74, 222, 128, 0.15),
                 0 0 50px rgba(74, 222, 128, 0.08);
+}
+
+/* Enhanced text visibility on hover */
+.soul-highlight-card:hover .nexus-username--mystical {
+    text-shadow: 0 0 20px rgba(255, 202, 40, 0.8),
+                 0 0 40px rgba(255, 202, 40, 0.4),
+                 0 2px 8px rgba(0, 0, 0, 0.8);
+    filter: brightness(1.2) contrast(1.1);
+}
+
+.soul-highlight-card:hover .nexus-user-title {
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.5),
+                 0 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+.soul-highlight-card:hover .nexus-user-status {
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.4),
+                 0 1px 4px rgba(0, 0, 0, 0.8);
 }
 
 .loading-soul {
@@ -1669,6 +1706,8 @@ body .floating-buttons button.theme-toggle#themeToggle {
     background: transparent;
     border: none;
     padding: 0;
+    position: relative;
+    z-index: 1;
 }
 
 .soul-highlight-card .nexus-user-display--lg {
