@@ -1525,25 +1525,8 @@ body .floating-buttons button.theme-toggle#themeToggle {
     transition: opacity 0.3s ease;
 }
 
-.soul-display-container::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at center,
-                transparent 30%,
-                rgba(0, 0, 0, 0.3) 100%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-    z-index: 0;
-}
-
 .soul-highlight-card:hover .soul-display-container::before {
     opacity: 0.8;
-}
-
-.soul-highlight-card:hover .soul-display-container::after {
-    opacity: 1;
 }
 
 .soul-card-founder:hover {
