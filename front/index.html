@@ -998,55 +998,15 @@
                     <span class="echo-date">${date}</span>
                     <span class="echo-replies">${replyCount} replies</span>
                 `;
-                
-                // Create minimalist voting row
-                const votingRow = document.createElement('div');
-                votingRow.className = 'minimal-vote-row';
-                votingRow.innerHTML = `
-                    <button class="minimal-vote-btn upvote-btn ${message.userVote === 'upvote' ? 'active' : ''}"
-                            data-thread-id="${message._id}" data-vote="upvote">
-                        <i class="fas fa-arrow-up"></i>
-                        <span>${message.upvotes || 0}</span>
-                    </button>
-                    <button class="minimal-vote-btn challenge-btn ${message.userVote === 'challenge' ? 'active' : ''}"
-                            data-thread-id="${message._id}" data-vote="challenge">
-                        <i class="fas fa-shield-alt"></i>
-                        <span>${message.challenges || 0}</span>
-                    </button>
-                `;
 
-                // Add event listeners to voting buttons
-                votingRow.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    const btn = e.target.closest('.minimal-vote-btn');
-                    if (btn && window.unifiedVoting) {
-                        const voteType = btn.dataset.vote;
-                        const threadId = btn.dataset.threadId;
-                        window.unifiedVoting.vote('echo', threadId, voteType);
+                // Voting removed from front page highlights - anonymous visitors don't need voting UI
+                // Voting functionality lives on the Echoes Unbound (messageboard) page for registered users
 
-                        // Update UI
-                        if (voteType === 'upvote') {
-                            btn.classList.toggle('active');
-                            votingRow.querySelector('.challenge-btn').classList.remove('active');
-                        } else if (voteType === 'challenge') {
-                            // Open challenge modal if not already active
-                            if (!btn.classList.contains('active') && window.unifiedVoting.openChallengeModal) {
-                                window.unifiedVoting.openChallengeModal(threadId);
-                            } else {
-                                btn.classList.toggle('active');
-                                votingRow.querySelector('.upvote-btn').classList.remove('active');
-                            }
-                        }
-                    }
-                });
-
-                // Assemble card
+                // Assemble card - cleaner layout without voting clutter
                 highlightCard.appendChild(title);
                 highlightCard.appendChild(content);
                 highlightCard.appendChild(userDisplay);
                 highlightCard.appendChild(metaDiv);
-                highlightCard.appendChild(votingRow);
 
                 highlightsContainer.appendChild(highlightCard);
             });
