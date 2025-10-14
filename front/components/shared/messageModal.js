@@ -198,6 +198,9 @@ async function openMessageModal(username) {
         }
     }
 
+    console.log('[MessageModal] Opening modal for:', username);
+    console.log('[MessageModal] Modal element:', messageModal);
+    console.log('[MessageModal] Modal computed style:', window.getComputedStyle(messageModal).pointerEvents);
 
     currentRecipientUsername = username;
         if(recipientNameElement) recipientNameElement.textContent = `To: ${username}`;
@@ -211,20 +214,36 @@ async function openMessageModal(username) {
     // DON'T set inline z-index - let CSS z-index system handle it properly
     document.body.style.overflow = 'hidden';
 
+    console.log('[MessageModal] After adding active class, pointer-events:', window.getComputedStyle(messageModal).pointerEvents);
+
     if (messageInputElement) {
         setTimeout(() => messageInputElement.focus(), 100);
     }
 
     await loadConversation(username);
-    
+
     setTimeout(() => {
+        console.log('[MessageModal] Setting up click listener after 300ms delay');
         if (currentBackdropListener) {
             messageModal.removeEventListener('click', currentBackdropListener);
         }
         currentBackdropListener = (event) => {
+            console.log('[MessageModal] Click detected:', {
+                target: event.target,
+                targetClass: event.target.className,
+                targetId: event.target.id,
+                closestContent: event.target.closest('.message-modal-content'),
+                modalElement: messageModal,
+                isMessageModal: event.target === messageModal,
+                modalClasses: messageModal.className
+            });
+
             // Close if click is NOT inside the message content (more robust than checking event.target)
             if (!event.target.closest('.message-modal-content')) {
+                console.log('[MessageModal] Click outside content detected - closing modal');
                 close();
+            } else {
+                console.log('[MessageModal] Click inside content - keeping modal open');
             }
         };
         messageModal.addEventListener('click', currentBackdropListener);
