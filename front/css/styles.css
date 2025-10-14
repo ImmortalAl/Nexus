@@ -2215,6 +2215,29 @@ footer {
     transform: scale(1.2) rotate(5deg);
 }
 
+/* Ultra-minimal footer layout */
+.footer-minimal {
+    padding: 3rem 2rem;
+    text-align: center;
+}
+
+.footer-minimal .footer-feedback-section {
+    margin-bottom: 2rem;
+}
+
+.footer-minimal .footer-bottom {
+    margin-top: 0;
+}
+
+.footer-minimal .footer-bottom p:first-child {
+    margin-bottom: 0.5rem;
+}
+
+.footer-minimal .footer-bottom p:last-child {
+    opacity: 0.7;
+    font-size: 0.8rem;
+}
+
 /* General Keyframes */
 @keyframes modalFadeIn {
     from { opacity: 0; }
