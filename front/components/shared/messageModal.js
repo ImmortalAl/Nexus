@@ -120,8 +120,8 @@ function initMessageModal() {
     if (!document.getElementById('messageModal')) {
         const modalHTML = `
             <div id="messageModal" class="modal" aria-hidden="true">
-                <div class="modal-backdrop-clickable" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></div>
-                <div class="message-modal-content" role="dialog" aria-labelledby="messageTitle" style="position: relative; z-index: 1;">
+                <div class="modal-backdrop-clickable" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: auto; cursor: pointer;"></div>
+                <div class="message-modal-content" role="dialog" aria-labelledby="messageTitle" style="position: relative; z-index: 1; pointer-events: auto;">
                     <h3 id="messageTitle">Direct Message</h3>
                     <p id="recipientName">To: Username</p>
                     <div class="message-history" id="messageHistory"></div>
