@@ -120,7 +120,8 @@ function initMessageModal() {
     if (!document.getElementById('messageModal')) {
         const modalHTML = `
             <div id="messageModal" class="modal" aria-hidden="true">
-                <div class="message-modal-content" role="dialog" aria-labelledby="messageTitle">
+                <div class="modal-backdrop-clickable" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;"></div>
+                <div class="message-modal-content" role="dialog" aria-labelledby="messageTitle" style="position: relative; z-index: 1;">
                     <h3 id="messageTitle">Direct Message</h3>
                     <p id="recipientName">To: Username</p>
                     <div class="message-history" id="messageHistory"></div>
@@ -224,6 +225,17 @@ async function openMessageModal(username) {
 
     setTimeout(() => {
         console.log('[MessageModal] Setting up click listener after 300ms delay');
+
+        // Listen on the explicit backdrop div
+        const backdropDiv = messageModal.querySelector('.modal-backdrop-clickable');
+        if (backdropDiv) {
+            backdropDiv.addEventListener('click', () => {
+                console.log('[MessageModal] Backdrop clicked - closing modal');
+                close();
+            });
+        }
+
+        // Also keep the old listener as fallback
         if (currentBackdropListener) {
             messageModal.removeEventListener('click', currentBackdropListener);
         }
