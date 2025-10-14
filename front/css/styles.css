@@ -2217,12 +2217,12 @@ footer {
 
 /* Ultra-minimal footer layout */
 .footer-minimal {
-    padding: 3rem 2rem;
+    padding: 1.5rem 2rem;
     text-align: center;
 }
 
 .footer-minimal .footer-feedback-section {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
 .footer-minimal .footer-bottom {
@@ -2230,7 +2230,7 @@ footer {
 }
 
 .footer-minimal .footer-bottom p:first-child {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
 }
 
 .footer-minimal .footer-bottom p:last-child {
