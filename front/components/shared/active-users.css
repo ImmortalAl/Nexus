@@ -48,10 +48,8 @@ aside#activeUsers.active-users.active {
     visibility: visible !important; /* Ensure visibility when active */
 }
 
-/* When sidebar is active AND a modal is open, keep sidebar above modal */
-body:has(.modal.active) aside#activeUsers.active-users.active {
-    z-index: var(--z-sidebar-with-modal) !important; /* Above modals to stay accessible */
-}
+/* REMOVED: Anti-pattern rule that kept sidebar above modal and blocked click-outside-to-close */
+/* Best practice: Hide sidebar when modal opens to maintain focus management and UX */
 
 /* Force sidebar to close - overrides all other rules including .active */
 aside#activeUsers.active-users.force-close {
@@ -369,10 +367,24 @@ body:has(.modal.active) .active-users-overlay {
     z-index: -1 !important; /* Move behind everything when modal is open */
 }
 
-/* Hide active users sidebar when any modal is open */
-body:has(.modal.active) .active-users {
-    right: -320px !important;
+/* Hide active users sidebar when any modal is open - BEST PRACTICE for focus management */
+/* High specificity to override all other rules */
+body:has(.modal.active) aside#activeUsers.active-users,
+body:has(.modal.active) aside#activeUsers.active-users.active {
+    right: -340px !important; /* Force completely off-screen */
+    visibility: hidden !important; /* Ensure not visible */
     transition: right 0.3s ease !important;
+    z-index: -1 !important; /* Move behind everything */
+}
+
+/* Mobile: Hide sidebar when modal is open */
+@media (max-width: 480px) {
+    body:has(.modal.active) aside#activeUsers.active-users,
+    body:has(.modal.active) aside#activeUsers.active-users.active {
+        right: -300px !important; /* Adjusted for mobile width */
+        visibility: hidden !important;
+        z-index: -1 !important;
+    }
 }
 
 /* Message Modal styles (original lines 170-267) were here. */
