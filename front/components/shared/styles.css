@@ -1,4 +1,4 @@
-/* v7.6 */
+/* v7.7 */
 /* Immortal Nexus Shared Component Styles */
 
 /* Main Navigation Styles */
@@ -539,8 +539,8 @@
 .modal[aria-hidden="false"] {
     display: flex !important;
     opacity: 1;
-    /* DO NOT set pointer-events: auto - it blocks sidebar! */
-    /* Let clicks pass through overlay to elements beneath */
+    pointer-events: auto; /* ENABLE click capture for click-outside-to-close functionality */
+    /* Sidebar is now auto-hidden via active-users.css when modal is active (best practice) */
 }
 
 .modal .modal-content,
