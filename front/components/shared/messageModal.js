@@ -1,4 +1,5 @@
-// front/components/shared/messageModal.js v1.5 - Standardized Module Pattern
+// front/components/shared/messageModal.js v1.6 - Standardized Module Pattern
+// v1.6: Fixed click-outside-to-close with closest() instead of strict equality
 // v1.5: Now dynamically injects modal HTML for true component sharing
 
 (function() {
@@ -221,7 +222,8 @@ async function openMessageModal(username) {
             messageModal.removeEventListener('click', currentBackdropListener);
         }
         currentBackdropListener = (event) => {
-            if (event.target === messageModal) {
+            // Close if click is NOT inside the message content (more robust than checking event.target)
+            if (!event.target.closest('.message-modal-content')) {
                 close();
             }
         };
