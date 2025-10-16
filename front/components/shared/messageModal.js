@@ -1,4 +1,5 @@
-// front/components/shared/messageModal.js v1.6 - Standardized Module Pattern
+// front/components/shared/messageModal.js v1.7 - Clean Architecture
+// v1.7: Removed backdrop div and inline styles, simplified click detection to single clean handler
 // v1.6: Fixed click-outside-to-close with closest() instead of strict equality
 // v1.5: Now dynamically injects modal HTML for true component sharing
 
@@ -120,8 +121,7 @@ function initMessageModal() {
     if (!document.getElementById('messageModal')) {
         const modalHTML = `
             <div id="messageModal" class="modal" aria-hidden="true">
-                <div class="modal-backdrop-clickable" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: auto; cursor: pointer;"></div>
-                <div class="message-modal-content" role="dialog" aria-labelledby="messageTitle" style="position: relative; z-index: 1; pointer-events: auto;">
+                <div class="message-modal-content" role="dialog" aria-labelledby="messageTitle">
                     <h3 id="messageTitle">Direct Message</h3>
                     <p id="recipientName">To: Username</p>
                     <div class="message-history" id="messageHistory"></div>
@@ -190,32 +190,21 @@ function initMessageModal() {
 }
 
 async function openMessageModal(username) {
-        if (!messageModal) {
-            // Let's auto-init if needed, this makes it more robust
+    if (!messageModal) {
         initMessageModal();
-            if(!messageModal) {
-                 console.error('[messageModal.js] Modal not found even after auto-init.');
+        if (!messageModal) {
+            console.error('[messageModal.js] Modal not found even after auto-init.');
             return;
         }
     }
 
-    console.log('[MessageModal] Opening modal for:', username);
-    console.log('[MessageModal] Modal element:', messageModal);
-    console.log('[MessageModal] Modal computed style:', window.getComputedStyle(messageModal).pointerEvents);
-
     currentRecipientUsername = username;
-        if(recipientNameElement) recipientNameElement.textContent = `To: ${username}`;
-        if(messageHistoryElement) messageHistoryElement.innerHTML = '<p class="modal-loading">Loading eternal whispers...</p>';
-
-    // DON'T close active users sidebar - CSS now handles z-index properly
-    // Sidebar stays visible and above modal for easy access to other users
+    if (recipientNameElement) recipientNameElement.textContent = `To: ${username}`;
+    if (messageHistoryElement) messageHistoryElement.innerHTML = '<p class="modal-loading">Loading eternal whispers...</p>';
 
     messageModal.classList.add('active');
     messageModal.setAttribute('aria-hidden', 'false');
-    // DON'T set inline z-index - let CSS z-index system handle it properly
     document.body.style.overflow = 'hidden';
-
-    console.log('[MessageModal] After adding active class, pointer-events:', window.getComputedStyle(messageModal).pointerEvents);
 
     if (messageInputElement) {
         setTimeout(() => messageInputElement.focus(), 100);
@@ -223,44 +212,20 @@ async function openMessageModal(username) {
 
     await loadConversation(username);
 
-    setTimeout(() => {
-        console.log('[MessageModal] Setting up click listener after 300ms delay');
-
-        // Listen on the explicit backdrop div
-        const backdropDiv = messageModal.querySelector('.modal-backdrop-clickable');
-        if (backdropDiv) {
-            backdropDiv.addEventListener('click', () => {
-                console.log('[MessageModal] Backdrop clicked - closing modal');
-                close();
-            });
-        }
-
-        // Also keep the old listener as fallback
-        if (currentBackdropListener) {
-            messageModal.removeEventListener('click', currentBackdropListener);
-        }
-        currentBackdropListener = (event) => {
-            console.log('[MessageModal] Click detected:', {
-                target: event.target,
-                targetClass: event.target.className,
-                targetId: event.target.id,
-                closestContent: event.target.closest('.message-modal-content'),
-                modalElement: messageModal,
-                isMessageModal: event.target === messageModal,
-                modalClasses: messageModal.className
-            });
-
-            // Close if click is NOT inside the message content (more robust than checking event.target)
-            if (!event.target.closest('.message-modal-content')) {
-                console.log('[MessageModal] Click outside content detected - closing modal');
-                close();
-            } else {
-                console.log('[MessageModal] Click inside content - keeping modal open');
-            }
-        };
-        messageModal.addEventListener('click', currentBackdropListener);
-        }, 300);
+    // Clean, simple click-outside-to-close handler
+    if (currentBackdropListener) {
+        messageModal.removeEventListener('click', currentBackdropListener);
     }
+
+    currentBackdropListener = (event) => {
+        // Close ONLY if clicking directly on the modal backdrop (not on content or its children)
+        if (event.target === messageModal) {
+            close();
+        }
+    };
+
+    messageModal.addEventListener('click', currentBackdropListener);
+}
 
     function handleTyping() {
         if (!currentRecipientUsername || !window.NEXUS || !window.NEXUS.websocket) return;
