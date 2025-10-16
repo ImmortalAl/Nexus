@@ -1,4 +1,5 @@
-// front/components/shared/messageModal.js v1.7 - Clean Architecture
+// front/components/shared/messageModal.js v1.8 - Clean Architecture
+// v1.8: Fixed double-click issue - attach listener BEFORE async operations, not after
 // v1.7: Removed backdrop div and inline styles, simplified click detection to single clean handler
 // v1.6: Fixed click-outside-to-close with closest() instead of strict equality
 // v1.5: Now dynamically injects modal HTML for true component sharing
@@ -206,13 +207,7 @@ async function openMessageModal(username) {
     messageModal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
 
-    if (messageInputElement) {
-        setTimeout(() => messageInputElement.focus(), 100);
-    }
-
-    await loadConversation(username);
-
-    // Clean, simple click-outside-to-close handler
+    // Attach click-outside-to-close listener IMMEDIATELY (before async operations)
     if (currentBackdropListener) {
         messageModal.removeEventListener('click', currentBackdropListener);
     }
@@ -225,6 +220,12 @@ async function openMessageModal(username) {
     };
 
     messageModal.addEventListener('click', currentBackdropListener);
+
+    if (messageInputElement) {
+        setTimeout(() => messageInputElement.focus(), 100);
+    }
+
+    await loadConversation(username);
 }
 
     function handleTyping() {
