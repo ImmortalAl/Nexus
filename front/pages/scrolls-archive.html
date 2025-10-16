@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Soul Scrolls Archive - Browse all eternal wisdom from the Immortal Nexus">
+    <meta name="theme-color" content="#0d0d1a">
+    <title>Soul Scrolls Archive - Immortal Nexus</title>
+    <!-- Immortal-themed favicon -->
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="apple-touch-icon" href="../favicon.svg">
+
+    <!-- Config MUST be loaded first -->
+    <script src="../components/shared/config.js?v=2.0"></script>
+    <script src="../js/shared/logger.js?v=1.0"></script>
+    <script src="../js/shared/errorBoundary.js?v=1.0"></script>
+
+    <!-- 1. THEME FOUNDATION (MUST BE FIRST) -->
+    <link rel="stylesheet" href="../css/base-theme.css?v=1.0">
+    <link rel="stylesheet" href="../css/light-theme-immortal.css?v=1.0">
+    <link rel="stylesheet" href="../css/mobile-enhanced.css?v=1.0">
+
+    <!-- 2. CRITICAL CSS -->
+    <link rel="stylesheet" href="../css/critical.css?v=7.9">
+    <link rel="stylesheet" href="../css/styles.css?v=7.4">
+
+    <!-- 3. LAYOUT AND COMPONENTS -->
+    <link rel="stylesheet" href="../css/layout.css?v=8.5">
+    <link rel="stylesheet" href="../css/components.css?v=7.2">
+    <link rel="stylesheet" href="../css/features.css?v=7.6">
+
+    <!-- 4. Z-INDEX SYSTEM -->
+    <link rel="stylesheet" href="../css/z-index-system.css?v=1.2">
+
+    <!-- 5. UNIFIED MODAL SYSTEM -->
+    <link rel="stylesheet" href="../css/unified-modals.css?v=2.0">
+
+    <!-- 6. SHARED COMPONENTS -->
+    <link rel="stylesheet" href="../components/shared/styles.css?v=7.4">
+    <link rel="stylesheet" href="../components/shared/active-users.css?v=2.1">
+
+    <!-- 7. ARCHIVE-SPECIFIC STYLES -->
+    <link rel="stylesheet" href="../css/scrolls-archive.css?v=1.0">
+
+    <!-- 8. EXTERNAL RESOURCES -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+          integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+          crossorigin="anonymous">
+
+    <!-- 9. FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=MedievalSharp&family=Montserrat:wght@300;400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <!-- SHARED_HEADER -->
+    </header>
+
+    <!-- Active Users Sidebar, Floating Buttons, and Message Modal will be dynamically injected -->
+
+    <main>
+        <div class="archive-container">
+            <!-- Archive Header -->
+            <div class="archive-header">
+                <div class="archive-title-section">
+                    <h1 class="archive-title">
+                        <i class="fas fa-archive"></i>
+                        Soul Scrolls Archive
+                    </h1>
+                    <p class="archive-subtitle">Eternal repository of all sacred writings</p>
+                </div>
+
+                <!-- Navigation Actions -->
+                <div class="archive-nav">
+                    <a href="blog.html" class="btn btn-outline">
+                        <i class="fas fa-scroll"></i> View Latest Scrolls
+                    </a>
+                    <a href="/lander.html?expand=editor" class="btn btn-primary">
+                        <i class="fas fa-feather-alt"></i> Inscribe New Scroll
+                    </a>
+                </div>
+            </div>
+
+            <!-- Search and Filter Bar -->
+            <div class="archive-controls">
+                <div class="search-section">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text"
+                               id="archiveSearch"
+                               placeholder="Search by title, author, or content..."
+                               class="archive-search-input">
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <div class="filter-group">
+                        <label for="sortBy">Sort by:</label>
+                        <select id="sortBy" class="archive-select">
+                            <option value="createdAt:desc">Newest First</option>
+                            <option value="createdAt:asc">Oldest First</option>
+                            <option value="likes:desc">Most Upvoted</option>
+                            <option value="commentsCount:desc">Most Discussed</option>
+                            <option value="author.username:asc">Author Name</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="dateRange">Time:</label>
+                        <select id="dateRange" class="archive-select">
+                            <option value="all">All Time</option>
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                            <option value="year">This Year</option>
+                        </select>
+                    </div>
+
+                    <button id="applyFilters" class="btn btn-sm btn-outline">
+                        <i class="fas fa-filter"></i> Apply
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="archive-stats" id="archiveStats">
+                <span class="stat-item">
+                    <i class="fas fa-scroll"></i>
+                    <span id="totalScrolls">0</span> Total Scrolls
+                </span>
+                <span class="stat-item">
+                    <i class="fas fa-users"></i>
+                    <span id="totalAuthors">0</span> Authors
+                </span>
+                <span class="stat-item">
+                    <i class="fas fa-eye"></i>
+                    Showing <span id="showingCount">0</span> of <span id="totalCount">0</span>
+                </span>
+            </div>
+
+            <!-- Archive Table (Desktop) / Cards (Mobile) -->
+            <div class="archive-content" id="archiveContent">
+                <!-- Desktop Table View -->
+                <table class="archive-table" id="archiveTable">
+                    <thead>
+                        <tr>
+                            <th class="col-title sortable" data-sort="title">
+                                Title <i class="fas fa-sort"></i>
+                            </th>
+                            <th class="col-author sortable" data-sort="author.username">
+                                Author <i class="fas fa-sort"></i>
+                            </th>
+                            <th class="col-date sortable" data-sort="createdAt">
+                                Date <i class="fas fa-sort"></i>
+                            </th>
+                            <th class="col-stats sortable" data-sort="likes">
+                                <i class="fas fa-thumbs-up" title="Upvotes"></i>
+                                <i class="fas fa-sort"></i>
+                            </th>
+                            <th class="col-stats sortable" data-sort="commentsCount">
+                                <i class="fas fa-comment" title="Comments"></i>
+                                <i class="fas fa-sort"></i>
+                            </th>
+                            <th class="col-actions">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="archiveTableBody">
+                        <!-- Loading state -->
+                        <tr class="loading-row">
+                            <td colspan="6">
+                                <div class="loading-spinner">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    <span>Loading archive...</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Mobile Cards View (hidden by default, shown via CSS on mobile) -->
+                <div class="archive-mobile-cards" id="archiveMobileCards">
+                    <!-- Cards will be inserted here by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="archive-pagination" id="archivePagination">
+                <!-- Pagination controls will be inserted here -->
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Eternal Year 1 - Immortal Nexus. Eternity is ours.</p>
+    </footer>
+
+    <!-- Core Immortal Nexus Components -->
+    <script src="../components/shared/themeManager.js?v=2.2"></script>
+    <script src="../components/shared/nexus-core.js?v=1.5"></script>
+    <script src="../components/shared/authManager.js?v=1.4"></script>
+    <script src="../components/shared/authModal.js?v=4.2"></script>
+    <script src="../components/shared/apiClient.js?v=1.5"></script>
+    <script src="../components/shared/navigation.js?v=2.1"></script>
+    <script src="../components/shared/userMenu.js?v=7.2"></script>
+
+    <!-- Avatar System -->
+    <script src="../js/nexus-avatar-system.js?v=3.1"></script>
+
+    <!-- Unified Voting System -->
+    <script src="../js/shared/unifiedVoting.js?v=1.6"></script>
+
+    <!-- Blog Modules (needed for modal functionality) -->
+    <script src="../js/blog/blog-api.js?v=1.0"></script>
+    <script src="../js/blog/blog-modal.js?v=1.2"></script>
+    <script src="../js/blog/blog-voting.js?v=1.4"></script>
+    <script src="../js/blog/blog-comments.js?v=2.0"></script>
+
+    <!-- Active Users -->
+    <script src="../components/shared/activeUsers.js?v=2.3"></script>
+    <script src="../components/shared/messageModal.js?v=6.9"></script>
+
+    <!-- Archive-specific JavaScript -->
+    <script src="../js/scrolls-archive.js?v=1.0"></script>
+
+    <!-- Analytics Tracking System -->
+    <script src="../js/analytics-tracker.js?v=2.1" async></script>
+</body>
+</html>

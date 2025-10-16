@@ -82,7 +82,7 @@
 
     <!-- 2. CRITICAL CSS - Above-fold essentials loaded synchronously -->
     <link rel="stylesheet" href="../css/critical.css?v=7.1">
-    <link rel="stylesheet" href="../css/blog-critical.css?v=7.3">
+    <link rel="stylesheet" href="../css/blog-critical.css?v=7.4">
 
     <!-- 3. GLOBAL STYLES - Site-wide styles loaded synchronously -->
     <link rel="stylesheet" href="../css/styles.css?v=7.4">
@@ -181,13 +181,18 @@
                 </div>
             </div>
             
-            <!-- Inscribe a Scroll button -->
+            <!-- Inscribe a Scroll button and Archive link -->
             <div class="inscribe-scroll-container">
                 <button class="inscribe-scroll-btn" onclick="window.location.href='/lander.html?expand=editor'" title="Scrolls are crafted in the Eternal Hearth">
                     <i class="fas fa-feather-alt"></i>
                     <span>Inscribe a Scroll</span>
                     <small>✨ Crafted in the Eternal Hearth</small>
                 </button>
+                <a href="scrolls-archive.html" class="btn btn-outline archive-link-btn">
+                    <i class="fas fa-archive"></i>
+                    <span>Browse Archive</span>
+                    <small>View all scrolls</small>
+                </a>
             </div>
             
             <div id="blogList" class="scroll-grid"></div>

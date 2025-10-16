@@ -1,14 +1,18 @@
 /* Critical above-fold styles for Soul Scrolls page */
 /* Essential styles that must load immediately for initial render */
 
-/* ===== INSCRIBE SCROLL BUTTON ===== */
+/* ===== INSCRIBE SCROLL BUTTON & ARCHIVE LINK ===== */
 .inscribe-scroll-container {
     display: flex;
     justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
     margin: 2rem 0;
+    flex-wrap: wrap;
 }
 
-.inscribe-scroll-btn {
+.inscribe-scroll-btn,
+.archive-link-btn {
     background: linear-gradient(45deg, rgba(255, 94, 120, 0.2), rgba(255, 202, 40, 0.15));
     border: 2px solid rgba(255, 94, 120, 0.5);
     color: var(--text);
@@ -24,9 +28,11 @@
     gap: 0.25rem;
     position: relative;
     overflow: hidden;
+    text-decoration: none;
 }
 
-.inscribe-scroll-btn::before {
+.inscribe-scroll-btn::before,
+.archive-link-btn::before {
     content: '';
     position: absolute;
     top: 0;
@@ -37,26 +43,46 @@
     transition: left 0.5s ease;
 }
 
-.inscribe-scroll-btn:hover::before {
+.inscribe-scroll-btn:hover::before,
+.archive-link-btn:hover::before {
     left: 100%;
 }
 
-.inscribe-scroll-btn:hover {
+.inscribe-scroll-btn:hover,
+.archive-link-btn:hover {
     background: linear-gradient(45deg, rgba(255, 94, 120, 0.3), rgba(255, 202, 40, 0.25));
     border-color: rgba(255, 94, 120, 0.8);
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(255, 94, 120, 0.3);
 }
 
-.inscribe-scroll-btn i {
+.inscribe-scroll-btn i,
+.archive-link-btn i {
     font-size: 1.5rem;
     color: var(--accent);
 }
 
-.inscribe-scroll-btn small {
+.inscribe-scroll-btn small,
+.archive-link-btn small {
     font-size: 0.75rem;
     opacity: 0.8;
     font-style: italic;
+}
+
+/* Archive button specific styling */
+.archive-link-btn {
+    background: linear-gradient(45deg, rgba(94, 120, 255, 0.2), rgba(120, 94, 255, 0.15));
+    border-color: rgba(94, 120, 255, 0.5);
+}
+
+.archive-link-btn:hover {
+    background: linear-gradient(45deg, rgba(94, 120, 255, 0.3), rgba(120, 94, 255, 0.25));
+    border-color: rgba(94, 120, 255, 0.8);
+    box-shadow: 0 8px 24px rgba(94, 120, 255, 0.3);
+}
+
+.archive-link-btn i {
+    color: #5e78ff;
 }
 
 /* ===== AUTHOR'S OTHER SCROLLS ===== */
