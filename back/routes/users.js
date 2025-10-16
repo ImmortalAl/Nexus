@@ -5,6 +5,7 @@ const auth = require('../middleware/auth');
 const optionalAuth = require('../middleware/optionalAuth');
 const adminAuth = require('../middleware/adminAuth');
 const mongoose = require('mongoose');
+const CredibilityService = require('../services/credibilityService');
 
 // Get user analytics for admin dashboard
 router.get('/analytics', auth, async (req, res) => {
@@ -130,6 +131,20 @@ router.get('/me', auth, async (req, res) => {
     } catch (error) {
         console.error('Error fetching current user:', error);
         res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// Get user credibility by username
+router.get('/:username/credibility', async (req, res) => {
+    try {
+        const credibility = await CredibilityService.getUserCredibilityByUsername(req.params.username);
+        res.json(credibility);
+    } catch (error) {
+        console.error('Error fetching user credibility:', error);
+        if (error.message === 'User not found') {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.status(500).json({ error: 'Failed to fetch user credibility' });
     }
 });
 

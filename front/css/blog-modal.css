@@ -68,6 +68,7 @@
         mask-composite: exclude;
         opacity: 0.7;
         animation: modalGlow 3s ease-in-out infinite alternate;
+        pointer-events: none;
     }
 }
 
@@ -205,14 +206,19 @@
     position: relative;
 }
 
-.modal-header-bar .challenge-dropdown {
-    position: fixed; /* Changed from absolute to escape all container boundaries */
-    top: auto; /* Will be set via JS */
-    right: auto; /* Will be set via JS */
-    left: auto;
-    bottom: auto;
-    z-index: 10001; /* Above modal z-index */
-    margin: 0;
+.modal-header-bar .challenge-dropdown,
+.modal-header-bar .identity-challenge-dropdown,
+.identity-challenge-dropdown {
+    position: fixed !important; /* Changed from absolute to escape all container boundaries */
+    top: auto !important; /* Will be set via JS */
+    right: auto !important; /* Will be set via JS */
+    left: auto !important; /* Will be set via JS */
+    bottom: auto !important;
+    z-index: 10001 !important; /* Above modal z-index */
+    margin: 0 !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 .modal-header-bar .challenge-options {

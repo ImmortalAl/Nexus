@@ -24,6 +24,7 @@ const errorsRoutes = require('./routes/errors');
 const cors = require('cors');
 const http = require('http');
 const WebSocketManager = require('./websocket');
+const CredibilityService = require('./services/credibilityService');
 
 // Load environment variables from .env file
 dotenv.config();
@@ -142,6 +143,9 @@ const wsManager = new WebSocketManager(server);
 
 // Make WebSocket manager available to routes
 app.set('wsManager', wsManager);
+
+// Make CredibilityService available to routes
+app.locals.CredibilityService = CredibilityService;
 
 // Start the server
 const PORT = process.env.PORT || 5000;

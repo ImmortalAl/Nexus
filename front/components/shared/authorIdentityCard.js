@@ -581,18 +581,24 @@ class AuthorIdentityCard {
 
         // Position relative to challenge button but append to body to escape clipping
         const challengeBtn = this.element.querySelector('.challenge-btn');
+
         if (challengeBtn) {
             // Append dropdown to body to escape all container constraints
             document.body.appendChild(dropdown);
-            
+
+            // Make it initially visible
+            dropdown.style.display = 'block';
+            dropdown.style.visibility = 'visible';
+            dropdown.style.opacity = '1';
+
             // Position dropdown relative to button
             this.positionDropdown(dropdown, challengeBtn);
-            
+
             // Reposition on scroll/resize
             const repositionHandler = () => this.positionDropdown(dropdown, challengeBtn);
             window.addEventListener('scroll', repositionHandler, { passive: true });
             window.addEventListener('resize', repositionHandler);
-            
+
             // Clean up event listeners when dropdown is removed
             const originalRemove = dropdown.remove.bind(dropdown);
             dropdown.remove = () => {
@@ -604,9 +610,9 @@ class AuthorIdentityCard {
 
         // Attach handlers
         dropdown.querySelectorAll('.challenge-option').forEach(btn => {
-            btn.addEventListener('click', (e) => {
+            btn.addEventListener('click', async (e) => {
                 e.stopPropagation();
-                this.handleChallengeType(btn.dataset.challenge);
+                await this.handleChallengeType(btn.dataset.challenge);
                 dropdown.remove();
             });
         });
@@ -659,19 +665,35 @@ class AuthorIdentityCard {
     /**
      * Handle different challenge types
      */
-    handleChallengeType(type) {
+    async handleChallengeType(type) {
         switch (type) {
             case 'quick':
-                this.submitVote('challenge');
+                // Submit a quick downvote
+                try {
+                    const response = await this.submitVote('challenge');
+                    this.updateVoteState(response);
+                    this.refreshVoteDisplay();
+                    this.emitVoteEvent('challenge', response);
+                    this.showToast('Challenge recorded!', 'success');
+                } catch (error) {
+                    console.error('[AuthorIdentityCard] Quick challenge failed:', error);
+                    this.showToast('Failed to record challenge', 'error');
+                }
                 break;
             case 'counterpoint':
+                // Open counterpoint writing interface
                 if (window.openCounterpoint) {
                     window.openCounterpoint(this.contentId);
+                } else {
+                    this.showToast('Counterpoint feature coming soon!', 'info');
                 }
                 break;
             case 'debate':
+                // Create formal debate
                 if (window.createFormalDebate) {
                     window.createFormalDebate(this.contentId);
+                } else {
+                    this.showToast('Debate feature coming soon!', 'info');
                 }
                 break;
         }

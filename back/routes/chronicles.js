@@ -155,7 +155,7 @@ router.delete('/:id', auth, async (req, res) => {
     }
 });
 
-// --- POST to validate a chronicle (protected) ---
+// --- POST to validate/upvote a chronicle (protected) ---
 router.post('/:id/validate', auth, async (req, res) => {
     try {
         const chronicle = await Chronicle.findById(req.params.id);
@@ -164,10 +164,15 @@ router.post('/:id/validate', auth, async (req, res) => {
         }
 
         const userId = req.user.id;
-        
+
+        // Prevent self-voting
+        if (chronicle.author.toString() === userId) {
+            return res.status(400).json({ error: 'You cannot vote on your own chronicle' });
+        }
+
         // Remove from challenges if present
         chronicle.challenges = chronicle.challenges.filter(id => id.toString() !== userId);
-        
+
         // Toggle validation
         const validationIndex = chronicle.validations.findIndex(id => id.toString() === userId);
         if (validationIndex > -1) {
@@ -175,13 +180,28 @@ router.post('/:id/validate', auth, async (req, res) => {
         } else {
             chronicle.validations.push(userId); // Not validated, add
         }
-        
+
         await chronicle.save();
-        
+
+        // Update user credibility if service available
+        if (req.app.locals.CredibilityService) {
+            const authorId = chronicle.author.toString();
+            const voteType = validationIndex > -1 ? 'upvote' : 'upvote';
+            const delta = validationIndex > -1 ? -1 : 1;
+            await req.app.locals.CredibilityService.updateUserCredibility(
+                authorId,
+                'chronicle',
+                voteType,
+                delta
+            );
+        }
+
         res.json({
             validations: chronicle.validations.length,
             challenges: chronicle.challenges.length,
+            upvotes: chronicle.validations.length, // For unified voting compatibility
             userValidated: chronicle.validations.some(id => id.toString() === userId),
+            userUpvoted: chronicle.validations.some(id => id.toString() === userId), // For unified voting
             userChallenged: false
         });
     } catch (error) {
@@ -190,7 +210,13 @@ router.post('/:id/validate', auth, async (req, res) => {
     }
 });
 
-// --- POST to challenge a chronicle (protected) ---
+// Alias for unified voting system
+router.post('/:id/upvote', auth, async (req, res) => {
+    req.url = req.url.replace('/upvote', '/validate');
+    router.handle(req, res);
+});
+
+// --- POST to challenge a chronicle with 3-tier system (protected) ---
 router.post('/:id/challenge', auth, async (req, res) => {
     try {
         const chronicle = await Chronicle.findById(req.params.id);
@@ -199,30 +225,64 @@ router.post('/:id/challenge', auth, async (req, res) => {
         }
 
         const userId = req.user.id;
-        
+        const { challengeType = 'quick' } = req.body; // Support 3-tier: quick, counterpoint, debate
+
+        // Prevent self-voting
+        if (chronicle.author.toString() === userId) {
+            return res.status(400).json({ error: 'You cannot challenge your own chronicle' });
+        }
+
         // Remove from validations if present
         chronicle.validations = chronicle.validations.filter(id => id.toString() !== userId);
-        
+
         // Toggle challenge
-        const challengeIndex = chronicle.challenges.findIndex(id => id.toString() === userId);
+        const challengeIndex = chronicle.challenges.findIndex(id => id.toString() !== userId);
         if (challengeIndex > -1) {
             chronicle.challenges.splice(challengeIndex, 1); // Already challenged, remove
         } else {
             chronicle.challenges.push(userId); // Not challenged, add
+
+            // TODO: Handle counterpoint and debate challenge types
+            if (challengeType === 'counterpoint') {
+                // Future: Create a counterpoint comment/thread
+            } else if (challengeType === 'debate') {
+                // Future: Create a formal debate thread
+            }
         }
-        
+
         await chronicle.save();
-        
+
+        // Update user credibility if service available
+        if (req.app.locals.CredibilityService) {
+            const authorId = chronicle.author.toString();
+            const voteType = 'downvote';
+            const delta = challengeIndex > -1 ? -1 : 1;
+            await req.app.locals.CredibilityService.updateUserCredibility(
+                authorId,
+                'chronicle',
+                voteType,
+                delta
+            );
+        }
+
         res.json({
             validations: chronicle.validations.length,
             challenges: chronicle.challenges.length,
+            upvotes: chronicle.validations.length, // For unified voting compatibility
             userValidated: false,
+            userUpvoted: false, // For unified voting
             userChallenged: chronicle.challenges.some(id => id.toString() === userId)
         });
     } catch (error) {
         console.error('Error challenging chronicle:', error);
         res.status(500).json({ error: 'Failed to challenge chronicle' });
     }
+});
+
+// Alias for unified voting system
+router.post('/:id/downvote', auth, async (req, res) => {
+    req.url = req.url.replace('/downvote', '/challenge');
+    router.handle(req, res);
 });
 
 

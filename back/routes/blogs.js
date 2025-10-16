@@ -225,16 +225,22 @@ router.delete('/:id', auth, async (req, res) => {
 // Like a blog post
 router.post('/:id/like', auth, async (req, res) => {
     try {
-        const blog = await Blog.findById(req.params.id);
+        const blog = await Blog.findById(req.params.id).populate('author');
         if (!blog) {
             return res.status(404).json({ error: 'Blog post not found' });
         }
-        
+
         const userId = req.user.id;
-        
+
+        // Prevent self-voting
+        if (blog.author._id.toString() === userId) {
+            return res.status(400).json({ error: 'You cannot vote on your own blog post' });
+        }
+
         // Remove from dislikes if present
+        const wasDisliked = blog.dislikes.some(id => id.toString() === userId);
         blog.dislikes = blog.dislikes.filter(id => id.toString() !== userId);
-        
+
         // Toggle like
         const likeIndex = blog.likes.findIndex(id => id.toString() === userId);
         if (likeIndex > -1) {
@@ -244,8 +250,32 @@ router.post('/:id/like', auth, async (req, res) => {
             // Not liked, add like
             blog.likes.push(userId);
         }
-        
+
         await blog.save();
+
+        // Update user credibility if service available
+        if (req.app.locals.CredibilityService) {
+            const authorId = blog.author._id.toString();
+
+            // If removing like
+            if (likeIndex > -1) {
+                await req.app.locals.CredibilityService.updateUserCredibility(
+                    authorId, 'blog', 'upvote', -1
+                );
+            }
+            // If adding like
+            else {
+                await req.app.locals.CredibilityService.updateUserCredibility(
+                    authorId, 'blog', 'upvote', 1
+                );
+                // If was disliked, also remove the downvote
+                if (wasDisliked) {
+                    await req.app.locals.CredibilityService.updateUserCredibility(
+                        authorId, 'blog', 'downvote', -1
+                    );
+                }
+            }
+        }
         
         res.json({
             likes: blog.likes.length,
@@ -262,19 +292,26 @@ router.post('/:id/like', auth, async (req, res) => {
     }
 });
 
-// Dislike a blog post
+// Dislike a blog post (supports 3-tier challenge system)
 router.post('/:id/dislike', auth, async (req, res) => {
     try {
-        const blog = await Blog.findById(req.params.id);
+        const blog = await Blog.findById(req.params.id).populate('author');
         if (!blog) {
             return res.status(404).json({ error: 'Blog post not found' });
         }
-        
+
         const userId = req.user.id;
-        
+        const { challengeType = 'quick' } = req.body; // Support 3-tier: quick, counterpoint, debate
+
+        // Prevent self-voting
+        if (blog.author._id.toString() === userId) {
+            return res.status(400).json({ error: 'You cannot challenge your own blog post' });
+        }
+
         // Remove from likes if present
+        const wasLiked = blog.likes.some(id => id.toString() === userId);
         blog.likes = blog.likes.filter(id => id.toString() !== userId);
-        
+
         // Toggle dislike
         const dislikeIndex = blog.dislikes.findIndex(id => id.toString() === userId);
         if (dislikeIndex > -1) {
@@ -283,9 +320,40 @@ router.post('/:id/dislike', auth, async (req, res) => {
         } else {
             // Not disliked, add dislike
             blog.dislikes.push(userId);
+
+            // TODO: Handle counterpoint and debate challenge types
+            if (challengeType === 'counterpoint') {
+                // Future: Create a counterpoint comment/thread
+            } else if (challengeType === 'debate') {
+                // Future: Create a formal debate thread
+            }
         }
-        
+
         await blog.save();
+
+        // Update user credibility if service available
+        if (req.app.locals.CredibilityService) {
+            const authorId = blog.author._id.toString();
+
+            // If removing dislike
+            if (dislikeIndex > -1) {
+                await req.app.locals.CredibilityService.updateUserCredibility(
+                    authorId, 'blog', 'downvote', -1
+                );
+            }
+            // If adding dislike
+            else {
+                await req.app.locals.CredibilityService.updateUserCredibility(
+                    authorId, 'blog', 'downvote', 1
+                );
+                // If was liked, also remove the upvote
+                if (wasLiked) {
+                    await req.app.locals.CredibilityService.updateUserCredibility(
+                        authorId, 'blog', 'upvote', -1
+                    );
+                }
+            }
+        }
         
         res.json({
             likes: blog.likes.length,

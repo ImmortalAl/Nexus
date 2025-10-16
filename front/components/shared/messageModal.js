@@ -1,4 +1,5 @@
-// front/components/shared/messageModal.js v1.8 - Clean Architecture
+// front/components/shared/messageModal.js v1.9 - Clean Architecture
+// v1.9: Fixed double-click on left side - explicitly close active users sidebar/overlay when opening modal
 // v1.8: Fixed double-click issue - attach listener BEFORE async operations, not after
 // v1.7: Removed backdrop div and inline styles, simplified click detection to single clean handler
 // v1.6: Fixed click-outside-to-close with closest() instead of strict equality
@@ -202,6 +203,20 @@ async function openMessageModal(username) {
     currentRecipientUsername = username;
     if (recipientNameElement) recipientNameElement.textContent = `To: ${username}`;
     if (messageHistoryElement) messageHistoryElement.innerHTML = '<p class="modal-loading">Loading eternal whispers...</p>';
+
+    // CRITICAL: Close active users sidebar/overlay before opening modal
+    // This prevents the overlay from capturing clicks and requiring double-click to close
+    const activeUsersSidebar = document.getElementById('activeUsers');
+    const activeUsersOverlay = document.getElementById('activeUsersOverlay');
+
+    if (activeUsersSidebar && activeUsersSidebar.classList.contains('active')) {
+        activeUsersSidebar.classList.remove('active');
+        activeUsersSidebar.style.right = '-340px';
+    }
+
+    if (activeUsersOverlay && activeUsersOverlay.classList.contains('active')) {
+        activeUsersOverlay.classList.remove('active');
+    }
 
     messageModal.classList.add('active');
     messageModal.setAttribute('aria-hidden', 'false');

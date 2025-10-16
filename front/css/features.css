@@ -1818,7 +1818,7 @@ body .floating-buttons button.theme-toggle#themeToggle {
     justify-content: center !important;
     align-items: stretch;
     margin-top: 2rem;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     width: 100%;
     padding: 0 !important;
     flex-shrink: 0;
@@ -1835,8 +1835,8 @@ body .floating-buttons button.theme-toggle#themeToggle {
     font-size: 0.85rem !important;
     font-weight: 600 !important;
     flex: 1;
-    min-width: 0;
-    max-width: 130px;
+    min-width: 120px;
+    max-width: 160px;
     text-align: center !important;
     margin: 0 !important;
     display: inline-flex !important;

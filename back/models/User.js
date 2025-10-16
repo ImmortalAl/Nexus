@@ -66,6 +66,51 @@ const userSchema = new mongoose.Schema({
     isActive: {
         type: Boolean,
         default: true
+    },
+    credibility: {
+        totalUpvotes: {
+            type: Number,
+            default: 0
+        },
+        totalDownvotes: {
+            type: Number,
+            default: 0
+        },
+        netScore: {
+            type: Number,
+            default: 0
+        },
+        tier: {
+            type: String,
+            enum: ['elevated', 'neutral', 'below'],
+            default: 'neutral'
+        },
+        breakdown: {
+            blogs: {
+                upvotes: { type: Number, default: 0 },
+                downvotes: { type: Number, default: 0 }
+            },
+            comments: {
+                upvotes: { type: Number, default: 0 },
+                downvotes: { type: Number, default: 0 }
+            },
+            threads: {
+                upvotes: { type: Number, default: 0 },
+                downvotes: { type: Number, default: 0 }
+            },
+            nodes: {
+                upvotes: { type: Number, default: 0 },
+                downvotes: { type: Number, default: 0 }
+            },
+            chronicles: {
+                upvotes: { type: Number, default: 0 },
+                downvotes: { type: Number, default: 0 }
+            }
+        },
+        lastUpdated: {
+            type: Date,
+            default: Date.now
+        }
     }
 }, {
     timestamps: true
