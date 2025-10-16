@@ -21,8 +21,8 @@
 
     /* Overlays (1000-4999) */
     --z-overlay: 1000;        /* General overlays */
-    --z-sidebar: 1100;        /* Sidebars and panels */
-    --z-backdrop: 1200;       /* Modal backdrops */
+    --z-backdrop: 1050;       /* Modal backdrops (must be below sidebars) */
+    --z-sidebar: 1100;        /* Sidebars and panels (must be above backdrops) */
 
     /* Modals (5000-9999) */
     --z-modal: 5000;          /* Standard modals */
