@@ -43,7 +43,14 @@
     <!-- 7. ARCHIVE-SPECIFIC STYLES -->
     <link rel="stylesheet" href="../css/scrolls-archive.css?v=1.0">
 
-    <!-- 8. EXTERNAL RESOURCES -->
+    <!-- 8. BLOG MODAL STYLES (needed for viewing scrolls) -->
+    <link rel="preload" href="../css/blog-modal.css?v=3.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/blog-modal.css?v=3.1"></noscript>
+
+    <link rel="preload" href="../css/blog-comments.css?v=2.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/blog-comments.css?v=2.3"></noscript>
+
+    <!-- 9. EXTERNAL RESOURCES -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
           integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
           crossorigin="anonymous">
@@ -190,6 +197,106 @@
         </div>
     </main>
 
+    <!-- Blog Post Modal (for viewing full scrolls) -->
+    <div id="blogModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modal-title" aria-describedby="modal-content" style="display:none;">
+        <div class="blog-modal-content" role="document">
+            <!-- Unified Modal Header Bar -->
+            <div class="modal-header-bar" id="blogModalHeader">
+                <!-- AuthorIdentityCard will populate this dynamically -->
+                <!-- Close Button will be added separately -->
+                <div class="modal-header-controls">
+                    <button class="close-modal" onclick="closeBlogModal()" aria-label="Close modal">×</button>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div class="modal-loading" id="modalLoading" style="display:none;">
+                <div class="modal-spinner">
+                    <div class="relic-spinner"></div>
+                </div>
+                <p>Unfurling ancient scroll...</p>
+            </div>
+
+            <!-- Modal Content -->
+            <div class="modal-body" id="modalBody">
+
+                <!-- Title Section -->
+                <h2 id="modal-title" class="scroll-title"></h2>
+
+                <!-- Content -->
+                <article id="modal-content" class="scroll-content" role="main"></article>
+
+                <!-- Action Buttons -->
+                <div class="modal-actions">
+                    <button id="editPostBtn" class="edit-post-btn" onclick="editCurrentPost()" style="display: none;">
+                        <i class="fas fa-edit"></i> Edit this scroll
+                    </button>
+                    <button id="deletePostBtn" class="delete-post-btn" onclick="confirmDeleteCurrentPost()" style="display: none;">
+                        <i class="fas fa-trash"></i> Delete this scroll
+                    </button>
+                    <button class="copy-link-btn" onclick="copyPostLink()">
+                        <i class="fas fa-link"></i> Copy link
+                    </button>
+                </div>
+
+                <!-- Comments Section -->
+                <div class="blog-comments">
+                    <div id="blogComments"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Counterpoint Modal (for challenges) -->
+    <div id="counterpointModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="counterpoint-title" style="display:none;">
+        <div class="modal-content parchment-modal">
+            <div class="modal-header">
+                <h3 id="counterpoint-title">
+                    <i class="fas fa-scale-balanced"></i> Write Counterpoint
+                </h3>
+                <button class="close-modal" onclick="closeCounterpointModal()" aria-label="Close modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-instruction">
+                    <i class="fas fa-info-circle"></i>
+                    Provide a well-reasoned counterargument with supporting sources
+                </p>
+
+                <form id="counterpointForm" class="chronicle-form">
+                    <input type="hidden" id="counterpointPostId" value="">
+
+                    <div class="form-group">
+                        <label for="counterpointText">Your Counterpoint</label>
+                        <textarea id="counterpointText" name="counterpoint" rows="6"
+                                  placeholder="State your disagreement clearly and respectfully..."
+                                  required></textarea>
+                        <small>Challenge with reason, not rhetoric</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="counterpointSources">
+                            <i class="fas fa-link"></i> Sources & Citations
+                        </label>
+                        <textarea id="counterpointSources" name="sources" rows="4"
+                                  placeholder="List your sources (one per line):&#10;https://example.com/source1&#10;https://example.com/source2"></textarea>
+                        <small>Build credibility with verified sources</small>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-outline" onclick="closeCounterpointModal()">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Submit Counterpoint
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <footer>
         <p>Eternal Year 1 - Immortal Nexus. Eternity is ours.</p>
     </footer>
@@ -208,6 +315,10 @@
 
     <!-- Unified Voting System -->
     <script src="../js/shared/unifiedVoting.js?v=1.6"></script>
+
+    <!-- Author Identity and Comments (needed for modal) -->
+    <script src="../components/shared/authorIdentityCard.js?v=2.1"></script>
+    <script src="../components/shared/comments.js?v=1.3"></script>
 
     <!-- Blog Modules (needed for modal functionality) -->
     <script src="../js/blog/blog-api.js?v=1.0"></script>
