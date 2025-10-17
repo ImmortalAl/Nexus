@@ -1668,7 +1668,7 @@ body .floating-buttons button.theme-toggle#themeToggle {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     text-align: center;
     position: relative;
-    overflow: hidden;
+    overflow: visible;  /* Changed from hidden to visible to show buttons */
     min-height: 480px;
     margin-bottom: 0;
     display: flex;
@@ -1843,8 +1843,8 @@ body .floating-buttons button.theme-toggle#themeToggle {
     font-size: 0.85rem !important;
     font-weight: 600 !important;
     flex: 1;
-    min-width: 120px;
-    max-width: 160px;
+    min-width: 110px;
+    max-width: 140px;  /* Reduced from 160px to ensure both buttons fit */
     text-align: center !important;
     margin: 0 !important;
     display: inline-flex !important;
