@@ -1675,6 +1675,8 @@ body .floating-buttons button.theme-toggle#themeToggle {
     flex-direction: column;
     justify-content: space-between;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    -webkit-tap-highlight-color: transparent;
+    isolation: isolate;  /* Create stacking context to contain tap highlights */
 }
 
 .soul-highlight-card::before {
@@ -1862,6 +1864,8 @@ body .floating-buttons button.theme-toggle#themeToggle {
     overflow: hidden;
     white-space: nowrap;
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
 }
 
 .soul-highlight-card .soul-profile-btn {
@@ -2469,11 +2473,11 @@ body .floating-buttons button.theme-toggle#themeToggle {
     }
     
     .soul-highlight-card .soul-card-actions {
-        flex-direction: column !important;
-        gap: 0.6rem !important;
+        flex-direction: row !important;
+        gap: 0.5rem !important;
         margin-top: 1rem !important;
-        padding: 0 1rem !important;
-        align-items: stretch !important;
+        padding: 0 !important;
+        align-items: center !important;
         justify-content: center !important;
     }
     
