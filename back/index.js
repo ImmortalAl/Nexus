@@ -21,6 +21,7 @@ const analyticsRoutes = require('./routes/analytics');
 const mindmapRoutes = require('./routes/mindmap');
 const debugRoutes = require('./routes/debug');
 const errorsRoutes = require('./routes/errors');
+const pollRoutes = require('./routes/polls');
 const cors = require('cors');
 const http = require('http');
 const WebSocketManager = require('./websocket');
@@ -103,6 +104,7 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/mindmap', mindmapRoutes);
 app.use('/api/debug', debugRoutes);
 app.use('/api/errors', errorsRoutes);
+app.use('/api/poll', pollRoutes);
 app.use('/api', owlRoutes);
 
 // --- Test & Health Routes ---
