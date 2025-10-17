@@ -200,15 +200,6 @@
     <!-- Blog Post Modal (for viewing full scrolls) -->
     <div id="blogModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modal-title" aria-describedby="modal-content" style="display:none;">
         <div class="blog-modal-content" role="document">
-            <!-- Unified Modal Header Bar -->
-            <div class="modal-header-bar" id="blogModalHeader">
-                <!-- AuthorIdentityCard will populate this dynamically -->
-                <!-- Close Button will be added separately -->
-                <div class="modal-header-controls">
-                    <button class="close-modal" onclick="closeBlogModal()" aria-label="Close modal">×</button>
-                </div>
-            </div>
-
             <!-- Loading State -->
             <div class="modal-loading" id="modalLoading" style="display:none;">
                 <div class="modal-spinner">
@@ -217,8 +208,16 @@
                 <p>Unfurling ancient scroll...</p>
             </div>
 
-            <!-- Modal Content -->
+            <!-- Modal Content (scrollable area) -->
             <div class="modal-body" id="modalBody">
+                <!-- Unified Modal Header Bar (now INSIDE scrollable area so avatar scrolls away) -->
+                <div class="modal-header-bar" id="blogModalHeader">
+                    <!-- AuthorIdentityCard will populate this dynamically -->
+                    <!-- Close Button will be added separately -->
+                    <div class="modal-header-controls">
+                        <button class="close-modal" onclick="closeBlogModal()" aria-label="Close modal">×</button>
+                    </div>
+                </div>
 
                 <!-- Title Section -->
                 <h2 id="modal-title" class="scroll-title"></h2>
