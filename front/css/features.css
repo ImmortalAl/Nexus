@@ -1192,7 +1192,9 @@ body.light-theme .debate-position h4 {
     width: 90vw;
     max-height: 80vh;
     overflow: hidden;
-    box-shadow: 
+    display: flex;
+    flex-direction: column;
+    box-shadow:
         0 25px 50px rgba(0, 0, 0, 0.3),
         0 0 0 1px rgba(var(--accent-rgb, 255, 94, 120), 0.2),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -1207,7 +1209,8 @@ body.light-theme .debate-position h4 {
 .nexus-profile-preview__header {
     position: relative;
     padding: 1.5rem;
-    background: linear-gradient(135deg, 
+    flex-shrink: 0;
+    background: linear-gradient(135deg,
         rgba(var(--accent-rgb, 255, 94, 120), 0.1) 0%,
         rgba(var(--secondary-rgb, 76, 175, 80), 0.1) 100%);
     border-bottom: 1px solid rgba(var(--accent-rgb, 255, 94, 120), 0.2);
@@ -1255,8 +1258,9 @@ body.light-theme .debate-position h4 {
 
 .nexus-profile-preview__body {
     padding: 1.5rem;
-    max-height: 400px;
+    flex: 1;
     overflow-y: auto;
+    min-height: 0; /* Important for flexbox scroll */
 }
 
 .nexus-profile-preview__bio {
@@ -1320,6 +1324,7 @@ body.light-theme .debate-position h4 {
     border-top: 1px solid rgba(var(--accent-rgb, 255, 94, 120), 0.2);
     display: flex;
     gap: 1rem;
+    flex-shrink: 0;
 }
 
 .nexus-profile-preview__actions .nexus-btn {
