@@ -9,8 +9,8 @@ const { chromium } = require('playwright');
 
   const page = await context.newPage();
 
-  // Navigate to the page - use the correct Netlify URL
-  await page.goto('file:///home/immortalal/sites/Nexus/front/index.html', { waitUntil: 'load' });
+  // Navigate to the live deployed site
+  await page.goto('https://immortalnexus.netlify.app/', { waitUntil: 'load' });
 
   // Wait for content to load
   await page.waitForTimeout(5000);

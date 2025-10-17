@@ -1698,10 +1698,14 @@ body.light-theme .nexus-avatar {
     border-radius: var(--border-radius);
     transition: var(--transition);
     cursor: pointer;
-    min-width: 120px;
+    width: 140px;
+    min-height: 70px;
     text-align: center;
     border: 2px solid var(--accent);
     animation: nodeGlow 3s ease-in-out infinite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 @keyframes nodeGlow {
