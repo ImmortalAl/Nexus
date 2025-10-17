@@ -1066,7 +1066,7 @@ body.light-theme .debate-position h4 {
 /* Mindmap Preview Section - Consistent with highlight sections */
 .mindmap-preview {
     height: 500px;
-    background: linear-gradient(135deg, 
+    background: linear-gradient(135deg,
         rgba(26, 26, 51, 0.9) 0%,
         rgba(42, 64, 102, 0.85) 50%,
         rgba(13, 13, 26, 0.95) 100%);
@@ -1076,6 +1076,44 @@ body.light-theme .debate-position h4 {
     border: 2px solid rgba(255, 94, 120, 0.25);
     max-width: 1440px;
     overflow: hidden;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+}
+
+.mindmap-preview::before {
+    content: '\f0b2';  /* FontAwesome hand pointer icon */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.5rem;
+    color: rgba(255, 94, 120, 0.6);
+    animation: pulseHand 2s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 10;
+}
+
+@keyframes pulseHand {
+    0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+    50% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+}
+
+.mindmap-preview.panning {
+    cursor: grabbing;
+}
+
+.mindmap-preview.panning::before {
+    display: none;
+}
+
+.mindmap-preview-nodes,
+.mindmap-preview-connections {
+    transition: transform 0.1s ease-out;
+    will-change: transform;
 }
 
 .mindmap-node {

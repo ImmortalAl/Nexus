@@ -25,7 +25,8 @@
       "Write(/home/immortalal/sites/Nexus/**)",
       "Edit(/home/immortalal/sites/Nexus/**)",
       "Grep(/home/immortalal/sites/Nexus/**)",
-      "Glob(/home/immortalal/sites/Nexus/**)"
+      "Glob(/home/immortalal/sites/Nexus/**)",
+      "Bash(sudo npx playwright install-deps:*)"
     ],
     "deny": [],
     "ask": []

@@ -11,10 +11,19 @@ class MindmapPreview {
         this.searchInput = document.getElementById('mindmapPreviewSearch');
         this.searchBtn = document.getElementById('mindmapPreviewSearchBtn');
         this.statsContainer = document.getElementById('mindmapStats');
-        
+
         this.data = null;
         this.selectedNode = null;
-        
+
+        // Pan/drag state
+        this.isPanning = false;
+        this.startPanX = 0;
+        this.startPanY = 0;
+        this.panOffsetX = 0;
+        this.panOffsetY = 0;
+        this.currentTranslateX = 0;
+        this.currentTranslateY = 0;
+
         this.init();
     }
     
@@ -249,19 +258,96 @@ class MindmapPreview {
         this.searchBtn.addEventListener('click', () => {
             this.handleSearch();
         });
-        
+
         this.searchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 this.handleSearch();
             }
         });
-        
+
         // Hide tooltip when clicking outside
         document.addEventListener('click', (e) => {
             if (!this.tooltip.contains(e.target) && !this.nodesContainer.contains(e.target)) {
                 this.hideTooltip();
             }
         });
+
+        // Pan/drag functionality for desktop
+        this.container.addEventListener('mousedown', (e) => {
+            // Don't pan if clicking on a node or search input
+            if (e.target.closest('.mindmap-preview-node') || e.target.closest('.mindmap-search-container')) {
+                return;
+            }
+            this.startPan(e.clientX, e.clientY);
+            e.preventDefault();
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (this.isPanning) {
+                this.pan(e.clientX, e.clientY);
+                e.preventDefault();
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            this.endPan();
+        });
+
+        // Touch support for mobile
+        this.container.addEventListener('touchstart', (e) => {
+            // Don't pan if touching a node or search input
+            if (e.target.closest('.mindmap-preview-node') || e.target.closest('.mindmap-search-container')) {
+                return;
+            }
+            if (e.touches.length === 1) {
+                this.startPan(e.touches[0].clientX, e.touches[0].clientY);
+                e.preventDefault();
+            }
+        });
+
+        this.container.addEventListener('touchmove', (e) => {
+            if (this.isPanning && e.touches.length === 1) {
+                this.pan(e.touches[0].clientX, e.touches[0].clientY);
+                e.preventDefault();
+            }
+        });
+
+        this.container.addEventListener('touchend', () => {
+            this.endPan();
+        });
+    }
+
+    startPan(x, y) {
+        this.isPanning = true;
+        this.startPanX = x;
+        this.startPanY = y;
+        this.container.style.cursor = 'grabbing';
+        // Add visual feedback
+        this.container.classList.add('panning');
+    }
+
+    pan(x, y) {
+        if (!this.isPanning) return;
+
+        const deltaX = x - this.startPanX;
+        const deltaY = y - this.startPanY;
+
+        this.currentTranslateX = this.panOffsetX + deltaX;
+        this.currentTranslateY = this.panOffsetY + deltaY;
+
+        // Apply transform to both nodes and connections
+        this.nodesContainer.style.transform = `translate(${this.currentTranslateX}px, ${this.currentTranslateY}px)`;
+        this.connectionsContainer.style.transform = `translate(${this.currentTranslateX}px, ${this.currentTranslateY}px)`;
+    }
+
+    endPan() {
+        if (!this.isPanning) return;
+
+        this.isPanning = false;
+        this.panOffsetX = this.currentTranslateX;
+        this.panOffsetY = this.currentTranslateY;
+        this.container.style.cursor = 'grab';
+        this.container.classList.remove('panning');
     }
     
     handleSearch() {

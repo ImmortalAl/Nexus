@@ -1621,12 +1621,14 @@ body.light-theme .nexus-avatar {
     gap: 1rem;
     font-size: 0.9rem;
     color: var(--text-secondary);
+    flex-wrap: wrap;
 }
 
 .stats-item {
     display: flex;
     align-items: center;
     gap: 0.25rem;
+    white-space: nowrap;
 }
 
 .stats-activity {
@@ -1679,11 +1681,22 @@ body.light-theme .nexus-avatar {
     min-width: 120px;
     text-align: center;
     border: 2px solid var(--accent);
+    animation: nodeGlow 3s ease-in-out infinite;
+}
+
+@keyframes nodeGlow {
+    0%, 100% {
+        box-shadow: 0 0 8px rgba(var(--accent-rgb, 255, 94, 120), 0.3);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(var(--accent-rgb, 255, 94, 120), 0.6);
+    }
 }
 
 .mindmap-preview-node:hover {
     transform: scale(1.05);
     box-shadow: 0 0 15px rgba(var(--accent-rgb, 255, 94, 120), 0.5);
+    animation: none;
 }
 
 .mindmap-preview-node.selected {
