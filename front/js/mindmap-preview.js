@@ -184,10 +184,11 @@ class MindmapPreview {
             maxY = Math.max(maxY, node.position.y + nodeHeight);
         });
 
-        // Size the container to fit all nodes with padding
+        // Calculate canvas size to fit all nodes
         const canvasWidth = maxX - minX + (padding * 2);
         const canvasHeight = maxY - minY + (padding * 2);
 
+        // Set container sizes to actual canvas dimensions (nodes will be actual size)
         this.nodesContainer.style.width = canvasWidth + 'px';
         this.nodesContainer.style.height = canvasHeight + 'px';
 
@@ -268,8 +269,10 @@ class MindmapPreview {
         // Clear existing connections
         this.connectionsContainer.innerHTML = '';
 
-        // Set SVG dimensions to match the expanded canvas
+        // Set SVG dimensions to match the canvas
         const { minX, minY, padding, canvasWidth, canvasHeight } = this.canvasBounds;
+
+        // Make SVG same size as canvas so coordinates match 1:1
         this.connectionsContainer.setAttribute('width', canvasWidth);
         this.connectionsContainer.setAttribute('height', canvasHeight);
         this.connectionsContainer.setAttribute('viewBox', `0 0 ${canvasWidth} ${canvasHeight}`);
