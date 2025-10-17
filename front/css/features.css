@@ -1664,11 +1664,12 @@ body .floating-buttons button.theme-toggle#themeToggle {
     background: var(--background-secondary);
     border-radius: 16px;
     padding: 2.5rem;
+    padding-bottom: 3rem; /* Extra padding at bottom for buttons */
     border: 1px solid rgba(255, 255, 255, 0.08);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     text-align: center;
     position: relative;
-    overflow: visible;  /* Changed from hidden to visible to show buttons */
+    overflow: visible;  /* Allow buttons to be visible */
     min-height: 480px;
     margin-bottom: 0;
     display: flex;
@@ -1677,6 +1678,7 @@ body .floating-buttons button.theme-toggle#themeToggle {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
     -webkit-tap-highlight-color: transparent;
     isolation: isolate;  /* Create stacking context to contain tap highlights */
+    contain: layout;  /* CSS containment for better isolation */
 }
 
 .soul-highlight-card::before {
@@ -1892,6 +1894,24 @@ body .floating-buttons button.theme-toggle#themeToggle {
     border-color: rgba(255, 94, 120, 0.5) !important;
     background: linear-gradient(135deg, #2a2a4d, #3a5080) !important;
     filter: brightness(1.15);
+}
+
+/* Active/Focus states to prevent background overflow */
+.soul-highlight-card .soul-message-btn:active,
+.soul-highlight-card .soul-message-btn:focus,
+.soul-highlight-card .soul-profile-btn:active,
+.soul-highlight-card .soul-profile-btn:focus {
+    outline: none !important;
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+.soul-highlight-card .soul-message-btn:active {
+    background: linear-gradient(135deg, #ff5268, #ff7f93) !important;
+}
+
+.soul-highlight-card .soul-profile-btn:active {
+    background: linear-gradient(135deg, rgba(32, 48, 80, 0.9), rgba(48, 64, 112, 0.9)) !important;
 }
 
 .soul-card-featured .soul-message-btn:hover {
@@ -2485,14 +2505,14 @@ body .floating-buttons button.theme-toggle#themeToggle {
     .soul-highlight-card .soul-profile-btn {
         width: calc(50% - 0.25rem) !important;
         max-width: none !important;
-        flex: 0 0 auto !important;
+        flex: 0 0 calc(50% - 0.25rem) !important;
         justify-content: center !important;
         padding: 0.6rem 0.8rem !important;
         font-size: 0.85rem !important;
         border-radius: 20px !important;
         min-width: auto !important;
         margin: 0 !important;
-        display: block !important;
+        display: inline-flex !important;
     }
     
     .agora-subtitle {
