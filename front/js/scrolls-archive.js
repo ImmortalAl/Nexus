@@ -201,7 +201,7 @@ class ScrollsArchive {
 
         try {
             // Get current user
-            const userResponse = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/auth/me`, {
+            const userResponse = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/users/me`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
 
