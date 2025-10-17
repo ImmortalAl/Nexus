@@ -233,25 +233,10 @@ class MindmapPreview {
         const { canvasWidth, canvasHeight } = this.canvasBounds;
         const containerRect = this.container.getBoundingClientRect();
 
-        // Calculate offset to center the canvas in the viewport
-        // If canvas is smaller than viewport, center it
-        // If canvas is larger, show from the left/top
-        let offsetX = 0;
-        let offsetY = 0;
-
-        if (canvasWidth < containerRect.width) {
-            offsetX = (containerRect.width - canvasWidth) / 2;
-        } else {
-            // Start from left edge with small offset
-            offsetX = 20;
-        }
-
-        if (canvasHeight < containerRect.height) {
-            offsetY = (containerRect.height - canvasHeight) / 2;
-        } else {
-            // Start from top with small offset
-            offsetY = 20;
-        }
+        // Always center the canvas content in the viewport
+        // This shows the middle of the node network on initial load
+        const offsetX = (containerRect.width - canvasWidth) / 2;
+        const offsetY = (containerRect.height - canvasHeight) / 2;
 
         // Apply initial transform
         this.panOffsetX = offsetX;
