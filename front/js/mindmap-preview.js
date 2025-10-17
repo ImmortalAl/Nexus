@@ -161,6 +161,29 @@ class MindmapPreview {
 
         // Store bounds for connection rendering
         this.canvasBounds = { minX, minY, maxX, maxY, padding, canvasWidth, canvasHeight };
+
+        // Center the canvas initially to show more nodes
+        this.centerCanvas();
+    }
+
+    centerCanvas() {
+        if (!this.canvasBounds) return;
+
+        const { canvasWidth, canvasHeight } = this.canvasBounds;
+        const containerRect = this.container.getBoundingClientRect();
+
+        // Calculate offset to center the canvas in the viewport
+        const offsetX = (containerRect.width - canvasWidth) / 2;
+        const offsetY = (containerRect.height - canvasHeight) / 2;
+
+        // Apply initial transform
+        this.panOffsetX = offsetX;
+        this.panOffsetY = offsetY;
+        this.currentTranslateX = offsetX;
+        this.currentTranslateY = offsetY;
+
+        this.nodesContainer.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+        this.connectionsContainer.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
     }
     
     renderConnections() {
@@ -197,20 +220,24 @@ class MindmapPreview {
                 line.setAttribute('stroke-width', '2');
                 line.classList.add('mindmap-connection');
 
-                // Add relationship label
-                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                const midX = (x1 + x2) / 2;
-                const midY = (y1 + y2) / 2;
-                text.setAttribute('x', midX);
-                text.setAttribute('y', midY - 5);
-                text.setAttribute('text-anchor', 'middle');
-                text.setAttribute('fill', '#f1f1f1');
-                text.setAttribute('font-size', '12px');
-                text.textContent = edge.relationshipLabel;
-                text.classList.add('mindmap-label');
+                // Add relationship label (only if label exists and is meaningful)
+                if (edge.relationshipLabel && edge.relationshipLabel.trim()) {
+                    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    const midX = (x1 + x2) / 2;
+                    const midY = (y1 + y2) / 2;
+                    text.setAttribute('x', midX);
+                    text.setAttribute('y', midY - 5);
+                    text.setAttribute('text-anchor', 'middle');
+                    text.setAttribute('fill', '#f1f1f1');
+                    text.setAttribute('font-size', '14px');
+                    text.setAttribute('font-weight', '500');
+                    text.textContent = edge.relationshipLabel;
+                    text.classList.add('mindmap-label');
+
+                    this.connectionsContainer.appendChild(text);
+                }
 
                 this.connectionsContainer.appendChild(line);
-                this.connectionsContainer.appendChild(text);
             }
         });
     }
