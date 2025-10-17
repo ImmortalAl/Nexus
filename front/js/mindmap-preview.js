@@ -169,37 +169,24 @@ class MindmapPreview {
             return;
         }
 
-        // Calculate bounding box for all nodes
-        const nodeWidth = 140; // Fixed width for consistency
-        const nodeHeight = 70; // Fixed height for consistency
-        const padding = 80; // extra padding around nodes
+        // Calculate smart layout for preview
+        const layout = this.calculateCompactLayout();
 
-        let minX = Infinity, minY = Infinity;
-        let maxX = -Infinity, maxY = -Infinity;
-
-        this.data.nodes.forEach(node => {
-            minX = Math.min(minX, node.position.x);
-            minY = Math.min(minY, node.position.y);
-            maxX = Math.max(maxX, node.position.x + nodeWidth);
-            maxY = Math.max(maxY, node.position.y + nodeHeight);
-        });
-
-        // Calculate canvas size to fit all nodes
-        const canvasWidth = maxX - minX + (padding * 2);
-        const canvasHeight = maxY - minY + (padding * 2);
-
-        // Set container sizes to actual canvas dimensions (nodes will be actual size)
-        this.nodesContainer.style.width = canvasWidth + 'px';
-        this.nodesContainer.style.height = canvasHeight + 'px';
-
-        this.data.nodes.forEach(node => {
+        // Apply positions from layout
+        layout.nodes.forEach(nodeLayout => {
+            const node = nodeLayout.node;
             const nodeElement = document.createElement('div');
             nodeElement.className = 'mindmap-preview-node';
             nodeElement.dataset.nodeId = node._id;
 
-            // Set position relative to canvas origin with padding
-            nodeElement.style.left = (node.position.x - minX + padding) + 'px';
-            nodeElement.style.top = (node.position.y - minY + padding) + 'px';
+            // Use calculated layout positions
+            nodeElement.style.left = nodeLayout.x + 'px';
+            nodeElement.style.top = nodeLayout.y + 'px';
+
+            // Mark central node
+            if (nodeLayout.isCenter) {
+                nodeElement.classList.add('central-node');
+            }
 
             // Set credibility class
             const credibilityClass = this.getCredibilityClass(node.credibility.score);
@@ -220,89 +207,168 @@ class MindmapPreview {
             this.nodesContainer.appendChild(nodeElement);
         });
 
-        // Store bounds for connection rendering
-        this.canvasBounds = { minX, minY, maxX, maxY, padding, canvasWidth, canvasHeight };
+        // Store layout for connection rendering
+        this.layout = layout;
 
-        // Center the canvas initially to show more nodes
+        // Center the canvas initially
         this.centerCanvas();
     }
 
-    centerCanvas() {
-        if (!this.canvasBounds) return;
+    calculateCompactLayout() {
+        // Constants for preview layout
+        const nodeWidth = 140;
+        const nodeHeight = 70;
 
-        const { canvasWidth, canvasHeight } = this.canvasBounds;
+        // Get container dimensions - fallback to computed style if needed
         const containerRect = this.container.getBoundingClientRect();
+        let viewWidth = containerRect.width;
+        let viewHeight = containerRect.height;
 
-        // Always center the canvas content in the viewport
-        // This shows the middle of the node network on initial load
-        const offsetX = (containerRect.width - canvasWidth) / 2;
-        const offsetY = (containerRect.height - canvasHeight) / 2;
+        // If container has no dimensions yet, use the parent or defaults
+        if (!viewWidth || viewWidth < 100) {
+            const computedStyle = window.getComputedStyle(this.container);
+            viewWidth = parseInt(computedStyle.width) || 600;
+        }
+        if (!viewHeight || viewHeight < 100) {
+            const computedStyle = window.getComputedStyle(this.container);
+            viewHeight = parseInt(computedStyle.height) || 500;
+        }
 
-        // Apply initial transform
-        this.panOffsetX = offsetX;
-        this.panOffsetY = offsetY;
-        this.currentTranslateX = offsetX;
-        this.currentTranslateY = offsetY;
+        // Calculate node degrees (connection count)
+        const nodeDegrees = new Map();
+        this.data.nodes.forEach(node => {
+            const connections = this.data.edges.filter(
+                edge => edge.sourceNode === node._id || edge.targetNode === node._id
+            );
+            nodeDegrees.set(node._id, connections.length);
+        });
 
-        this.nodesContainer.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
-        this.connectionsContainer.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+        // Find central node (most connected, or first if tie)
+        let centralNode = this.data.nodes[0];
+        let maxDegree = -1;
+        this.data.nodes.forEach(node => {
+            const degree = nodeDegrees.get(node._id);
+            if (degree > maxDegree) {
+                maxDegree = degree;
+                centralNode = node;
+            }
+        });
+
+        // Position central node at center of view
+        const centerX = viewWidth / 2 - nodeWidth / 2;
+        const centerY = viewHeight / 2 - nodeHeight / 2;
+
+        const positions = [];
+
+        // Add central node
+        positions.push({
+            node: centralNode,
+            x: centerX,
+            y: centerY,
+            isCenter: true
+        });
+
+        // Position other nodes in a compact circle around center
+        const otherNodes = this.data.nodes.filter(n => n._id !== centralNode._id);
+        const radius = 150; // Compact radius for "at a glance" view
+        const angleStep = (Math.PI * 2) / Math.max(otherNodes.length, 1);
+
+        otherNodes.forEach((node, index) => {
+            const angle = angleStep * index;
+            const x = centerX + Math.cos(angle) * radius;
+            const y = centerY + Math.sin(angle) * radius;
+
+            positions.push({
+                node: node,
+                x: x,
+                y: y,
+                isCenter: false
+            });
+        });
+
+        return {
+            nodes: positions,
+            centerX: centerX + nodeWidth / 2,
+            centerY: centerY + nodeHeight / 2,
+            width: viewWidth,
+            height: viewHeight
+        };
+    }
+
+    centerCanvas() {
+        if (!this.layout) return;
+
+        // Layout is already centered to viewport, just set container sizes
+        this.nodesContainer.style.width = this.layout.width + 'px';
+        this.nodesContainer.style.height = this.layout.height + 'px';
+
+        // Initialize pan state (nodes already positioned optimally)
+        this.panOffsetX = 0;
+        this.panOffsetY = 0;
+        this.currentTranslateX = 0;
+        this.currentTranslateY = 0;
+
+        this.nodesContainer.style.transform = 'translate(0px, 0px)';
+        this.connectionsContainer.style.transform = 'translate(0px, 0px)';
     }
     
     renderConnections() {
-        if (!this.data || !this.data.edges || !this.canvasBounds) return;
+        if (!this.data || !this.data.edges || !this.layout) return;
 
         // Clear existing connections
         this.connectionsContainer.innerHTML = '';
 
-        // Set SVG dimensions to match the canvas
-        const { minX, minY, padding, canvasWidth, canvasHeight } = this.canvasBounds;
+        // Set SVG dimensions to match the layout
+        const { width, height } = this.layout;
 
-        // Make SVG same size as canvas so coordinates match 1:1
-        this.connectionsContainer.setAttribute('width', canvasWidth);
-        this.connectionsContainer.setAttribute('height', canvasHeight);
-        this.connectionsContainer.setAttribute('viewBox', `0 0 ${canvasWidth} ${canvasHeight}`);
-        this.connectionsContainer.style.width = canvasWidth + 'px';
-        this.connectionsContainer.style.height = canvasHeight + 'px';
+        this.connectionsContainer.setAttribute('width', width);
+        this.connectionsContainer.setAttribute('height', height);
+        this.connectionsContainer.setAttribute('viewBox', `0 0 ${width} ${height}`);
+        this.connectionsContainer.style.width = width + 'px';
+        this.connectionsContainer.style.height = height + 'px';
+
+        // Create a map of node positions from layout
+        const nodePositions = new Map();
+        this.layout.nodes.forEach(nodeLayout => {
+            nodePositions.set(nodeLayout.node._id, {
+                x: nodeLayout.x + 70, // Center of node (width/2)
+                y: nodeLayout.y + 35  // Center of node (height/2)
+            });
+        });
 
         this.data.edges.forEach(edge => {
-            const sourceNode = this.data.nodes.find(n => n._id === edge.sourceNode);
-            const targetNode = this.data.nodes.find(n => n._id === edge.targetNode);
+            const sourcePos = nodePositions.get(edge.sourceNode);
+            const targetPos = nodePositions.get(edge.targetNode);
 
-            if (sourceNode && targetNode) {
+            if (sourcePos && targetPos) {
                 const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                // Adjust coordinates to match the repositioned nodes
-                // Use fixed node dimensions: width=140, height=70
-                const x1 = sourceNode.position.x - minX + padding + 70; // Center of node (width/2)
-                const y1 = sourceNode.position.y - minY + padding + 35;  // Center of node (height/2)
-                const x2 = targetNode.position.x - minX + padding + 70;
-                const y2 = targetNode.position.y - minY + padding + 35;
 
-                line.setAttribute('x1', x1);
-                line.setAttribute('y1', y1);
-                line.setAttribute('x2', x2);
-                line.setAttribute('y2', y2);
+                line.setAttribute('x1', sourcePos.x);
+                line.setAttribute('y1', sourcePos.y);
+                line.setAttribute('x2', targetPos.x);
+                line.setAttribute('y2', targetPos.y);
                 line.setAttribute('stroke', 'rgba(233, 69, 96, 0.6)');
                 line.setAttribute('stroke-width', '2');
                 line.classList.add('mindmap-connection');
 
+                this.connectionsContainer.appendChild(line);
+
                 // Add relationship label (only if label exists and is meaningful)
                 if (edge.relationshipLabel && edge.relationshipLabel.trim()) {
                     const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                    const midX = (x1 + x2) / 2;
-                    const midY = (y1 + y2) / 2;
+                    const midX = (sourcePos.x + targetPos.x) / 2;
+                    const midY = (sourcePos.y + targetPos.y) / 2;
                     text.setAttribute('x', midX);
                     text.setAttribute('y', midY - 5);
                     text.setAttribute('text-anchor', 'middle');
                     text.setAttribute('fill', '#f1f1f1');
-                    text.setAttribute('font-size', '14px');
+                    text.setAttribute('font-size', '12px');
                     text.setAttribute('font-weight', '500');
                     text.textContent = edge.relationshipLabel;
                     text.classList.add('mindmap-label');
 
                     this.connectionsContainer.appendChild(text);
                 }
-
-                this.connectionsContainer.appendChild(line);
             }
         });
     }

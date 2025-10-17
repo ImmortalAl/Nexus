@@ -1744,6 +1744,12 @@ body.light-theme .nexus-avatar {
     background: linear-gradient(135deg, var(--secondary), #2d1b1b);
 }
 
+.mindmap-preview-node.central-node {
+    border-width: 3px;
+    box-shadow: 0 0 25px rgba(var(--accent-rgb, 255, 94, 120), 0.7);
+    z-index: 10;
+}
+
 .mindmap-preview-node h4 {
     margin: 0;
     font-size: 0.95rem;
