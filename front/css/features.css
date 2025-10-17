@@ -1669,7 +1669,7 @@ body .floating-buttons button.theme-toggle#themeToggle {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     text-align: center;
     position: relative;
-    overflow: visible;  /* Allow buttons to be visible */
+    overflow: hidden;  /* Contain the hover overlay within card boundaries */
     min-height: 480px;
     margin-bottom: 0;
     display: flex;
@@ -2496,23 +2496,26 @@ body .floating-buttons button.theme-toggle#themeToggle {
         flex-direction: row !important;
         gap: 0.5rem !important;
         margin-top: 1rem !important;
-        padding: 0 !important;
+        padding: 0 0.25rem !important; /* Add small horizontal padding for perfect centering */
         align-items: center !important;
         justify-content: center !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
     }
-    
+
     .soul-highlight-card .soul-message-btn,
     .soul-highlight-card .soul-profile-btn {
-        width: calc(50% - 0.25rem) !important;
-        max-width: none !important;
-        flex: 0 0 calc(50% - 0.25rem) !important;
+        flex: 1 1 45% !important; /* Use flexible basis for better responsive behavior */
+        max-width: 150px !important; /* Limit max width for better mobile appearance */
+        min-width: 100px !important; /* Ensure minimum usable size */
         justify-content: center !important;
+        align-items: center !important;
         padding: 0.6rem 0.8rem !important;
         font-size: 0.85rem !important;
         border-radius: 20px !important;
-        min-width: auto !important;
         margin: 0 !important;
-        display: inline-flex !important;
+        display: flex !important;
+        text-align: center !important;
     }
     
     .agora-subtitle {
