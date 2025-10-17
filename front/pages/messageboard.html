@@ -292,6 +292,9 @@
     <script src="../components/shared/activeUsers.js?v=1.8"></script>
     <script src="../components/shared/messageModal.js?v=6.9"></script>
 
+    <!-- Unified Voting System -->
+    <script src="../js/shared/unifiedVoting.js?v=1.6"></script>
+
     <!-- Democracy 3.0 JavaScript -->
     <script src="../js/democracy/anonymous-submissions.js?v=1.1"></script>
     <script src="../js/democracy/community-moderation.js?v=1.4"></script>
@@ -583,12 +586,18 @@
             const createdDate = new Date(thread.createdAt).toLocaleDateString();
             const lastActive = thread.updatedAt ? new Date(thread.updatedAt).toLocaleDateString() : createdDate;
             
+            // Calculate net votes (upvotes - downvotes)
+            const upvotes = Array.isArray(thread.upvotes) ? thread.upvotes.length : (thread.upvotes || 0);
+            const downvotes = Array.isArray(thread.downvotes) ? thread.downvotes.length : (thread.downvotes || 0);
+            const netVotes = upvotes - downvotes;
+
             return `
             <div class="thread ${thread.isAnonymous ? 'anonymous' : ''}" data-id="${thread._id}">
                 <div class="thread-voting">
                     <button class="vote-btn ${!isAuthenticated ? 'disabled' : ''}" data-action="upvote-thread" aria-label="Upvote" ${!isAuthenticated ? 'disabled' : ''}>
                         <i class="fas fa-arrow-up"></i>
                     </button>
+                    <span class="vote-count" data-content-type="echo" data-content-id="${thread._id}">${netVotes}</span>
                     <button class="vote-btn ${!isAuthenticated ? 'disabled' : ''}" data-action="downvote-thread" aria-label="Downvote" ${!isAuthenticated ? 'disabled' : ''}>
                         <i class="fas fa-arrow-down"></i>
                     </button>
@@ -1138,11 +1147,17 @@
                 const isAuthor = window.authManager.isLoggedIn() && window.authManager.getUser()?._id === reply.author?._id;
                 const hasSubsequentReplies = index < replies.length - 1; // Check if there are replies after this one
                 const canEdit = isAuthor && !reply.isAnonymous && !hasSubsequentReplies;
-                
+
+                // Calculate net votes for replies
+                const replyUpvotes = Array.isArray(reply.upvotes) ? reply.upvotes.length : (reply.upvotes || 0);
+                const replyDownvotes = Array.isArray(reply.downvotes) ? reply.downvotes.length : (reply.downvotes || 0);
+                const replyNetVotes = replyUpvotes - replyDownvotes;
+
                 return `
                 <div class="reply ${reply.isAnonymous ? 'anonymous' : ''}" data-id="${reply._id}">
                      <div class="thread-voting reply-voting">
                         <button class="vote-btn" data-action="upvote-reply" aria-label="Upvote"><i class="fas fa-arrow-up"></i></button>
+                        <span class="vote-count" data-content-type="reply" data-content-id="${reply._id}" data-parent-id="${threadId}">${replyNetVotes}</span>
                         <button class="vote-btn" data-action="downvote-reply" aria-label="Downvote"><i class="fas fa-arrow-down"></i></button>
                     </div>
                     <div class="reply-main" data-thread-id="${threadId}">
@@ -1830,56 +1845,68 @@
             }
         }
 
-        // Event delegation for voting
+        // Event delegation for voting using unified system
         document.querySelector('.lyceum-grid').addEventListener('click', async (e) => {
             const voteBtn = e.target.closest('.vote-btn');
             if (!voteBtn) return;
 
             if (!window.authManager.isLoggedIn()) {
-                return alert('You must be logged in to vote.');
+                window.authManager.showLogin();
+                return;
             }
 
             const action = voteBtn.dataset.action;
             const isReply = voteBtn.closest('.reply');
             const element = isReply || voteBtn.closest('.thread');
             const id = element.dataset.id;
-            
-            let voteType, endpoint;
 
+            if (!id) {
+                console.error('[Voting] No content ID found');
+                return;
+            }
+
+            // Determine vote type
+            let voteType;
             if (action.includes('upvote')) {
                 voteType = 'upvote';
             } else if (action.includes('downvote')) {
-                voteType = 'downvote';
+                voteType = 'challenge'; // Unified system uses 'challenge' for downvotes
             } else {
                 return;
             }
 
-            endpoint = isReply 
-                ? `/threads/${element.closest('.reply-main').dataset.threadId}/replies/${id}/vote` 
-                : `/threads/${id}/vote`;
-            
-            try {
-                const response = await window.apiClient.post(endpoint, { vote: voteType });
-                
-                // Hide vote count since you don't want scores displayed
-                const voteCountElement = element.querySelector('.vote-count');
-                if (voteCountElement) {
-                    voteCountElement.style.display = 'none';
-                }
+            // Determine content type and parent ID
+            const contentType = isReply ? 'reply' : 'echo';
+            const parentId = isReply ? element.closest('.reply-main')?.dataset.threadId : null;
 
-                // Update active button state based on current vote
-                element.querySelectorAll('.vote-btn.active').forEach(btn => btn.classList.remove('active'));
-                
-                if (response.currentVote) {
-                    // User has an active vote
-                    const activeBtn = element.querySelector(`[data-action*="${response.currentVote}"]`);
-                    if (activeBtn) {
-                        activeBtn.classList.add('active');
+            try {
+                // Use unified voting system
+                const response = await window.unifiedVoting.vote(contentType, id, voteType, parentId);
+
+                if (response) {
+                    // Update vote count display
+                    const voteCountElement = element.querySelector('.vote-count');
+                    if (voteCountElement) {
+                        const netVotes = response.upvotes - response.challenges;
+                        voteCountElement.textContent = netVotes;
+                    }
+
+                    // Update active button state
+                    element.querySelectorAll('.vote-btn.active').forEach(btn => btn.classList.remove('active'));
+
+                    if (response.userUpvoted) {
+                        element.querySelector('[data-action*="upvote"]')?.classList.add('active');
+                    } else if (response.userChallenged) {
+                        element.querySelector('[data-action*="downvote"]')?.classList.add('active');
                     }
                 }
 
             } catch (error) {
-                alert(`Error: ${error.error || 'Could not cast vote.'}`);
+                const errorMessage = error.message || error.error || 'Could not cast vote.';
+                // Only alert for unexpected errors (not "already voted" or "own content")
+                if (!errorMessage.includes('already') && !errorMessage.includes('cannot vote on your own')) {
+                    alert(`Error: ${errorMessage}`);
+                }
             }
         });
 
