@@ -1330,11 +1330,11 @@ body.light-theme .nexus-avatar {
     position: relative;
     background: var(--background-elevated);
     border-radius: 16px;
-    max-width: 480px;
+    max-width: 560px;  /* Increased from 480px to accommodate both buttons */
     width: 90vw;
     max-height: 80vh;
     overflow: hidden;
-    box-shadow: 
+    box-shadow:
         0 25px 50px rgba(0, 0, 0, 0.3),
         0 0 0 1px rgba(var(--accent-rgb, 255, 94, 120), 0.2),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -1467,6 +1467,9 @@ body.light-theme .nexus-avatar {
     border-top: 1px solid rgba(var(--accent-rgb, 255, 94, 120), 0.2);
     display: flex;
     gap: 1rem;
+    justify-content: space-between;  /* Ensure buttons spread evenly */
+    align-items: center;
+    overflow: visible;  /* Prevent any button clipping */
 }
 
 .nexus-profile-preview__actions .nexus-btn {

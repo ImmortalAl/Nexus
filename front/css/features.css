@@ -1188,7 +1188,7 @@ body.light-theme .debate-position h4 {
     position: relative;
     background: var(--background-elevated);
     border-radius: 16px;
-    max-width: 480px;
+    max-width: 560px;  /* Increased from 480px to accommodate both buttons */
     width: 90vw;
     max-height: 80vh;
     overflow: hidden;
@@ -1325,6 +1325,9 @@ body.light-theme .debate-position h4 {
     display: flex;
     gap: 1rem;
     flex-shrink: 0;
+    justify-content: space-between;  /* Ensure buttons spread evenly */
+    align-items: center;
+    overflow: visible;  /* Prevent any button clipping */
 }
 
 .nexus-profile-preview__actions .nexus-btn {
