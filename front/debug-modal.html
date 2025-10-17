@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modal Debug Tool</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #1a1a33;
+            color: #f0e6ff;
+        }
+        .debug-output {
+            background: #0d0d1a;
+            padding: 20px;
+            border: 2px solid #ff5e78;
+            border-radius: 8px;
+            margin: 20px 0;
+            white-space: pre-wrap;
+        }
+        button {
+            background: #ff5e78;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .sticky { color: #ff5e78; font-weight: bold; }
+        .relative { color: #4caf50; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Modal Header Debug Tool</h1>
+    <p>This will check the actual computed styles of .modal-header-bar on the live site</p>
+
+    <button onclick="runDiagnostic()">Run Diagnostic</button>
+    <button onclick="clearOutput()">Clear</button>
+
+    <div id="output" class="debug-output">
+Ready to diagnose...
+    </div>
+
+    <script>
+        function runDiagnostic() {
+            const output = document.getElementById('output');
+            let report = '=== MODAL HEADER DIAGNOSTIC REPORT ===\n\n';
+
+            // Check if we're on the right page
+            const currentPage = window.location.pathname;
+            report += `Current Page: ${currentPage}\n\n`;
+
+            // Find modal header bar
+            const headerBar = document.querySelector('.modal-header-bar');
+            if (!headerBar) {
+                report += '❌ ERROR: .modal-header-bar not found!\n';
+                report += 'Please open a scroll modal first, then run this diagnostic.\n';
+                output.textContent = report;
+                return;
+            }
+
+            report += '✓ Found .modal-header-bar element\n\n';
+
+            // Get computed styles
+            const computed = window.getComputedStyle(headerBar);
+            const position = computed.position;
+            const top = computed.top;
+            const zIndex = computed.zIndex;
+
+            report += '--- COMPUTED STYLES ---\n';
+            report += `position: ${position} ${position === 'sticky' ? '🚨 STICKY DETECTED!' : position === 'relative' ? '✓ CORRECT' : '⚠️ UNEXPECTED'}\n`;
+            report += `top: ${top}\n`;
+            report += `z-index: ${zIndex}\n`;
+            report += `display: ${computed.display}\n`;
+            report += `overflow: ${computed.overflow}\n\n`;
+
+            // Check all stylesheets that might affect this element
+            report += '--- STYLESHEET ANALYSIS ---\n';
+            const sheets = Array.from(document.styleSheets);
+            let foundRules = [];
+
+            sheets.forEach((sheet, index) => {
+                try {
+                    const href = sheet.href || 'inline';
+                    const rules = Array.from(sheet.cssRules || []);
+
+                    rules.forEach(rule => {
+                        if (rule.selectorText && rule.selectorText.includes('modal-header-bar')) {
+                            const positionValue = rule.style.position;
+                            if (positionValue) {
+                                foundRules.push({
+                                    file: href.split('/').pop() || 'inline',
+                                    selector: rule.selectorText,
+                                    position: positionValue
+                                });
+                            }
+                        }
+                    });
+                } catch (e) {
+                    // CORS or other access error
+                }
+            });
+
+            if (foundRules.length > 0) {
+                foundRules.forEach(rule => {
+                    const marker = rule.position === 'sticky' ? '🚨' : '✓';
+                    report += `${marker} ${rule.file}: ${rule.selector} { position: ${rule.position}; }\n`;
+                });
+            } else {
+                report += '⚠️ No CSS rules found (might be CORS blocked)\n';
+            }
+
+            report += '\n--- INLINE STYLES ---\n';
+            report += `Inline style.position: ${headerBar.style.position || 'none'}\n`;
+
+            report += '\n--- PARENT CONTAINER ---\n';
+            const modalContent = headerBar.closest('.blog-modal-content');
+            if (modalContent) {
+                const parentComputed = window.getComputedStyle(modalContent);
+                report += `Parent position: ${parentComputed.position}\n`;
+                report += `Parent overflow: ${parentComputed.overflow}\n`;
+                report += `Parent display: ${parentComputed.display}\n`;
+            }
+
+            report += '\n--- CACHE INFO ---\n';
+            const blogModalLink = Array.from(document.querySelectorAll('link')).find(l =>
+                l.href && l.href.includes('blog-modal.css')
+            );
+            if (blogModalLink) {
+                report += `blog-modal.css URL: ${blogModalLink.href}\n`;
+                report += `Version: ${blogModalLink.href.match(/v=([0-9.]+)/)?.[1] || 'unknown'}\n`;
+            }
+
+            report += '\n--- RECOMMENDATIONS ---\n';
+            if (position === 'sticky') {
+                report += '🚨 PROBLEM CONFIRMED: Header is sticky!\n';
+                report += '1. Hard refresh browser (Ctrl+Shift+R)\n';
+                report += '2. Clear browser cache completely\n';
+                report += '3. Check if blog-modal.css v3.3 is actually loading\n';
+                report += '4. Try incognito/private window\n';
+            } else if (position === 'relative') {
+                report += '✓ Position is correct! If it still appears sticky visually,\n';
+                report += '  the issue might be elsewhere (parent container, JS, etc)\n';
+            }
+
+            output.textContent = report;
+        }
+
+        function clearOutput() {
+            document.getElementById('output').textContent = 'Ready to diagnose...';
+        }
+    </script>
+</body>
+</html>
