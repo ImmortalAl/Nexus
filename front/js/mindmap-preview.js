@@ -24,6 +24,12 @@ class MindmapPreview {
         this.currentTranslateX = 0;
         this.currentTranslateY = 0;
 
+        // Zoom state
+        this.zoomLevel = 1.0;
+        this.minZoom = 0.5;
+        this.maxZoom = 3.0;
+        this.zoomStep = 0.1;
+
         this.init();
     }
     
@@ -302,14 +308,14 @@ class MindmapPreview {
         this.nodesContainer.style.width = this.layout.width + 'px';
         this.nodesContainer.style.height = this.layout.height + 'px';
 
-        // Initialize pan state (nodes already positioned optimally)
+        // Initialize pan and zoom state (nodes already positioned optimally)
         this.panOffsetX = 0;
         this.panOffsetY = 0;
         this.currentTranslateX = 0;
         this.currentTranslateY = 0;
+        this.zoomLevel = 1.0;
 
-        this.nodesContainer.style.transform = 'translate(0px, 0px)';
-        this.connectionsContainer.style.transform = 'translate(0px, 0px)';
+        this.applyTransform();
     }
     
     renderConnections() {
@@ -506,6 +512,48 @@ class MindmapPreview {
         this.container.addEventListener('touchend', () => {
             this.endPan();
         });
+
+        // Zoom with Ctrl + scroll wheel
+        this.container.addEventListener('wheel', (e) => {
+            // Only zoom when Ctrl key is pressed
+            if (e.ctrlKey) {
+                e.preventDefault();
+
+                // Determine zoom direction
+                const delta = e.deltaY > 0 ? -this.zoomStep : this.zoomStep;
+                const newZoom = Math.max(this.minZoom, Math.min(this.maxZoom, this.zoomLevel + delta));
+
+                if (newZoom !== this.zoomLevel) {
+                    // Get mouse position relative to container
+                    const rect = this.container.getBoundingClientRect();
+                    const mouseX = e.clientX - rect.left;
+                    const mouseY = e.clientY - rect.top;
+
+                    // Calculate zoom origin (zoom toward mouse position)
+                    const zoomOriginX = mouseX - this.currentTranslateX;
+                    const zoomOriginY = mouseY - this.currentTranslateY;
+
+                    // Calculate new translation to zoom toward mouse
+                    const zoomRatio = newZoom / this.zoomLevel;
+                    this.currentTranslateX = mouseX - zoomOriginX * zoomRatio;
+                    this.currentTranslateY = mouseY - zoomOriginY * zoomRatio;
+                    this.panOffsetX = this.currentTranslateX;
+                    this.panOffsetY = this.currentTranslateY;
+
+                    // Update zoom level
+                    this.zoomLevel = newZoom;
+
+                    // Apply transform with zoom
+                    this.applyTransform();
+                }
+            }
+        }, { passive: false });
+    }
+
+    applyTransform() {
+        const transform = `translate(${this.currentTranslateX}px, ${this.currentTranslateY}px) scale(${this.zoomLevel})`;
+        this.nodesContainer.style.transform = transform;
+        this.connectionsContainer.style.transform = transform;
     }
 
     startPan(x, y) {
@@ -526,9 +574,8 @@ class MindmapPreview {
         this.currentTranslateX = this.panOffsetX + deltaX;
         this.currentTranslateY = this.panOffsetY + deltaY;
 
-        // Apply transform to both nodes and connections
-        this.nodesContainer.style.transform = `translate(${this.currentTranslateX}px, ${this.currentTranslateY}px)`;
-        this.connectionsContainer.style.transform = `translate(${this.currentTranslateX}px, ${this.currentTranslateY}px)`;
+        // Apply transform with current zoom level
+        this.applyTransform();
     }
 
     endPan() {

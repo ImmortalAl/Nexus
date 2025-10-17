@@ -1112,8 +1112,9 @@ body.light-theme .debate-position h4 {
 
 .mindmap-preview-nodes,
 .mindmap-preview-connections {
-    transition: transform 0.1s ease-out;
+    transition: transform 0.15s ease-out;
     will-change: transform;
+    transform-origin: center center;
 }
 
 .mindmap-node {
