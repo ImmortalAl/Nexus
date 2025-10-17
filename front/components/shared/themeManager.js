@@ -38,6 +38,16 @@ class NexusThemeManager {
 
     connectExistingToggles() {
         setTimeout(() => {
+            // Hide floating theme toggle if user is logged in
+            const floatingToggle = document.querySelector('.floating-theme-toggle');
+            if (floatingToggle) {
+                const isLoggedIn = document.body.classList.contains('user-logged-in') ||
+                                   localStorage.getItem('sessionToken');
+                if (isLoggedIn) {
+                    floatingToggle.style.display = 'none';
+                }
+            }
+
             const toggleButtons = document.querySelectorAll('[data-theme-toggle]');
 
             if (toggleButtons.length === 0) {

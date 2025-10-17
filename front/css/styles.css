@@ -3690,6 +3690,41 @@ nav a {
     }
 }
 
+/* Floating theme toggle button positioning and visibility */
+.floating-theme-toggle {
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    width: 56px !important;
+    height: 56px !important;
+    border-radius: 50% !important;
+    background: linear-gradient(135deg, rgba(26, 26, 51, 0.95), rgba(42, 64, 102, 0.9)) !important;
+    border: 2px solid var(--accent) !important;
+    color: var(--text) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    z-index: 999 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.floating-theme-toggle:hover {
+    transform: scale(1.1) !important;
+    box-shadow: 0 6px 20px rgba(255, 94, 120, 0.4) !important;
+    background: linear-gradient(135deg, rgba(255, 94, 120, 0.2), rgba(42, 64, 102, 0.9)) !important;
+}
+
+.floating-theme-toggle i {
+    font-size: 1.4rem !important;
+}
+
+/* Hide floating theme toggle button for logged-in users */
+body.user-logged-in .floating-theme-toggle {
+    display: none !important;
+}
+
 /* Show floating theme toggle button only for logged-out users */
 body.user-logged-in .floating-buttons .theme-toggle {
     display: none !important;
