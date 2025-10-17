@@ -167,14 +167,27 @@ class NexusProfilePreview {
         }
         
         // Create immortal-themed action buttons
-        actions.innerHTML = `
-            <button class="nexus-btn nexus-btn--primary" onclick="NexusProfileRouter.navigateToProfile('${userData.username}')">
-                <span class="font-immortal-heading">View Full Profile</span>
-            </button>
-            <button class="nexus-btn nexus-btn--accent" onclick="window.NEXUS.openMessageModal('${userData.username}')">
-                <span class="font-immortal-mystical">Send Message</span>
-            </button>
-        `;
+        const viewProfileBtn = document.createElement('button');
+        viewProfileBtn.className = 'nexus-btn nexus-btn--primary';
+        viewProfileBtn.innerHTML = '<span class="font-immortal-heading">View Full Profile</span>';
+        viewProfileBtn.addEventListener('click', () => {
+            NexusProfileRouter.navigateToProfile(userData.username);
+        });
+
+        const sendMessageBtn = document.createElement('button');
+        sendMessageBtn.className = 'nexus-btn nexus-btn--accent';
+        sendMessageBtn.innerHTML = '<span class="font-immortal-mystical">Send Message</span>';
+        sendMessageBtn.addEventListener('click', () => {
+            if (window.NEXUS && window.NEXUS.openMessageModal) {
+                window.NEXUS.openMessageModal(userData.username);
+            } else {
+                console.error('[Nexus] Message modal not available');
+            }
+        });
+
+        actions.innerHTML = ''; // Clear any existing content
+        actions.appendChild(viewProfileBtn);
+        actions.appendChild(sendMessageBtn);
     }
     
     static addModalEventListeners(modal) {
