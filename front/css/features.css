@@ -1833,18 +1833,19 @@ body .floating-buttons button.theme-toggle#themeToggle {
     box-sizing: border-box;
 }
 
-.soul-highlight-card .soul-message-btn, 
+.soul-highlight-card .soul-message-btn,
 .soul-highlight-card .soul-profile-btn {
     background: linear-gradient(135deg, #ff5e78, #ff8fa3) !important;
     color: white !important;
     border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    padding: 0.75rem 1.25rem !important;
+    padding: 0.6rem 1rem !important;  /* Reduced padding */
     border-radius: 25px !important;
-    font-size: 0.85rem !important;
+    font-size: 0.82rem !important;  /* Slightly smaller font */
     font-weight: 600 !important;
-    flex: 1;
-    min-width: 110px;
-    max-width: 140px;  /* Reduced from 160px to ensure both buttons fit */
+    flex: 0 0 auto;  /* Don't grow or shrink */
+    min-width: 100px;  /* Reduced min-width */
+    width: calc(50% - 0.5rem);  /* Each button takes 50% minus half the gap */
+    max-width: 130px;  /* Further reduced max-width */
     text-align: center !important;
     margin: 0 !important;
     display: inline-flex !important;
@@ -1864,8 +1865,10 @@ body .floating-buttons button.theme-toggle#themeToggle {
 }
 
 .soul-highlight-card .soul-profile-btn {
-    background: linear-gradient(135deg, #1a1a33, #2a4066) !important;
-    border: 1px solid rgba(255, 94, 120, 0.3) !important;
+    background: linear-gradient(135deg, rgba(42, 64, 102, 0.9), rgba(58, 80, 128, 0.9)) !important;
+    border: 2px solid rgba(255, 94, 120, 0.5) !important;
+    color: white !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .soul-card-featured .soul-message-btn {
@@ -2038,12 +2041,12 @@ body .floating-buttons button.theme-toggle#themeToggle {
         margin-top: 2rem;
     }
     
-    .soul-highlight-card .soul-message-btn, 
+    .soul-highlight-card .soul-message-btn,
     .soul-highlight-card .soul-profile-btn {
-        min-width: 120px;
+        min-width: 110px;
         max-width: none;
-        flex: 1 1 45%;
-        padding: 1rem 1.5rem !important;
+        flex: 1 1 48%;
+        padding: 0.8rem 1rem !important;
         font-size: 0.875rem !important;
     }
 }
@@ -2474,13 +2477,14 @@ body .floating-buttons button.theme-toggle#themeToggle {
         justify-content: center !important;
     }
     
-    .soul-highlight-card .soul-message-btn, 
+    .soul-highlight-card .soul-message-btn,
     .soul-highlight-card .soul-profile-btn {
-        width: 100% !important;
+        width: calc(50% - 0.25rem) !important;
         max-width: none !important;
+        flex: 0 0 auto !important;
         justify-content: center !important;
-        padding: 0.75rem 1rem !important;
-        font-size: 0.9rem !important;
+        padding: 0.6rem 0.8rem !important;
+        font-size: 0.85rem !important;
         border-radius: 20px !important;
         min-width: auto !important;
         margin: 0 !important;
