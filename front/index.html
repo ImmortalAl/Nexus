@@ -120,6 +120,9 @@
             50% { transform: scale(1.05); opacity: 0.9; }
         }
     </style>
+
+    <!-- Immortal Poll System -->
+    <link rel="stylesheet" href="css/immortal-poll.css?v=1.0">
 </head>
 <body>
     <!-- Active Users Sidebar, Floating Buttons, and Message Modal will be dynamically injected by shared components -->
@@ -353,33 +356,68 @@
             </div>
         </section>
 
-        <section class="highlights debate-arena" id="debate" aria-labelledby="debateHeading">
+        <section class="highlights debate-arena immortal-poll-section" id="debate" aria-labelledby="debateHeading">
             <div class="section-title">
-                <h2 id="debateHeading" class="font-immortal-mystical text-immortal-gradient">Clash of Immortals <span style="color: #FFA500; font-size: 0.7em; font-weight: normal; display: block; margin-top: 5px;">(Under Development)</span></h2>
+                <h2 id="debateHeading" class="font-immortal-mystical text-immortal-gradient">Clash of Immortals</h2>
                 <p>Where Eternal Minds Forge Truth</p>
             </div>
-            <h3 class="debate-topic">Resolved: Freedom is an Eternal Right</h3>
-            <p>Join the timeless struggle as liberated souls contest existence.</p>
-            <div class="debate-preview">
-                <div class="debate-position">
-                    <h4>Affirmative</h4>
-                    <p><strong>"Freedom transcends time;</strong> it's woven into existence." — ImmortalAl</p>
-                    <div class="debate-actions">
-                        <button class="btn btn-outline" aria-label="Vote yes for immortal freedom">Vote Yes</button>
-                        <span class="vote-count">12 Votes</span>
-                    </div>
+
+            <!-- Interactive Public Poll -->
+            <div class="immortal-poll-container">
+                <h3 class="poll-question">Is censorship ever justified?</h3>
+                <p class="poll-subtitle">Cast your eternal vote - No login required</p>
+
+                <div class="poll-options" id="pollOptions">
+                    <button class="poll-option" data-vote="no" id="pollOptionNo">
+                        <div class="poll-option-content">
+                            <div class="poll-option-icon">
+                                <i class="fas fa-infinity"></i>
+                            </div>
+                            <div class="poll-option-text">
+                                <h4>Free Speech, No Limits</h4>
+                                <p>Truth flows unbound by mortal authority</p>
+                            </div>
+                        </div>
+                        <div class="poll-option-bar">
+                            <div class="poll-option-fill" data-percentage="0"></div>
+                        </div>
+                        <div class="poll-option-stats">
+                            <span class="poll-percentage">0%</span>
+                            <span class="poll-count">0 votes</span>
+                        </div>
+                    </button>
+
+                    <button class="poll-option" data-vote="yes" id="pollOptionYes">
+                        <div class="poll-option-content">
+                            <div class="poll-option-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="poll-option-text">
+                                <h4>Some Speech Harms</h4>
+                                <p>Protection requires boundaries</p>
+                            </div>
+                        </div>
+                        <div class="poll-option-bar">
+                            <div class="poll-option-fill" data-percentage="0"></div>
+                        </div>
+                        <div class="poll-option-stats">
+                            <span class="poll-percentage">0%</span>
+                            <span class="poll-count">0 votes</span>
+                        </div>
+                    </button>
                 </div>
-                <div class="debate-position">
-                    <h4>Negative</h4>
-                    <p><strong>"Freedom is a fleeting illusion,</strong> bound by power." — EternalVoice</p>
-                    <div class="debate-actions">
-                        <button class="btn btn-outline" aria-label="Vote no for immortal freedom">Vote No</button>
-                        <span class="vote-count">8 Votes</span>
-                    </div>
+
+                <div class="poll-status" id="pollStatus">
+                    <i class="fas fa-users"></i>
+                    <span id="pollTotalVotes">0</span> immortal souls have spoken
                 </div>
+
+                <div class="poll-message" id="pollMessage"></div>
             </div>
+
             <div class="section-footer">
-                <a href="pages/debate.html" class="btn btn-primary">Enter Clash</a>
+                <p style="font-size: 0.9em; opacity: 0.7; margin-bottom: 1rem;">Full debate platform coming soon...</p>
+                <a href="pages/debate.html" class="btn btn-primary">Enter Full Arena</a>
             </div>
         </section>
 
@@ -514,7 +552,8 @@
     <script src="components/shared/messageModal.js?v=6.9"></script>
     <script src="js/main.js?v=3.6"></script>
     <script src="js/mindmap-preview.js?v=3.2"></script>
-    
+    <script src="js/immortal-poll.js?v=1.0"></script>
+
     <!-- Optimized Hero Particles - Hardware Accelerated -->
     <script src="js/particleSystem.js?v=1.0"></script>
     
