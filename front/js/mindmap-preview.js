@@ -100,74 +100,107 @@ class MindmapPreview {
     
     renderNodes() {
         if (!this.data || !this.data.nodes) return;
-        
+
         this.nodesContainer.innerHTML = '';
-        
+
         // Handle empty state
         if (this.data.nodes.length === 0) {
             this.showEmptyState();
             return;
         }
-        
+
+        // Calculate bounding box for all nodes
+        const nodeWidth = 120; // min-width from CSS
+        const nodeHeight = 60; // approximate height
+        const padding = 50; // extra padding around nodes
+
+        let minX = Infinity, minY = Infinity;
+        let maxX = -Infinity, maxY = -Infinity;
+
+        this.data.nodes.forEach(node => {
+            minX = Math.min(minX, node.position.x);
+            minY = Math.min(minY, node.position.y);
+            maxX = Math.max(maxX, node.position.x + nodeWidth);
+            maxY = Math.max(maxY, node.position.y + nodeHeight);
+        });
+
+        // Size the container to fit all nodes with padding
+        const canvasWidth = maxX - minX + (padding * 2);
+        const canvasHeight = maxY - minY + (padding * 2);
+
+        this.nodesContainer.style.width = canvasWidth + 'px';
+        this.nodesContainer.style.height = canvasHeight + 'px';
+
         this.data.nodes.forEach(node => {
             const nodeElement = document.createElement('div');
             nodeElement.className = 'mindmap-preview-node';
             nodeElement.dataset.nodeId = node._id;
-            
-            // Set position
-            nodeElement.style.left = node.position.x + 'px';
-            nodeElement.style.top = node.position.y + 'px';
-            
+
+            // Set position relative to canvas origin with padding
+            nodeElement.style.left = (node.position.x - minX + padding) + 'px';
+            nodeElement.style.top = (node.position.y - minY + padding) + 'px';
+
             // Set credibility class
             const credibilityClass = this.getCredibilityClass(node.credibility.score);
             nodeElement.classList.add(credibilityClass);
-            
+
             // Set content
             nodeElement.innerHTML = `
                 <div class="node-content">
                     <h4>${node.title}</h4>
                 </div>
             `;
-            
+
             // Add event listeners
             nodeElement.addEventListener('mouseenter', (e) => this.showTooltip(e, node));
             nodeElement.addEventListener('mouseleave', () => this.hideTooltip());
             nodeElement.addEventListener('click', () => this.selectNode(node));
-            
+
             this.nodesContainer.appendChild(nodeElement);
         });
+
+        // Store bounds for connection rendering
+        this.canvasBounds = { minX, minY, maxX, maxY, padding, canvasWidth, canvasHeight };
     }
     
     renderConnections() {
-        if (!this.data || !this.data.edges) return;
-        
+        if (!this.data || !this.data.edges || !this.canvasBounds) return;
+
         // Clear existing connections
         this.connectionsContainer.innerHTML = '';
-        
-        // Set SVG dimensions to match container
-        const containerRect = this.container.getBoundingClientRect();
-        this.connectionsContainer.setAttribute('width', '100%');
-        this.connectionsContainer.setAttribute('height', '100%');
-        this.connectionsContainer.setAttribute('viewBox', `0 0 ${containerRect.width} ${containerRect.height}`);
-        
+
+        // Set SVG dimensions to match the expanded canvas
+        const { minX, minY, padding, canvasWidth, canvasHeight } = this.canvasBounds;
+        this.connectionsContainer.setAttribute('width', canvasWidth);
+        this.connectionsContainer.setAttribute('height', canvasHeight);
+        this.connectionsContainer.setAttribute('viewBox', `0 0 ${canvasWidth} ${canvasHeight}`);
+        this.connectionsContainer.style.width = canvasWidth + 'px';
+        this.connectionsContainer.style.height = canvasHeight + 'px';
+
         this.data.edges.forEach(edge => {
             const sourceNode = this.data.nodes.find(n => n._id === edge.sourceNode);
             const targetNode = this.data.nodes.find(n => n._id === edge.targetNode);
-            
+
             if (sourceNode && targetNode) {
                 const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                line.setAttribute('x1', sourceNode.position.x + 60); // Center of node
-                line.setAttribute('y1', sourceNode.position.y + 30);
-                line.setAttribute('x2', targetNode.position.x + 60);
-                line.setAttribute('y2', targetNode.position.y + 30);
+                // Adjust coordinates to match the repositioned nodes
+                const x1 = sourceNode.position.x - minX + padding + 60; // Center of node
+                const y1 = sourceNode.position.y - minY + padding + 30;
+                const x2 = targetNode.position.x - minX + padding + 60;
+                const y2 = targetNode.position.y - minY + padding + 30;
+
+                line.setAttribute('x1', x1);
+                line.setAttribute('y1', y1);
+                line.setAttribute('x2', x2);
+                line.setAttribute('y2', y2);
                 line.setAttribute('stroke', 'rgba(233, 69, 96, 0.6)');
                 line.setAttribute('stroke-width', '2');
                 line.classList.add('mindmap-connection');
-                
+
                 // Add relationship label
                 const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                const midX = (sourceNode.position.x + targetNode.position.x) / 2 + 60;
-                const midY = (sourceNode.position.y + targetNode.position.y) / 2 + 30;
+                const midX = (x1 + x2) / 2;
+                const midY = (y1 + y2) / 2;
                 text.setAttribute('x', midX);
                 text.setAttribute('y', midY - 5);
                 text.setAttribute('text-anchor', 'middle');
@@ -175,7 +208,7 @@ class MindmapPreview {
                 text.setAttribute('font-size', '12px');
                 text.textContent = edge.relationshipLabel;
                 text.classList.add('mindmap-label');
-                
+
                 this.connectionsContainer.appendChild(line);
                 this.connectionsContainer.appendChild(text);
             }
