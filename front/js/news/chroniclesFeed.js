@@ -645,42 +645,15 @@ class ChroniclesFeed {
     }
 
     sanitizeHtml(html) {
-        // Allow only safe HTML tags and attributes
-        const allowedTags = ['p', 'br', 'strong', 'b', 'em', 'i', 'u', 's', 'ul', 'ol', 'li', 'h1', 'h2', 'h3', 'blockquote'];
-        const allowedAttributes = ['class'];
-
-        // Create a temporary div to parse HTML
+        // Strip ALL HTML tags and attributes - return plain text only
         const div = document.createElement('div');
         div.innerHTML = html;
 
-        // Remove script tags and other dangerous elements
-        const scripts = div.querySelectorAll('script');
-        scripts.forEach(script => script.remove());
+        // Get pure text content (strips all HTML)
+        const plainText = div.textContent || div.innerText || '';
 
-        const dangerous = div.querySelectorAll('iframe, object, embed, link, style');
-        dangerous.forEach(el => el.remove());
-
-        // Clean attributes
-        const allElements = div.querySelectorAll('*');
-        allElements.forEach(el => {
-            // Remove all attributes except allowed ones
-            const attrs = Array.from(el.attributes);
-            attrs.forEach(attr => {
-                if (!allowedAttributes.includes(attr.name)) {
-                    el.removeAttribute(attr.name);
-                }
-            });
-
-            // Remove elements not in allowed tags
-            if (!allowedTags.includes(el.tagName.toLowerCase())) {
-                // Replace with text content instead of removing entirely
-                const textNode = document.createTextNode(el.textContent);
-                el.parentNode?.insertBefore(textNode, el);
-                el.remove();
-            }
-        });
-
-        return div.innerHTML;
+        // Convert to safe HTML with line breaks preserved
+        return this.escapeHtml(plainText).replace(/\n/g, '<br>');
     }
 
     escapeHtml(text) {
