@@ -358,52 +358,6 @@ class ChroniclesFeed {
         const commentsBtn = document.getElementById('modalCommentsBtn');
         if (commentsBtn) commentsBtn.dataset.id = chronicle._id;
 
-        // Create AuthorIdentityCard with Chronicles-specific labels
-        if (window.AuthorIdentityCard && chronicle.author) {
-            const modalHeader = document.getElementById('chronicleModalHeader');
-            if (modalHeader) {
-                // Create identity card with custom "Consecrate" and "Investigate" labels
-                const identityCard = new AuthorIdentityCard({
-                    author: chronicle.author,
-                    contentType: 'chronicle',
-                    contentId: chronicle._id,
-                    timestamp: new Date(chronicle.createdAt),
-                    upvotes: chronicle.validations ? chronicle.validations.length : 0,
-                    challenges: chronicle.challenges ? chronicle.challenges.length : 0,
-                    userUpvoted: chronicle.userValidated || false,
-                    userChallenged: chronicle.userChallenged || false,
-                    variant: 'header',
-                    size: 'md',
-                    showVoting: true,
-                    showTimestamp: false,
-                    customLabels: {
-                        upvote: 'Consecrate',
-                        upvoteIcon: 'fa-certificate',
-                        challenge: 'Investigate',
-                        challengeIcon: 'fa-search'
-                    }
-                });
-
-                // Clear existing content except close button
-                const closeButton = modalHeader.querySelector('.modal-header-controls');
-                modalHeader.innerHTML = '';
-
-                // Render and inject the identity card
-                const cardElement = identityCard.render();
-                modalHeader.appendChild(cardElement);
-
-                // Re-append close button
-                if (closeButton) {
-                    modalHeader.appendChild(closeButton);
-                }
-
-                // Store reference for vote updates
-                this.currentIdentityCard = identityCard;
-            }
-        } else {
-            console.warn('[Chronicles] AuthorIdentityCard not available');
-        }
-
         // Populate author info in byline (below title)
         const authorContainer = document.getElementById('chronicleAuthorInfo');
         if (authorContainer && chronicle.author) {
@@ -433,6 +387,29 @@ class ChroniclesFeed {
             }
         }
 
+        // Populate voting buttons
+        const consecrateBtn = document.getElementById('modalConsecrateBtn');
+        const investigateBtn = document.getElementById('modalInvestigateBtn');
+        const consecrateCount = document.getElementById('modalConsecrateCount');
+        const investigateCount = document.getElementById('modalInvestigateCount');
+
+        if (consecrateCount) {
+            consecrateCount.textContent = chronicle.validations ? chronicle.validations.length : 0;
+        }
+        if (investigateCount) {
+            investigateCount.textContent = chronicle.challenges ? chronicle.challenges.length : 0;
+        }
+
+        // Set active states based on user's votes
+        if (consecrateBtn) {
+            consecrateBtn.classList.toggle('active', chronicle.userValidated || false);
+            consecrateBtn.dataset.id = chronicle._id;
+        }
+        if (investigateBtn) {
+            investigateBtn.classList.toggle('active', chronicle.userChallenged || false);
+            investigateBtn.dataset.id = chronicle._id;
+        }
+
         // Set up modal event listeners
         this.setupModalEventListeners();
     }
@@ -444,7 +421,27 @@ class ChroniclesFeed {
             closeBtn.onclick = () => this.closeChronicleModal();
         }
 
-        // Modal action buttons (Edit and Comments only - voting handled by AuthorIdentityCard)
+        // Voting buttons
+        const consecrateBtn = document.getElementById('modalConsecrateBtn');
+        const investigateBtn = document.getElementById('modalInvestigateBtn');
+
+        if (consecrateBtn) {
+            consecrateBtn.onclick = (e) => {
+                e.stopPropagation();
+                const chronicleId = consecrateBtn.dataset.id;
+                this.consecrateChronicle(chronicleId);
+            };
+        }
+
+        if (investigateBtn) {
+            investigateBtn.onclick = (e) => {
+                e.stopPropagation();
+                const chronicleId = investigateBtn.dataset.id;
+                this.investigateChronicle(chronicleId);
+            };
+        }
+
+        // Modal action buttons (Edit and Comments)
         const modalActions = ['modalEditBtn', 'modalCommentsBtn'];
         modalActions.forEach(btnId => {
             const btn = document.getElementById(btnId);
@@ -555,18 +552,21 @@ class ChroniclesFeed {
             if (cardInvestigateButton) cardInvestigateButton.classList.add('active');
         }
 
-        // Update AuthorIdentityCard in modal if it exists
-        if (this.currentIdentityCard) {
-            this.currentIdentityCard.votes = {
-                upvotes: votingData.upvotes || 0,
-                challenges: votingData.challenges || 0,
-                userUpvoted: votingData.userUpvoted || false,
-                userChallenged: votingData.userChallenged || false
-            };
-            // Trigger a refresh of the identity card's vote display
-            if (this.currentIdentityCard.refreshVoteDisplay) {
-                this.currentIdentityCard.refreshVoteDisplay();
-            }
+        // Update modal voting buttons if modal is open
+        const modalConsecrateBtn = document.getElementById('modalConsecrateBtn');
+        const modalInvestigateBtn = document.getElementById('modalInvestigateBtn');
+        const modalConsecrateCount = document.getElementById('modalConsecrateCount');
+        const modalInvestigateCount = document.getElementById('modalInvestigateCount');
+
+        if (modalConsecrateCount) modalConsecrateCount.textContent = votingData.upvotes || 0;
+        if (modalInvestigateCount) modalInvestigateCount.textContent = votingData.challenges || 0;
+
+        // Update modal button active states
+        if (modalConsecrateBtn) {
+            modalConsecrateBtn.classList.toggle('active', votingData.userUpvoted || false);
+        }
+        if (modalInvestigateBtn) {
+            modalInvestigateBtn.classList.toggle('active', votingData.userChallenged || false);
         }
 
         // Update credibility tier if needed

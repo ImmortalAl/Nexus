@@ -41,7 +41,7 @@
     <link rel="stylesheet" href="../components/shared/active-users.css?v=2.1">
 
     <!-- 6. PAGE-SPECIFIC STYLES -->
-    <link rel="stylesheet" href="../css/boundless-chronicles.css?v=3.3">
+    <link rel="stylesheet" href="../css/boundless-chronicles.css?v=4.0">
 
     <!-- Fonts (lazy loaded) -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Cinzel:wght@400;500;600;700;900&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@400;700;900&family=Crimson+Pro:wght@400;600;700;900&family=Cormorant+Garamond:wght@400;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -195,17 +195,14 @@
     <!-- Chronicle Detail Modal -->
     <div id="chronicleModal" class="modal" aria-hidden="true">
         <div class="modal-content chronicle-detail-modal">
-            <!-- Modal Header Bar with Voting (AuthorIdentityCard will be injected here) -->
-            <div class="modal-header-bar chronicle-modal-header" id="chronicleModalHeader">
-                <!-- AuthorIdentityCard component will populate voting buttons here -->
-                <div class="modal-header-controls">
-                    <button class="close-modal" id="closeChronicleModal" aria-label="Close modal">×</button>
-                </div>
+            <!-- Simple Close Button Header -->
+            <div class="chronicle-modal-header">
+                <button class="close-modal" id="closeChronicleModal" aria-label="Close modal">×</button>
             </div>
 
             <article class="chronicle-detail modal-body">
                 <!-- Title -->
-                <h2 id="modalChronicleTitle" class="chronicle-title"></h2>
+                <h2 id="modalChronicleTitle" class="chronicle-headline"></h2>
 
                 <!-- Author & Date Meta (below title, newspaper style) -->
                 <div class="chronicle-byline">
@@ -227,6 +224,20 @@
                     </div>
                 </div>
 
+                <!-- Voting Buttons (Classic Newspaper Style) -->
+                <div class="chronicle-voting-bar">
+                    <button class="vote-btn consecrate-btn" id="modalConsecrateBtn" data-action="consecrate" title="Consecrate this chronicle as eternal truth">
+                        <i class="fas fa-certificate"></i>
+                        <span class="vote-label">Consecrate</span>
+                        <span class="vote-count" id="modalConsecrateCount">0</span>
+                    </button>
+                    <button class="vote-btn investigate-btn" id="modalInvestigateBtn" data-action="investigate" title="Investigate this chronicle for accuracy">
+                        <i class="fas fa-search"></i>
+                        <span class="vote-label">Investigate</span>
+                        <span class="vote-count" id="modalInvestigateCount">0</span>
+                    </button>
+                </div>
+
                 <!-- Content -->
                 <div class="chronicle-content" id="modalChronicleContent"></div>
 
@@ -236,12 +247,12 @@
                     <ul id="modalChronicleSourcesList"></ul>
                 </div>
 
-                <!-- Bottom Actions (Edit & Comments only) -->
-                <div class="chronicle-bottom-actions">
-                    <button class="action-btn edit" id="modalEditBtn" style="display: none;" title="Edit this chronicle">
+                <!-- Bottom Actions (Edit & Comments) -->
+                <div class="chronicle-actions-footer">
+                    <button class="action-btn edit-btn" id="modalEditBtn" style="display: none;" title="Edit this chronicle">
                         <i class="fas fa-edit"></i> Edit Story
                     </button>
-                    <button class="action-btn comments" id="modalCommentsBtn" title="View reader letters">
+                    <button class="action-btn comments-btn" id="modalCommentsBtn" title="View reader letters">
                         <i class="fas fa-comments"></i> Reader Letters
                     </button>
                 </div>
@@ -327,7 +338,7 @@
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
     
     <!-- Page-specific Scripts -->
-    <script src="../js/news/chroniclesFeed.js?v=2.4"></script>
+    <script src="../js/news/chroniclesFeed.js?v=3.0"></script>
     <script src="../js/news/submissionModal.js?v=2.2"></script>
     <script src="../js/news/commentsSystem.js?v=2.1"></script>
     

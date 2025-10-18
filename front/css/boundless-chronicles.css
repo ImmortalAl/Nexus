@@ -551,6 +551,63 @@ body.light-theme {
         padding: 1rem;
     }
 
+    /* Modal Responsive Styles */
+    .chronicle-detail {
+        padding: 1.5rem 1.5rem 2rem 1.5rem;
+    }
+
+    .chronicle-headline {
+        font-size: clamp(1.5rem, 4vw, 2.25rem);
+        padding-bottom: 1rem;
+    }
+
+    .chronicle-byline {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+        padding: 1rem 0;
+    }
+
+    .chronicle-voting-bar {
+        flex-direction: column;
+        gap: 1rem;
+        margin-left: -1.5rem;
+        margin-right: -1.5rem;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+
+    .vote-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .chronicle-content {
+        font-size: 1rem;
+        line-height: 1.7;
+        text-align: left;
+    }
+
+    .chronicle-content p:first-letter {
+        font-size: 2.5em;
+    }
+
+    .chronicle-sources {
+        padding: 1rem;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .chronicle-actions-footer {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .chronicle-actions-footer .action-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
     /* Make buttons more compact on mobile */
     .chronicles-feed .action-btn,
     .chronicles-feed .chronicle-card .action-btn {
@@ -705,19 +762,33 @@ body.light-theme {
 }
 
 /* ==========================================================================
-   NEWSPAPER MODALS
+   NEWSPAPER MODALS - CLASSIC LAYOUT
    ========================================================================== */
 .chronicle-modal,
 .chronicle-detail-modal,
 .comments-modal {
     background: var(--newspaper-white);
     border: var(--border-thick);
+    border-top: 5px solid var(--newspaper-black);
     border-radius: 0;
-    max-width: 800px;
+    max-width: 900px;
     width: 95%;
     max-height: 90vh;
     overflow-y: auto;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    color: var(--newspaper-black);
+}
+
+/* Modal Close Button Header */
+.chronicle-modal-header {
+    position: sticky;
+    top: 0;
+    background: var(--newspaper-white);
+    padding: 1rem 2rem;
+    border-bottom: var(--border-thin);
+    display: flex;
+    justify-content: flex-end;
+    z-index: 10;
 }
 
 .chronicle-modal .modal-header,
@@ -760,6 +831,284 @@ body.light-theme {
 
 .close-modal:hover {
     color: var(--newspaper-gray-6);
+}
+
+/* ==========================================================================
+   CLASSIC NEWSPAPER ARTICLE LAYOUT (Modal Detail View)
+   ========================================================================== */
+
+/* Article Container */
+.chronicle-detail {
+    padding: 2.5rem 3rem 3rem 3rem;
+    font-family: 'Times New Roman', serif;
+}
+
+/* Headline - Bold, commanding presence */
+.chronicle-headline {
+    font-family: 'Cinzel', 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: var(--newspaper-black);
+    line-height: 1.15;
+    margin: 0 0 1.5rem 0;
+    text-align: center;
+    letter-spacing: -0.01em;
+    border-bottom: var(--border-double);
+    padding-bottom: 1.5rem;
+}
+
+/* Byline - Author and date information */
+.chronicle-byline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 1.25rem 0;
+    border-bottom: var(--border-thin);
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    color: var(--newspaper-gray-6);
+    font-style: italic;
+}
+
+.byline-label {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-style: normal;
+    font-size: 0.75rem;
+}
+
+.chronicle-author-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.chronicle-dates {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.event-date,
+.submission-date {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+}
+
+.byline-separator {
+    opacity: 0.5;
+    font-style: normal;
+}
+
+/* Voting Bar - Traditional newspaper style buttons */
+.chronicle-voting-bar {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1.5rem 0;
+    margin-bottom: 2rem;
+    border-bottom: var(--border-thin);
+    background: var(--newspaper-gray-1);
+    margin-left: -3rem;
+    margin-right: -3rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
+}
+
+.vote-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--newspaper-white);
+    border: var(--border-medium);
+    border-radius: 0;
+    color: var(--newspaper-gray-6);
+    font-family: 'Times New Roman', serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all var(--transition);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.vote-btn i {
+    font-size: 1.1rem;
+}
+
+.vote-count {
+    background: var(--newspaper-gray-2);
+    color: var(--newspaper-black);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0;
+    font-size: 0.85rem;
+    min-width: 2rem;
+    text-align: center;
+    border: var(--border-thin);
+}
+
+.vote-btn:hover {
+    background: var(--newspaper-gray-2);
+    border-color: var(--newspaper-black);
+    color: var(--newspaper-black);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.vote-btn.active {
+    background: var(--newspaper-black);
+    color: var(--newspaper-white);
+    border-color: var(--newspaper-black);
+}
+
+.vote-btn.active .vote-count {
+    background: var(--newspaper-gray-6);
+    color: var(--newspaper-white);
+    border-color: var(--newspaper-gray-6);
+}
+
+/* Consecrate button accent */
+.consecrate-btn.active {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+/* Investigate button accent */
+.investigate-btn.active {
+    background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+}
+
+/* Article Content */
+.chronicle-content {
+    font-family: 'Crimson Text', 'Georgia', serif;
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--newspaper-black);
+    margin-bottom: 2rem;
+    text-align: justify;
+    hyphens: auto;
+    column-count: 1;
+}
+
+.chronicle-content p {
+    margin-bottom: 1.25rem;
+}
+
+.chronicle-content p:first-letter {
+    font-size: 3.5em;
+    font-weight: 700;
+    float: left;
+    line-height: 0.85;
+    margin: 0.1em 0.15em 0 0;
+    font-family: 'Cinzel', serif;
+}
+
+/* Sources Section */
+.chronicle-sources {
+    margin-top: 2.5rem;
+    padding: 1.5rem;
+    background: var(--newspaper-gray-1);
+    border: var(--border-thin);
+    border-left: 4px solid var(--newspaper-black);
+}
+
+.chronicle-sources h4 {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--newspaper-black);
+}
+
+.chronicle-sources ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.chronicle-sources li {
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed var(--newspaper-gray-3);
+}
+
+.chronicle-sources li:last-child {
+    border-bottom: none;
+}
+
+.chronicle-sources a {
+    color: var(--newspaper-gray-6);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color var(--transition);
+    word-break: break-word;
+}
+
+.chronicle-sources a:hover {
+    color: var(--newspaper-black);
+    text-decoration: underline;
+}
+
+/* Actions Footer */
+.chronicle-actions-footer {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 2rem 0 1rem 0;
+    margin-top: 2.5rem;
+    border-top: var(--border-double);
+}
+
+.chronicle-actions-footer .action-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--newspaper-white);
+    border: var(--border-thin);
+    border-radius: 0;
+    color: var(--newspaper-gray-6);
+    font-family: 'Times New Roman', serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.chronicle-actions-footer .action-btn:hover {
+    background: var(--newspaper-gray-2);
+    border-color: var(--newspaper-gray-6);
+    color: var(--newspaper-black);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.chronicle-actions-footer .edit-btn {
+    border-color: var(--newspaper-gray-5);
+}
+
+.chronicle-actions-footer .comments-btn {
+    background: var(--newspaper-black);
+    color: var(--newspaper-white);
+    border-color: var(--newspaper-black);
+}
+
+.chronicle-actions-footer .comments-btn:hover {
+    background: var(--newspaper-gray-6);
+    border-color: var(--newspaper-gray-6);
 }
 
 /* ==========================================================================
@@ -836,6 +1185,100 @@ body.light-theme .chronicles-meta,
 body.light-theme .chronicle-meta,
 body.light-theme .chronicle-byline {
     color: #64748b;
+}
+
+/* Classic Newspaper Modal - Light Theme */
+body.light-theme .chronicle-modal-header {
+    background: #ffffff;
+    border-bottom-color: #cbd5e1;
+}
+
+body.light-theme .chronicle-headline {
+    color: #0f172a;
+    border-bottom-color: #1e293b;
+}
+
+body.light-theme .chronicle-voting-bar {
+    background: #f8fafc;
+}
+
+body.light-theme .vote-btn {
+    background: #ffffff;
+    border-color: #cbd5e1;
+    color: #475569;
+}
+
+body.light-theme .vote-btn:hover {
+    background: #f1f5f9;
+    border-color: #0f172a;
+    color: #0f172a;
+}
+
+body.light-theme .vote-btn.active {
+    background: #0f172a;
+    color: #ffffff;
+    border-color: #0f172a;
+}
+
+body.light-theme .vote-btn.active .vote-count {
+    background: #1e293b;
+    color: #ffffff;
+    border-color: #1e293b;
+}
+
+body.light-theme .vote-count {
+    background: #e2e8f0;
+    color: #0f172a;
+    border-color: #cbd5e1;
+}
+
+body.light-theme .chronicle-content {
+    color: #1e293b;
+}
+
+body.light-theme .chronicle-sources {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    border-left-color: #0f172a;
+}
+
+body.light-theme .chronicle-sources h4 {
+    color: #0f172a;
+}
+
+body.light-theme .chronicle-sources a {
+    color: #475569;
+}
+
+body.light-theme .chronicle-sources a:hover {
+    color: #0f172a;
+}
+
+body.light-theme .chronicle-actions-footer {
+    border-top-color: #cbd5e1;
+}
+
+body.light-theme .chronicle-actions-footer .action-btn {
+    background: #ffffff;
+    border-color: #cbd5e1;
+    color: #475569;
+}
+
+body.light-theme .chronicle-actions-footer .action-btn:hover {
+    background: #f1f5f9;
+    border-color: #64748b;
+    color: #0f172a;
+}
+
+body.light-theme .chronicle-actions-footer .comments-btn {
+    background: #0f172a;
+    color: #ffffff;
+    border-color: #0f172a;
+}
+
+body.light-theme .chronicle-actions-footer .comments-btn:hover {
+    background: #1e293b;
+    border-color: #1e293b;
 }
 
 body.light-theme .view-btn,
