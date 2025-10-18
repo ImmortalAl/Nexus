@@ -50,9 +50,8 @@ class ImmortalPoll {
             // Render the results
             this.renderPollResults(data);
 
-            // If user has voted, disable voting and highlight their choice
+            // If user has voted, highlight their choice (but keep voting enabled for changes)
             if (this.hasVoted && this.userVote) {
-                this.disableVoting();
                 this.highlightUserVote(this.userVote);
             }
 
@@ -107,12 +106,22 @@ class ImmortalPoll {
 
         pollOptions.forEach(option => {
             option.addEventListener('click', async (e) => {
+                const vote = option.dataset.vote;
+
+                // If user already voted, allow them to change their vote
                 if (this.hasVoted) {
-                    this.showMessage('You have already cast your eternal vote', 'info');
+                    // Check if they're clicking the same option they already voted for
+                    if (this.userVote === vote) {
+                        this.showMessage('You already voted for this option', 'info');
+                        return;
+                    }
+
+                    // User is changing their vote
+                    await this.changeVote(vote);
                     return;
                 }
 
-                const vote = option.dataset.vote;
+                // First time voting
                 await this.submitVote(vote);
             });
         });
@@ -122,8 +131,7 @@ class ImmortalPoll {
         if (this.hasVoted) return;
 
         try {
-            // Disable buttons during submission
-            this.disableVoting();
+            // Show loading state
             this.showMessage('Casting your eternal vote...', 'loading');
 
             const response = await fetch(`${this.apiBaseUrl}/poll/${this.pollId}/vote`, {
@@ -153,31 +161,43 @@ class ImmortalPoll {
 
         } catch (error) {
             console.error('[ImmortalPoll] Vote submission failed:', error);
-
-            if (error.message.includes('already voted')) {
-                this.showMessage('You have already cast your eternal vote', 'info');
-            } else {
-                this.showMessage('Failed to cast vote. Please try again.', 'error');
-                // Re-enable voting if it failed
-                this.enableVoting();
-            }
+            this.showMessage('Failed to cast vote. Please try again.', 'error');
         }
     }
 
-    disableVoting() {
-        const pollOptions = document.querySelectorAll('.poll-option');
-        pollOptions.forEach(option => {
-            option.classList.add('poll-option-disabled');
-            option.style.cursor = 'not-allowed';
-        });
-    }
+    async changeVote(newVote) {
+        try {
+            // Show loading state
+            this.showMessage('Changing your eternal vote...', 'loading');
 
-    enableVoting() {
-        const pollOptions = document.querySelectorAll('.poll-option');
-        pollOptions.forEach(option => {
-            option.classList.remove('poll-option-disabled');
-            option.style.cursor = 'pointer';
-        });
+            const response = await fetch(`${this.apiBaseUrl}/poll/${this.pollId}/vote`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ vote: newVote }),
+                signal: AbortSignal.timeout(10000)
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message || 'Failed to change vote');
+            }
+
+            const data = await response.json();
+
+            // Update state
+            this.userVote = newVote;
+
+            // Update UI
+            this.renderPollResults(data.results);
+            this.highlightUserVote(newVote);
+            this.showMessage('Vote changed! Your new voice echoes through eternity 🔄', 'success');
+
+        } catch (error) {
+            console.error('[ImmortalPoll] Vote change failed:', error);
+            this.showMessage('Failed to change vote. Please try again.', 'error');
+        }
     }
 
     highlightUserVote(vote) {

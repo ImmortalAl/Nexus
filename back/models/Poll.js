@@ -64,6 +64,32 @@ pollSchema.methods.addVote = function(ipHash, vote) {
     this.votes[vote]++;
 };
 
+// Method to change a vote
+pollSchema.methods.changeVote = function(ipHash, newVote) {
+    const voterIndex = this.voters.findIndex(voter => voter.ipHash === ipHash);
+
+    if (voterIndex === -1) {
+        throw new Error('No existing vote found');
+    }
+
+    const oldVote = this.voters[voterIndex].vote;
+
+    // If voting for the same option, do nothing
+    if (oldVote === newVote) {
+        return { changed: false, message: 'Already voted for this option' };
+    }
+
+    // Update the voter record
+    this.voters[voterIndex].vote = newVote;
+    this.voters[voterIndex].votedAt = new Date();
+
+    // Decrement old vote, increment new vote
+    this.votes[oldVote]--;
+    this.votes[newVote]++;
+
+    return { changed: true, oldVote, newVote };
+};
+
 // Method to get results
 pollSchema.methods.getResults = function(ipHash = null) {
     const results = {

@@ -110,15 +110,37 @@ router.post('/:pollId/vote', async (req, res) => {
             });
         }
 
-        // Check if already voted
+        // Check if already voted - if so, change vote instead
         if (poll.hasVoted(ipHash)) {
-            return res.status(400).json({
-                success: false,
-                message: 'You have already voted in this poll'
+            // Change existing vote
+            const changeResult = poll.changeVote(ipHash, vote);
+
+            if (!changeResult.changed) {
+                // User clicked the same option they already voted for
+                return res.status(200).json({
+                    success: true,
+                    message: changeResult.message,
+                    results: poll.getResults(ipHash),
+                    unchanged: true
+                });
+            }
+
+            await poll.save();
+
+            // Return updated results
+            const results = poll.getResults(ipHash);
+
+            return res.json({
+                success: true,
+                message: 'Vote changed successfully',
+                results,
+                changed: true,
+                oldVote: changeResult.oldVote,
+                newVote: changeResult.newVote
             });
         }
 
-        // Add vote
+        // Add new vote
         poll.addVote(ipHash, vote);
         await poll.save();
 

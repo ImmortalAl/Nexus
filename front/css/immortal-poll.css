@@ -150,6 +150,13 @@
     z-index: 3;
 }
 
+/* Selected option can still be hovered to change vote */
+.poll-option-selected:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(var(--accent-rgb, 255, 94, 120), 0.5);
+}
+
 /* Disabled state */
 .poll-option-disabled {
     opacity: 0.7;
