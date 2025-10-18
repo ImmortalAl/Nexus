@@ -404,10 +404,19 @@ class ChroniclesFeed {
 
         // Hide voting bar if user is the author
         if (votingBar) {
+            console.log('[Chronicles] Voting bar setup:', {
+                votingBarExists: !!votingBar,
+                isAuthor: isAuthor,
+                currentUser: currentUser,
+                chronicleAuthor: chronicle.author
+            });
+
             if (isAuthor) {
                 votingBar.style.display = 'none';
+                console.log('[Chronicles] Hiding voting bar - user is author');
             } else {
                 votingBar.style.display = 'flex';
+                console.log('[Chronicles] Showing voting bar - user is NOT author');
 
                 // Set active states based on user's votes
                 if (consecrateBtn) {
@@ -419,6 +428,8 @@ class ChroniclesFeed {
                     investigateBtn.dataset.id = chronicle._id;
                 }
             }
+        } else {
+            console.error('[Chronicles] Voting bar element NOT FOUND in DOM!');
         }
 
         // Set up modal event listeners
