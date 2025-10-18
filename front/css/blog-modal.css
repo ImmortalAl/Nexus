@@ -361,24 +361,26 @@ body.modal-open {
 
 /* ===== MODAL AUTHOR INFO (IN HEADER BAR) - ULTRA-COMPACT OPTIMIZATION ===== */
 .modal-author-info {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem; /* Reduced from 0.75rem - tighter spacing (33% reduction) */
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important; /* Reduced from 0.75rem - tighter spacing (33% reduction) - !important to override blog-responsive.css */
     grid-column: 2;
     justify-self: start;
-    min-width: 120px; /* Reduced from 150px - more compact (20% reduction) */
-    max-width: 100%; /* Prevent overflow in tight spaces */
-    padding: 0.4rem 0.6rem; /* Reduced from 0.5rem 0.875rem - tighter padding (31% reduction) */
-    background: rgba(255, 94, 120, 0.06); /* Lighter from 0.08 - subtle refinement */
-    border-radius: 8px; /* Reduced from 12px - sharper, more compact feel */
-    border-left: 2px solid rgba(255, 94, 120, 0.35); /* Reduced from 3px - less horizontal space */
-    overflow: hidden; /* Contain overflow */
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth micro-interactions */
-    flex-shrink: 1; /* Allow shrinking in tight spaces */
+    min-width: 120px !important; /* Reduced from 150px - more compact (20% reduction) - !important to override conflicts */
+    max-width: 100% !important; /* Prevent overflow in tight spaces */
+    padding: 0.4rem 0.6rem !important; /* Reduced from 0.5rem 0.875rem - tighter padding (31% reduction) - !important to override blog-responsive.css */
+    background: rgba(255, 94, 120, 0.06) !important; /* Lighter from 0.08 - subtle refinement */
+    border-radius: 8px !important; /* Reduced from 12px - sharper, more compact feel */
+    border-left: 2px solid rgba(255, 94, 120, 0.35) !important; /* Reduced from 3px - less horizontal space */
+    overflow: hidden !important; /* Contain overflow */
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important; /* Smooth micro-interactions */
+    flex-shrink: 1 !important; /* Allow shrinking in tight spaces */
+    flex-direction: row !important; /* CRITICAL: Override blog-responsive.css column layout */
+    text-align: left !important; /* CRITICAL: Override blog-responsive.css center alignment */
 
     /* ABOVE AND BEYOND: Subtle depth enhancement */
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05),
-                0 1px 2px rgba(0, 0, 0, 0.1);
+                0 1px 2px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* ABOVE AND BEYOND: Refined hover state */

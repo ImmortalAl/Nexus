@@ -438,7 +438,10 @@
         border-radius: 20px 20px 0 0;
     }
 
-    .blog-modal-header .modal-author-info,
+    /* REMOVED: Legacy .modal-author-info override - now uses compact design from blog-modal.css */
+    /* This was causing gap: 1rem and padding: 1.5rem to override our ultra-compact optimization */
+    /* .blog-modal-header targets OLD header class - new system uses .modal-header-bar */
+
     .blog-modal-header .scroll-author {
         flex-direction: column;
         align-items: center;

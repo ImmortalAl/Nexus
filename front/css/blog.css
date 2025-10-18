@@ -1737,7 +1737,8 @@ body.modal-open {
 
 /* Additional mobile adjustments for immortal theme consistency */
 @media (max-width: 640px) {
-    .blog-modal-header .modal-author-info,
+    /* REMOVED: Legacy .modal-author-info override - now uses compact design from blog-modal.css */
+
     .blog-modal-header .scroll-author {
         flex-direction: column;
         align-items: center;
@@ -1745,7 +1746,7 @@ body.modal-open {
         gap: 1rem;
         padding: 1.5rem;
     }
-    
+
     .blog-modal-header .author-avatar {
         width: 64px;
         height: 64px;
@@ -1770,7 +1771,8 @@ body.modal-open {
         border-radius: 8px;
     }
     
-    .blog-modal-header .modal-author-info,
+    /* REMOVED: Legacy .modal-author-info override - now uses compact design from blog-modal.css */
+
     .blog-modal-header .scroll-author {
         padding: 1rem;
         border-radius: 8px;
