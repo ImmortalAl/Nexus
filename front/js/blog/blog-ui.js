@@ -18,6 +18,10 @@ class BlogUI {
         this.totalPages = 1;
         this.postsPerPage = 10;
         this.isLoading = false;
+        this.allPosts = []; // Store all loaded posts for search/filter
+        this.filteredPosts = []; // Filtered subset of posts
+        this.currentSearchQuery = '';
+        this.currentFilter = 'all';
 
         // Bind methods
         this.renderPostCard = this.renderPostCard.bind(this);
@@ -231,7 +235,11 @@ class BlogUI {
             const totalPages = result.totalPages || 1;
             const totalDocs = result.totalDocs || posts.length;
 
-            this.renderPosts(posts);
+            // Store posts for search/filter
+            this.allPosts = posts;
+            this.filteredPosts = this.applyFilters(posts);
+
+            this.renderPosts(this.filteredPosts);
             this.updatePagination(pageNumber, totalPages, totalDocs);
 
             // Scroll to top
@@ -473,6 +481,35 @@ class BlogUI {
     }
 
     /**
+     * Apply search and filter to posts
+     */
+    applyFilters(posts) {
+        let filtered = [...posts];
+
+        // Apply search query
+        if (this.currentSearchQuery && this.currentSearchQuery.trim().length > 0) {
+            const query = this.currentSearchQuery.toLowerCase().trim();
+            filtered = filtered.filter(post => {
+                const title = (post.title || '').toLowerCase();
+                const content = (post.content || '').toLowerCase();
+                const author = (post.author?.username || post.author?.displayName || '').toLowerCase();
+
+                return title.includes(query) ||
+                       content.includes(query) ||
+                       author.includes(query);
+            });
+        }
+
+        // Apply filter (for future use - e.g., by category, status, etc.)
+        if (this.currentFilter && this.currentFilter !== 'all') {
+            // Filter logic can be extended here
+            // For now, we'll just pass through
+        }
+
+        return filtered;
+    }
+
+    /**
      * Handle search (debounced)
      */
     handleSearch(query) {
@@ -481,10 +518,26 @@ class BlogUI {
             clearTimeout(this.searchTimeout);
         }
 
-        // Set new timeout
-        this.searchTimeout = setTimeout(async () => {
-            console.log('[BlogUI] Searching for:', query);
-            // TODO: Implement search API call
+        // Set new timeout for debounced search
+        this.searchTimeout = setTimeout(() => {
+            this.currentSearchQuery = query;
+
+            // Apply filters to current posts
+            this.filteredPosts = this.applyFilters(this.allPosts);
+
+            // Re-render posts with filtered results
+            this.renderPosts(this.filteredPosts);
+
+            // Update UI feedback
+            const searchInfo = document.querySelector('.search-results-info');
+            if (searchInfo) {
+                if (query.trim() && this.filteredPosts.length < this.allPosts.length) {
+                    searchInfo.textContent = `Found ${this.filteredPosts.length} of ${this.allPosts.length} scrolls`;
+                    searchInfo.style.display = 'block';
+                } else {
+                    searchInfo.style.display = 'none';
+                }
+            }
         }, 300);
     }
 
@@ -492,8 +545,13 @@ class BlogUI {
      * Handle filter
      */
     handleFilter(filter) {
-        console.log('[BlogUI] Applying filter:', filter);
-        // TODO: Implement filter functionality
+        this.currentFilter = filter;
+
+        // Apply filters to current posts
+        this.filteredPosts = this.applyFilters(this.allPosts);
+
+        // Re-render posts with filtered results
+        this.renderPosts(this.filteredPosts);
     }
 }
 

@@ -831,4 +831,116 @@
     .delete-btn {
         display: none;
     }
+}
+
+/* ===== BLOG SEARCH SECTION ===== */
+.blog-search-section {
+    max-width: 800px;
+    margin: 0 auto 2rem auto;
+    padding: 0 1rem;
+}
+
+.blog-search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg,
+        rgba(13, 13, 26, 0.95),
+        rgba(26, 26, 51, 0.9)
+    );
+    border: 2px solid rgba(255, 94, 120, 0.3);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.blog-search-box:focus-within {
+    border-color: rgba(255, 94, 120, 0.6);
+    box-shadow: 0 0 20px rgba(255, 94, 120, 0.3);
+}
+
+.blog-search-box i {
+    color: rgba(255, 94, 120, 0.7);
+    margin-right: 0.75rem;
+    font-size: 1.1rem;
+}
+
+.blog-search-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-family: 'Crimson Text', serif;
+}
+
+.blog-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+    font-style: italic;
+}
+
+.search-results-info {
+    text-align: center;
+    padding: 0.75rem;
+    margin-top: 0.75rem;
+    background: rgba(255, 94, 120, 0.1);
+    border: 1px solid rgba(255, 94, 120, 0.3);
+    border-radius: 8px;
+    color: rgba(255, 94, 120, 0.9);
+    font-size: 0.9rem;
+    font-family: 'Crimson Text', serif;
+}
+
+/* Light Theme Search Styles */
+body.light-theme .blog-search-box {
+    background: linear-gradient(135deg,
+        rgba(255, 255, 255, 0.95),
+        rgba(248, 248, 252, 0.9)
+    );
+    border-color: rgba(255, 94, 120, 0.4);
+}
+
+body.light-theme .blog-search-box:focus-within {
+    border-color: rgba(255, 94, 120, 0.7);
+}
+
+body.light-theme .blog-search-box i {
+    color: rgba(255, 94, 120, 0.8);
+}
+
+body.light-theme .blog-search-input {
+    color: #1a1a2e;
+}
+
+body.light-theme .blog-search-input::placeholder {
+    color: rgba(0, 0, 0, 0.4);
+}
+
+body.light-theme .search-results-info {
+    background: rgba(255, 94, 120, 0.15);
+    border-color: rgba(255, 94, 120, 0.4);
+    color: rgba(200, 50, 80, 0.9);
+}
+
+/* Mobile Responsive Search */
+@media (max-width: 768px) {
+    .blog-search-section {
+        padding: 0 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .blog-search-box {
+        padding: 0.6rem 0.8rem;
+    }
+
+    .blog-search-input {
+        font-size: 0.9rem;
+    }
+
+    .search-results-info {
+        font-size: 0.85rem;
+        padding: 0.5rem;
+    }
 } 
