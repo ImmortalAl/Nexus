@@ -1597,27 +1597,9 @@ body.modal-open {
     opacity: 0.8;
 }
 
-/* Nexus Avatar System Integration */
-.blog-modal-header .modal-author-info {
-    display: flex !important;
-    align-items: center !important;
-    gap: 1.5rem !important;
-    padding: 1.5rem 2rem !important;
-    background: linear-gradient(135deg, 
-        rgba(26, 26, 51, 0.95) 0%, 
-        rgba(42, 64, 102, 0.9) 100%) !important;
-    border-radius: 16px !important;
-    border: 2px solid rgba(255, 94, 120, 0.3) !important;
-    border-left: 6px solid var(--accent) !important;
-    backdrop-filter: blur(10px) !important;
-    box-shadow: 
-        0 8px 32px rgba(255, 94, 120, 0.25),
-        0 4px 16px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(240, 230, 255, 0.1) !important;
-    transition: var(--transition-smooth) !important;
-    position: relative !important;
-    overflow: hidden !important;
-}
+/* REMOVED: Legacy wasteful .modal-author-info overrides - now using compact design from blog-modal.css */
+/* This legacy block had gap: 1.5rem and padding: 1.5rem 2rem which was extremely wasteful */
+/* All styling now centralized in blog-modal.css for consistency and compactness */
 
 /* Ensure fallback elements are completely hidden when Nexus system is active */
 .blog-modal-header .modal-author-info:not(:empty) ~ .scroll-author {
@@ -1632,28 +1614,7 @@ body.modal-open {
     display: none !important;
 }
 
-.blog-modal-header .modal-author-info::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--gradient-accent);
-    opacity: 0.6;
-}
-
-.blog-modal-header .modal-author-info:hover {
-    background: linear-gradient(135deg, 
-        rgba(42, 64, 102, 1) 0%, 
-        rgba(26, 26, 51, 0.98) 100%) !important;
-    border-color: rgba(255, 94, 120, 0.5) !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 
-        0 12px 40px rgba(255, 94, 120, 0.3),
-        0 6px 20px rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(240, 230, 255, 0.15) !important;
-}
+/* REMOVED: Legacy .modal-author-info pseudo-elements and hover - now in blog-modal.css */
 
 /* Fallback styling for non-Nexus avatar elements */
 .blog-modal-header .scroll-author {

@@ -256,7 +256,7 @@ class BlogModal {
                 challenges: challenges,
                 userUpvoted: userUpvoted,
                 userChallenged: userChallenged,
-                size: 'md',
+                size: 'sm', /* OPTIMIZED: Reduced from 'md' to 'sm' for more compact avatar display */
                 variant: 'header',
                 showVoting: true,
                 showTimestamp: true,
