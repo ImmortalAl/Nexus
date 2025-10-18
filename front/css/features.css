@@ -2822,7 +2822,9 @@ body .floating-buttons button.theme-toggle#themeToggle {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
-    min-width: 0;
+    min-width: 0; /* Allow shrinking in flex container */
+    overflow: hidden; /* VIEWPORT FIX: Contain text overflow */
+    flex: 1; /* VIEWPORT FIX: Take available space */
 }
 
 .identity-name {
@@ -2833,6 +2835,11 @@ body .floating-buttons button.theme-toggle#themeToggle {
     align-items: center;
     gap: 0.5rem;
     transition: color 0.2s ease;
+    /* VIEWPORT FIX: Handle text overflow gracefully */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
 }
 
 .identity-name:hover {
@@ -3082,6 +3089,13 @@ body .floating-buttons button.theme-toggle#themeToggle {
         gap: 0.5rem;
     }
 
+    /* VIEWPORT FIX: Shrink avatar on mobile for more name space */
+    .identity-author .nexus-avatar,
+    .identity-author .nexus-avatar--sm {
+        width: 24px !important;
+        height: 24px !important;
+    }
+
     .identity-info {
         font-size: 0.9rem;
     }
@@ -3264,7 +3278,9 @@ body .floating-buttons button.theme-toggle#themeToggle {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
-    min-width: 0;
+    min-width: 0; /* Allow shrinking in flex container */
+    overflow: hidden; /* VIEWPORT FIX: Contain text overflow */
+    flex: 1; /* VIEWPORT FIX: Take available space */
 }
 
 .identity-name {
@@ -3892,6 +3908,21 @@ body .floating-buttons button.theme-toggle#themeToggle {
         font-size: 0.65rem; /* CREATIVE COMPACT: Consistent sizing */
     }
 
+    /* VIEWPORT FIX: Shrink avatar for more name space */
+    .identity-author .nexus-avatar,
+    .identity-author .nexus-avatar--sm {
+        width: 22px !important;
+        height: 22px !important;
+    }
+
+    .identity-author {
+        gap: 0.4rem;
+    }
+
+    .identity-name {
+        font-size: 0.9rem; /* VIEWPORT FIX: Slightly smaller text */
+    }
+
     .vote-count {
         font-size: 0.75rem;
         font-weight: 600;
@@ -3927,18 +3958,51 @@ body .floating-buttons button.theme-toggle#themeToggle {
 }
 
 @media (max-width: 360px) {
-    /* Ultra-compact devices */
+    /* Ultra-compact devices - every pixel counts */
     .identity-vote-btn {
-        min-height: 40px; /* Slightly smaller for very small screens */
-        font-size: 0.9rem;
+        min-width: 32px; /* VIEWPORT FIX: Even smaller for tiny screens */
+        min-height: 22px; /* VIEWPORT FIX: Ultra-compact height */
+        font-size: 0.6rem; /* VIEWPORT FIX: Small but readable */
+        gap: 0.12rem;
+        padding: 0.12rem 0.2rem;
+    }
+
+    .identity-vote-btn i {
+        font-size: 0.6rem; /* VIEWPORT FIX: Match button size */
+    }
+
+    .identity-vote-btn .vote-count {
+        font-size: 0.6rem; /* VIEWPORT FIX: Consistent sizing */
     }
 
     .identity-header-grid {
-        padding: 0.75rem;
+        gap: 0.3rem; /* VIEWPORT FIX: Minimal gap */
+        padding: 0.3rem 0.4rem; /* VIEWPORT FIX: Tight padding */
     }
 
-    .author-identity-card .username {
-        font-size: 0.95rem;
+    .identity-vote-controls {
+        gap: 0.15rem; /* VIEWPORT FIX: Ultra-tight */
+        padding: 0.08rem;
+    }
+
+    /* VIEWPORT FIX: Hide timestamp to save space */
+    .identity-timestamp {
+        display: none;
+    }
+
+    /* VIEWPORT FIX: Shrink avatar even more */
+    .identity-author .nexus-avatar,
+    .identity-author .nexus-avatar--sm {
+        width: 20px !important;
+        height: 20px !important;
+    }
+
+    .identity-author {
+        gap: 0.35rem;
+    }
+
+    .identity-name {
+        font-size: 0.85rem; /* VIEWPORT FIX: Smaller but readable */
     }
 }
 
