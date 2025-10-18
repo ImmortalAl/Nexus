@@ -392,6 +392,11 @@ class ChroniclesFeed {
         const investigateBtn = document.getElementById('modalInvestigateBtn');
         const consecrateCount = document.getElementById('modalConsecrateCount');
         const investigateCount = document.getElementById('modalInvestigateCount');
+        const votingBar = document.querySelector('.chronicle-voting-bar');
+
+        // Check if current user is the author
+        const currentUser = window.authManager && window.authManager.getUser();
+        const isAuthor = currentUser && chronicle.author && currentUser._id === chronicle.author._id;
 
         if (consecrateCount) {
             consecrateCount.textContent = chronicle.validations ? chronicle.validations.length : 0;
@@ -400,14 +405,23 @@ class ChroniclesFeed {
             investigateCount.textContent = chronicle.challenges ? chronicle.challenges.length : 0;
         }
 
-        // Set active states based on user's votes
-        if (consecrateBtn) {
-            consecrateBtn.classList.toggle('active', chronicle.userValidated || false);
-            consecrateBtn.dataset.id = chronicle._id;
-        }
-        if (investigateBtn) {
-            investigateBtn.classList.toggle('active', chronicle.userChallenged || false);
-            investigateBtn.dataset.id = chronicle._id;
+        // Hide voting bar if user is the author
+        if (votingBar) {
+            if (isAuthor) {
+                votingBar.style.display = 'none';
+            } else {
+                votingBar.style.display = 'flex';
+
+                // Set active states based on user's votes
+                if (consecrateBtn) {
+                    consecrateBtn.classList.toggle('active', chronicle.userValidated || false);
+                    consecrateBtn.dataset.id = chronicle._id;
+                }
+                if (investigateBtn) {
+                    investigateBtn.classList.toggle('active', chronicle.userChallenged || false);
+                    investigateBtn.dataset.id = chronicle._id;
+                }
+            }
         }
 
         // Set up modal event listeners

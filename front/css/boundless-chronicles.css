@@ -921,6 +921,13 @@ body.light-theme {
     padding-right: 3rem;
 }
 
+/* Hide voting bar when user is author (no margin/padding when hidden) */
+.chronicle-voting-bar[style*="display: none"] {
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
 .vote-btn {
     display: flex;
     align-items: center;
