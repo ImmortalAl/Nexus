@@ -156,7 +156,44 @@ router.get('/:username', optionalAuth, async (req, res) => {
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
         }
-        res.json(user);
+
+        // Aggregate voting data from all user's content
+        try {
+            const Blog = require('../models/Blog');
+            const Chronicle = require('../models/Chronicle');
+            const Comment = require('../models/Comment');
+
+            // Get all blogs by this user
+            const blogs = await Blog.find({ author: user._id }).select('likes dislikes');
+            const blogUpvotes = blogs.reduce((sum, blog) => sum + (Array.isArray(blog.likes) ? blog.likes.length : 0), 0);
+            const blogDownvotes = blogs.reduce((sum, blog) => sum + (Array.isArray(blog.dislikes) ? blog.dislikes.length : 0), 0);
+
+            // Get all chronicles by this user
+            const chronicles = await Chronicle.find({ author: user._id }).select('validations challenges');
+            const chronicleUpvotes = chronicles.reduce((sum, chr) => sum + (Array.isArray(chr.validations) ? chr.validations.length : 0), 0);
+            const chronicleChallenges = chronicles.reduce((sum, chr) => sum + (Array.isArray(chr.challenges) ? chr.challenges.length : 0), 0);
+
+            // Get all comments by this user
+            const comments = await Comment.find({ author: user._id }).select('upvotes downvotes');
+            const commentUpvotes = comments.reduce((sum, com) => sum + (Array.isArray(com.upvotes) ? com.upvotes.length : 0), 0);
+            const commentDownvotes = comments.reduce((sum, com) => sum + (Array.isArray(com.downvotes) ? com.downvotes.length : 0), 0);
+
+            // Aggregate totals
+            const totalUpvotes = blogUpvotes + chronicleUpvotes + commentUpvotes;
+            const totalDownvotes = blogDownvotes + chronicleChallenges + commentDownvotes;
+
+            // Add aggregated voting data to user response
+            const userWithVotes = user.toObject();
+            userWithVotes.upvotes = totalUpvotes;
+            userWithVotes.challenges = totalDownvotes;
+            userWithVotes.netVotes = totalUpvotes - totalDownvotes;
+
+            res.json(userWithVotes);
+        } catch (votingError) {
+            console.error('Error aggregating voting data:', votingError);
+            // Return user without voting data if aggregation fails
+            res.json(user);
+        }
     } catch (error) {
         console.error('Error fetching user by username:', error);
         res.status(500).json({ error: 'Server error' });
