@@ -32,6 +32,14 @@ class AuthorIdentityCard {
         this.enableChallenge = options.enableChallenge !== false;
         this.simpleDownvote = options.simpleDownvote || false; // Use simple downvote instead of 3-tier challenge
 
+        // Custom labels for voting buttons (allows section-specific terminology)
+        this.customLabels = options.customLabels || {
+            upvote: 'Upvote',
+            upvoteIcon: 'fa-chevron-up',
+            challenge: 'Challenge',
+            challengeIcon: 'fa-bolt'
+        };
+
         // Credibility data (if available)
         this.authorCredibility = options.authorCredibility || null;
 
@@ -247,9 +255,11 @@ class AuthorIdentityCard {
         const upvoteClass = this.votes.userUpvoted ? 'voted active' : '';
         const challengeClass = this.votes.userChallenged ? 'voted active' : '';
 
-        // Determine button icon and label based on voting mode
-        const challengeIcon = this.simpleDownvote ? 'fa-chevron-down' : 'fa-bolt';
-        const challengeLabel = this.simpleDownvote ? 'Downvote' : 'Challenge';
+        // Use custom labels if provided, otherwise defaults
+        const upvoteIcon = this.customLabels.upvoteIcon;
+        const upvoteLabel = this.customLabels.upvote;
+        const challengeIcon = this.simpleDownvote ? 'fa-chevron-down' : this.customLabels.challengeIcon;
+        const challengeLabel = this.simpleDownvote ? 'Downvote' : this.customLabels.challenge;
 
         return `
             <div class="identity-vote-controls">
@@ -257,8 +267,10 @@ class AuthorIdentityCard {
                         data-action="upvote"
                         data-content-type="${this.contentType}"
                         data-content-id="${this.contentId}"
-                        aria-label="Upvote this ${this.contentType}">
-                    <i class="fas fa-chevron-up"></i>
+                        aria-label="${upvoteLabel} this ${this.contentType}"
+                        title="${upvoteLabel}">
+                    <i class="fas ${upvoteIcon}"></i>
+                    <span class="vote-label">${upvoteLabel}</span>
                     <span class="vote-count">${this.formatVoteCount(this.votes.upvotes)}</span>
                 </button>
                 ${this.enableChallenge ? `
@@ -266,8 +278,10 @@ class AuthorIdentityCard {
                             data-action="challenge"
                             data-content-type="${this.contentType}"
                             data-content-id="${this.contentId}"
-                            aria-label="${challengeLabel} this ${this.contentType}">
+                            aria-label="${challengeLabel} this ${this.contentType}"
+                            title="${challengeLabel}">
                         <i class="fas ${challengeIcon}"></i>
+                        <span class="vote-label">${challengeLabel}</span>
                         <span class="vote-count">${this.formatVoteCount(this.votes.challenges)}</span>
                     </button>
                 ` : ''}

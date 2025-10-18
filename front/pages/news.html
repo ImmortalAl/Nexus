@@ -195,62 +195,58 @@
     <!-- Chronicle Detail Modal -->
     <div id="chronicleModal" class="modal" aria-hidden="true">
         <div class="modal-content chronicle-detail-modal">
-            <div class="modal-header">
-                <button class="close-modal" id="closeChronicleModal" aria-label="Close modal">×</button>
+            <!-- Modal Header Bar with Voting (AuthorIdentityCard will be injected here) -->
+            <div class="modal-header-bar chronicle-modal-header" id="chronicleModalHeader">
+                <!-- AuthorIdentityCard component will populate voting buttons here -->
+                <div class="modal-header-controls">
+                    <button class="close-modal" id="closeChronicleModal" aria-label="Close modal">×</button>
+                </div>
             </div>
-            
-            <article class="chronicle-detail">
-                <div class="chronicle-detail-header">
-                    <h2 id="modalChronicleTitle" class="chronicle-title"></h2>
-                    <div class="chronicle-meta">
-                        <div class="chronicle-author-info">
-                            <!-- Immortal Nexus Avatar System will populate this -->
-                        </div>
-                        <div class="chronicle-dates">
-                            <div class="event-date">
-                                <i class="fas fa-calendar-alt"></i>
-                                <span id="modalEventDate"></span>
-                            </div>
-                            <div class="submission-date">
-                                <i class="fas fa-clock"></i>
-                                <span id="modalSubmissionDate"></span>
-                            </div>
-                        </div>
+
+            <article class="chronicle-detail modal-body">
+                <!-- Title -->
+                <h2 id="modalChronicleTitle" class="chronicle-title"></h2>
+
+                <!-- Author & Date Meta (below title, newspaper style) -->
+                <div class="chronicle-byline">
+                    <span class="byline-label">By</span>
+                    <div class="chronicle-author-info" id="chronicleAuthorInfo">
+                        <!-- Avatar system will populate author display here -->
+                    </div>
+                    <span class="byline-separator">•</span>
+                    <div class="chronicle-dates">
+                        <span class="event-date">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span id="modalEventDate"></span>
+                        </span>
+                        <span class="byline-separator">•</span>
+                        <span class="submission-date">
+                            <i class="fas fa-clock"></i>
+                            <span id="modalSubmissionDate"></span>
+                        </span>
                     </div>
                 </div>
-                
+
+                <!-- Content -->
                 <div class="chronicle-content" id="modalChronicleContent"></div>
-                
+
+                <!-- Sources -->
                 <div class="chronicle-sources" id="modalChronicleSourcesContainer" style="display: none;">
                     <h4><i class="fas fa-link"></i> Sources & References</h4>
                     <ul id="modalChronicleSourcesList"></ul>
                 </div>
-                
-                <div class="chronicle-actions">
-                    <div class="voting-actions">
-                        <button class="action-btn consecrate" id="modalConsecrateBtn" title="Consecrate this chronicle as eternal truth">
-                            <i class="fas fa-certificate"></i>
-                            <span>Consecrate</span>
-                            <span class="count" id="modalConsecrateCount">(0)</span>
-                        </button>
-                        <button class="action-btn investigate" id="modalInvestigateBtn" title="Investigate this chronicle for accuracy">
-                            <i class="fas fa-search"></i>
-                            <span>Investigate</span>
-                            <span class="count" id="modalInvestigateCount">(0)</span>
-                        </button>
-                    </div>
-                    
-                    <div class="chronicle-management">
-                        <button class="action-btn edit" id="modalEditBtn" style="display: none;" title="Edit this chronicle">
-                            <i class="fas fa-edit"></i> Edit
-                        </button>
-                        <button class="action-btn comments" id="modalCommentsBtn" title="View comments">
-                            <i class="fas fa-comments"></i> Comments
-                        </button>
-                    </div>
+
+                <!-- Bottom Actions (Edit & Comments only) -->
+                <div class="chronicle-bottom-actions">
+                    <button class="action-btn edit" id="modalEditBtn" style="display: none;" title="Edit this chronicle">
+                        <i class="fas fa-edit"></i> Edit Story
+                    </button>
+                    <button class="action-btn comments" id="modalCommentsBtn" title="View reader letters">
+                        <i class="fas fa-comments"></i> Reader Letters
+                    </button>
                 </div>
             </article>
-            
+
             <!-- Comments Section -->
             <div class="chronicle-comments" id="chronicleCommentsSection">
                 <div id="chronicleCommentsContainer"></div>
@@ -317,9 +313,12 @@
 
     <!-- Avatar System (MUST load before activeUsers.js) -->
     <script src="../js/nexus-avatar-system.js?v=3.2"></script>
-    
+
     <!-- Unified Voting System -->
     <script src="../js/shared/unifiedVoting.js?v=1.6"></script>
+
+    <!-- Author Identity Card (for voting UI) -->
+    <script src="../components/shared/authorIdentityCard.js?v=1.1"></script>
 
     <script src="../components/shared/activeUsers.js?v=2.3"></script>
     <script src="../components/shared/messageModal.js?v=6.9"></script>
@@ -328,7 +327,7 @@
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
     
     <!-- Page-specific Scripts -->
-    <script src="../js/news/chroniclesFeed.js?v=2.3"></script>
+    <script src="../js/news/chroniclesFeed.js?v=2.4"></script>
     <script src="../js/news/submissionModal.js?v=2.2"></script>
     <script src="../js/news/commentsSystem.js?v=2.1"></script>
     

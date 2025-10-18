@@ -306,7 +306,7 @@ class ChroniclesFeed {
         // Dates
         const eventDateElement = document.getElementById('modalEventDate');
         const submissionDateElement = document.getElementById('modalSubmissionDate');
-        
+
         if (eventDateElement) {
             eventDateElement.textContent = new Date(chronicle.eventDate).toLocaleDateString('en-US', {
                 year: 'numeric',
@@ -314,7 +314,7 @@ class ChroniclesFeed {
                 day: 'numeric'
             });
         }
-        
+
         if (submissionDateElement) {
             submissionDateElement.textContent = new Date(chronicle.createdAt).toLocaleDateString('en-US', {
                 year: 'numeric',
@@ -334,53 +334,86 @@ class ChroniclesFeed {
         // Sources
         const sourcesContainer = document.getElementById('modalChronicleSourcesContainer');
         const sourcesList = document.getElementById('modalChronicleSourcesList');
-        
+
         if (chronicle.sources && chronicle.sources.length > 0) {
             sourcesContainer.style.display = 'block';
-            sourcesList.innerHTML = chronicle.sources.map(source => 
+            sourcesList.innerHTML = chronicle.sources.map(source =>
                 `<li><a href="${source}" target="_blank" rel="noopener">${source}</a></li>`
             ).join('');
         } else {
             sourcesContainer.style.display = 'none';
         }
 
-        // Voting counts
-        const consecrateCount = document.getElementById('modalConsecrateCount');
-        const investigateCount = document.getElementById('modalInvestigateCount');
-        
-        if (consecrateCount) consecrateCount.textContent = `(${chronicle.validations ? chronicle.validations.length : 0})`;
-        if (investigateCount) investigateCount.textContent = `(${chronicle.challenges ? chronicle.challenges.length : 0})`;
-
         // Edit button visibility
         const editBtn = document.getElementById('modalEditBtn');
-        const isAuthor = window.authManager && window.authManager.getUser() && 
+        const isAuthor = window.authManager && window.authManager.getUser() &&
                         window.authManager.getUser()._id === chronicle.author._id;
-        
+
         if (editBtn) {
             editBtn.style.display = isAuthor ? 'block' : 'none';
             editBtn.dataset.id = chronicle._id;
         }
 
         // Set up modal action buttons
-        const consecrateBtn = document.getElementById('modalConsecrateBtn');
-        const investigateBtn = document.getElementById('modalInvestigateBtn');
         const commentsBtn = document.getElementById('modalCommentsBtn');
-
-        if (consecrateBtn) consecrateBtn.dataset.id = chronicle._id;
-        if (investigateBtn) investigateBtn.dataset.id = chronicle._id;
         if (commentsBtn) commentsBtn.dataset.id = chronicle._id;
 
-        // Populate author avatar
-        const authorContainer = document.querySelector('.chronicle-detail .chronicle-author-info');
+        // Create AuthorIdentityCard with Chronicles-specific labels
+        if (window.AuthorIdentityCard && chronicle.author) {
+            const modalHeader = document.getElementById('chronicleModalHeader');
+            if (modalHeader) {
+                // Create identity card with custom "Consecrate" and "Investigate" labels
+                const identityCard = new AuthorIdentityCard({
+                    author: chronicle.author,
+                    contentType: 'chronicle',
+                    contentId: chronicle._id,
+                    timestamp: new Date(chronicle.createdAt),
+                    upvotes: chronicle.validations ? chronicle.validations.length : 0,
+                    challenges: chronicle.challenges ? chronicle.challenges.length : 0,
+                    userUpvoted: chronicle.userValidated || false,
+                    userChallenged: chronicle.userChallenged || false,
+                    variant: 'header',
+                    size: 'md',
+                    showVoting: true,
+                    showTimestamp: false,
+                    customLabels: {
+                        upvote: 'Consecrate',
+                        upvoteIcon: 'fa-certificate',
+                        challenge: 'Investigate',
+                        challengeIcon: 'fa-search'
+                    }
+                });
+
+                // Clear existing content except close button
+                const closeButton = modalHeader.querySelector('.modal-header-controls');
+                modalHeader.innerHTML = '';
+
+                // Render and inject the identity card
+                const cardElement = identityCard.render();
+                modalHeader.appendChild(cardElement);
+
+                // Re-append close button
+                if (closeButton) {
+                    modalHeader.appendChild(closeButton);
+                }
+
+                // Store reference for vote updates
+                this.currentIdentityCard = identityCard;
+            }
+        } else {
+            console.warn('[Chronicles] AuthorIdentityCard not available');
+        }
+
+        // Populate author info in byline (below title)
+        const authorContainer = document.getElementById('chronicleAuthorInfo');
         if (authorContainer && chronicle.author) {
-            
             if (window.NexusAvatars) {
                 const avatarElement = window.NexusAvatars.createUserDisplay({
                     username: chronicle.author.username || chronicle.author.displayName || 'Anonymous',
                     title: chronicle.author.title || 'Eternal Soul',
                     status: chronicle.author.status || null,
-                    avatarSize: 'md',
-                    displaySize: 'md',
+                    avatarSize: 'sm',
+                    displaySize: 'sm',
                     mystical: chronicle.author.role === 'admin' || chronicle.author.isVIP,
                     online: chronicle.author.online,
                     customAvatar: chronicle.author.avatar,
@@ -411,20 +444,14 @@ class ChroniclesFeed {
             closeBtn.onclick = () => this.closeChronicleModal();
         }
 
-        // Modal action buttons
-        const modalActions = ['modalConsecrateBtn', 'modalInvestigateBtn', 'modalEditBtn', 'modalCommentsBtn'];
+        // Modal action buttons (Edit and Comments only - voting handled by AuthorIdentityCard)
+        const modalActions = ['modalEditBtn', 'modalCommentsBtn'];
         modalActions.forEach(btnId => {
             const btn = document.getElementById(btnId);
             if (btn) {
                 btn.onclick = (e) => {
                     const chronicleId = btn.dataset.id;
                     switch(btnId) {
-                        case 'modalConsecrateBtn':
-                            this.consecrateChronicle(chronicleId);
-                            break;
-                        case 'modalInvestigateBtn':
-                            this.investigateChronicle(chronicleId);
-                            break;
                         case 'modalEditBtn':
                             this.editChronicle(chronicleId);
                             break;
@@ -513,31 +540,33 @@ class ChroniclesFeed {
         if (cardConsecrateBtn) cardConsecrateBtn.textContent = votingData.upvotes || 0;
         if (cardInvestigateBtn) cardInvestigateBtn.textContent = votingData.challenges || 0;
 
-        // Update modal buttons if modal is open
-        const modalConsecrateCount = document.getElementById('modalConsecrateCount');
-        const modalInvestigateCount = document.getElementById('modalInvestigateCount');
-
-        if (modalConsecrateCount) modalConsecrateCount.textContent = `(${votingData.upvotes || 0})`;
-        if (modalInvestigateCount) modalInvestigateCount.textContent = `(${votingData.challenges || 0})`;
-
-        // Update active states
+        // Update active states on cards
         const cardConsecrateButton = document.querySelector(`.chronicle-card[data-id="${chronicleId}"] .action-btn.consecrate`);
         const cardInvestigateButton = document.querySelector(`.chronicle-card[data-id="${chronicleId}"] .action-btn.investigate`);
-        const modalConsecrateButton = document.getElementById('modalConsecrateBtn');
-        const modalInvestigateButton = document.getElementById('modalInvestigateBtn');
 
         // Remove all active states first
-        [cardConsecrateButton, cardInvestigateButton, modalConsecrateButton, modalInvestigateButton].forEach(btn => {
-            if (btn) btn.classList.remove('active');
-        });
+        if (cardConsecrateButton) cardConsecrateButton.classList.remove('active');
+        if (cardInvestigateButton) cardInvestigateButton.classList.remove('active');
 
         // Add active state based on user's current vote
         if (votingData.userUpvoted) {
             if (cardConsecrateButton) cardConsecrateButton.classList.add('active');
-            if (modalConsecrateButton) modalConsecrateButton.classList.add('active');
         } else if (votingData.userChallenged) {
             if (cardInvestigateButton) cardInvestigateButton.classList.add('active');
-            if (modalInvestigateButton) modalInvestigateButton.classList.add('active');
+        }
+
+        // Update AuthorIdentityCard in modal if it exists
+        if (this.currentIdentityCard) {
+            this.currentIdentityCard.votes = {
+                upvotes: votingData.upvotes || 0,
+                challenges: votingData.challenges || 0,
+                userUpvoted: votingData.userUpvoted || false,
+                userChallenged: votingData.userChallenged || false
+            };
+            // Trigger a refresh of the identity card's vote display
+            if (this.currentIdentityCard.refreshVoteDisplay) {
+                this.currentIdentityCard.refreshVoteDisplay();
+            }
         }
 
         // Update credibility tier if needed
