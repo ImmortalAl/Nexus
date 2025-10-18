@@ -237,8 +237,7 @@
 
         function createUserDisplay(user, additionalClass = '') {
             // Calculate credibility tier based on net votes (upvotes - downvotes)
-            // TODO: Backend needs to provide aggregated voting data from user's content
-            // For now, using placeholder logic until backend endpoint exists
+            // Backend now provides aggregated voting data from GET /api/users/:username
             const netVotes = (user.upvotes || 0) - (user.challenges || 0);
             let credibilityTier = 'neutral'; // Default baseline
 
