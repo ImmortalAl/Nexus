@@ -169,6 +169,14 @@
                     </div>
                     <a href="pages/news.html" class="btn btn-primary">Explore News</a>
                 </article>
+                <article class="feature-card" data-feature="nexus">
+                    <div class="feature-content">
+                        <i class="fas fa-project-diagram"></i>
+                        <h3>Infinite Nexus</h3>
+                        <p>Link your spirit to our living web spanning beyond time. Contribute to the eternal mindmap.</p>
+                    </div>
+                    <a href="pages/mindmap.html" class="btn btn-primary">Join the Map</a>
+                </article>
                 <article class="feature-card" data-feature="souls">
                     <div class="feature-content">
                         <i class="fas fa-user-secret"></i>
@@ -184,14 +192,6 @@
                         <p>Inscribe your essence for eternity. Share thoughts that echo beyond time.</p>
                     </div>
                     <a href="pages/blog.html" class="btn btn-primary">Write Now</a>
-                </article>
-                <article class="feature-card" data-feature="nexus">
-                    <div class="feature-content">
-                        <i class="fas fa-project-diagram"></i>
-                        <h3>Infinite Nexus</h3>
-                        <p>Link your spirit to our living web spanning beyond time. Contribute to the eternal mindmap.</p>
-                    </div>
-                    <a href="pages/mindmap.html" class="btn btn-primary">Join the Map</a>
                 </article>
                 <article class="feature-card" data-feature="echoes">
                     <div class="feature-content">
@@ -240,6 +240,63 @@
                     <p>Fetching the latest stories from the eternal archives...</p>
                     <p class="author">— System</p>
                 </div>
+            </div>
+        </section>
+
+<section class="highlights mindmap-section" id="mindmap" aria-labelledby="mindmapHeading">
+            <div class="section-title">
+                <h2 id="mindmapHeading" class="font-immortal-mystical text-immortal-gradient">Infinite Nexus</h2>
+                <p>Our Living Web Binds the Unbound</p>
+            </div>
+            
+            <!-- Interactive Preview Controls -->
+            <div class="mindmap-preview-controls">
+                <div class="mindmap-search-container">
+                    <input type="text" id="mindmapPreviewSearch" placeholder="Search the Nexus..." 
+                           class="mindmap-search-input" />
+                    <button id="mindmapPreviewSearchBtn" class="mindmap-search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <div class="mindmap-stats" id="mindmapStats">
+                    <span class="loading-stats">Loading stats...</span>
+                </div>
+            </div>
+            
+            <!-- Interactive Preview Container -->
+            <div class="mindmap-preview interactive" id="mindmapPreview">
+                <div class="mindmap-loading">
+                    <div class="loading-spinner"></div>
+                    <p>Loading Nexus preview...</p>
+                </div>
+                
+                <!-- Nodes will be populated by JavaScript -->
+                <div id="mindmapPreviewNodes" class="mindmap-preview-nodes"></div>
+                
+                <!-- Connections will be drawn by JavaScript -->
+                <svg id="mindmapPreviewConnections" class="mindmap-preview-connections">
+                    <!-- SVG lines will be drawn here -->
+                </svg>
+            </div>
+            
+            <!-- Node Details Tooltip -->
+            <div id="mindmapPreviewTooltip" class="mindmap-preview-tooltip">
+                <div class="tooltip-header">
+                    <h4 class="tooltip-title"></h4>
+                    <span class="tooltip-score"></span>
+                </div>
+                <div class="tooltip-content"></div>
+                <div class="tooltip-meta">
+                    <span class="tooltip-creator"></span>
+                    <span class="tooltip-connections"></span>
+                </div>
+                <div class="tooltip-actions">
+                    <button class="btn btn-sm btn-primary" id="exploreNodeBtn">Explore Node</button>
+                </div>
+            </div>
+            
+            <div class="section-footer">
+                <a href="pages/mindmap.html" class="btn btn-primary">Join Full Nexus</a>
             </div>
         </section>
 
@@ -333,63 +390,6 @@
             </div>
         </section>
 
-<section class="highlights mindmap-section" id="mindmap" aria-labelledby="mindmapHeading">
-            <div class="section-title">
-                <h2 id="mindmapHeading" class="font-immortal-mystical text-immortal-gradient">Infinite Nexus</h2>
-                <p>Our Living Web Binds the Unbound</p>
-            </div>
-            
-            <!-- Interactive Preview Controls -->
-            <div class="mindmap-preview-controls">
-                <div class="mindmap-search-container">
-                    <input type="text" id="mindmapPreviewSearch" placeholder="Search the Nexus..." 
-                           class="mindmap-search-input" />
-                    <button id="mindmapPreviewSearchBtn" class="mindmap-search-btn">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-                <div class="mindmap-stats" id="mindmapStats">
-                    <span class="loading-stats">Loading stats...</span>
-                </div>
-            </div>
-            
-            <!-- Interactive Preview Container -->
-            <div class="mindmap-preview interactive" id="mindmapPreview">
-                <div class="mindmap-loading">
-                    <div class="loading-spinner"></div>
-                    <p>Loading Nexus preview...</p>
-                </div>
-                
-                <!-- Nodes will be populated by JavaScript -->
-                <div id="mindmapPreviewNodes" class="mindmap-preview-nodes"></div>
-                
-                <!-- Connections will be drawn by JavaScript -->
-                <svg id="mindmapPreviewConnections" class="mindmap-preview-connections">
-                    <!-- SVG lines will be drawn here -->
-                </svg>
-            </div>
-            
-            <!-- Node Details Tooltip -->
-            <div id="mindmapPreviewTooltip" class="mindmap-preview-tooltip">
-                <div class="tooltip-header">
-                    <h4 class="tooltip-title"></h4>
-                    <span class="tooltip-score"></span>
-                </div>
-                <div class="tooltip-content"></div>
-                <div class="tooltip-meta">
-                    <span class="tooltip-creator"></span>
-                    <span class="tooltip-connections"></span>
-                </div>
-                <div class="tooltip-actions">
-                    <button class="btn btn-sm btn-primary" id="exploreNodeBtn">Explore Node</button>
-                </div>
-            </div>
-            
-            <div class="section-footer">
-                <a href="pages/mindmap.html" class="btn btn-primary">Join Full Nexus</a>
-            </div>
-        </section>
-
 <section class="highlights echoes-unbound-agora" id="messageboard" aria-labelledby="messageboardHeading">
             <div class="section-title">
                 <h2 id="messageboardHeading" class="font-immortal-mystical text-immortal-gradient">Echoes Unbound</h2>
@@ -479,6 +479,8 @@
         </section>
 
 
+
+
     </main>
 
     <footer class="site-footer">
@@ -540,7 +542,7 @@
     <script src="components/shared/authManager.js?v=1.4"></script>
     <script src="components/shared/authModal.js?v=4.2"></script>
     <script src="components/shared/apiClient.js?v=1.5"></script>
-    <script src="components/shared/navigation.js?v=2.2"></script>
+    <script src="components/shared/navigation.js?v=2.3"></script>
     <script src="components/shared/userMenu.js?v=7.2"></script>
 
     <!-- Avatar System (MUST load before activeUsers.js) -->
