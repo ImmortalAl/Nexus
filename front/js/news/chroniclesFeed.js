@@ -299,6 +299,10 @@ class ChroniclesFeed {
     }
 
     populateChronicleModal(chronicle) {
+        // Check if current user is the author (used throughout this function)
+        const currentUser = window.authManager && window.authManager.getUser();
+        const isAuthor = currentUser && chronicle.author && currentUser._id === chronicle.author._id;
+
         // Title
         const titleElement = document.getElementById('modalChronicleTitle');
         if (titleElement) titleElement.textContent = chronicle.title;
@@ -346,9 +350,6 @@ class ChroniclesFeed {
 
         // Edit button visibility
         const editBtn = document.getElementById('modalEditBtn');
-        const isAuthor = window.authManager && window.authManager.getUser() &&
-                        window.authManager.getUser()._id === chronicle.author._id;
-
         if (editBtn) {
             editBtn.style.display = isAuthor ? 'block' : 'none';
             editBtn.dataset.id = chronicle._id;
@@ -393,10 +394,6 @@ class ChroniclesFeed {
         const consecrateCount = document.getElementById('modalConsecrateCount');
         const investigateCount = document.getElementById('modalInvestigateCount');
         const votingBar = document.querySelector('.chronicle-voting-bar');
-
-        // Check if current user is the author
-        const currentUser = window.authManager && window.authManager.getUser();
-        const isAuthor = currentUser && chronicle.author && currentUser._id === chronicle.author._id;
 
         if (consecrateCount) {
             consecrateCount.textContent = chronicle.validations ? chronicle.validations.length : 0;
