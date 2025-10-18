@@ -161,6 +161,14 @@
                 <p>Instruments of Liberation for Souls Unbound</p>
             </div>
             <div class="features-grid">
+                <article class="feature-card" data-feature="chronicles">
+                    <div class="feature-content">
+                        <i class="fas fa-newspaper"></i>
+                        <h3>Boundless Chronicles</h3>
+                        <p>Immortalize truths beyond transient lies. Submit stories that endure in collective memory.</p>
+                    </div>
+                    <a href="pages/news.html" class="btn btn-primary">Explore News</a>
+                </article>
                 <article class="feature-card" data-feature="souls">
                     <div class="feature-content">
                         <i class="fas fa-user-secret"></i>
@@ -177,6 +185,14 @@
                     </div>
                     <a href="pages/blog.html" class="btn btn-primary">Write Now</a>
                 </article>
+                <article class="feature-card" data-feature="nexus">
+                    <div class="feature-content">
+                        <i class="fas fa-project-diagram"></i>
+                        <h3>Infinite Nexus</h3>
+                        <p>Link your spirit to our living web spanning beyond time. Contribute to the eternal mindmap.</p>
+                    </div>
+                    <a href="pages/mindmap.html" class="btn btn-primary">Join the Map</a>
+                </article>
                 <article class="feature-card" data-feature="echoes">
                     <div class="feature-content">
                         <i class="fas fa-comments"></i>
@@ -184,14 +200,6 @@
                         <p>Weave your voice into our eternal tapestry. Discuss freely in a realm without chains.</p>
                     </div>
                     <a href="pages/messageboard.html" class="btn btn-primary">Start Thread</a>
-                </article>
-                <article class="feature-card" data-feature="chronicles">
-                    <div class="feature-content">
-                        <i class="fas fa-newspaper"></i>
-                        <h3>Boundless Chronicles</h3>
-                        <p>Immortalize truths beyond transient lies. Submit stories that endure in collective memory.</p>
-                    </div>
-                    <a href="pages/news.html" class="btn btn-primary">Explore News</a>
                 </article>
                 <article class="feature-card" data-feature="debate">
                     <div class="feature-content">
@@ -201,13 +209,13 @@
                     </div>
                     <a href="pages/debate.html" class="btn btn-primary">Enter Arena</a>
                 </article>
-                <article class="feature-card" data-feature="nexus">
+                <article class="feature-card" data-feature="commons">
                     <div class="feature-content">
-                        <i class="fas fa-project-diagram"></i>
-                        <h3>Infinite Nexus</h3>
-                        <p>Link your spirit to our living web spanning beyond time. Contribute to the eternal mindmap.</p>
+                        <i class="fas fa-comment-dots"></i>
+                        <h3>Celestial Commons</h3>
+                        <p>Converse in real-time with immortal souls. Join our sacred chatroom where dialogue flows freely.</p>
                     </div>
-                    <a href="pages/mindmap.html" class="btn btn-primary">Join the Map</a>
+                    <a href="pages/celestial-commons.html" class="btn btn-primary">Join Chat</a>
                 </article>
                 <article class="feature-card" data-feature="vault">
                     <div class="feature-content">
@@ -217,18 +225,25 @@
                     </div>
                     <a href="pages/archive.html" class="btn btn-primary">Access Vault</a>
                 </article>
-                <article class="feature-card" data-feature="commons">
-                    <div class="feature-content">
-                        <i class="fas fa-comment-dots"></i>
-                        <h3>Celestial Commons</h3>
-                        <p>Converse in real-time with immortal souls. Join our sacred chatroom where dialogue flows freely.</p>
-                    </div>
-                    <a href="pages/celestial-commons.html" class="btn btn-primary">Join Chat</a>
-                </article>
             </div>
         </section>
 
-        <section class="highlights eternal-souls-highlight" id="profiles" aria-labelledby="profilesHeading">
+        <section class="highlights" id="news" aria-labelledby="newsHeading">
+            <div class="section-title">
+                <h2 id="newsHeading" class="text-immortal-gradient">Boundless Chronicles</h2>
+                <p>Featured Stories from the Eternal Chronicles</p>
+            </div>
+            <div class="highlight-grid" id="chroniclesHighlights">
+                <!-- Dynamic content will load here -->
+                <div class="highlight-item">
+                    <h4>Loading Chronicles...</h4>
+                    <p>Fetching the latest stories from the eternal archives...</p>
+                    <p class="author">— System</p>
+                </div>
+            </div>
+        </section>
+
+<section class="highlights eternal-souls-highlight" id="profiles" aria-labelledby="profilesHeading">
             <div class="section-title">
                 <h2 id="profilesHeading" class="font-immortal-mystical text-immortal-gradient">
                     Eternal Souls Highlight
@@ -279,7 +294,7 @@
             </div>
         </section>
 
-        <section class="highlights" id="blog" aria-labelledby="blogHeading">
+<section class="highlights" id="blog" aria-labelledby="blogHeading">
             <div class="section-title">
                 <h2 id="blogHeading" class="font-immortal-mystical text-immortal-gradient">Soul Scrolls</h2>
                 <p>Featured Reflections from Liberated Spirits</p>
@@ -318,7 +333,64 @@
             </div>
         </section>
 
-        <section class="highlights echoes-unbound-agora" id="messageboard" aria-labelledby="messageboardHeading">
+<section class="highlights mindmap-section" id="mindmap" aria-labelledby="mindmapHeading">
+            <div class="section-title">
+                <h2 id="mindmapHeading" class="font-immortal-mystical text-immortal-gradient">Infinite Nexus</h2>
+                <p>Our Living Web Binds the Unbound</p>
+            </div>
+            
+            <!-- Interactive Preview Controls -->
+            <div class="mindmap-preview-controls">
+                <div class="mindmap-search-container">
+                    <input type="text" id="mindmapPreviewSearch" placeholder="Search the Nexus..." 
+                           class="mindmap-search-input" />
+                    <button id="mindmapPreviewSearchBtn" class="mindmap-search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <div class="mindmap-stats" id="mindmapStats">
+                    <span class="loading-stats">Loading stats...</span>
+                </div>
+            </div>
+            
+            <!-- Interactive Preview Container -->
+            <div class="mindmap-preview interactive" id="mindmapPreview">
+                <div class="mindmap-loading">
+                    <div class="loading-spinner"></div>
+                    <p>Loading Nexus preview...</p>
+                </div>
+                
+                <!-- Nodes will be populated by JavaScript -->
+                <div id="mindmapPreviewNodes" class="mindmap-preview-nodes"></div>
+                
+                <!-- Connections will be drawn by JavaScript -->
+                <svg id="mindmapPreviewConnections" class="mindmap-preview-connections">
+                    <!-- SVG lines will be drawn here -->
+                </svg>
+            </div>
+            
+            <!-- Node Details Tooltip -->
+            <div id="mindmapPreviewTooltip" class="mindmap-preview-tooltip">
+                <div class="tooltip-header">
+                    <h4 class="tooltip-title"></h4>
+                    <span class="tooltip-score"></span>
+                </div>
+                <div class="tooltip-content"></div>
+                <div class="tooltip-meta">
+                    <span class="tooltip-creator"></span>
+                    <span class="tooltip-connections"></span>
+                </div>
+                <div class="tooltip-actions">
+                    <button class="btn btn-sm btn-primary" id="exploreNodeBtn">Explore Node</button>
+                </div>
+            </div>
+            
+            <div class="section-footer">
+                <a href="pages/mindmap.html" class="btn btn-primary">Join Full Nexus</a>
+            </div>
+        </section>
+
+<section class="highlights echoes-unbound-agora" id="messageboard" aria-labelledby="messageboardHeading">
             <div class="section-title">
                 <h2 id="messageboardHeading" class="font-immortal-mystical text-immortal-gradient">Echoes Unbound</h2>
                 <p class="agora-subtitle">
@@ -341,22 +413,7 @@
             </div>
         </section>
 
-        <section class="highlights" id="news" aria-labelledby="newsHeading">
-            <div class="section-title">
-                <h2 id="newsHeading" class="text-immortal-gradient">Boundless Chronicles</h2>
-                <p>Featured Stories from the Eternal Chronicles</p>
-            </div>
-            <div class="highlight-grid" id="chroniclesHighlights">
-                <!-- Dynamic content will load here -->
-                <div class="highlight-item">
-                    <h4>Loading Chronicles...</h4>
-                    <p>Fetching the latest stories from the eternal archives...</p>
-                    <p class="author">— System</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="highlights debate-arena immortal-poll-section" id="debate" aria-labelledby="debateHeading">
+<section class="highlights debate-arena immortal-poll-section" id="debate" aria-labelledby="debateHeading">
             <div class="section-title">
                 <h2 id="debateHeading" class="font-immortal-mystical text-immortal-gradient">Clash of Immortals</h2>
                 <p>Where Eternal Minds Forge Truth</p>
@@ -421,62 +478,7 @@
             </div>
         </section>
 
-        <section class="highlights mindmap-section" id="mindmap" aria-labelledby="mindmapHeading">
-            <div class="section-title">
-                <h2 id="mindmapHeading" class="font-immortal-mystical text-immortal-gradient">Infinite Nexus</h2>
-                <p>Our Living Web Binds the Unbound</p>
-            </div>
-            
-            <!-- Interactive Preview Controls -->
-            <div class="mindmap-preview-controls">
-                <div class="mindmap-search-container">
-                    <input type="text" id="mindmapPreviewSearch" placeholder="Search the Nexus..." 
-                           class="mindmap-search-input" />
-                    <button id="mindmapPreviewSearchBtn" class="mindmap-search-btn">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-                <div class="mindmap-stats" id="mindmapStats">
-                    <span class="loading-stats">Loading stats...</span>
-                </div>
-            </div>
-            
-            <!-- Interactive Preview Container -->
-            <div class="mindmap-preview interactive" id="mindmapPreview">
-                <div class="mindmap-loading">
-                    <div class="loading-spinner"></div>
-                    <p>Loading Nexus preview...</p>
-                </div>
-                
-                <!-- Nodes will be populated by JavaScript -->
-                <div id="mindmapPreviewNodes" class="mindmap-preview-nodes"></div>
-                
-                <!-- Connections will be drawn by JavaScript -->
-                <svg id="mindmapPreviewConnections" class="mindmap-preview-connections">
-                    <!-- SVG lines will be drawn here -->
-                </svg>
-            </div>
-            
-            <!-- Node Details Tooltip -->
-            <div id="mindmapPreviewTooltip" class="mindmap-preview-tooltip">
-                <div class="tooltip-header">
-                    <h4 class="tooltip-title"></h4>
-                    <span class="tooltip-score"></span>
-                </div>
-                <div class="tooltip-content"></div>
-                <div class="tooltip-meta">
-                    <span class="tooltip-creator"></span>
-                    <span class="tooltip-connections"></span>
-                </div>
-                <div class="tooltip-actions">
-                    <button class="btn btn-sm btn-primary" id="exploreNodeBtn">Explore Node</button>
-                </div>
-            </div>
-            
-            <div class="section-footer">
-                <a href="pages/mindmap.html" class="btn btn-primary">Join Full Nexus</a>
-            </div>
-        </section>
+
     </main>
 
     <footer class="site-footer">
@@ -538,7 +540,7 @@
     <script src="components/shared/authManager.js?v=1.4"></script>
     <script src="components/shared/authModal.js?v=4.2"></script>
     <script src="components/shared/apiClient.js?v=1.5"></script>
-    <script src="components/shared/navigation.js?v=2.1"></script>
+    <script src="components/shared/navigation.js?v=2.2"></script>
     <script src="components/shared/userMenu.js?v=7.2"></script>
 
     <!-- Avatar System (MUST load before activeUsers.js) -->
