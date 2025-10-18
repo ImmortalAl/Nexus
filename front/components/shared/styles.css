@@ -875,8 +875,6 @@
 /* Enhanced Message Modal Content Styles (from styles.css) */
 /* Styles for the content box of the Message Modal */
 /* Note: #messageModal itself is styled in components/shared/styles.css for its overlay behavior */
-/* This class is being renamed from .auth-modal */
-/* TODO: Rename class in HTML from auth-modal to message-modal-content */
 
 /* Ensure message modal has highest z-index */
 #messageModal {
