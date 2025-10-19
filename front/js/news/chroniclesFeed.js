@@ -132,12 +132,24 @@ class ChroniclesFeed {
                         window.authManager.getUser()._id === chronicle.author._id;
 
         // Create excerpt from content
-        const excerpt = chronicle.content.length > 300 
-            ? chronicle.content.substring(0, 300) + '...' 
+        const excerpt = chronicle.content.length > 300
+            ? chronicle.content.substring(0, 300) + '...'
             : chronicle.content;
 
+        // Calculate credibility tier based on net votes
+        const consecrations = chronicle.validations ? chronicle.validations.length : 0;
+        const investigations = chronicle.challenges ? chronicle.challenges.length : 0;
+        const netVotes = consecrations - investigations;
+
+        let credibilityTier = 'neutral';
+        if (netVotes >= 10) {
+            credibilityTier = 'elevated';
+        } else if (netVotes <= -3) {
+            credibilityTier = 'below';
+        }
+
         return `
-            <article class="chronicle-card" data-id="${chronicle._id}">
+            <article class="chronicle-card content-credibility-${credibilityTier}" data-id="${chronicle._id}" data-credibility="${credibilityTier}">
                 <div class="chronicle-header">
                     <h3 class="chronicle-title">${this.escapeHtml(chronicle.title)}</h3>
                     <div class="chronicle-meta">
@@ -582,8 +594,21 @@ class ChroniclesFeed {
 
         // Update credibility tier if needed
         const chronicleCard = document.querySelector(`.chronicle-card[data-id="${chronicleId}"]`);
-        if (chronicleCard && votingData.credibilityTier) {
-            chronicleCard.dataset.credibility = votingData.credibilityTier;
+        if (chronicleCard) {
+            // Calculate new credibility tier based on votes
+            const netVotes = (votingData.upvotes || 0) - (votingData.challenges || 0);
+            let newTier = 'neutral';
+            if (netVotes >= 10) {
+                newTier = 'elevated';
+            } else if (netVotes <= -3) {
+                newTier = 'below';
+            }
+
+            // Remove old credibility classes
+            chronicleCard.classList.remove('content-credibility-elevated', 'content-credibility-neutral', 'content-credibility-below');
+            // Add new credibility class
+            chronicleCard.classList.add(`content-credibility-${newTier}`);
+            chronicleCard.dataset.credibility = newTier;
         }
     }
 
