@@ -33,11 +33,19 @@ class BlogComments {
         try {
             commentsSection.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading comments...</div>';
 
-            const response = await fetch(`${API_BASE_URL}/comments?targetType=blog&targetId=${postId}`, {
-                headers: {
-                    'Cache-Control': 'no-cache, no-store, must-revalidate',
-                    'Pragma': 'no-cache'
-                }
+            const token = localStorage.getItem('sessionToken');
+            const headers = {
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache'
+            };
+            
+            // Add auth header if user is logged in
+            if (token && window.BlogAPI?.isTokenValid(token)) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+            
+            const response = await fetch(`${API_BASE_URL}/comments/blog/${postId}`, {
+                headers: headers
             });
 
             if (!response.ok) {
@@ -111,10 +119,10 @@ class BlogComments {
                 contentType: 'comment',
                 contentId: comment._id,
                 timestamp: comment.createdAt,
-                upvotes: comment.upvotes || comment.likes || 0,
-                challenges: comment.downvotes || comment.dislikes || 0,
+                upvotes: comment.upvoteCount || comment.upvotes || comment.likes || 0,
+                challenges: comment.challengeCount || comment.downvoteCount || comment.downvotes || comment.dislikes || 0,
                 userUpvoted: comment.userUpvoted || comment.userLiked || false,
-                userChallenged: comment.userDownvoted || comment.userDisliked || false,
+                userChallenged: comment.userChallenged || comment.userDownvoted || comment.userDisliked || false,
                 size: 'sm',
                 variant: 'inline',
                 showVoting: true,
