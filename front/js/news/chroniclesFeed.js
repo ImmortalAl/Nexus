@@ -128,8 +128,9 @@ class ChroniclesFeed {
             day: 'numeric'
         });
 
-        const isAuthor = window.authManager && window.authManager.getUser() && 
-                        window.authManager.getUser()._id === chronicle.author._id;
+        // Check if user is logged in for collaborative editing
+        const isLoggedIn = window.authManager && window.authManager.getUser();
+        const isAuthor = isLoggedIn && window.authManager.getUser()._id === chronicle.author._id;
 
         // Create excerpt from content
         const excerpt = chronicle.content.length > 300
@@ -206,8 +207,8 @@ class ChroniclesFeed {
                     </div>
                     
                     <div class="chronicle-management">
-                        ${isAuthor ? `
-                            <button class="action-btn edit" data-id="${chronicle._id}" data-action="edit" title="Edit this chronicle">
+                        ${isLoggedIn ? `
+                            <button class="action-btn edit" data-id="${chronicle._id}" data-action="edit" title="Edit this chronicle (collaborative)">
                                 <i class="fas fa-edit"></i> Edit
                             </button>
                         ` : ''}
@@ -310,9 +311,10 @@ class ChroniclesFeed {
         }
     }
 
-    populateChronicleModal(chronicle) {
-        // Check if current user is the author (used throughout this function)
+    async populateChronicleModal(chronicle) {
+        // Check if current user is logged in and if they're the author
         const currentUser = window.authManager && window.authManager.getUser();
+        const isLoggedIn = !!currentUser;
         const isAuthor = currentUser && chronicle.author && currentUser._id === chronicle.author._id;
 
         // Title
@@ -360,10 +362,10 @@ class ChroniclesFeed {
             sourcesContainer.style.display = 'none';
         }
 
-        // Edit button visibility
+        // Edit button visibility - show for all logged-in users (collaborative editing)
         const editBtn = document.getElementById('modalEditBtn');
         if (editBtn) {
-            editBtn.style.display = isAuthor ? 'block' : 'none';
+            editBtn.style.display = isLoggedIn ? 'block' : 'none';
             editBtn.dataset.id = chronicle._id;
         }
 
@@ -399,6 +401,9 @@ class ChroniclesFeed {
                 `;
             }
         }
+
+        // Fetch and display contributors (collaborative editing)
+        await this.displayContributors(chronicle._id);
 
         // Populate voting buttons
         const consecrateBtn = document.getElementById('modalConsecrateBtn');
@@ -698,6 +703,55 @@ class ChroniclesFeed {
         const feed = document.getElementById('chroniclesFeed');
         if (feed) {
             feed.innerHTML = `<div class="error-message">${message}</div>`;
+        }
+    }
+
+    async displayContributors(chronicleId) {
+        try {
+            // Fetch contributors from API
+            const contributors = await window.apiClient.get(`/chronicles/${chronicleId}/contributors`);
+
+            const contributorsContainer = document.getElementById('chronicleContributors');
+            if (!contributorsContainer) return;
+
+            if (contributors.length === 0) {
+                contributorsContainer.style.display = 'none';
+                return;
+            }
+
+            // Build contributors HTML
+            let html = '<div class="chronicle-contributors-section">';
+            html += '<h4><i class="fas fa-users"></i> Contributors</h4>';
+            html += '<div class="contributors-list">';
+
+            contributors.forEach(contributor => {
+                const badge = contributor.isOriginalAuthor ? '<span class="contributor-badge original">Original Author</span>' : '';
+                const editCountText = contributor.editCount > 0 ? `<span class="edit-count">${contributor.editCount} edit${contributor.editCount !== 1 ? 's' : ''}</span>` : '';
+
+                html += `
+                    <div class="contributor-item">
+                        <div class="contributor-avatar">
+                            ${contributor.avatar ?
+                                `<img src="${contributor.avatar}" alt="${contributor.username}" class="avatar-img">` :
+                                `<div class="avatar-placeholder">${(contributor.username || 'A')[0].toUpperCase()}</div>`
+                            }
+                        </div>
+                        <div class="contributor-info">
+                            <div class="contributor-name">${this.escapeHtml(contributor.displayName || contributor.username)}</div>
+                            ${badge}
+                            ${editCountText}
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += '</div></div>';
+
+            contributorsContainer.innerHTML = html;
+            contributorsContainer.style.display = 'block';
+        } catch (error) {
+            console.error('Error fetching contributors:', error);
+            // Silently fail - contributors are optional UI enhancement
         }
     }
 

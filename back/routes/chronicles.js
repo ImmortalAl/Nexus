@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Chronicle = require('../models/Chronicle');
+const ChronicleHistory = require('../models/ChronicleHistory');
 const auth = require('../middleware/auth');
 
 // --- GET all chronicles (public, paginated) ---
@@ -85,9 +86,9 @@ router.post('/', auth, async (req, res) => {
     }
 });
 
-// --- PUT to edit a chronicle (protected) ---
+// --- PUT to edit a chronicle (protected, collaborative editing enabled) ---
 router.put('/:id', auth, async (req, res) => {
-    const { title, content, sources, eventDate } = req.body;
+    const { title, content, sources, eventDate, editSummary } = req.body;
 
     if (!title || !content || !eventDate) {
         return res.status(400).json({ error: 'Title, content, and event date are required.' });
@@ -95,18 +96,38 @@ router.put('/:id', auth, async (req, res) => {
 
     try {
         const chronicle = await Chronicle.findById(req.params.id);
-        
+
         if (!chronicle) {
             return res.status(404).json({ error: 'Chronicle not found' });
         }
 
-        // Check if the user is the author of the chronicle
-        if (chronicle.author.toString() !== req.user.id) {
-            return res.status(403).json({ error: 'You can only edit your own chronicles' });
-        }
+        // COLLABORATIVE EDITING: Any authenticated user can edit
+        // No author-only check - removed for Phase 1 implementation
 
         // sources can be a string separated by newlines
         const sourcesArray = sources ? sources.split('\n').map(s => s.trim()).filter(s => s) : [];
+
+        // Track which fields changed
+        const changedFields = [];
+        if (chronicle.title !== title) changedFields.push('title');
+        if (chronicle.content !== content) changedFields.push('content');
+        if (chronicle.eventDate.toISOString() !== new Date(eventDate).toISOString()) changedFields.push('eventDate');
+        if (JSON.stringify(chronicle.sources) !== JSON.stringify(sourcesArray)) changedFields.push('sources');
+
+        // Save edit history before updating (only if something actually changed)
+        if (changedFields.length > 0) {
+            const historyEntry = new ChronicleHistory({
+                chronicle: chronicle._id,
+                editor: req.user.id,
+                previousTitle: chronicle.title,
+                previousContent: chronicle.content,
+                previousEventDate: chronicle.eventDate,
+                previousSources: chronicle.sources,
+                changedFields: changedFields,
+                editSummary: editSummary || undefined
+            });
+            await historyEntry.save();
+        }
 
         // Update the chronicle
         chronicle.title = title;
@@ -115,7 +136,7 @@ router.put('/:id', auth, async (req, res) => {
         chronicle.eventDate = eventDate;
 
         await chronicle.save();
-        
+
         const populatedChronicle = await Chronicle.findById(chronicle._id).populate('author', 'username displayName avatar online');
         res.json(populatedChronicle);
     } catch (error) {
@@ -283,6 +304,78 @@ router.post('/:id/challenge', auth, async (req, res) => {
 router.post('/:id/downvote', auth, async (req, res) => {
     req.url = req.url.replace('/downvote', '/challenge');
     router.handle(req, res);
+});
+
+// --- GET contributors for a chronicle (public) ---
+router.get('/:id/contributors', async (req, res) => {
+    try {
+        const chronicle = await Chronicle.findById(req.params.id);
+        if (!chronicle) {
+            return res.status(404).json({ error: 'Chronicle not found' });
+        }
+
+        // Get unique editors from history
+        const historyEditors = await ChronicleHistory.find({ chronicle: req.params.id })
+            .distinct('editor');
+
+        // Always include the original author
+        const contributorIds = [chronicle.author, ...historyEditors];
+        const uniqueContributorIds = [...new Set(contributorIds.map(id => id.toString()))];
+
+        // Populate contributor details
+        const User = require('../models/User');
+        const contributors = await User.find({ _id: { $in: uniqueContributorIds } })
+            .select('username displayName avatar online')
+            .lean();
+
+        // Count edits per contributor
+        const editCounts = await ChronicleHistory.aggregate([
+            { $match: { chronicle: chronicle._id } },
+            { $group: { _id: '$editor', editCount: { $sum: 1 } } }
+        ]);
+
+        // Map edit counts to contributors
+        const contributorsWithCounts = contributors.map(contributor => {
+            const editCount = editCounts.find(ec => ec._id.toString() === contributor._id.toString());
+            return {
+                ...contributor,
+                editCount: editCount ? editCount.editCount : 0,
+                isOriginalAuthor: contributor._id.toString() === chronicle.author.toString()
+            };
+        });
+
+        // Sort: original author first, then by edit count
+        contributorsWithCounts.sort((a, b) => {
+            if (a.isOriginalAuthor) return -1;
+            if (b.isOriginalAuthor) return 1;
+            return b.editCount - a.editCount;
+        });
+
+        res.json(contributorsWithCounts);
+    } catch (error) {
+        console.error('Error fetching contributors:', error);
+        res.status(500).json({ error: 'Failed to fetch contributors' });
+    }
+});
+
+// --- GET edit history for a chronicle (public) ---
+router.get('/:id/history', async (req, res) => {
+    try {
+        const chronicle = await Chronicle.findById(req.params.id);
+        if (!chronicle) {
+            return res.status(404).json({ error: 'Chronicle not found' });
+        }
+
+        const history = await ChronicleHistory.find({ chronicle: req.params.id })
+            .populate('editor', 'username displayName avatar')
+            .sort({ createdAt: -1 })
+            .limit(50); // Limit to last 50 edits
+
+        res.json(history);
+    } catch (error) {
+        console.error('Error fetching history:', error);
+        res.status(500).json({ error: 'Failed to fetch edit history' });
+    }
 });
 
 
