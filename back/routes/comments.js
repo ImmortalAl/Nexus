@@ -18,7 +18,30 @@ router.get('/:targetType/:targetId', optionalAuth, async (req, res) => {
         .populate('author', 'username displayName avatar')
         .sort({ createdAt: -1 });
 
-        res.json(comments);
+        // Add vote counts and user vote status for authenticated users
+        const enrichedComments = comments.map(comment => {
+            const commentObj = comment.toObject();
+            
+            // Add vote counts
+            commentObj.upvoteCount = comment.upvotes?.length || 0;
+            commentObj.downvoteCount = comment.downvotes?.length || 0;
+            commentObj.challengeCount = comment.downvotes?.length || 0; // Alias for unified system
+            
+            // Add user vote status if authenticated
+            if (req.user) {
+                commentObj.userUpvoted = comment.upvotes?.includes(req.user.id) || false;
+                commentObj.userDownvoted = comment.downvotes?.includes(req.user.id) || false;
+                commentObj.userChallenged = comment.downvotes?.includes(req.user.id) || false; // Alias
+            }
+            
+            // Remove vote arrays from response for privacy
+            delete commentObj.upvotes;
+            delete commentObj.downvotes;
+            
+            return commentObj;
+        });
+
+        res.json(enrichedComments);
     } catch (error) {
         console.error('Error fetching comments:', error);
         res.status(500).json({ error: 'Failed to fetch comments' });
@@ -112,6 +135,74 @@ router.delete('/:id', auth, async (req, res) => {
     } catch (error) {
         console.error('Error deleting comment:', error);
         res.status(500).json({ error: 'Failed to delete comment' });
+    }
+});
+
+// Vote on a comment (upvote/downvote)
+router.post('/:id/vote', auth, async (req, res) => {
+    try {
+        const { action } = req.body; // 'upvote' or 'downvote'
+        const commentId = req.params.id;
+        const userId = req.user.id;
+
+        if (!action || !['upvote', 'downvote'].includes(action)) {
+            return res.status(400).json({ error: 'Action must be "upvote" or "downvote"' });
+        }
+
+        const comment = await Comment.findById(commentId);
+        if (!comment) {
+            return res.status(404).json({ error: 'Comment not found' });
+        }
+
+        // Prevent self-voting
+        if (comment.author.toString() === userId) {
+            return res.status(400).json({ error: 'You cannot vote on your own comment' });
+        }
+
+        // Check if user has already voted
+        const hasUpvoted = comment.upvotes.includes(userId);
+        const hasDownvoted = comment.downvotes.includes(userId);
+
+        if (action === 'upvote') {
+            if (hasUpvoted) {
+                // Remove upvote
+                comment.upvotes.pull(userId);
+            } else {
+                // Add upvote, remove downvote if exists
+                comment.upvotes.push(userId);
+                if (hasDownvoted) {
+                    comment.downvotes.pull(userId);
+                }
+            }
+        } else { // downvote
+            if (hasDownvoted) {
+                // Remove downvote
+                comment.downvotes.pull(userId);
+            } else {
+                // Add downvote, remove upvote if exists
+                comment.downvotes.push(userId);
+                if (hasUpvoted) {
+                    comment.upvotes.pull(userId);
+                }
+            }
+        }
+
+        await comment.save();
+
+        // Return normalized response for unified voting system
+        const updatedComment = await Comment.findById(commentId);
+        res.json({
+            upvotes: updatedComment.upvotes.length,
+            downvotes: updatedComment.downvotes.length,
+            challenges: updatedComment.downvotes.length, // Alias for unified system
+            userUpvoted: updatedComment.upvotes.includes(userId),
+            userDownvoted: updatedComment.downvotes.includes(userId),
+            userChallenged: updatedComment.downvotes.includes(userId) // Alias for unified system
+        });
+
+    } catch (error) {
+        console.error('Error voting on comment:', error);
+        res.status(500).json({ error: 'Failed to vote on comment' });
     }
 });
 

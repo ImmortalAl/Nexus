@@ -37,7 +37,15 @@ const commentSchema = new mongoose.Schema({
   isEdited: {
     type: Boolean,
     default: false
-  }
+  },
+  upvotes: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  downvotes: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }]
 });
 
 // Update the updatedAt timestamp before saving
