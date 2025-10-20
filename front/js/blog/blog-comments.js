@@ -114,15 +114,30 @@ class BlogComments {
 
         if (window.AuthorIdentityCard) {
             // NEW UNIFIED SYSTEM WITH VOTING!
+            const voteData = {
+                upvotes: comment.upvoteCount || comment.upvotes || comment.likes || 0,
+                challenges: comment.challengeCount || comment.downvoteCount || comment.downvotes || comment.dislikes || 0,
+                userUpvoted: comment.userUpvoted || comment.userLiked || false,
+                userChallenged: comment.userChallenged || comment.userDownvoted || comment.userDisliked || false
+            };
+            
+            console.log('[BlogComments] Creating AuthorIdentityCard for comment:', {
+                commentId: comment._id,
+                voteData: voteData,
+                enableChallenge: true,
+                simpleDownvote: true,
+                comment: comment
+            });
+            
             const identityCard = new AuthorIdentityCard({
                 author: comment.author,
                 contentType: 'comment',
                 contentId: comment._id,
                 timestamp: comment.createdAt,
-                upvotes: comment.upvoteCount || comment.upvotes || comment.likes || 0,
-                challenges: comment.challengeCount || comment.downvoteCount || comment.downvotes || comment.dislikes || 0,
-                userUpvoted: comment.userUpvoted || comment.userLiked || false,
-                userChallenged: comment.userChallenged || comment.userDownvoted || comment.userDisliked || false,
+                upvotes: voteData.upvotes,
+                challenges: voteData.challenges,
+                userUpvoted: voteData.userUpvoted,
+                userChallenged: voteData.userChallenged,
                 size: 'sm',
                 variant: 'inline',
                 showVoting: true,

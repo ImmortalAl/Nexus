@@ -293,7 +293,15 @@ class AuthorIdentityCard {
      * Create compact vote display for inline variant
      */
     createCompactVotes() {
-        return `
+        console.log('[AuthorIdentityCard] createCompactVotes called with:', {
+            contentType: this.contentType,
+            contentId: this.contentId,
+            enableChallenge: this.enableChallenge,
+            votes: this.votes,
+            simpleDownvote: this.simpleDownvote
+        });
+        
+        const html = `
             <div class="identity-compact-votes">
                 <span class="compact-vote upvotes ${this.votes.userUpvoted ? 'voted' : ''}"
                       data-action="upvote">
@@ -307,6 +315,9 @@ class AuthorIdentityCard {
                 ` : ''}
             </div>
         `;
+        
+        console.log('[AuthorIdentityCard] Generated compact votes HTML:', html);
+        return html;
     }
 
     /**
