@@ -599,12 +599,12 @@ body.modal-open {
     }
 
     .modal-author-info {
-        min-width: 90px; /* Ultra-compact from 100px for mobile */
-        gap: 0.4rem !important; /* Tighter from 0.5rem */
-        font-size: 0.85rem !important; /* Smaller from 0.9rem for maximum compactness */
-        padding: 0.3rem 0.45rem; /* Minimized from 0.35rem 0.6rem */
-        border-radius: 6px; /* Sharper on mobile */
-        border-left-width: 1.5px; /* Thinner border on mobile to save space */
+        min-width: 120px !important; /* MOBILE FIX: Increased from 90px to accommodate larger avatars */
+        gap: 0.6rem !important; /* MOBILE FIX: Increased from 0.4rem for better avatar breathing room */
+        font-size: 0.9rem !important; /* MOBILE FIX: Increased from 0.85rem for better readability */
+        padding: 0.45rem 0.6rem !important; /* MOBILE FIX: Increased from 0.3rem 0.45rem for better touch targets */
+        border-radius: 8px !important; /* MOBILE FIX: Increased from 6px for softer feel */
+        border-left-width: 2px !important; /* MOBILE FIX: Increased from 1.5px for better visual hierarchy */
     }
 }
 

@@ -1216,12 +1216,12 @@ body.light-theme .nexus-avatar {
 }
 
 @media (max-width: 480px) {
-    .nexus-avatar--xs { width: 16px; height: 16px; }
-    .nexus-avatar--sm { width: 20px; height: 20px; }
-    .nexus-avatar--md { width: 28px; height: 28px; }
-    .nexus-avatar--lg { width: 36px; height: 36px; }
-    .nexus-avatar--xl { width: 44px; height: 44px; }
-    .nexus-avatar--xxl { width: 56px; height: 56px; }
+    .nexus-avatar--xs { width: 18px; height: 18px; }
+    .nexus-avatar--sm { width: 24px; height: 24px; }
+    .nexus-avatar--md { width: 32px; height: 32px; } /* MOBILE FIX: Increased from 28px for blog modal visibility */
+    .nexus-avatar--lg { width: 40px; height: 40px; } /* MOBILE FIX: Increased from 36px for better touch targets */
+    .nexus-avatar--xl { width: 48px; height: 48px; } /* MOBILE FIX: Increased from 44px for proper prominence */
+    .nexus-avatar--xxl { width: 64px; height: 64px; } /* MOBILE FIX: Increased from 56px for profile views */
 }
 
 .highlight-item p,

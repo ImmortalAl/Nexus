@@ -256,7 +256,7 @@ class BlogModal {
                 challenges: challenges,
                 userUpvoted: userUpvoted,
                 userChallenged: userChallenged,
-                size: 'sm', /* OPTIMIZED: Reduced from 'md' to 'sm' for more compact avatar display */
+                size: window.innerWidth <= 768 ? 'md' : 'sm', /* MOBILE FIX: Use larger avatar size on mobile for better visibility */
                 variant: 'header',
                 showVoting: true,
                 showTimestamp: true,
