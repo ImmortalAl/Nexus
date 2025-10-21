@@ -166,7 +166,8 @@ class CommentsSystem {
                 variant: 'inline',
                 showVoting: true,
                 showTimestamp: true,
-                enableChallenge: false // Comments use simple upvote only
+                enableChallenge: true, // Enable downvoting on comments
+                simpleDownvote: true // Use simple down-chevron icon
             });
 
             authorDisplay = identityCard.render();
