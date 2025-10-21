@@ -113,7 +113,7 @@
     backdrop-filter: blur(10px);
     transition: var(--transition-smooth);
     position: relative;
-    overflow: hidden;
+    overflow: visible; /* Allow voting buttons to be visible */
 }
 
 .comment::before {
