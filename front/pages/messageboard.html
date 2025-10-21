@@ -43,8 +43,8 @@
     <link rel="preload" href="../css/active-users.css?v=7.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="../css/active-users.css?v=7.1"></noscript>
     
-    <link rel="preload" href="../css/messageboard.css?v=2.2" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="../css/messageboard.css?v=2.2"></noscript>
+    <link rel="preload" href="../css/messageboard.css?v=2.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/messageboard.css?v=2.3"></noscript>
     
     <!-- Democracy 3.0 Styles -->
     <link rel="preload" href="../css/democracy.css?v=1.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -294,6 +294,9 @@
 
     <!-- Unified Voting System -->
     <script src="../js/shared/unifiedVoting.js?v=1.6"></script>
+
+    <!-- Author Identity Card (for unified voting UI) -->
+    <script src="../components/shared/authorIdentityCard.js?v=2.3"></script>
 
     <!-- Democracy 3.0 JavaScript -->
     <script src="../js/democracy/anonymous-submissions.js?v=1.1"></script>
@@ -585,30 +588,16 @@
             const isAuthor = isAuthenticated && currentUser && thread.author && currentUser._id === thread.author._id;
             const createdDate = new Date(thread.createdAt).toLocaleDateString();
             const lastActive = thread.updatedAt ? new Date(thread.updatedAt).toLocaleDateString() : createdDate;
-            
-            // Calculate net votes (upvotes - downvotes)
-            const upvotes = Array.isArray(thread.upvotes) ? thread.upvotes.length : (thread.upvotes || 0);
-            const downvotes = Array.isArray(thread.downvotes) ? thread.downvotes.length : (thread.downvotes || 0);
-            const netVotes = upvotes - downvotes;
 
             return `
             <div class="thread ${thread.isAnonymous ? 'anonymous' : ''}" data-id="${thread._id}">
-                <div class="thread-voting">
-                    <button class="vote-btn ${!isAuthenticated ? 'disabled' : ''}" data-action="upvote-thread" aria-label="Upvote" ${!isAuthenticated ? 'disabled' : ''}>
-                        <i class="fas fa-arrow-up"></i>
-                    </button>
-                    <span class="vote-count" data-content-type="echo" data-content-id="${thread._id}">${netVotes}</span>
-                    <button class="vote-btn ${!isAuthenticated ? 'disabled' : ''}" data-action="downvote-thread" aria-label="Downvote" ${!isAuthenticated ? 'disabled' : ''}>
-                        <i class="fas fa-arrow-down"></i>
-                    </button>
-                </div>
                 <div class="thread-main">
                     <h4 class="thread-title">
                         ${escapeHTML(thread.title)}
                         ${thread.isAnonymous ? '<span class="thread-anonymous-indicator"><i class="fas fa-mask"></i> Anonymous</span>' : ''}
                     </h4>
                     <div class="thread-preview">${getThreadPreview(thread.content)}</div>
-                    <div class="thread-author-info"></div>
+                    <div class="thread-author-identity-card"></div>
                     <div class="thread-meta">
                         <span class="replies-count">
                             <i class="fas fa-comment"></i> ${thread.replies ? thread.replies.length : 0} replies
@@ -633,52 +622,49 @@
             </div>
         `}).join('');
         
-        // After creating the HTML, add unified user displays
+        // After creating the HTML, add AuthorIdentityCard for each thread
         setTimeout(() => {
-            if (!window.ImmortalNexusAvatars) return;
+            if (!window.AuthorIdentityCard) return;
 
             threads.forEach(thread => {
                 const threadElement = threadList.querySelector(`.thread[data-id='${thread._id}']`);
                 if (threadElement && thread.author) {
-                    const authorContainer = threadElement.querySelector('.thread-author-info');
-                    if (authorContainer && authorContainer.children.length === 0) {
-                        const authorDisplay = window.ImmortalNexusAvatars.createUserDisplay({
-                            username: thread.author.username || 'Anonymous',
-                            title: thread.author.title || 'Echo Author',
-                            avatarSize: 'xs',
-                            displaySize: 'xs',
-                            compact: true,
-                            mystical: thread.author.isVIP || thread.author.role === 'admin',
-                            online: thread.author.online,
-                            customAvatar: thread.author.avatar,
-                            usernameStyle: 'immortal',
-                            enableUnifiedNavigation: true
+                    const identityContainer = threadElement.querySelector('.thread-author-identity-card');
+                    if (identityContainer && identityContainer.children.length === 0) {
+                        // Calculate votes
+                        const upvotes = Array.isArray(thread.upvotes) ? thread.upvotes.length : (thread.upvotes || 0);
+                        const challenges = Array.isArray(thread.downvotes) ? thread.downvotes.length : (thread.downvotes || 0);
+
+                        // Check if current user has voted
+                        let userUpvoted = false;
+                        let userChallenged = false;
+
+                        const currentUser = window.authManager?.getUser();
+                        if (currentUser) {
+                            const userId = currentUser._id;
+                            userUpvoted = Array.isArray(thread.upvotes) && thread.upvotes.includes(userId);
+                            userChallenged = Array.isArray(thread.downvotes) && thread.downvotes.includes(userId);
+                        }
+
+                        const identityCard = new window.AuthorIdentityCard({
+                            author: thread.author,
+                            contentType: 'echo',
+                            contentId: thread._id,
+                            timestamp: thread.createdAt,
+                            upvotes: upvotes,
+                            challenges: challenges,
+                            userUpvoted: userUpvoted,
+                            userChallenged: userChallenged,
+                            size: 'sm',
+                            variant: 'inline',
+                            showVoting: true,
+                            showTimestamp: true,
+                            enableChallenge: true,
+                            simpleDownvote: true
                         });
 
-                        if (thread.author._id) {
-                            authorDisplay.setAttribute('data-user-id', thread.author._id);
-                        }
-
-                        if (window.authManager.isLoggedIn() && window.authManager.getUser()?._id !== thread.author._id) {
-                            const flagBtn = document.createElement('button');
-                            flagBtn.className = 'flag-user-btn btn-ghost';
-                            flagBtn.setAttribute('data-user-id', thread.author._id);
-                            flagBtn.innerHTML = '<i class="fas fa-flag"></i>';
-                            flagBtn.title = 'Flag for community review';
-                            
-                            // Add click handler to prevent event bubbling and show flag modal
-                            flagBtn.addEventListener('click', (e) => {
-                                e.stopPropagation();
-                                e.preventDefault();
-                                if (window.moderationSystem) {
-                                    window.moderationSystem.showFlagModal(thread.author._id);
-                                }
-                            });
-                            
-                            authorDisplay.appendChild(flagBtn);
-                        }
-                        
-                        authorContainer.appendChild(authorDisplay);
+                        const cardElement = identityCard.render();
+                        identityContainer.appendChild(cardElement);
                     }
                 }
             });
@@ -953,7 +939,7 @@
                 `;
                 
                 if (threadData.replies && threadData.replies.length > 0) {
-                    enhanceReplies(threadData.replies);
+                    enhanceReplies(threadData.replies, threadId);
                 }
                 
                 if (window.authManager.isLoggedIn()) {
@@ -1088,51 +1074,49 @@
             }
         });
 
-        function enhanceReplies(replies) {
-            if (!window.ImmortalNexusAvatars) return;
+        function enhanceReplies(replies, threadId) {
+            if (!window.AuthorIdentityCard) return;
 
             replies.forEach((reply) => {
                 const replyElement = document.querySelector(`.reply[data-id='${reply._id}']`);
                 if (replyElement && reply.author) {
-                    const authorContainer = replyElement.querySelector('.reply-author-info');
-                    if (authorContainer && authorContainer.children.length === 0) {
-                        const authorDisplay = window.ImmortalNexusAvatars.createUserDisplay({
-                            username: reply.author.username || 'Anonymous',
-                            title: 'Echo Responder',
-                            avatarSize: 'xs',
-                            displaySize: 'xs',
-                            compact: true,
-                            mystical: reply.author.isVIP || reply.author.role === 'admin',
-                            online: reply.author.online,
-                            customAvatar: reply.author.avatar,
-                            usernameStyle: 'immortal',
-                            enableUnifiedNavigation: true
+                    const identityContainer = replyElement.querySelector('.reply-author-identity-card');
+                    if (identityContainer && identityContainer.children.length === 0) {
+                        // Calculate votes
+                        const upvotes = Array.isArray(reply.upvotes) ? reply.upvotes.length : (reply.upvotes || 0);
+                        const challenges = Array.isArray(reply.downvotes) ? reply.downvotes.length : (reply.downvotes || 0);
+
+                        // Check if current user has voted
+                        let userUpvoted = false;
+                        let userChallenged = false;
+
+                        const currentUser = window.authManager?.getUser();
+                        if (currentUser) {
+                            const userId = currentUser._id;
+                            userUpvoted = Array.isArray(reply.upvotes) && reply.upvotes.includes(userId);
+                            userChallenged = Array.isArray(reply.downvotes) && reply.downvotes.includes(userId);
+                        }
+
+                        const identityCard = new window.AuthorIdentityCard({
+                            author: reply.author,
+                            contentType: 'reply',
+                            contentId: reply._id,
+                            parentId: threadId,
+                            timestamp: reply.createdAt,
+                            upvotes: upvotes,
+                            challenges: challenges,
+                            userUpvoted: userUpvoted,
+                            userChallenged: userChallenged,
+                            size: 'sm',
+                            variant: 'inline',
+                            showVoting: true,
+                            showTimestamp: true,
+                            enableChallenge: true,
+                            simpleDownvote: true
                         });
 
-                        if (reply.author._id) {
-                            authorDisplay.setAttribute('data-user-id', reply.author._id);
-                        }
-
-                        if (window.authManager.isLoggedIn() && window.authManager.getUser()?._id !== reply.author._id) {
-                            const flagBtn = document.createElement('button');
-                            flagBtn.className = 'flag-user-btn btn-ghost';
-                            flagBtn.setAttribute('data-user-id', reply.author._id);
-                            flagBtn.innerHTML = '<i class="fas fa-flag"></i>';
-                            flagBtn.title = 'Flag for community review';
-                            
-                            // Add click handler to prevent event bubbling and show flag modal
-                            flagBtn.addEventListener('click', (e) => {
-                                e.stopPropagation();
-                                e.preventDefault();
-                                if (window.moderationSystem) {
-                                    window.moderationSystem.showFlagModal(reply.author._id);
-                                }
-                            });
-                            
-                            authorDisplay.appendChild(flagBtn);
-                        }
-                        
-                        authorContainer.appendChild(authorDisplay);
+                        const cardElement = identityCard.render();
+                        identityContainer.appendChild(cardElement);
                     }
                 }
             });
@@ -1142,26 +1126,16 @@
             if (!replies || replies.length === 0) {
                 return '<p class="thread-meta">No replies yet. Be the first to echo back.</p>';
             }
-            
+
             const repliesHTML = replies.map((reply, index) => {
                 const isAuthor = window.authManager.isLoggedIn() && window.authManager.getUser()?._id === reply.author?._id;
                 const hasSubsequentReplies = index < replies.length - 1; // Check if there are replies after this one
                 const canEdit = isAuthor && !reply.isAnonymous && !hasSubsequentReplies;
 
-                // Calculate net votes for replies
-                const replyUpvotes = Array.isArray(reply.upvotes) ? reply.upvotes.length : (reply.upvotes || 0);
-                const replyDownvotes = Array.isArray(reply.downvotes) ? reply.downvotes.length : (reply.downvotes || 0);
-                const replyNetVotes = replyUpvotes - replyDownvotes;
-
                 return `
                 <div class="reply ${reply.isAnonymous ? 'anonymous' : ''}" data-id="${reply._id}">
-                     <div class="thread-voting reply-voting">
-                        <button class="vote-btn" data-action="upvote-reply" aria-label="Upvote"><i class="fas fa-arrow-up"></i></button>
-                        <span class="vote-count" data-content-type="reply" data-content-id="${reply._id}" data-parent-id="${threadId}">${replyNetVotes}</span>
-                        <button class="vote-btn" data-action="downvote-reply" aria-label="Downvote"><i class="fas fa-arrow-down"></i></button>
-                    </div>
                     <div class="reply-main" data-thread-id="${threadId}">
-                        <div class="reply-author-info"></div>
+                        <div class="reply-author-identity-card" data-reply-id="${reply._id}" data-parent-id="${threadId}"></div>
                         <div class="reply-content" id="reply-content-${reply._id}">
                             ${DOMPurify.sanitize(reply.content)}
                             ${reply.isAnonymous ? '<span class="reply-anonymous-indicator"><i class="fas fa-mask"></i> Anonymous Reply</span>' : ''}
