@@ -114,20 +114,13 @@ class BlogComments {
 
         if (window.AuthorIdentityCard) {
             // NEW UNIFIED SYSTEM WITH VOTING!
+            // Ensure vote data has proper numeric values and boolean flags
             const voteData = {
-                upvotes: comment.upvoteCount || comment.upvotes || comment.likes || 0,
-                challenges: comment.challengeCount || comment.downvoteCount || comment.downvotes || comment.dislikes || 0,
-                userUpvoted: comment.userUpvoted || comment.userLiked || false,
-                userChallenged: comment.userChallenged || comment.userDownvoted || comment.userDisliked || false
+                upvotes: Number(comment.upvoteCount || comment.upvotes || comment.likes || 0),
+                challenges: Number(comment.challengeCount || comment.downvoteCount || comment.downvotes || comment.dislikes || 0),
+                userUpvoted: Boolean(comment.userUpvoted || comment.userLiked || false),
+                userChallenged: Boolean(comment.userChallenged || comment.userDownvoted || comment.userDisliked || false)
             };
-            
-            console.log('[BlogComments] Creating AuthorIdentityCard for comment:', {
-                commentId: comment._id,
-                voteData: voteData,
-                enableChallenge: true,
-                simpleDownvote: true,
-                comment: comment
-            });
             
             const identityCard = new AuthorIdentityCard({
                 author: comment.author,

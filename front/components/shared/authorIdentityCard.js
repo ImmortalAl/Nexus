@@ -293,31 +293,27 @@ class AuthorIdentityCard {
      * Create compact vote display for inline variant
      */
     createCompactVotes() {
-        console.log('[AuthorIdentityCard] createCompactVotes called with:', {
-            contentType: this.contentType,
-            contentId: this.contentId,
-            enableChallenge: this.enableChallenge,
-            votes: this.votes,
-            simpleDownvote: this.simpleDownvote
-        });
+        // Force enableChallenge to true for all content types except when explicitly disabled
+        const shouldShowChallenge = this.enableChallenge !== false;
         
-        const html = `
+        return `
             <div class="identity-compact-votes">
                 <span class="compact-vote upvotes ${this.votes.userUpvoted ? 'voted' : ''}"
-                      data-action="upvote">
+                      data-action="upvote"
+                      data-content-type="${this.contentType}"
+                      data-content-id="${this.contentId}">
                     <i class="fas fa-chevron-up"></i> ${this.votes.upvotes}
                 </span>
-                ${this.enableChallenge ? `
+                ${shouldShowChallenge ? `
                     <span class="compact-vote challenges ${this.votes.userChallenged ? 'voted' : ''}"
-                          data-action="challenge">
-                        <i class="fas fa-bolt"></i> ${this.votes.challenges}
+                          data-action="challenge"
+                          data-content-type="${this.contentType}"
+                          data-content-id="${this.contentId}">
+                        <i class="fas ${this.simpleDownvote ? 'fa-chevron-down' : 'fa-bolt'}"></i> ${this.votes.challenges}
                     </span>
                 ` : ''}
             </div>
         `;
-        
-        console.log('[AuthorIdentityCard] Generated compact votes HTML:', html);
-        return html;
     }
 
     /**
