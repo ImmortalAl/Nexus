@@ -276,6 +276,28 @@ class BlogModal {
             // Re-add close button with fresh HTML (preserves inline onclick)
             if (closeBtnHTML) {
                 modalHeaderBar.insertAdjacentHTML('beforeend', closeBtnHTML);
+
+                // MOBILE FIX: Add direct event listener in addition to inline onclick
+                // On some mobile browsers, inline onclick may not fire properly
+                const closeButton = modalHeaderBar.querySelector('.close-modal');
+                if (closeButton) {
+                    // Remove any existing listeners to avoid duplicates
+                    const newCloseButton = closeButton.cloneNode(true);
+                    closeButton.parentNode.replaceChild(newCloseButton, closeButton);
+
+                    // Add fresh event listeners for both click and touch
+                    newCloseButton.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        this.close();
+                    });
+
+                    newCloseButton.addEventListener('touchend', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        this.close();
+                    });
+                }
             }
 
             // Listen for vote updates
