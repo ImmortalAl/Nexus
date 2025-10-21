@@ -430,11 +430,69 @@ class ScrollsArchive {
                     await window.BlogVoting.challengePost(postId);
                 }
 
-                // Reload to update vote counts
-                await this.loadPosts();
+                // Update vote counts locally WITHOUT reloading the page
+                await this.updateVoteCountsLocal(postId);
             }
         } catch (error) {
             console.error('[ScrollsArchive] Error voting:', error);
+        }
+    }
+
+    /**
+     * Update vote counts locally after voting (no page refresh)
+     */
+    async updateVoteCountsLocal(postId) {
+        try {
+            // Fetch updated post data
+            const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/blogs/${postId}`);
+            if (!response.ok) return;
+
+            const updatedPost = await response.json();
+
+            // Update the post in our local array
+            const postIndex = this.posts.findIndex(p => p._id === postId);
+            if (postIndex !== -1) {
+                this.posts[postIndex] = updatedPost;
+            }
+
+            // Update the UI vote count displays
+            const upvoteButtons = document.querySelectorAll(`[onclick*="'${postId}'"][onclick*="'like'"]`);
+            const downvoteButtons = document.querySelectorAll(`[onclick*="'${postId}'"][onclick*="'dislike'"]`);
+
+            const likes = Array.isArray(updatedPost.likes) ? updatedPost.likes.length : (updatedPost.likes || 0);
+
+            // Update upvote button states and counts in table
+            upvoteButtons.forEach(btn => {
+                const votedClass = this.userVotes.get(postId)?.liked ? 'voted' : '';
+                btn.className = `action-btn btn-upvote ${votedClass}`;
+            });
+
+            // Update downvote button states
+            downvoteButtons.forEach(btn => {
+                const votedClass = this.userVotes.get(postId)?.disliked ? 'voted' : '';
+                btn.className = `action-btn btn-downvote ${votedClass}`;
+            });
+
+            // Update vote count in upvotes column
+            const row = document.querySelector(`tr[data-post-id="${postId}"]`);
+            if (row) {
+                const upvotesCell = row.querySelector('.col-stats .stat-value');
+                if (upvotesCell) {
+                    upvotesCell.textContent = likes;
+                }
+            }
+
+            // Update mobile card vote counts
+            const card = document.querySelector(`.archive-card[data-post-id="${postId}"]`);
+            if (card) {
+                const upvotesStat = card.querySelector('.archive-card-stat i.fa-thumbs-up + span');
+                if (upvotesStat) {
+                    upvotesStat.textContent = likes;
+                }
+            }
+
+        } catch (error) {
+            console.error('[ScrollsArchive] Error updating vote counts:', error);
         }
     }
 

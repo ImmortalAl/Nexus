@@ -226,8 +226,10 @@ class BlogModal {
             return;
         }
 
-        // Clear existing content except close button
-        const closeBtn = modalHeaderBar.querySelector('.modal-header-controls');
+        // Save close button HTML before clearing (inline onclick will be preserved)
+        const closeBtnContainer = modalHeaderBar.querySelector('.modal-header-controls');
+        const closeBtnHTML = closeBtnContainer ? closeBtnContainer.outerHTML : null;
+
         modalHeaderBar.innerHTML = '';
 
         // Create AuthorIdentityCard if available
@@ -271,9 +273,9 @@ class BlogModal {
             // Add to header
             modalHeaderBar.appendChild(cardElement);
 
-            // Re-add close button
-            if (closeBtn) {
-                modalHeaderBar.appendChild(closeBtn);
+            // Re-add close button with fresh HTML (preserves inline onclick)
+            if (closeBtnHTML) {
+                modalHeaderBar.insertAdjacentHTML('beforeend', closeBtnHTML);
             }
 
             // Listen for vote updates
