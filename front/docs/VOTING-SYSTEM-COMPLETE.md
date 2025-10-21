@@ -158,12 +158,12 @@
 - **Avatar consistency:** 50% (mixed systems)
 - **Overall grade:** B-
 
-### After (October 10, 2025):
+### After (October 20, 2025):
 - **Voting visibility:** 100% ✅
 - **Mobile usability:** 100% ✅
 - **User feedback:** Full toasts ✅
 - **Accessibility:** 95% ✅
-- **Comment voting:** 100% ✅ (NEW: simple upvote/downvote)
+- **Comment voting:** 100% ✅ (NEW: simple upvote/downvote - restored Oct 20)
 - **Avatar consistency:** 100% ✅ (sitewide NexusAvatars + authorIdentityCard)
 - **Overall grade:** A+ 🌟
 
@@ -211,7 +211,7 @@
 ## 🎯 WHAT'S NOW WORKING
 
 1. ✅ **Soul Scrolls voting** - Full visual implementation with 3-tier challenge
-2. ✅ **Comments voting** - Simple upvote/downvote (NEW: October 10, 2025)
+2. ✅ **Comments voting** - Simple upvote/downvote (Restored: October 20, 2025)
 3. ✅ **Echoes Unbound voting** - Thread author voting
 4. ✅ **Infinite Nexus voting** - Node credibility system
 5. ✅ **Mobile voting** - Touch-optimized
@@ -244,6 +244,47 @@ This massive overhaul transformed the Immortal Nexus voting system from **invisi
 - **Delightful interactions** 🎯
 
 **The collective voice of the Nexus can now be heard, seen, and felt eternally!**
+
+---
+
+## 📝 RECENT UPDATES
+
+### October 20, 2025 - Comment Downvote Button Restoration
+
+**Issue Discovered:**
+Comment voting downvote buttons were completely invisible/non-functional. Investigation revealed the root cause was in `comments.js:169`:
+
+```javascript
+enableChallenge: false // Comments use simple upvote only
+```
+
+This configuration completely prevented downvote buttons from rendering in the DOM.
+
+**Fix Applied:**
+```javascript
+enableChallenge: true,  // Enable downvoting on comments
+simpleDownvote: true    // Use simple down-chevron icon (not bolt)
+```
+
+**Files Modified:**
+- `front/components/shared/comments.js` v1.5 → v1.6 (core fix)
+- `front/pages/blog.html` (version bump)
+- `front/pages/scrolls-archive.html` (version bump)
+- `front/souls/profile.html` (version bump)
+
+**Result:**
+- ✅ Downvote buttons now visible on all comments
+- ✅ Simple chevron-down icon (user-friendly)
+- ✅ Fully functional upvote/downvote system
+- ✅ Cache-busted across all pages
+
+**Debug Cleanup (October 20, 2025):**
+Removed all production debug console.log statements from:
+- `chroniclesFeed.js` (edit button debugging)
+- `navigation.js` (mobile layout debugging - 6 logs)
+- `unifiedVoting.js` (API call debugging - 3 logs)
+
+Cleaner console, production-ready code! ✨
 
 ---
 

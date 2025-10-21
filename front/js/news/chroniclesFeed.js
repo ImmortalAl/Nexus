@@ -133,18 +133,6 @@ class ChroniclesFeed {
         const isLoggedIn = !!currentUser;
         const isAuthor = isLoggedIn && currentUser._id === chronicle.author._id;
 
-        // Debug logging
-        if (chronicle._id) {
-            console.log('[ChronicleCard Debug]', {
-                chronicleId: chronicle._id,
-                hasAuthManager: !!window.authManager,
-                currentUser: currentUser ? currentUser.username : 'none',
-                isLoggedIn: isLoggedIn,
-                isAuthor: isAuthor,
-                willShowEditBtn: isLoggedIn
-            });
-        }
-
         // Create excerpt from content
         const excerpt = chronicle.content.length > 300
             ? chronicle.content.substring(0, 300) + '...'

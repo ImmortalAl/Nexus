@@ -50,4 +50,8 @@ build/
 
 # Temporary files
 .tmp/
-temp/ 
+temp/
+
+# Trashed/temporary screenshot files
+.trashed-*
+*/.trashed-* 

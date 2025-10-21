@@ -161,11 +161,8 @@ function injectCompleteHeader() {
         const isMobile = screenWidth <= 900;
         const isRealMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         const devicePixelRatio = window.devicePixelRatio || 1;
-        
-        console.log(`Screen width: ${screenWidth}px, isMobile: ${isMobile}, isRealMobile: ${isRealMobile}, devicePixelRatio: ${devicePixelRatio}`);
-        
+
         if (isMobile || isRealMobile) {
-            console.log('Applying mobile grid layout fix...');
             headerElement.style.display = 'grid';
             headerElement.style.gridTemplateColumns = 'auto 1fr auto';
             headerElement.style.alignItems = 'center';
@@ -180,7 +177,6 @@ function injectCompleteHeader() {
             // Force header-controls to right side
             const headerControls = headerElement.querySelector('.header-controls');
             if (headerControls) {
-                console.log('Applying header-controls mobile fix...');
                 headerControls.style.gridColumn = '3';
                 headerControls.style.justifySelf = 'end';
                 headerControls.style.display = 'inline-flex';
@@ -204,7 +200,6 @@ function injectCompleteHeader() {
             // Force logo to left side
             const logo = headerElement.querySelector('.logo');
             if (logo) {
-                console.log('Applying logo mobile fix...');
                 logo.style.gridColumn = '1';
                 logo.style.minWidth = '80px';
                 logo.style.flexShrink = '0';
@@ -214,7 +209,6 @@ function injectCompleteHeader() {
             // Force user menu to stay inline
             const userMenu = headerElement.querySelector('.user-menu');
             if (userMenu) {
-                console.log('Applying user-menu mobile fix...');
                 userMenu.style.display = 'inline-flex';
                 userMenu.style.alignItems = 'center';
                 userMenu.style.flexShrink = '0';
@@ -231,7 +225,6 @@ function injectCompleteHeader() {
             // MOBILE NAV TOGGLE
             const mobileToggle = headerElement.querySelector('.mobile-nav-toggle');
             if (mobileToggle) {
-                console.log('Applying mobile-nav-toggle mobile fix...');
                 mobileToggle.style.display = 'inline-flex';
                 mobileToggle.style.alignItems = 'center';
                 mobileToggle.style.justifyContent = 'center';

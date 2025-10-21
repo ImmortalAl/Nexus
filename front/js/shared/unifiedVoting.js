@@ -75,7 +75,6 @@ class UnifiedVotingSystem {
      * Routes to appropriate endpoint until unified backend is ready
      */
     async submitVoteToAPI(contentType, contentId, action, token, parentId = null) {
-        console.log(`[UnifiedVoting] submitVoteToAPI called with:`, { contentType, contentId, action, parentId });
         let endpoint, method = 'POST', body = {};
 
         switch (contentType) {
@@ -104,7 +103,6 @@ class UnifiedVotingSystem {
                 const mappedAction = action === 'challenge' ? 'downvote' : action;
                 // Backend expects 'vote' field, not 'action'
                 body = { vote: mappedAction };
-                console.log(`[UnifiedVoting] Echo vote: ${action} → ${mappedAction}`, body);
                 break;
 
             case 'reply':
@@ -115,7 +113,6 @@ class UnifiedVotingSystem {
                 endpoint = `${this.apiUrl}/threads/${parentId}/replies/${contentId}/vote`;
                 // Backend expects 'vote' field
                 body = { vote: action === 'challenge' ? 'downvote' : action };
-                console.log(`[UnifiedVoting] Reply vote: ${action} (thread: ${parentId})`, body);
                 break;
 
             case 'chronicle':
