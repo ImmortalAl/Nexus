@@ -88,7 +88,7 @@
     <link rel="stylesheet" href="../css/styles.css?v=6.1">
 
     <!-- 3.5. BLOG CARDS - CRITICAL for above-fold rendering (synchronous load) -->
-    <link rel="stylesheet" href="../css/blog-cards.css?v=5.2">
+    <link rel="stylesheet" href="../css/blog-cards.css?v=5.3">
 
     <!-- 4. PROGRESSIVE LOADING - Non-critical CSS loaded asynchronously -->
     <link rel="preload" href="../css/layout.css?v=8.2" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -213,6 +213,27 @@
             <div id="scroll-observer" class="ancient-loader" style="display:none;">
                 <div class="relic-spinner"></div>
                 <div class="loading-text">Unearthing more scrolls...</div>
+            </div>
+
+            <!-- Archive Navigation Section (Bottom) -->
+            <div class="archive-navigation-bottom">
+                <div class="archive-divider">
+                    <span class="divider-ornament">⟡</span>
+                    <span class="divider-text">Seeking Ancient Wisdom?</span>
+                    <span class="divider-ornament">⟡</span>
+                </div>
+                <a href="scrolls-archive.html" class="view-archive-btn">
+                    <div class="btn-icon-wrapper">
+                        <i class="fas fa-archive"></i>
+                    </div>
+                    <div class="btn-content">
+                        <span class="btn-title">View Full Archive</span>
+                        <span class="btn-subtitle">Browse all eternal scrolls • Search • Sort • Filter</span>
+                    </div>
+                    <div class="btn-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </a>
             </div>
         </div>
     </main>

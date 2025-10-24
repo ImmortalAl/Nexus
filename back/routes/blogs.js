@@ -41,15 +41,13 @@ router.get('/', async (req, res) => {
         // Build query filter - only show published posts for public view
         const filter = { status: 'published' };
 
+        // Handle author filtering
         if (req.query.author) {
-            // Support both username and ObjectId for author filtering
             const mongoose = require('mongoose');
 
             if (mongoose.Types.ObjectId.isValid(req.query.author)) {
-                // If it's a valid ObjectId, use it directly
                 filter.author = req.query.author;
             } else {
-                // Otherwise, treat it as a username and find the user
                 const user = await User.findOne({ username: req.query.author });
                 if (!user) {
                     return res.status(404).json({ error: 'User not found' });
@@ -58,28 +56,87 @@ router.get('/', async (req, res) => {
             }
         }
 
+        // Handle search query
+        if (req.query.search) {
+            const searchRegex = new RegExp(req.query.search, 'i');
+            filter.$or = [
+                { title: searchRegex },
+                { content: searchRegex }
+            ];
+        }
+
+        // Handle date range filtering
+        if (req.query.createdAfter) {
+            filter.createdAt = { $gte: new Date(req.query.createdAfter) };
+        }
+
+        // Parse sort parameter (format: "field:direction")
+        let sortOption = { createdAt: -1 }; // default sort
+        let sortByComments = false;
+
+        if (req.query.sort) {
+            const [sortField, sortDirection] = req.query.sort.split(':');
+            const direction = sortDirection === 'asc' ? 1 : -1;
+
+            if (sortField === 'commentsCount') {
+                // We'll handle comment count sorting after fetching
+                sortByComments = true;
+                sortOption = null; // Don't sort in the query
+            } else if (sortField === 'likes') {
+                // Sort by number of likes (array length)
+                sortOption = { likes: direction };
+            } else if (sortField === 'author.username') {
+                sortOption = { 'author.username': direction };
+            } else if (sortField === 'title') {
+                sortOption = { title: direction };
+            } else {
+                sortOption = { [sortField]: direction };
+            }
+        }
+
         const totalBlogs = await Blog.countDocuments(filter);
         const totalPages = Math.ceil(totalBlogs / limit);
 
-        const blogs = await Blog.find(filter)
-            .populate('author', 'username displayName avatar online')
-            .sort({ createdAt: -1 })
-            .skip(skip)
-            .limit(limit);
+        // Build query
+        let query = Blog.find(filter).populate('author', 'username displayName avatar online');
+
+        // Apply sort if not sorting by comments
+        if (sortOption) {
+            query = query.sort(sortOption);
+        }
+
+        // Don't apply pagination yet if sorting by comments
+        if (!sortByComments) {
+            query = query.skip(skip).limit(limit);
+        }
+
+        let blogs = await query;
 
         // Add comment counts to each blog
         const Comment = require('../models/Comment');
-        const blogsWithCommentCounts = await Promise.all(blogs.map(async (blog) => {
+        let blogsWithCommentCounts = await Promise.all(blogs.map(async (blog) => {
             const commentsCount = await Comment.countDocuments({
                 targetType: 'blog',
                 targetId: blog._id.toString()
             });
 
-            // Convert to plain object and add commentsCount
             const blogObj = blog.toObject();
             blogObj.commentsCount = commentsCount;
             return blogObj;
         }));
+
+        // If sorting by comments, do it now and then paginate
+        if (sortByComments) {
+            const [, sortDirection] = req.query.sort.split(':');
+            const direction = sortDirection === 'asc' ? 1 : -1;
+
+            blogsWithCommentCounts.sort((a, b) => {
+                return direction * (a.commentsCount - b.commentsCount);
+            });
+
+            // Apply pagination manually
+            blogsWithCommentCounts = blogsWithCommentCounts.slice(skip, skip + limit);
+        }
 
         // Return paginated response
         res.json({
