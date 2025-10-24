@@ -677,6 +677,143 @@ body.modal-open {
 
 /* NOTE: Duplicate 480px media query removed - all responsive styles consolidated above */
 
+/* ===== MODAL VOTING BUTTONS (Bottom Position) ===== */
+.modal-voting-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0 1rem 1rem 0;
+}
+
+.modal-voting-buttons .vote-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border: 2px solid rgba(255, 94, 120, 0.3);
+    border-radius: 12px;
+    background: linear-gradient(135deg,
+        rgba(26, 26, 51, 0.6),
+        rgba(42, 64, 102, 0.4)
+    );
+    color: var(--text-secondary, #c9b3e0);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.modal-voting-buttons .vote-btn:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 94, 120, 0.6);
+    box-shadow:
+        0 8px 16px rgba(0, 0, 0, 0.3),
+        0 4px 8px rgba(255, 94, 120, 0.2);
+}
+
+.modal-voting-buttons .vote-btn i {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.modal-voting-buttons .vote-btn:hover i {
+    transform: scale(1.2);
+}
+
+.modal-voting-buttons .vote-count {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text, #f0e6ff);
+    min-width: 2ch;
+    text-align: center;
+}
+
+.modal-voting-buttons .vote-label {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Upvote button specific styling */
+.modal-voting-buttons .upvote-btn {
+    border-color: rgba(76, 175, 80, 0.3);
+}
+
+.modal-voting-buttons .upvote-btn:hover {
+    border-color: rgba(76, 175, 80, 0.6);
+    box-shadow:
+        0 8px 16px rgba(0, 0, 0, 0.3),
+        0 4px 8px rgba(76, 175, 80, 0.2);
+}
+
+.modal-voting-buttons .upvote-btn.voted {
+    background: linear-gradient(135deg,
+        rgba(76, 175, 80, 0.3),
+        rgba(56, 142, 60, 0.2)
+    );
+    border-color: rgba(76, 175, 80, 0.8);
+    color: #4caf50;
+}
+
+.modal-voting-buttons .upvote-btn.voted i {
+    color: #4caf50;
+}
+
+/* Challenge button specific styling */
+.modal-voting-buttons .challenge-btn {
+    border-color: rgba(255, 152, 0, 0.3);
+}
+
+.modal-voting-buttons .challenge-btn:hover {
+    border-color: rgba(255, 152, 0, 0.6);
+    box-shadow:
+        0 8px 16px rgba(0, 0, 0, 0.3),
+        0 4px 8px rgba(255, 152, 0, 0.2);
+}
+
+.modal-voting-buttons .challenge-btn.voted {
+    background: linear-gradient(135deg,
+        rgba(255, 152, 0, 0.3),
+        rgba(245, 124, 0, 0.2)
+    );
+    border-color: rgba(255, 152, 0, 0.8);
+    color: #ff9800;
+}
+
+.modal-voting-buttons .challenge-btn.voted i {
+    color: #ff9800;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .modal-voting-buttons {
+        flex-direction: column;
+        gap: 0.75rem;
+        margin: 0 0.5rem 1rem 0;
+    }
+
+    .modal-voting-buttons .vote-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 1rem 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-voting-buttons .vote-label {
+        font-size: 0.85rem;
+    }
+
+    .modal-voting-buttons .vote-btn {
+        padding: 0.875rem 1.25rem;
+    }
+}
+
 /* ===== DARK MODE SUPPORT ===== */
 @media (prefers-color-scheme: dark) {
     .blog-modal-content {

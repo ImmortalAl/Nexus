@@ -214,6 +214,9 @@ class BlogModal {
 
         // Update edit/delete buttons
         this.updateEditDeleteButtons(post);
+
+        // Setup voting buttons at bottom
+        this.setupVotingButtons(post);
     }
 
     /**
@@ -260,9 +263,9 @@ class BlogModal {
                 userChallenged: userChallenged,
                 size: window.innerWidth <= 768 ? 'md' : 'sm', /* MOBILE FIX: Use larger avatar size on mobile for better visibility */
                 variant: 'header',
-                showVoting: true,
+                showVoting: false, // CHANGED: Voting moved to bottom after content
                 showTimestamp: true,
-                enableChallenge: true
+                enableChallenge: false // CHANGED: Challenges also moved to bottom
             });
 
             const cardElement = identityCard.render();
@@ -335,6 +338,90 @@ class BlogModal {
         } else {
             if (editBtn) editBtn.style.display = 'none';
             if (deleteBtn) deleteBtn.style.display = 'none';
+        }
+    }
+
+    /**
+     * Setup voting buttons at bottom of modal (after content)
+     */
+    setupVotingButtons(post) {
+        const modalActions = document.querySelector('.modal-actions');
+        if (!modalActions) {
+            console.error('[BlogModal] modal-actions section not found');
+            return;
+        }
+
+        // Remove any existing voting buttons
+        const existingVotingSection = document.getElementById('modalVotingButtons');
+        if (existingVotingSection) {
+            existingVotingSection.remove();
+        }
+
+        // Calculate vote data
+        const upvotes = Array.isArray(post.likes) ? post.likes.length : (post.likes || 0);
+        const challenges = Array.isArray(post.dislikes) ? post.dislikes.length : (post.dislikes || 0);
+
+        // Check if current user has voted
+        let userUpvoted = false;
+        let userChallenged = false;
+
+        const user = window.BlogAPI.getCurrentUser();
+        if (user) {
+            const userId = user.id;
+            userUpvoted = Array.isArray(post.likes) && post.likes.includes(userId);
+            userChallenged = Array.isArray(post.dislikes) && post.dislikes.includes(userId);
+        }
+
+        // Create voting buttons container
+        const votingSection = document.createElement('div');
+        votingSection.id = 'modalVotingButtons';
+        votingSection.className = 'modal-voting-buttons';
+        votingSection.innerHTML = `
+            <button class="vote-btn upvote-btn ${userUpvoted ? 'voted' : ''}"
+                    onclick="window.BlogVoting.likePost('${post._id}')"
+                    title="Upvote this scroll">
+                <i class="fas fa-thumbs-up"></i>
+                <span class="vote-count">${upvotes}</span>
+                <span class="vote-label">Upvote</span>
+            </button>
+            <button class="vote-btn challenge-btn ${userChallenged ? 'voted' : ''}"
+                    onclick="window.BlogVoting.challengePost('${post._id}')"
+                    title="Challenge this scroll">
+                <i class="fas fa-bolt"></i>
+                <span class="vote-count">${challenges}</span>
+                <span class="vote-label">Challenge</span>
+            </button>
+        `;
+
+        // Insert voting buttons at the START of modal-actions (before other buttons)
+        modalActions.insertBefore(votingSection, modalActions.firstChild);
+
+        // Listen for vote updates from unified voting system
+        if (window.unifiedVoting) {
+            // Remove previous listener if exists
+            if (this.voteListener) {
+                this.voteListener();
+            }
+
+            this.voteListener = window.unifiedVoting.addListener((detail) => {
+                if (detail.contentType === 'blog' && detail.contentId === post._id) {
+                    // Update button states and counts
+                    const upvoteBtn = votingSection.querySelector('.upvote-btn');
+                    const challengeBtn = votingSection.querySelector('.challenge-btn');
+
+                    if (upvoteBtn) {
+                        upvoteBtn.classList.toggle('voted', detail.votes.userUpvoted);
+                        const upvoteCount = upvoteBtn.querySelector('.vote-count');
+                        if (upvoteCount) upvoteCount.textContent = detail.votes.upvotes;
+                    }
+
+                    if (challengeBtn) {
+                        challengeBtn.classList.toggle('voted', detail.votes.userChallenged);
+                        const challengeCount = challengeBtn.querySelector('.vote-count');
+                        if (challengeCount) challengeCount.textContent = detail.votes.challenges;
+                    }
+                }
+            });
         }
     }
 

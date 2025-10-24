@@ -37,14 +37,14 @@ router.get('/', async (req, res) => {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
         const skip = (page - 1) * limit;
-        
+
         // Build query filter - only show published posts for public view
         const filter = { status: 'published' };
 
         if (req.query.author) {
             // Support both username and ObjectId for author filtering
             const mongoose = require('mongoose');
-            
+
             if (mongoose.Types.ObjectId.isValid(req.query.author)) {
                 // If it's a valid ObjectId, use it directly
                 filter.author = req.query.author;
@@ -60,16 +60,30 @@ router.get('/', async (req, res) => {
 
         const totalBlogs = await Blog.countDocuments(filter);
         const totalPages = Math.ceil(totalBlogs / limit);
-        
+
         const blogs = await Blog.find(filter)
             .populate('author', 'username displayName avatar online')
             .sort({ createdAt: -1 })
             .skip(skip)
             .limit(limit);
 
+        // Add comment counts to each blog
+        const Comment = require('../models/Comment');
+        const blogsWithCommentCounts = await Promise.all(blogs.map(async (blog) => {
+            const commentsCount = await Comment.countDocuments({
+                targetType: 'blog',
+                targetId: blog._id.toString()
+            });
+
+            // Convert to plain object and add commentsCount
+            const blogObj = blog.toObject();
+            blogObj.commentsCount = commentsCount;
+            return blogObj;
+        }));
+
         // Return paginated response
         res.json({
-            docs: blogs,
+            docs: blogsWithCommentCounts,
             totalDocs: totalBlogs,
             totalPages: totalPages,
             page: page,
