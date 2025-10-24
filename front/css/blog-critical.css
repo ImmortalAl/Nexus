@@ -85,6 +85,36 @@
     color: #5e78ff;
 }
 
+/* Minimal Archive Link (Top) */
+.archive-link-minimal {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    background: transparent;
+    border: 1px solid rgba(255, 94, 120, 0.2);
+    border-radius: 8px;
+    color: var(--text-secondary, #c9b3e0);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    opacity: 0.7;
+}
+
+.archive-link-minimal:hover {
+    opacity: 1;
+    background: rgba(255, 94, 120, 0.05);
+    border-color: rgba(255, 94, 120, 0.4);
+    color: var(--text, #f0e6ff);
+    transform: translateY(-1px);
+}
+
+.archive-link-minimal i {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
 /* ===== AUTHOR'S OTHER SCROLLS ===== */
 .author-other-scrolls {
     margin-top: 3rem;

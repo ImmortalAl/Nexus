@@ -41,7 +41,10 @@
       "WebFetch(domain:immortalnexus.netlify.app)",
       "Bash(find /home/immortalal/sites/Nexus/front -name \"*.html\" -exec sed -i 's/authorIdentityCard\\.js?v=[0-9.]*/authorIdentityCard.js?v=2.3/g' {} \\;)",
       "Bash(find /home/immortalal/sites/Nexus/front -name \"*.html\" -exec sed -i 's/features\\.css?v=[0-9.]*/features.css?v=8.4/g' {} \\;)",
-      "Bash(awk:*)"
+      "Bash(awk:*)",
+      "Read(//home/immortalal/.ssh/**)",
+      "Bash(ssh:*)",
+      "Bash(git remote set-url:*)"
     ],
     "deny": [],
     "ask": []
