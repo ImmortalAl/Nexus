@@ -151,7 +151,7 @@ class BlogVoting {
             dropdown.style.position = 'fixed';
             dropdown.style.left = `${rect.left}px`;
             dropdown.style.right = 'auto'; // Override CSS default right: 0
-            dropdown.style.zIndex = '999999'; // Above everything including modal
+            dropdown.style.zIndex = '10000000'; // Above modal (which is 1000001 in styles.css)
 
             // Check if there's enough space below the button
             const dropdownHeight = 200; // Estimated height
