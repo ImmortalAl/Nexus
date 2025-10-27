@@ -92,17 +92,23 @@ class BlogVoting {
             <div class="challenge-options" style="display: flex !important; flex-direction: column !important; gap: 0.5rem !important;">
                 <button onclick="window.BlogVoting.quickDownvote('${postId}')"
                         class="challenge-option"
-                        style="display: block !important; padding: 0.75rem 1rem !important; background: rgba(255, 94, 120, 0.2) !important; color: white !important; border: 1px solid rgba(255, 94, 120, 0.5) !important; border-radius: 6px !important; cursor: pointer !important; font-size: 0.95rem !important; transition: all 0.2s !important; width: 100% !important; text-align: left !important;">
+                        style="display: block !important; padding: 0.75rem 1rem !important; background: rgba(255, 94, 120, 0.2) !important; color: white !important; border: 1px solid rgba(255, 94, 120, 0.5) !important; border-radius: 6px !important; cursor: pointer !important; font-size: 0.95rem !important; transition: all 0.15s ease !important; width: 100% !important; text-align: left !important;"
+                        onmouseover="this.style.background='rgba(255, 94, 120, 0.4)'; this.style.transform='translateX(4px)'"
+                        onmouseout="this.style.background='rgba(255, 94, 120, 0.2)'; this.style.transform='translateX(0)'">
                     <i class="fas fa-thumbs-down"></i> Quick Downvote
                 </button>
                 <button onclick="window.BlogVoting.openCounterpoint('${postId}')"
                         class="challenge-option"
-                        style="display: block !important; padding: 0.75rem 1rem !important; background: rgba(255, 94, 120, 0.2) !important; color: white !important; border: 1px solid rgba(255, 94, 120, 0.5) !important; border-radius: 6px !important; cursor: pointer !important; font-size: 0.95rem !important; transition: all 0.2s !important; width: 100% !important; text-align: left !important;">
+                        style="display: block !important; padding: 0.75rem 1rem !important; background: rgba(255, 94, 120, 0.2) !important; color: white !important; border: 1px solid rgba(255, 94, 120, 0.5) !important; border-radius: 6px !important; cursor: pointer !important; font-size: 0.95rem !important; transition: all 0.15s ease !important; width: 100% !important; text-align: left !important;"
+                        onmouseover="this.style.background='rgba(255, 94, 120, 0.4)'; this.style.transform='translateX(4px)'"
+                        onmouseout="this.style.background='rgba(255, 94, 120, 0.2)'; this.style.transform='translateX(0)'">
                     <i class="fas fa-comment-dots"></i> Write Counter-point
                 </button>
                 <button onclick="window.BlogVoting.createFormalDebate('${postId}')"
                         class="challenge-option"
-                        style="display: block !important; padding: 0.75rem 1rem !important; background: rgba(255, 94, 120, 0.2) !important; color: white !important; border: 1px solid rgba(255, 94, 120, 0.5) !important; border-radius: 6px !important; cursor: pointer !important; font-size: 0.95rem !important; transition: all 0.2s !important; width: 100% !important; text-align: left !important;">
+                        style="display: block !important; padding: 0.75rem 1rem !important; background: rgba(255, 94, 120, 0.2) !important; color: white !important; border: 1px solid rgba(255, 94, 120, 0.5) !important; border-radius: 6px !important; cursor: pointer !important; font-size: 0.95rem !important; transition: all 0.15s ease !important; width: 100% !important; text-align: left !important;"
+                        onmouseover="this.style.background='rgba(255, 94, 120, 0.4)'; this.style.transform='translateX(4px)'"
+                        onmouseout="this.style.background='rgba(255, 94, 120, 0.2)'; this.style.transform='translateX(0)'">
                     <i class="fas fa-gavel"></i> Create Formal Debate
                 </button>
             </div>

@@ -281,6 +281,11 @@
     position: relative;
     min-height: 0; /* Important for flexbox scrolling */
     cursor: auto; /* Fix cursor issues */
+
+    /* SCROLL PERFORMANCE OPTIMIZATIONS */
+    -webkit-overflow-scrolling: touch; /* iOS momentum scrolling */
+    overscroll-behavior-y: contain; /* Prevent scroll chaining */
+    will-change: scroll-position; /* Optimize for scrolling */
 }
 
 .modal-body * {
