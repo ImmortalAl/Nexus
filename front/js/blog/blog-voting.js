@@ -195,12 +195,47 @@ class BlogVoting {
                     minHeight: computedStyles.minHeight,
                     rect: dropdownRect
                 });
+
+                // Check all CSS properties that could hide the element
+                console.log('[BlogVoting] Dropdown CSS properties:', {
+                    opacity: computedStyles.opacity,
+                    backgroundColor: computedStyles.backgroundColor,
+                    color: computedStyles.color,
+                    transform: computedStyles.transform,
+                    clipPath: computedStyles.clipPath,
+                    overflow: computedStyles.overflow,
+                    pointerEvents: computedStyles.pointerEvents,
+                    filter: computedStyles.filter
+                });
+
+                // Check if it's in viewport
+                const inViewport = (
+                    dropdownRect.top >= 0 &&
+                    dropdownRect.left >= 0 &&
+                    dropdownRect.bottom <= window.innerHeight &&
+                    dropdownRect.right <= window.innerWidth
+                );
+                console.log('[BlogVoting] Is dropdown in viewport?', inViewport);
+                console.log('[BlogVoting] Viewport size:', { width: window.innerWidth, height: window.innerHeight });
+
                 console.log('[BlogVoting] Dropdown HTML:', dropdown.outerHTML);
                 console.log('[BlogVoting] Dropdown children count:', dropdown.children.length);
                 const challengeOptions = dropdown.querySelector('.challenge-options');
                 if (challengeOptions) {
                     console.log('[BlogVoting] Challenge options found:', challengeOptions);
                     console.log('[BlogVoting] Challenge options children:', challengeOptions.children.length);
+
+                    // Check button styles too
+                    const firstButton = challengeOptions.querySelector('.challenge-option');
+                    if (firstButton) {
+                        const btnStyles = window.getComputedStyle(firstButton);
+                        console.log('[BlogVoting] First button styles:', {
+                            display: btnStyles.display,
+                            opacity: btnStyles.opacity,
+                            backgroundColor: btnStyles.backgroundColor,
+                            color: btnStyles.color
+                        });
+                    }
                 } else {
                     console.log('[BlogVoting] NO .challenge-options found!');
                 }
