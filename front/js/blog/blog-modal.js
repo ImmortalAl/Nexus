@@ -378,14 +378,14 @@ class BlogModal {
         votingSection.className = 'modal-voting-buttons';
         votingSection.innerHTML = `
             <button class="vote-btn upvote-btn ${userUpvoted ? 'voted' : ''}"
-                    onclick="window.BlogVoting.likePost('${post._id}')"
+                    onclick="window.unifiedVoting.vote('blog', '${post._id}', 'upvote')"
                     title="Upvote this scroll">
                 <i class="fas fa-thumbs-up"></i>
                 <span class="vote-count">${upvotes}</span>
                 <span class="vote-label">Upvote</span>
             </button>
             <button class="vote-btn challenge-btn ${userChallenged ? 'voted' : ''}"
-                    onclick="window.BlogVoting.challengePost('${post._id}')"
+                    onclick="window.unifiedVoting.vote('blog', '${post._id}', 'challenge')"
                     title="Challenge this scroll">
                 <i class="fas fa-bolt"></i>
                 <span class="vote-count">${challenges}</span>
