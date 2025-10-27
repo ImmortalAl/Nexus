@@ -385,6 +385,7 @@ class BlogModal {
                 <span class="vote-label">Upvote</span>
             </button>
             <button class="vote-btn challenge-btn ${userChallenged ? 'voted' : ''}"
+                    data-post-id="${post._id}"
                     onclick="window.BlogVoting.challengePost('${post._id}')"
                     title="Challenge this scroll">
                 <i class="fas fa-bolt"></i>

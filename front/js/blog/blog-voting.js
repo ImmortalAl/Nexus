@@ -114,11 +114,11 @@ class BlogVoting {
         }
 
         // Position dropdown
-        const isInModalHeader = challengeBtn.closest('.modal-header-bar');
+        const isInModal = challengeBtn.closest('.modal');
         let parentCard = null;
 
-        if (isInModalHeader) {
-            // Append to body to escape ALL clipping contexts (modal border-radius, etc.)
+        if (isInModal) {
+            // Button is inside modal - append to body with fixed positioning
             document.body.appendChild(dropdown);
 
             // Position fixed dropdown based on button position
@@ -126,7 +126,7 @@ class BlogVoting {
             dropdown.style.position = 'fixed';
             dropdown.style.left = `${rect.left}px`;
             dropdown.style.right = 'auto'; // Override CSS default right: 0
-            dropdown.style.zIndex = '999999'; // Above everything
+            dropdown.style.zIndex = '999999'; // Above everything including modal
 
             // Check if there's enough space below the button
             const dropdownHeight = 200; // Estimated height
@@ -143,6 +143,7 @@ class BlogVoting {
                 dropdown.style.top = 'auto';
             }
         } else {
+            // Button is in regular page context (blog cards, archive)
             challengeBtn.parentElement.style.position = 'relative';
             challengeBtn.parentElement.appendChild(dropdown);
 
