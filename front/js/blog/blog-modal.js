@@ -378,15 +378,16 @@ class BlogModal {
         votingSection.className = 'modal-voting-buttons';
         votingSection.innerHTML = `
             <button class="vote-btn upvote-btn ${userUpvoted ? 'voted' : ''}"
-                    onclick="window.unifiedVoting.vote('blog', '${post._id}', 'upvote')"
+                    data-action="upvote"
+                    data-post-id="${post._id}"
                     title="Upvote this scroll">
                 <i class="fas fa-thumbs-up"></i>
                 <span class="vote-count">${upvotes}</span>
                 <span class="vote-label">Upvote</span>
             </button>
             <button class="vote-btn challenge-btn ${userChallenged ? 'voted' : ''}"
+                    data-action="challenge"
                     data-post-id="${post._id}"
-                    onclick="window.BlogVoting.challengePost('${post._id}')"
                     title="Challenge this scroll">
                 <i class="fas fa-bolt"></i>
                 <span class="vote-count">${challenges}</span>
@@ -396,6 +397,28 @@ class BlogModal {
 
         // Insert voting buttons at the START of modal-actions (before other buttons)
         modalActions.insertBefore(votingSection, modalActions.firstChild);
+
+        // Attach event listeners properly (onclick in innerHTML can be unreliable)
+        const upvoteBtn = votingSection.querySelector('.upvote-btn');
+        const challengeBtn = votingSection.querySelector('.challenge-btn');
+
+        if (upvoteBtn) {
+            upvoteBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('[BlogModal] Upvote button clicked');
+                window.unifiedVoting.vote('blog', post._id, 'upvote');
+            });
+        }
+
+        if (challengeBtn) {
+            challengeBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('[BlogModal] Challenge button clicked for post:', post._id);
+                window.BlogVoting.challengePost(post._id);
+            });
+        }
 
         // Listen for vote updates from unified voting system
         if (window.unifiedVoting) {
