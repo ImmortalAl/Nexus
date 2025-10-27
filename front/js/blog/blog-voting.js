@@ -181,6 +181,30 @@ class BlogVoting {
                 display: window.getComputedStyle(dropdown).display,
                 visibility: window.getComputedStyle(dropdown).visibility
             });
+
+            // Check dimensions after a brief delay to let CSS apply
+            setTimeout(() => {
+                const dropdownRect = dropdown.getBoundingClientRect();
+                const computedStyles = window.getComputedStyle(dropdown);
+                console.log('[BlogVoting] Dropdown dimensions:', {
+                    width: dropdownRect.width,
+                    height: dropdownRect.height,
+                    computedWidth: computedStyles.width,
+                    computedHeight: computedStyles.height,
+                    minWidth: computedStyles.minWidth,
+                    minHeight: computedStyles.minHeight,
+                    rect: dropdownRect
+                });
+                console.log('[BlogVoting] Dropdown HTML:', dropdown.outerHTML);
+                console.log('[BlogVoting] Dropdown children count:', dropdown.children.length);
+                const challengeOptions = dropdown.querySelector('.challenge-options');
+                if (challengeOptions) {
+                    console.log('[BlogVoting] Challenge options found:', challengeOptions);
+                    console.log('[BlogVoting] Challenge options children:', challengeOptions.children.length);
+                } else {
+                    console.log('[BlogVoting] NO .challenge-options found!');
+                }
+            }, 100);
         } else {
             console.log('[BlogVoting] Using card positioning - appending to parent');
             // Button is in regular page context (blog cards, archive)
