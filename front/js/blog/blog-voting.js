@@ -52,9 +52,8 @@ class BlogVoting {
         }
 
         try {
-            const result = await window.BlogAPI.likePost(postId);
-            this.updateVoteButtons(postId, result);
-            this.updateModalVoteButtons(postId, result);
+            // Use unified voting system to ensure modal updates properly
+            const result = await window.unifiedVoting.vote('blog', postId, 'upvote');
             return result;
         } catch (error) {
             console.error('Error liking post:', error);
@@ -178,10 +177,12 @@ class BlogVoting {
         if (dropdown) dropdown.remove();
 
         try {
-            const result = await window.BlogAPI.dislikePost(postId);
-            this.updateVoteButtons(postId, result);
-            this.updateModalVoteButtons(postId, result);
-            window.BlogModal.showNotification('Downvoted', 'info');
+            // Use unified voting system to ensure modal updates properly
+            const result = await window.unifiedVoting.vote('blog', postId, 'challenge');
+
+            if (result && window.BlogModal) {
+                window.BlogModal.showNotification('Downvoted', 'info');
+            }
             return result;
         } catch (error) {
             console.error('Error downvoting post:', error);
