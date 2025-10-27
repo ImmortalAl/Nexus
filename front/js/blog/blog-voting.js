@@ -65,11 +65,10 @@ class BlogVoting {
      * Challenge a blog post (shows 3-tier options)
      */
     challengePost(postId) {
-        if (!window.BlogAPI.isTokenValid(localStorage.getItem('sessionToken'))) {
-            this.requireAuth();
-            return;
-        }
+        console.log('[BlogVoting] challengePost called with postId:', postId);
 
+        // Show dropdown regardless of login status
+        // Individual actions will check auth when clicked
         this.currentChallengePostId = postId;
         this.showChallengeOptions(postId);
     }
@@ -78,6 +77,8 @@ class BlogVoting {
      * Show challenge options dropdown
      */
     showChallengeOptions(postId) {
+        console.log('[BlogVoting] showChallengeOptions called with postId:', postId);
+
         // Remove any existing dropdown
         const existingDropdown = document.querySelector('.challenge-dropdown');
         if (existingDropdown) {
@@ -101,17 +102,36 @@ class BlogVoting {
             </div>
         `;
 
-        // Find challenge button
-        const modalBtn = document.getElementById('modalChallengeBtn');
-        const cardBtn = document.querySelector(`button[data-post-id="${postId}"].challenge-btn`) ||
-                        document.querySelector(`button[onclick*="challengePost('${postId}')"]`);
+        // Find challenge button - try multiple selectors
+        console.log('[BlogVoting] Looking for challenge button...');
 
-        const challengeBtn = (modalBtn && modalBtn.getAttribute('data-post-id') === postId) ? modalBtn : cardBtn;
+        // First check if button is in modal voting buttons section
+        const modalVotingSection = document.getElementById('modalVotingButtons');
+        let challengeBtn = null;
+
+        if (modalVotingSection) {
+            challengeBtn = modalVotingSection.querySelector('.challenge-btn');
+            console.log('[BlogVoting] Found in modalVotingButtons:', challengeBtn);
+        }
+
+        // Fallback to other selectors if not in modal
+        if (!challengeBtn) {
+            const byDataAttr = document.querySelector(`button[data-post-id="${postId}"].challenge-btn`);
+            console.log('[BlogVoting] byDataAttr:', byDataAttr);
+
+            const byOnclick = document.querySelector(`button[onclick*="challengePost('${postId}')"]`);
+            console.log('[BlogVoting] byOnclick:', byOnclick);
+
+            challengeBtn = byDataAttr || byOnclick;
+        }
 
         if (!challengeBtn) {
             console.error('[BlogVoting] Could not find challenge button for post:', postId);
+            console.error('[BlogVoting] modalVotingSection exists?', !!modalVotingSection);
             return;
         }
+
+        console.log('[BlogVoting] Found challenge button:', challengeBtn);
 
         // Position dropdown
         const isInModal = challengeBtn.closest('.modal');
@@ -176,6 +196,12 @@ class BlogVoting {
         // Remove dropdown
         const dropdown = document.querySelector('.challenge-dropdown');
         if (dropdown) dropdown.remove();
+
+        // Check authentication
+        if (!window.BlogAPI.isTokenValid(localStorage.getItem('sessionToken'))) {
+            this.requireAuth();
+            return;
+        }
 
         try {
             // Use unified voting system to ensure modal updates properly
