@@ -135,14 +135,19 @@ class BlogVoting {
 
         // Position dropdown
         const isInModal = challengeBtn.closest('.modal');
+        console.log('[BlogVoting] Is button in modal?', !!isInModal);
         let parentCard = null;
 
         if (isInModal) {
+            console.log('[BlogVoting] Using modal positioning - appending to body');
             // Button is inside modal - append to body with fixed positioning
             document.body.appendChild(dropdown);
+            console.log('[BlogVoting] Dropdown appended to body:', document.body.contains(dropdown));
 
             // Position fixed dropdown based on button position
             const rect = challengeBtn.getBoundingClientRect();
+            console.log('[BlogVoting] Button rect:', rect);
+
             dropdown.style.position = 'fixed';
             dropdown.style.left = `${rect.left}px`;
             dropdown.style.right = 'auto'; // Override CSS default right: 0
@@ -153,16 +158,31 @@ class BlogVoting {
             const spaceBelow = window.innerHeight - rect.bottom;
             const spaceAbove = rect.top;
 
+            console.log('[BlogVoting] Space below:', spaceBelow, 'Space above:', spaceAbove);
+
             if (spaceBelow >= dropdownHeight || spaceBelow > spaceAbove) {
                 // Position below button
                 dropdown.style.top = `${rect.bottom + 8}px`;
                 dropdown.style.bottom = 'auto';
+                console.log('[BlogVoting] Positioned below button at top:', dropdown.style.top);
             } else {
                 // Position above button
                 dropdown.style.bottom = `${window.innerHeight - rect.top + 8}px`;
                 dropdown.style.top = 'auto';
+                console.log('[BlogVoting] Positioned above button at bottom:', dropdown.style.bottom);
             }
+
+            console.log('[BlogVoting] Final dropdown styles:', {
+                position: dropdown.style.position,
+                left: dropdown.style.left,
+                top: dropdown.style.top,
+                bottom: dropdown.style.bottom,
+                zIndex: dropdown.style.zIndex,
+                display: window.getComputedStyle(dropdown).display,
+                visibility: window.getComputedStyle(dropdown).visibility
+            });
         } else {
+            console.log('[BlogVoting] Using card positioning - appending to parent');
             // Button is in regular page context (blog cards, archive)
             challengeBtn.parentElement.style.position = 'relative';
             challengeBtn.parentElement.appendChild(dropdown);
