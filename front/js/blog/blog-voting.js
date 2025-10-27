@@ -89,14 +89,20 @@ class BlogVoting {
         const dropdown = document.createElement('div');
         dropdown.className = 'challenge-dropdown';
         dropdown.innerHTML = `
-            <div class="challenge-options">
-                <button onclick="window.BlogVoting.quickDownvote('${postId}')" class="challenge-option">
+            <div class="challenge-options" style="display: flex !important; flex-direction: column !important; gap: 0.5rem !important;">
+                <button onclick="window.BlogVoting.quickDownvote('${postId}')"
+                        class="challenge-option"
+                        style="display: block !important; padding: 0.75rem 1rem !important; background: rgba(255, 94, 120, 0.2) !important; color: white !important; border: 1px solid rgba(255, 94, 120, 0.5) !important; border-radius: 6px !important; cursor: pointer !important; font-size: 0.95rem !important; transition: all 0.2s !important; width: 100% !important; text-align: left !important;">
                     <i class="fas fa-thumbs-down"></i> Quick Downvote
                 </button>
-                <button onclick="window.BlogVoting.openCounterpoint('${postId}')" class="challenge-option">
+                <button onclick="window.BlogVoting.openCounterpoint('${postId}')"
+                        class="challenge-option"
+                        style="display: block !important; padding: 0.75rem 1rem !important; background: rgba(255, 94, 120, 0.2) !important; color: white !important; border: 1px solid rgba(255, 94, 120, 0.5) !important; border-radius: 6px !important; cursor: pointer !important; font-size: 0.95rem !important; transition: all 0.2s !important; width: 100% !important; text-align: left !important;">
                     <i class="fas fa-comment-dots"></i> Write Counter-point
                 </button>
-                <button onclick="window.BlogVoting.createFormalDebate('${postId}')" class="challenge-option">
+                <button onclick="window.BlogVoting.createFormalDebate('${postId}')"
+                        class="challenge-option"
+                        style="display: block !important; padding: 0.75rem 1rem !important; background: rgba(255, 94, 120, 0.2) !important; color: white !important; border: 1px solid rgba(255, 94, 120, 0.5) !important; border-radius: 6px !important; cursor: pointer !important; font-size: 0.95rem !important; transition: all 0.2s !important; width: 100% !important; text-align: left !important;">
                     <i class="fas fa-gavel"></i> Create Formal Debate
                 </button>
             </div>
@@ -148,10 +154,25 @@ class BlogVoting {
             const rect = challengeBtn.getBoundingClientRect();
             console.log('[BlogVoting] Button rect:', rect);
 
-            dropdown.style.position = 'fixed';
-            dropdown.style.left = `${rect.left}px`;
-            dropdown.style.right = 'auto'; // Override CSS default right: 0
-            dropdown.style.zIndex = '10000000'; // Above modal (which is 1000001 in styles.css)
+            // AGGRESSIVE INLINE STYLING - Force visibility
+            dropdown.style.cssText = `
+                position: fixed !important;
+                z-index: 99999999 !important;
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                background: rgba(26, 26, 51, 0.98) !important;
+                border: 3px solid #ff5e78 !important;
+                border-radius: 8px !important;
+                padding: 1rem !important;
+                min-width: 200px !important;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8) !important;
+                backdrop-filter: blur(10px) !important;
+                pointer-events: auto !important;
+                transform: none !important;
+                clip-path: none !important;
+                overflow: visible !important;
+            `;
 
             // Check if there's enough space below the button
             const dropdownHeight = 200; // Estimated height
@@ -162,14 +183,14 @@ class BlogVoting {
 
             if (spaceBelow >= dropdownHeight || spaceBelow > spaceAbove) {
                 // Position below button
+                dropdown.style.left = `${rect.left}px`;
                 dropdown.style.top = `${rect.bottom + 8}px`;
-                dropdown.style.bottom = 'auto';
-                console.log('[BlogVoting] Positioned below button at top:', dropdown.style.top);
+                console.log('[BlogVoting] Positioned below button at:', rect.left, rect.bottom + 8);
             } else {
                 // Position above button
-                dropdown.style.bottom = `${window.innerHeight - rect.top + 8}px`;
-                dropdown.style.top = 'auto';
-                console.log('[BlogVoting] Positioned above button at bottom:', dropdown.style.bottom);
+                dropdown.style.left = `${rect.left}px`;
+                dropdown.style.top = `${rect.top - dropdownHeight - 8}px`;
+                console.log('[BlogVoting] Positioned above button at:', rect.left, rect.top - dropdownHeight - 8);
             }
 
             console.log('[BlogVoting] Final dropdown styles:', {
