@@ -56,8 +56,8 @@
     <link rel="preload" href="components/shared/active-users.css?v=2.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="components/shared/active-users.css?v=2.1"></noscript>
     
-    <link rel="preload" href="css/lander.css?v=2.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="css/lander.css?v=2.3"></noscript>
+    <link rel="preload" href="css/lander.css?v=2.4" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="css/lander.css?v=2.4"></noscript>
     
     <!-- Soul Management Modal Styles -->
     <style>
@@ -2385,6 +2385,9 @@
             // Load user's drafts
             await loadDrafts();
 
+            // Load user's recent scrolls
+            await loadRecentScrolls();
+
             // Check for edit mode
             const urlParams = new URLSearchParams(window.location.search);
             const editId = urlParams.get('editId');
@@ -3051,6 +3054,143 @@
             });
         }
         
+        async function loadRecentScrolls() {
+            const token = localStorage.getItem('sessionToken');
+            const scrollsList = document.getElementById('recentScrollsList');
+
+            if (!scrollsList) return;
+
+            if (!token) {
+                // Not logged in - show empty state
+                scrollsList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-feather-alt"></i>
+                        <p>Your scrolls await inscription...</p>
+                        <button class="btn btn-primary" onclick="document.getElementById('toggleForgeBtn').click()">
+                            Begin Your First Scroll
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            // Show loading state
+            scrollsList.innerHTML = `
+                <div class="loading-state">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Loading your scrolls...</p>
+                </div>
+            `;
+
+            try {
+                const apiBaseUrl = window.NEXUS_CONFIG?.API_BASE_URL || 'https://nexus-ytrg.onrender.com/api';
+
+                // Fetch current user to get their ID/username
+                const userResponse = await fetch(`${apiBaseUrl}/users/me`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!userResponse.ok) throw new Error('Failed to fetch user data');
+
+                const userData = await userResponse.json();
+                const username = userData.user?.username || userData.username;
+
+                // Fetch user's recent scrolls (limit to 5)
+                const scrollsResponse = await fetch(`${apiBaseUrl}/blogs?author=${username}&limit=5&sort=createdAt:desc`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!scrollsResponse.ok) throw new Error('Failed to fetch scrolls');
+
+                const scrollsData = await scrollsResponse.json();
+                const scrolls = scrollsData.docs || scrollsData;
+
+                if (!scrolls || scrolls.length === 0) {
+                    // No scrolls yet
+                    scrollsList.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-feather-alt"></i>
+                            <p>Your scrolls await inscription...</p>
+                            <button class="btn btn-primary" onclick="document.getElementById('toggleForgeBtn').click()">
+                                Begin Your First Scroll
+                            </button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Render scrolls
+                renderRecentScrolls(scrolls);
+
+            } catch (error) {
+                console.error('[Lander] Error loading recent scrolls:', error);
+                scrollsList.innerHTML = `
+                    <div class="error-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Failed to load your scrolls</p>
+                    </div>
+                `;
+            }
+        }
+
+        function renderRecentScrolls(scrolls) {
+            const scrollsList = document.getElementById('recentScrollsList');
+            if (!scrollsList) return;
+
+            scrollsList.innerHTML = scrolls.map(scroll => {
+                const date = new Date(scroll.createdAt).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+
+                // Create excerpt from content
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = scroll.content || '';
+                const textContent = tempDiv.textContent || tempDiv.innerText || '';
+                const excerpt = textContent.length > 120 ? textContent.substring(0, 120) + '...' : textContent;
+
+                const likes = Array.isArray(scroll.likes) ? scroll.likes.length : (scroll.likes || 0);
+                const comments = scroll.commentsCount || 0;
+
+                return `
+                    <div class="scroll-card" data-scroll-id="${scroll._id}">
+                        <div class="scroll-card-header">
+                            <h3 class="scroll-card-title">${escapeHtml(scroll.title)}</h3>
+                            <span class="scroll-card-date">${date}</span>
+                        </div>
+                        <p class="scroll-card-excerpt">${excerpt}</p>
+                        <div class="scroll-card-footer">
+                            <div class="scroll-card-stats">
+                                <span><i class="fas fa-thumbs-up"></i> ${likes}</span>
+                                <span><i class="fas fa-comment"></i> ${comments}</span>
+                            </div>
+                            <div class="scroll-card-actions">
+                                <button class="btn-link" onclick="window.location.href='/lander.html?expand=editor&editId=${scroll._id}'" title="Edit">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="btn-link" onclick="window.location.href='/pages/blog.html#scroll-${scroll._id}'" title="View">
+                                    <i class="fas fa-eye"></i> View
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
         async function loadUserProfile() {
             const token = localStorage.getItem('sessionToken');
             if (!token) {
