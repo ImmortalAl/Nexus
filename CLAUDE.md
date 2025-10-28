@@ -288,6 +288,71 @@ This ensures continuous deployment and prevents work loss.
 // Additional Note for Future Iterations:
 // The user prefers to be asked (pestered) if anything is unclear or unknown during development. This ensures all changes are approved and minimizes the need for backtracking or reworking. Always confirm uncertainties before proceeding.
 
+## 📚 Documentation Standards (CRITICAL)
+
+**MANDATORY: Follow documentation standards to maintain organization**
+
+### Documentation Health Check (Run Before Starting Work)
+```bash
+# Check master index completeness
+ls front/docs/*.md | wc -l  # Compare to front/docs/README.md count
+```
+
+### When Creating New Documentation
+
+**BEFORE creating a new doc:**
+1. Check if topic is already documented: `grep -ri "topic" front/docs/`
+2. Check master index: `front/docs/README.md`
+3. If exists, update existing doc instead of creating new one
+
+**WHEN creating a new doc:**
+1. Use standard header with "Purpose", "Last Updated", "Status"
+2. Choose appropriate location (see DOCUMENTATION-STANDARDS.md)
+3. **MUST add to master index** (`front/docs/README.md`) in same commit
+4. Use descriptive file name: `FEATURE-NAME-SYSTEM.md` or `TOPIC-GUIDE.md`
+
+### When Updating Existing Documentation
+
+**ALWAYS:**
+- Update "Last Updated" date
+- If major changes, note in doc's changelog section
+- Verify no broken links to/from this doc
+
+### When Archiving Documentation
+
+**Archive completed audits/investigations immediately:**
+```bash
+mkdir -p front/docs/archive/YYYY-MM/category-name/
+git mv front/docs/OLD-DOC.md front/docs/archive/YYYY-MM/category-name/
+```
+
+**Update master index** to reflect archival
+
+### End-of-Session Documentation Checklist
+
+Before final commit, verify:
+- [ ] All new docs added to master index
+- [ ] All modified docs have updated dates
+- [ ] Completed work archived (not left in main docs/)
+- [ ] No overlapping documentation created
+- [ ] UNFINISHED-BUSINESS.md updated if applicable
+
+### Red Flags - Immediate Action Required
+
+If you notice:
+- 🚨 Multiple docs on same topic → consolidate immediately
+- 🚨 New doc not in master index → add immediately
+- 🚨 Completed audit in main docs/ → archive immediately
+- 🚨 Doc named "TEMP" or "TODO" → rename or delete
+
+### Documentation Reference
+
+**Full standards:** `/front/docs/DOCUMENTATION-STANDARDS.md`
+**Master index:** `/front/docs/README.md`
+**Archive structure:** `/front/docs/archive/YYYY-MM/category-name/`
+
+**Last Doc Audit:** 2025-10-28 (47 files audited, 13 archived, 8 consolidated → 3)
+
 ## User Communication Preferences
 
 **CRITICAL: The user values constructive disagreement over agreement**
