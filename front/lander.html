@@ -1966,8 +1966,10 @@
     <script src="js/main.js?v=3.6"></script>
     <script>
         let quill;
-        
-        
+        let editMode = false;
+        let editPostId = null;
+
+
         function initQuillEditor() {
             quill = new Quill('#editor', {
                 theme: 'snow',
@@ -1986,47 +1988,106 @@
             });
         }
         
+        async function loadPostForEditing(postId) {
+            try {
+                const token = localStorage.getItem('sessionToken');
+                const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/blogs/${postId}`, {
+                    headers: {
+                        'Authorization': token ? `Bearer ${token}` : ''
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch post');
+                }
+
+                const post = await response.json();
+
+                // Verify ownership
+                const userResponse = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/users/me`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (userResponse.ok) {
+                    const userData = await userResponse.json();
+                    const currentUserId = userData.user?.id || userData.user?._id;
+                    const postAuthorId = post.author?._id || post.author?.id;
+
+                    if (currentUserId !== postAuthorId && userData.user?.role !== 'admin') {
+                        alert('You do not have permission to edit this post');
+                        window.location.href = '/pages/blog.html';
+                        return;
+                    }
+                }
+
+                // Populate editor
+                document.getElementById('postTitle').value = post.title || '';
+                if (quill) {
+                    quill.root.innerHTML = post.content || '';
+                }
+
+                // Update UI
+                editMode = true;
+                editPostId = postId;
+                const publishButton = document.getElementById('publishButton');
+                if (publishButton) {
+                    publishButton.textContent = 'Update Scroll';
+                }
+
+                // Expand the forge
+                const forge = document.querySelector('.inscription-forge');
+                if (forge) {
+                    forge.classList.remove('collapsed');
+                }
+
+                console.log(`[Lander] Loaded post ${postId} for editing`);
+            } catch (error) {
+                console.error('[Lander] Error loading post for editing:', error);
+                alert('Failed to load post for editing: ' + error.message);
+                window.location.href = '/pages/blog.html';
+            }
+        }
+
         async function publishPost() {
             const title = document.getElementById('postTitle').value.trim();
             const content = quill.root.innerHTML;
-            
+
             // Check which tab is active
             const activeTab = document.querySelector('.forge-tab.active');
             const isChronicle = activeTab && activeTab.dataset.type === 'chronicle';
             const endpoint = isChronicle ? 'news' : 'blogs';
-            
+
             if (!title) {
                 const itemType = isChronicle ? 'chronicle' : 'eternal thought';
                 alert(`Please enter a title for your ${itemType}`);
                 return;
             }
-            
+
             if (quill.getText().trim().length < 10) {
                 const wisdomType = isChronicle ? 'chronicle' : 'eternal wisdom';
                 alert(`Please share more of your ${wisdomType} (at least 10 characters)`);
                 return;
             }
-            
+
             const token = localStorage.getItem('sessionToken');
             if (!token) {
                 window.NEXUS.openSoulModal('login');
                 return;
             }
-            
+
             try {
                 const sanitizedContent = DOMPurify.sanitize(content);
-                
+
                 const publishButton = document.getElementById('publishButton');
-                publishButton.textContent = 'Eternalizing...';
+                const originalButtonText = publishButton.textContent;
+                publishButton.textContent = editMode ? 'Updating...' : 'Eternalizing...';
                 publishButton.disabled = true;
-                
-                const draftsSelector = document.getElementById('draftsSelector');
-                const selectedDraftId = draftsSelector.value;
-                
+
                 let response;
-                if (selectedDraftId) {
-                    // Update existing draft to published
-                    response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/${endpoint}/${selectedDraftId}`, {
+
+                // Handle edit mode
+                if (editMode && editPostId) {
+                    response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/${endpoint}/${editPostId}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
@@ -2039,19 +2100,38 @@
                         })
                     });
                 } else {
-                    // Create new post
-                    response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/${endpoint}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`
-                        },
-                        body: JSON.stringify({
-                            title,
-                            content: sanitizedContent,
-                            status: 'published'
-                        })
-                    });
+                    const draftsSelector = document.getElementById('draftsSelector');
+                    const selectedDraftId = draftsSelector.value;
+
+                    if (selectedDraftId) {
+                        // Update existing draft to published
+                        response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/${endpoint}/${selectedDraftId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            },
+                            body: JSON.stringify({
+                                title,
+                                content: sanitizedContent,
+                                status: 'published'
+                            })
+                        });
+                    } else {
+                        // Create new post
+                        response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/${endpoint}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            },
+                            body: JSON.stringify({
+                                title,
+                                content: sanitizedContent,
+                                status: 'published'
+                            })
+                        });
+                    }
                 }
                 
                 if (!response.ok) {
@@ -2060,32 +2140,41 @@
                 }
                 
                 const data = await response.json();
-                // Blog post created successfully
-                
-                // Clear form
+                // Blog post created/updated successfully
+
+                // Check mode before resetting
+                const wasEditMode = editMode;
+
+                // Clear form and reset edit mode
                 clearForm();
+                editMode = false;
+                editPostId = null;
                 publishButton.textContent = 'Eternalize';
                 publishButton.disabled = false;
-                
+
                 // Refresh drafts list
                 await loadDrafts();
-                
+
                 // Show success and redirect to appropriate page
-                if (isChronicle) {
+                if (wasEditMode) {
+                    alert('Your scroll has been updated successfully!');
+                    window.location.href = '/pages/blog.html';
+                } else if (isChronicle) {
                     alert('Your chronicle has been inscribed in the Boundless Chronicles!');
                     window.location.href = '/pages/news.html';
                 } else {
                     alert('Your eternal wisdom has been shared with the sanctuary!');
                     window.location.href = '/pages/blog.html';
                 }
-                
+
             } catch (error) {
                 // Error publishing post
-                const itemType = isChronicle ? 'chronicle' : 'eternal thought';
-                alert(`Failed to publish your ${itemType}: ` + error.message);
-                
+                const itemType = editMode ? 'scroll' : (isChronicle ? 'chronicle' : 'eternal thought');
+                const action = editMode ? 'update' : 'publish';
+                alert(`Failed to ${action} your ${itemType}: ` + error.message);
+
                 const publishButton = document.getElementById('publishButton');
-                publishButton.textContent = 'Eternalize';
+                publishButton.textContent = editMode ? 'Update Scroll' : 'Eternalize';
                 publishButton.disabled = false;
             }
         }
@@ -2268,24 +2357,32 @@
         document.addEventListener('DOMContentLoaded', async () => {
             // Initialize components
             initQuillEditor();
-            
+
             // Load user profile data and update avatar
             await loadUserProfile();
-            
+
             // Load user's drafts
             await loadDrafts();
-            
+
+            // Check for edit mode
+            const urlParams = new URLSearchParams(window.location.search);
+            const editId = urlParams.get('editId');
+            if (editId) {
+                // Load post for editing
+                await loadPostForEditing(editId);
+            }
+
             // Setup event listeners
             const publishButton = document.getElementById('publishButton');
             if (publishButton) {
                 publishButton.addEventListener('click', publishPost);
             }
-            
+
             const saveDraftButton = document.getElementById('saveDraftButton');
             if (saveDraftButton) {
                 saveDraftButton.addEventListener('click', saveDraft);
             }
-            
+
             const draftsSelector = document.getElementById('draftsSelector');
             if (draftsSelector) {
                 draftsSelector.addEventListener('change', loadSelectedDraft);

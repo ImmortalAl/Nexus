@@ -847,3 +847,19 @@ window.BlogModal = blogModal;
 
 // Also export class for testing
 window.BlogModalClass = BlogModal;
+
+/**
+ * Edit current post - redirects to lander.html with edit mode
+ * Called from the edit button in blog modals
+ */
+window.editCurrentPost = function() {
+    const postId = window.BlogModal?.currentPostId;
+    if (!postId) {
+        console.error('[BlogModal] No current post ID for editing');
+        alert('Unable to edit post - no post ID found');
+        return;
+    }
+
+    // Redirect to lander with edit parameters
+    window.location.href = `/lander.html?expand=editor&editId=${postId}`;
+};

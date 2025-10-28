@@ -882,3 +882,37 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Export for global access
 window.ScrollsArchive = ScrollsArchive;
+
+/**
+ * Edit current post - redirects to lander.html with edit mode
+ * Called from the edit button in archive modals
+ */
+window.editCurrentPost = function() {
+    const postId = window.BlogModal?.currentPostId;
+    if (!postId) {
+        console.error('[ScrollsArchive] No current post ID for editing');
+        alert('Unable to edit post - no post ID found');
+        return;
+    }
+
+    // Redirect to lander with edit parameters
+    window.location.href = `/lander.html?expand=editor&editId=${postId}`;
+};
+
+/**
+ * Confirm delete current post
+ * Called from the delete button in archive modals
+ */
+window.confirmDeleteCurrentPost = function() {
+    const postId = window.BlogModal?.currentPostId;
+    if (!postId) {
+        console.error('[ScrollsArchive] No current post ID for deleting');
+        return;
+    }
+
+    if (window.BlogVoting) {
+        window.BlogVoting.confirmDeletePost(postId);
+    } else {
+        console.error('[ScrollsArchive] BlogVoting not available');
+    }
+};
