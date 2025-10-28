@@ -188,26 +188,26 @@ h3 {
 }
 
 .toggle-forge-btn {
-    background: linear-gradient(90deg, 
+    background: linear-gradient(90deg,
         rgba(255, 94, 120, 0.05) 0%,
         rgba(255, 94, 120, 0.1) 50%,
         rgba(255, 94, 120, 0.15) 100%);
     border: 1px solid rgba(255, 94, 120, 0.3);
     border-radius: 6px;
     color: var(--accent);
-    font-size: 1.2rem;
+    font-size: 0.95rem;
     cursor: pointer;
-    padding: 0.75rem 2rem;
+    padding: 0.5rem 1rem;
     transition: all 0.3s ease;
     position: relative;
     z-index: 2;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    min-width: 200px;
+    gap: 0.4rem;
+    min-width: 120px;
     justify-content: center;
-    flex: 1;
-    max-width: 300px;
+    flex: 0 0 auto;
+    max-width: 180px;
 }
 
 .toggle-forge-btn:hover {
