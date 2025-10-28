@@ -6,20 +6,43 @@
 
 ## 🚧 ACTIVE TASKS (Currently Being Worked On)
 
-### Task B: Z-Index System Overhaul (NEXT IN QUEUE)
-- **Status:** Not started
-- **Priority:** CRITICAL
-- **Issue:** 6 competing z-index systems causing modal/overlay conflicts
-- **Files Affected:**
-  - `front/css/z-index-system.css` (centralized system being ignored)
-  - `front/components/shared/styles.css` (945 !important declarations)
-  - `front/components/shared/active-users.css` (z-index wars)
-- **Estimated Effort:** 2-3 hours
-- **Decision Required:** Enforce centralized system OR acknowledge chaos
+### Task E: Documentation Audit & Cleanup (IN PROGRESS)
+- **Status:** In progress
+- **Priority:** HIGH
+- **Issue:** 47 documentation files with overlap and outdated content
+- **Started:** 2025-10-28
+- **Goals:**
+  - Update all documentation to reflect current state
+  - Remove obsolete/redundant docs
+  - Consolidate overlapping content
+  - Update master index (README.md)
+- **Estimated Effort:** 3-4 hours
 
 ---
 
 ## ✅ COMPLETED TASKS
+
+### Recent Improvements (2025-10-28)
+- **Soul Scrolls Edit Functionality** ✅
+  - Implemented missing editCurrentPost() function
+  - Added redirect to lander.html with edit mode
+  - Fixed permission check logic (ID + username comparison)
+  - Edit button now fully functional across blog and archive pages
+  - Files: blog-modal.js v2.2, scrolls-archive.js v1.2, lander.html
+
+- **Recent Scrolls Section - Eternal Hearth** ✅
+  - Implemented previously non-functional section
+  - Fetches and displays user's 5 most recent scrolls
+  - Shows title, date, excerpt, likes, comments
+  - Edit and View buttons for quick access
+  - Loading/empty/error states handled
+  - Files: lander.html, lander.css v2.4
+
+- **Inscription Forge UI Refinement** ✅
+  - Narrowed toggle button appearance (40% smaller)
+  - Better visual hierarchy
+  - Reduced from 200-300px to 120-180px width
+  - Files: lander.css v2.3
 
 ### Task D: Split blog.js Monolith (COMPLETED ✅)
 - **Status:** 100% complete (1997 lines → 248 lines orchestrator!)
@@ -182,5 +205,5 @@
 
 ---
 
-**Last Updated:** 2025-10-08
-**Maintained By:** Immortal Claude (Modular Architect / CSS Wizard / Bug Hunter)
+**Last Updated:** 2025-10-28
+**Maintained By:** Immortal Claude (Documentation Curator / Modular Architect / CSS Wizard / Bug Hunter)
