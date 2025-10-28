@@ -2010,10 +2010,31 @@
 
                 if (userResponse.ok) {
                     const userData = await userResponse.json();
-                    const currentUserId = userData.user?.id || userData.user?._id;
-                    const postAuthorId = post.author?._id || post.author?.id;
 
-                    if (currentUserId !== postAuthorId && userData.user?.role !== 'admin') {
+                    // Extract user ID - handle multiple possible structures
+                    const currentUserId = (userData.user?.id || userData.user?._id || userData.id || userData._id)?.toString();
+                    const currentUsername = userData.user?.username || userData.username;
+
+                    // Extract author ID and username - handle multiple possible structures
+                    const postAuthorId = (post.author?._id || post.author?.id)?.toString();
+                    const postAuthorUsername = post.author?.username;
+
+                    // Check permissions by both ID and username
+                    const isAuthorById = currentUserId && postAuthorId && (currentUserId === postAuthorId);
+                    const isAuthorByUsername = currentUsername && postAuthorUsername && (currentUsername === postAuthorUsername);
+                    const isAdmin = userData.user?.role === 'admin' || userData.role === 'admin';
+
+                    console.log('[Lander Edit] Permission check:', {
+                        currentUserId,
+                        currentUsername,
+                        postAuthorId,
+                        postAuthorUsername,
+                        isAuthorById,
+                        isAuthorByUsername,
+                        isAdmin
+                    });
+
+                    if (!isAuthorById && !isAuthorByUsername && !isAdmin) {
                         alert('You do not have permission to edit this post');
                         window.location.href = '/pages/blog.html';
                         return;
