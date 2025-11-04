@@ -307,7 +307,16 @@ class CommentsSystem {
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
                 console.error('[Comments] Server error:', errorData);
-                const errorMessage = errorData.error || `HTTP ${response.status}`;
+
+                // Build detailed error message
+                let errorMessage = errorData.error || `HTTP ${response.status}`;
+                if (errorData.details) {
+                    errorMessage += `\nDetails: ${errorData.details}`;
+                }
+                if (errorData.validationErrors) {
+                    errorMessage += `\nValidation: ${JSON.stringify(errorData.validationErrors)}`;
+                }
+
                 throw new Error(errorMessage);
             }
 

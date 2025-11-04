@@ -75,7 +75,18 @@ router.post('/', auth, async (req, res) => {
         res.status(201).json(populatedComment);
     } catch (error) {
         console.error('Error creating comment:', error);
-        res.status(500).json({ error: 'Failed to create comment' });
+
+        // Return detailed error info for debugging
+        const errorResponse = {
+            error: 'Failed to create comment',
+            details: error.message,
+            ...(process.env.NODE_ENV === 'development' && {
+                stack: error.stack,
+                validationErrors: error.errors
+            })
+        };
+
+        res.status(500).json(errorResponse);
     }
 });
 
