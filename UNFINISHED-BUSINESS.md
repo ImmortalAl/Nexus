@@ -145,17 +145,22 @@
 5. **Inline Styles Removal** (67 instances) - Break theme switching
 
 ### Priority: MEDIUM
-6. **!important Overload** (945 declarations) - CSS specificity arms race
-7. **Deep Nesting Refactor** (4 files) - Cognitive complexity reduction
-8. **Global Namespace Cleanup** (106 window.* assignments)
-9. **setTimeout/setInterval Audit** (58 instances) - Replace with better patterns
-10. **Magic Numbers** - Add named constants throughout codebase
-11. **Duplicate Code Extraction** - Centralize repeated patterns
+6. **Content Length Restrictions** - Consider re-adding reasonable limits
+   - Current: NO limits on any user-generated content
+   - Risk: Database bloat, DoS abuse, performance issues, bandwidth costs
+   - Proposed: Generous but reasonable limits (comments: 10k chars, bio: 2k, status: 500, blog: 50k)
+   - Monitor for abuse patterns before implementing
+7. **!important Overload** (945 declarations) - CSS specificity arms race
+8. **Deep Nesting Refactor** (4 files) - Cognitive complexity reduction
+9. **Global Namespace Cleanup** (106 window.* assignments)
+10. **setTimeout/setInterval Audit** (58 instances) - Replace with better patterns
+11. **Magic Numbers** - Add named constants throughout codebase
+12. **Duplicate Code Extraction** - Centralize repeated patterns
 
 ### Priority: LOW
-12. **Error Message Standardization** - Consistent user-facing messages
-13. **Variable Naming Convention** - Choose and enforce one style
-14. **Dead Code Removal** - Remove unused files (news-hotfix.js, etc.)
+13. **Error Message Standardization** - Consistent user-facing messages
+14. **Variable Naming Convention** - Choose and enforce one style
+15. **Dead Code Removal** - Remove unused files (news-hotfix.js, etc.)
 
 ---
 

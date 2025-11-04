@@ -303,6 +303,21 @@ class BlogComments {
             e.preventDefault();
             await this.submitComment(postId);
         });
+
+        // On mobile, prevent Enter from submitting form (allow line breaks)
+        // On desktop, form submission works normally
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const textarea = document.getElementById('commentContent');
+
+        if (isMobile && textarea) {
+            textarea.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    // Allow Enter to create line break on mobile
+                    // Use the submit button to post comment
+                    e.stopPropagation();
+                }
+            });
+        }
     }
 
     /**

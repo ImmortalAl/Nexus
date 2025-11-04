@@ -251,12 +251,19 @@ class CommentsSystem {
         
         if (submitBtn && inputField) {
             submitBtn.addEventListener('click', () => this.submitComment(inputField));
-            inputField.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    this.submitComment(inputField);
-                }
-            });
+
+            // On mobile, Enter always creates line break (use button to submit)
+            // On desktop, Enter without Shift submits (Shift+Enter for line break)
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+            if (!isMobile) {
+                inputField.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.submitComment(inputField);
+                    }
+                });
+            }
         }
         
         if (listContainer) {
