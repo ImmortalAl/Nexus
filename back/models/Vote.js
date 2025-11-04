@@ -19,7 +19,6 @@ const voteSchema = new mongoose.Schema({
     reasoning: {
         type: String,
         trim: true,
-        maxlength: 500,
         default: null
     },
     weight: {

@@ -32,13 +32,11 @@ const userSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        trim: true,
-        maxlength: 100
+        trim: true
     },
     bio: {
         type: String,
-        trim: true,
-        maxlength: 500
+        trim: true
     },
     online: {
         type: Boolean,

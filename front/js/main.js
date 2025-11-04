@@ -623,9 +623,9 @@ function createAnonymousMessageModal(recipientUsername, recipientTitle) {
             </div>
             
             <div class="form-group">
-                <textarea id="anonymousMessageContent" 
-                         placeholder="Share your thoughts with this eternal soul..." 
-                         maxlength="1000" required></textarea>
+                <textarea id="anonymousMessageContent"
+                         placeholder="Share your thoughts with this eternal soul..."
+                         required></textarea>
             </div>
             
             <div class="modal-actions">

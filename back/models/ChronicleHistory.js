@@ -36,8 +36,7 @@ const chronicleHistorySchema = new Schema({
     }],
     // Optional edit summary/note
     editSummary: {
-        type: String,
-        maxlength: 500
+        type: String
     }
 }, {
     timestamps: true // Will give us createdAt for when the edit happened

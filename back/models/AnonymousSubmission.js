@@ -4,8 +4,7 @@ const anonymousSubmissionSchema = new mongoose.Schema({
     content: {
         type: String,
         required: true,
-        trim: true,
-        maxlength: 5000
+        trim: true
     },
     sectionId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -15,7 +14,6 @@ const anonymousSubmissionSchema = new mongoose.Schema({
     displayName: {
         type: String,
         trim: true,
-        maxlength: 50,
         default: 'Anonymous Seeker'
     },
     submissionFingerprint: {

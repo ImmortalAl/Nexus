@@ -26,8 +26,7 @@ const userFlagSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        trim: true,
-        maxlength: 1000
+        trim: true
     },
     status: {
         type: String,

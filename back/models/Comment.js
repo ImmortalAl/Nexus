@@ -4,8 +4,7 @@ const commentSchema = new mongoose.Schema({
   content: {
     type: String,
     required: true,
-    trim: true,
-    maxlength: 1000
+    trim: true
   },
   author: {
     type: mongoose.Schema.Types.ObjectId,
