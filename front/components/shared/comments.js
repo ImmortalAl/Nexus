@@ -297,16 +297,20 @@ class CommentsSystem {
                     targetId: this.targetId
                 })
             });
-            
-            if (!response.ok) throw new Error('Failed to post comment');
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                console.error('[Comments] Server error:', errorData);
+                throw new Error(errorData.error || `Failed to post comment (${response.status})`);
+            }
 
             const newComment = await response.json();
             this.comments.unshift(newComment);
             this.renderComments();
             inputField.value = '';
         } catch (error) {
-            console.error('Error posting comment:', error);
-            alert('Failed to share your eternal thoughts. Please try again.');
+            console.error('[Comments] Error posting comment:', error);
+            alert(`Failed to share your eternal thoughts: ${error.message}`);
         }
     }
     
