@@ -151,7 +151,21 @@
    - `front/js/admin/analytics.js` (948 lines)
    - `front/js/main.js` (852 lines)
    - `front/js/scripts.js` (797 lines)
-5. **Inline Styles Removal** (67 instances) - Break theme switching
+5. **Inline Styles Removal** (150+ instances remaining) - PARTIALLY FIXED
+   - ✅ Created admin-user-management.css with proper CSS classes
+   - ✅ Fixed 6 sample instances in userManagement.js (established pattern)
+   - ⚠️ Discovered 169 total instances (not 67 as originally estimated)
+   - ⚠️ Inline styles use CSS variables, so they DON'T break theme switching
+   - Note: This is a code quality issue, not a functional bug
+   - Remaining files with most inline styles:
+     - userManagement.js: 41 remaining (of 47)
+     - admin/index.html: 14 instances
+     - celestial-commons.html: 13 instances
+     - livestream-assistant.html: 11 instances
+     - messageboard.html: 9 instances
+     - blog.html: 9 instances
+   - Pattern established: Create semantic CSS classes, replace inline styles
+   - Estimated effort: 4-6 hours for complete removal
 
 ### Priority: MEDIUM
 6. **Content Length Restrictions** - Consider re-adding reasonable limits

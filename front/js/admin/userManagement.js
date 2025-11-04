@@ -189,10 +189,9 @@ const UserManagement = {
             tbody.innerHTML = pageUsers.map(user => `
                 <tr class="user-row" data-user-id="${user._id || user.id}">
                     <td>
-                        <img src="${user.avatar || '../assets/images/default.jpg'}" 
-                             alt="${user.username}" 
-                             class="user-avatar"
-                             style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                        <img src="${user.avatar || '../assets/images/default.jpg'}"
+                             alt="${user.username}"
+                             class="user-avatar admin-user-avatar-small">
                     </td>
                     <td class="username">${user.username}</td>
                     <td class="display-name">${user.displayName || '-'}</td>
@@ -335,25 +334,24 @@ const UserManagement = {
         this.showModal('Soul Details', `
             <div class="user-details">
                 <div class="user-header">
-                    <img src="${user.avatar || '../assets/images/default.jpg'}" 
-                         alt="${user.username}" 
-                         class="modal-avatar"
-                         style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent);">
-                    <div class="user-info">
-                        <h4 style="margin: 0; color: var(--accent);">${user.displayName || user.username}</h4>
-                        <p style="margin: 0.5rem 0; color: var(--text-secondary);">@${user.username}</p>
-                        <div class="status-badges" style="margin-top: 0.5rem;">
-                            <span class="status-badge ${user.online ? 'online' : 'offline'}" style="margin-right: 0.5rem;">
+                    <img src="${user.avatar || '../assets/images/default.jpg'}"
+                         alt="${user.username}"
+                         class="modal-avatar admin-user-avatar-large">
+                    <div class="user-info admin-user-info">
+                        <h4>${user.displayName || user.username}</h4>
+                        <p>@${user.username}</p>
+                        <div class="status-badges admin-status-badges">
+                            <span class="status-badge admin-status-badge ${user.online ? 'online' : 'offline'}">
                                 ${user.online ? 'Online' : 'Offline'}
                             </span>
                             ${user.banned ? '<span class="status-badge banned">Banned</span>' : ''}
                         </div>
                     </div>
                 </div>
-                <div class="user-stats" style="margin-top: 1.5rem;">
-                    <div class="stat-row" style="margin-bottom: 1rem; padding: 0.5rem 0; border-bottom: 1px solid rgba(var(--accent-rgb), 0.2);">
-                        <strong style="color: var(--accent);">Status:</strong> 
-                        <span style="color: var(--text);">${user.status || 'No status set'}</span>
+                <div class="user-stats admin-user-stats">
+                    <div class="stat-row admin-stat-row">
+                        <strong>Status:</strong>
+                        <span>${user.status || 'No status set'}</span>
                     </div>
                     <div class="stat-row" style="margin-bottom: 1rem; padding: 0.5rem 0; border-bottom: 1px solid rgba(var(--accent-rgb), 0.2);">
                         <strong style="color: var(--accent);">Bio:</strong> 
