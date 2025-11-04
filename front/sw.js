@@ -1,6 +1,6 @@
 // Nexus Service Worker - PWA Core Functionality
 // Enhanced with better caching, offline support, and performance
-const CACHE_VERSION = 'nexus-v1.3.0'; // Incremented version to bust cache
+const CACHE_VERSION = 'nexus-v1.4.0'; // Fixed IndexedDB init, added offline.html, improved API detection
 const STATIC_CACHE = `nexus-static-${CACHE_VERSION}`;
 const DYNAMIC_CACHE = `nexus-dynamic-${CACHE_VERSION}`;
 const API_CACHE = `nexus-api-${CACHE_VERSION}`;
@@ -12,6 +12,7 @@ const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/lander.html',
+  '/offline.html', // Offline fallback page
   '/pages/blog.html',
   '/pages/celestial-commons.html',
   '/pages/news.html',
@@ -96,7 +97,13 @@ self.addEventListener('fetch', event => {
   }
 
   // Handle API requests
-  if (url.pathname.startsWith('/api/') || url.hostname.includes('nexus-ytrg.onrender.com')) {
+  // TODO: SW runs in worker context - can't access window.NEXUS_CONFIG
+  // For now, check if URL is for API (either same-origin /api/ or known API domain)
+  const isApiRequest = url.pathname.startsWith('/api/') ||
+                       url.hostname.includes('nexus-ytrg.onrender.com') ||
+                       url.hostname.includes('onrender.com'); // Catch any Render API calls
+
+  if (isApiRequest) {
     event.respondWith(handleApiRequest(request));
     return;
   }
@@ -390,6 +397,8 @@ self.addEventListener('notificationclick', event => {
 });
 
 // Sync functions for offline actions
+// TODO: These use hardcoded /api/ paths - assumes API is same-origin
+// If API moves to different domain, these will break
 async function syncMessages() {
   try {
     const pendingMessages = await getStoredData('pendingMessages');
@@ -486,21 +495,60 @@ async function syncLikeActions() {
 }
 
 // IndexedDB helpers for offline storage
+async function initializeOfflineDB() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open('nexus-offline-storage', 1);
+
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+
+      // Create object stores for offline data if they don't exist
+      const stores = [
+        'pendingMessages',
+        'pendingBlogPosts',
+        'pendingChronicleSubmissions',
+        'pendingStatusUpdates',
+        'pendingLikeActions'
+      ];
+
+      stores.forEach(storeName => {
+        if (!db.objectStoreNames.contains(storeName)) {
+          db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
+        }
+      });
+    };
+
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
 async function getStoredData(storeName) {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open('nexus-offline-storage', 1);
-    
+
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+      if (!db.objectStoreNames.contains(storeName)) {
+        db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
+      }
+    };
+
     request.onsuccess = () => {
       const db = request.result;
+      if (!db.objectStoreNames.contains(storeName)) {
+        resolve([]);
+        return;
+      }
       const transaction = db.transaction(storeName, 'readonly');
       const store = transaction.objectStore(storeName);
       const getAllRequest = store.getAll();
-      
+
       getAllRequest.onsuccess = () => {
         resolve(getAllRequest.result || []);
       };
     };
-    
+
     request.onerror = () => reject(request.error);
   });
 }
@@ -508,16 +556,27 @@ async function getStoredData(storeName) {
 async function clearStoredData(storeName) {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open('nexus-offline-storage', 1);
-    
+
+    request.onupgradeneeded = (event) => {
+      const db = event.target.result;
+      if (!db.objectStoreNames.contains(storeName)) {
+        db.createObjectStore(storeName, { keyPath: 'id', autoIncrement: true });
+      }
+    };
+
     request.onsuccess = () => {
       const db = request.result;
+      if (!db.objectStoreNames.contains(storeName)) {
+        resolve();
+        return;
+      }
       const transaction = db.transaction(storeName, 'readwrite');
       const store = transaction.objectStore(storeName);
       const clearRequest = store.clear();
-      
+
       clearRequest.onsuccess = () => resolve();
     };
-    
+
     request.onerror = () => reject(request.error);
   });
 }

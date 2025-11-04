@@ -133,11 +133,18 @@
 ## 🐛 BACKLOG (Path 2 - Remaining Bugs)
 
 ### Priority: CRITICAL
-1. **Empty Catch Blocks** (9 instances) - Silent error swallowing
-2. **Service Worker Complete Audit** - Beyond console cleanup
+1. **Empty Catch Blocks** (8 remaining) - Silent error swallowing
+   - Fixed 1/9: back/routes/messages.js (anonymous submission token verification)
+   - Remaining 8 need manual review - programmatic detection difficult
+2. **Service Worker Issues** - PARTIALLY FIXED
+   - ✅ Fixed: IndexedDB initialization, offline.html added, improved API detection
+   - ⚠️ Remaining: SW still has some hardcoded URLs in sync functions (low priority)
 
 ### Priority: HIGH
-3. **Hardcoded API URLs** (23 files) - Config system being ignored
+3. **Hardcoded API URLs** (31 remaining of 32 found) - Config system being ignored
+   - Fixed 1/32: front/js/nexus-avatar-system.js
+   - Remaining 31 files need systematic replacement with NEXUS_CONFIG fallback pattern
+   - Note: Many already use fallback pattern `window.NEXUS_CONFIG?.API_BASE_URL || 'fallback'`
 4. **File Splitting** - Additional monolithic files:
    - `front/js/admin/analytics.js` (948 lines)
    - `front/js/main.js` (852 lines)

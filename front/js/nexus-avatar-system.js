@@ -102,7 +102,8 @@ class NexusProfilePreview {
     
     static async fetchUserData(username) {
         // Use existing API pattern from the site
-        const response = await fetch(`https://nexus-ytrg.onrender.com/api/users/${username}`);
+        const apiUrl = window.NEXUS_CONFIG?.API_BASE_URL || 'https://nexus-ytrg.onrender.com/api';
+        const response = await fetch(`${apiUrl}/users/${username}`);
         if (!response.ok) {
             throw new Error(`Profile not found: ${response.status}`);
         }
