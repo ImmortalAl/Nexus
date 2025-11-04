@@ -284,6 +284,12 @@ class CommentsSystem {
         }
 
         try {
+            console.log('[Comments] Submitting comment:', {
+                targetType: this.targetType,
+                targetId: this.targetId,
+                contentLength: content.length,
+                hasToken: !!this.token
+            });
 
             const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/comments`, {
                 method: 'POST',
