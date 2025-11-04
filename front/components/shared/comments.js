@@ -307,7 +307,8 @@ class CommentsSystem {
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
                 console.error('[Comments] Server error:', errorData);
-                throw new Error(errorData.error || `Failed to post comment (${response.status})`);
+                const errorMessage = errorData.error || `HTTP ${response.status}`;
+                throw new Error(errorMessage);
             }
 
             const newComment = await response.json();
@@ -316,7 +317,9 @@ class CommentsSystem {
             inputField.value = '';
         } catch (error) {
             console.error('[Comments] Error posting comment:', error);
-            alert(`Failed to share your eternal thoughts: ${error.message}`);
+
+            // Show detailed error in alert for mobile debugging
+            alert(`Failed to post comment!\n\nError: ${error.message}\n\nTarget Type: ${this.targetType}\nTarget ID: ${this.targetId}\n\nPlease screenshot this message.`);
         }
     }
     
