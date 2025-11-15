@@ -5,6 +5,10 @@ const getAuthToken = () => {
     return localStorage.getItem('sessionToken');
 };
 
+// Debounce login modal to prevent showing it multiple times
+let lastLoginPromptTime = 0;
+const LOGIN_PROMPT_COOLDOWN = 3000; // 3 seconds
+
 const apiClient = {
     /**
      * The base URL for all API requests.
@@ -122,7 +126,13 @@ const apiClient = {
                 // Specific handling for 401 Unauthorized
                 if (response.status === 401 && window.authManager) {
                      console.warn('[API Client] Unauthorized access detected. Requesting login.');
-                     window.authManager.showLogin();
+
+                     // Only show login modal if we haven't shown it recently
+                     const now = Date.now();
+                     if (now - lastLoginPromptTime > LOGIN_PROMPT_COOLDOWN) {
+                         lastLoginPromptTime = now;
+                         window.authManager.showLogin();
+                     }
                 }
 
                 // Create an error object with the response data and status

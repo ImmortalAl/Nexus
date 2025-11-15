@@ -74,8 +74,9 @@ class AuthManager {
             this.currentUser = user;
         } catch (error) {
             // Handle different error types appropriately
-            if (error.error && error.error.includes('401') || error.status === 401) {
-                console.warn('[AuthManager] Token expired, clearing session');
+            // Check for 401 Unauthorized - token is expired or invalid
+            if (error.response?.status === 401 || error.message?.includes('401')) {
+                console.warn('[AuthManager] Token expired or invalid, clearing session');
                 this.logout();
             } else if (error.name === 'TypeError' || error.message?.includes('NetworkError')) {
                 // Network error - API is offline, keep session
