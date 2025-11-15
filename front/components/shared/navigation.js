@@ -256,8 +256,12 @@ function injectCompleteHeader() {
                 window.NEXUS.initUserMenu();
             }
             // Initialize notification icon
+            console.log('[Navigation] Attempting to initialize notification icon...');
             if (window.NEXUS && window.NEXUS.initNotificationIcon) {
+                console.log('[Navigation] Calling window.NEXUS.initNotificationIcon()');
                 window.NEXUS.initNotificationIcon();
+            } else {
+                console.error('[Navigation] window.NEXUS.initNotificationIcon not found!', window.NEXUS);
             }
         }, 100);
     } else {
