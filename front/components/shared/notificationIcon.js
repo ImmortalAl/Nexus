@@ -23,7 +23,7 @@
         init() {
             console.log('[NotificationIcon] Initializing...');
 
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('sessionToken');
             if (!token) {
                 console.log('[NotificationIcon] User not logged in, hiding notification icon');
                 return;

@@ -29,7 +29,7 @@
          * Initialize the notification manager
          */
         async init() {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('sessionToken');
             if (!token) {
                 console.log('[NotificationManager] User not logged in, skipping initialization');
                 return;
@@ -49,7 +49,7 @@
          */
         async fetchNotifications(options = {}) {
             try {
-                const token = localStorage.getItem('token');
+                const token = localStorage.getItem('sessionToken');
                 if (!token) return;
 
                 const {
@@ -99,7 +99,7 @@
          * Connect to WebSocket for real-time notifications
          */
         connectWebSocket() {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('sessionToken');
             if (!token) return;
 
             // WebSocket URL
@@ -247,7 +247,7 @@
          */
         async markAsRead(notificationId) {
             try {
-                const token = localStorage.getItem('token');
+                const token = localStorage.getItem('sessionToken');
                 if (!token) return;
 
                 const response = await fetch(`${API_BASE}/notifications/${notificationId}/read`, {
@@ -277,7 +277,7 @@
          */
         async markAllAsRead() {
             try {
-                const token = localStorage.getItem('token');
+                const token = localStorage.getItem('sessionToken');
                 if (!token) return;
 
                 const response = await fetch(`${API_BASE}/notifications/read-all`, {
@@ -306,7 +306,7 @@
          */
         async deleteNotification(notificationId) {
             try {
-                const token = localStorage.getItem('token');
+                const token = localStorage.getItem('sessionToken');
                 if (!token) return;
 
                 const response = await fetch(`${API_BASE}/notifications/${notificationId}`, {
