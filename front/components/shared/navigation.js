@@ -41,6 +41,7 @@ function generateCompleteHeaderHTML(currentPath) {
             <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Toggle navigation">
                 <i class="fas fa-bars"></i>
             </button>
+            <div class="notification-icon-container" id="notificationIconContainer"></div>
             <div class="user-menu" id="userMenuContainer"></div>
             <div class="header-auth-buttons" id="headerAuthButtonsContainer" style="display: none;"></div>
         </div>
@@ -253,6 +254,10 @@ function injectCompleteHeader() {
         setTimeout(() => {
             if (window.NEXUS && window.NEXUS.initUserMenu) {
                 window.NEXUS.initUserMenu();
+            }
+            // Initialize notification icon
+            if (window.NEXUS && window.NEXUS.initNotificationIcon) {
+                window.NEXUS.initNotificationIcon();
             }
         }, 100);
     } else {

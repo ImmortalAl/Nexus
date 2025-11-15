@@ -289,6 +289,50 @@ class WebSocketManager {
             }
         });
     }
+
+    /**
+     * Send notification to specific user in real-time
+     * @param {string} userId - Target user ID
+     * @param {Object} notification - Notification object
+     * @returns {boolean} - True if sent successfully
+     */
+    sendNotification(userId, notification) {
+        try {
+            const userWs = this.clients.get(userId);
+            if (userWs && userWs.readyState === WebSocket.OPEN) {
+                userWs.send(JSON.stringify({
+                    type: 'notification',
+                    notification: notification,
+                    timestamp: new Date().toISOString()
+                }));
+                return true;
+            }
+            return false;
+        } catch (error) {
+            console.error('Error sending notification via WebSocket:', error);
+            return false;
+        }
+    }
+
+    /**
+     * Send notification count update to user
+     * @param {string} userId - Target user ID
+     * @param {number} unreadCount - Updated unread count
+     */
+    sendNotificationCount(userId, unreadCount) {
+        try {
+            const userWs = this.clients.get(userId);
+            if (userWs && userWs.readyState === WebSocket.OPEN) {
+                userWs.send(JSON.stringify({
+                    type: 'notificationCount',
+                    unreadCount: unreadCount,
+                    timestamp: new Date().toISOString()
+                }));
+            }
+        } catch (error) {
+            console.error('Error sending notification count via WebSocket:', error);
+        }
+    }
 }
 
 module.exports = WebSocketManager; 

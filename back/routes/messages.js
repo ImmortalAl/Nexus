@@ -2,6 +2,7 @@
 const authMiddleware = require('../middleware/auth');
 const Message = require('../models/Message');
 const User = require('../models/User');
+const NotificationService = require('../services/notificationService');
 const router = express.Router();
 
 // Get message statistics for admin dashboard
@@ -101,7 +102,22 @@ router.post('/send', authMiddleware, async (req, res) => {
     // Populate sender and recipient info for response
     await message.populate('sender', 'username avatar');
     await message.populate('recipient', 'username avatar');
-    
+
+    // Create notification for recipient
+    try {
+      const senderUser = await User.findById(senderId);
+      await NotificationService.notifyNewMessage(
+        recipient._id.toString(),
+        senderId,
+        senderUser.username,
+        message._id.toString(),
+        content
+      );
+    } catch (notifError) {
+      console.error('Error creating message notification:', notifError);
+      // Continue even if notification fails
+    }
+
     // Send real-time notification via WebSocket
     const wsManager = req.app.get('wsManager');
     if (wsManager) {
@@ -116,7 +132,7 @@ router.post('/send', authMiddleware, async (req, res) => {
         }
       });
     }
-    
+
     res.status(201).json({
       message: 'Message sent successfully',
       data: message

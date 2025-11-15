@@ -3,6 +3,10 @@ const router = express.Router();
 const Comment = require('../models/Comment');
 const auth = require('../middleware/auth');
 const optionalAuth = require('../middleware/optionalAuth');
+const NotificationService = require('../services/notificationService');
+const User = require('../models/User');
+const Blog = require('../models/Blog');
+const Chronicle = require('../models/Chronicle');
 
 // Get comments for a specific target (blog post, profile, etc.)
 router.get('/:targetType/:targetId', optionalAuth, async (req, res) => {
@@ -71,6 +75,62 @@ router.post('/', auth, async (req, res) => {
         // Populate author info before returning
         const populatedComment = await Comment.findById(comment._id)
             .populate('author', 'username displayName avatar');
+
+        // Create notifications
+        try {
+            const commenter = await User.findById(req.user.id);
+            const commenterUsername = commenter.username;
+
+            // If this is a reply to another comment, notify the parent comment author
+            if (req.body.parentId) {
+                const parentComment = await Comment.findById(req.body.parentId);
+                if (parentComment && parentComment.author.toString() !== req.user.id) {
+                    await NotificationService.notifyCommentReply(
+                        parentComment.author.toString(),
+                        req.user.id,
+                        commenterUsername,
+                        comment._id.toString(),
+                        targetType,
+                        targetId,
+                        content
+                    );
+                }
+            }
+
+            // Notify the content author (blog, chronicle, etc.)
+            let contentAuthorId = null;
+            let contentTitle = targetId; // Fallback
+
+            if (targetType === 'blog') {
+                const blog = await Blog.findOne({ slug: targetId });
+                if (blog && blog.author.toString() !== req.user.id) {
+                    contentAuthorId = blog.author.toString();
+                    contentTitle = blog.title;
+                }
+            } else if (targetType === 'chronicle') {
+                const chronicle = await Chronicle.findById(targetId);
+                if (chronicle && chronicle.author.toString() !== req.user.id) {
+                    contentAuthorId = chronicle.author.toString();
+                    contentTitle = chronicle.title || chronicle.content.substring(0, 50);
+                }
+            }
+
+            // Send notification to content author if found and not the commenter
+            if (contentAuthorId && contentAuthorId !== req.user.id) {
+                await NotificationService.notifyNewComment(
+                    contentAuthorId,
+                    req.user.id,
+                    commenterUsername,
+                    comment._id.toString(),
+                    targetType,
+                    contentTitle,
+                    content
+                );
+            }
+        } catch (notifError) {
+            console.error('Error creating comment notification:', notifError);
+            // Continue even if notification fails
+        }
 
         res.status(201).json(populatedComment);
     } catch (error) {

@@ -26,6 +26,7 @@ const cors = require('cors');
 const http = require('http');
 const WebSocketManager = require('./websocket');
 const CredibilityService = require('./services/credibilityService');
+const NotificationService = require('./services/notificationService');
 
 // Load environment variables from .env file
 dotenv.config();
@@ -145,6 +146,9 @@ const wsManager = new WebSocketManager(server);
 
 // Make WebSocket manager available to routes
 app.set('wsManager', wsManager);
+
+// Set WebSocket manager for NotificationService
+NotificationService.setWebSocketManager(wsManager);
 
 // Make CredibilityService available to routes
 app.locals.CredibilityService = CredibilityService;
