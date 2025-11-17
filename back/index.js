@@ -41,6 +41,10 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://immortal:cN0VuntETXgV
 
 const app = express();
 
+// Trust proxy - Required for Render/Cloudflare to correctly identify client IPs
+// This fixes rate limiting and logging when behind a reverse proxy
+app.set('trust proxy', true);
+
 // Logging middleware (place early to see all requests)
 app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl} from ${req.ip} (Origin: ${req.headers.origin})`);
