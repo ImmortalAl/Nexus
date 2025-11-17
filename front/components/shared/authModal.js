@@ -36,6 +36,9 @@ function injectSoulModal() {
           <span>Confirm Ethereal Key</span>
           <input type="password" name="confirmPassword" autocomplete="new-password" />
         </label>
+        <p class="forgot-password-link" id="forgotPasswordLink" style="text-align: right; margin: -8px 0 12px 0; font-size: 0.9em;">
+          <a href="#" id="forgotPasswordBtn" style="color: var(--accent, #d4af37); text-decoration: none;">Forgot your Ethereal Key?</a>
+        </p>
         <button type="submit" class="modal-btn" id="soulModalSubmit">Transcend</button>
       </form>
       <div class="modal-feedback" id="modalFeedback"></div>
@@ -59,36 +62,64 @@ function injectSoulModal() {
 }
 
 // Modal elements references
-let soulModal, soulModalTitle, soulLoginForm, soulModalSubmit, modalFeedback, confirmPasswordField, modalToggleView;
+let soulModal, soulModalTitle, soulLoginForm, soulModalSubmit, modalFeedback, confirmPasswordField, modalToggleView, forgotPasswordLink;
 
 // Link texts
 const switchToRegisterLinkHTML = 'New to the Sanctuary? <a href="#" id="switchToRegisterLink">Claim Your Immortality</a>';
 const switchToLoginLinkHTML = 'Already an Immortal? <a href="#" id="switchToLoginLink">Enter Now</a>';
 
-// Set modal view (login or register)
+// Set modal view (login, register, or forgot-password)
 function setSoulModalView(mode) {
   if (!soulModal || !soulLoginForm || !soulModalTitle || !confirmPasswordField || !soulModalSubmit || !modalToggleView) {
     // Modal elements missing - return silently as this may be expected on some pages
     return;
   }
-  
+
   soulLoginForm.reset();
   if (modalFeedback) modalFeedback.textContent = '';
   soulModal.dataset.mode = mode;
-  
+
+  // Get forgot password link element
+  if (!forgotPasswordLink) forgotPasswordLink = document.getElementById('forgotPasswordLink');
+
   if (mode === 'register') {
     soulModalTitle.textContent = 'Claim Your Immortality';
     confirmPasswordField.style.display = 'block';
     soulModalSubmit.textContent = 'Begin Your Eternity';
     modalToggleView.innerHTML = switchToLoginLinkHTML;
+    if (forgotPasswordLink) forgotPasswordLink.style.display = 'none'; // Hide forgot password in register mode
     // Ensure confirm password input is required for registration
     const confirmPasswordInput = confirmPasswordField.querySelector('input[name="confirmPassword"]');
     if (confirmPasswordInput) confirmPasswordInput.required = true;
+  } else if (mode === 'forgot-password') {
+    soulModalTitle.textContent = 'Request Password Reset';
+    confirmPasswordField.style.display = 'none';
+    soulModalSubmit.textContent = 'Submit Request';
+    modalToggleView.innerHTML = switchToLoginLinkHTML;
+    if (forgotPasswordLink) forgotPasswordLink.style.display = 'none'; // Hide forgot password link
+
+    // Change password field label
+    const passwordLabel = soulLoginForm.querySelector('label:has(input[name="password"]) span');
+    if (passwordLabel) {
+      passwordLabel.textContent = 'Soul Identifier (Username)';
+    }
+    // Hide password field in forgot password mode
+    const passwordField = soulLoginForm.querySelector('label:has(input[name="password"])');
+    if (passwordField) passwordField.style.display = 'none';
+
+    const confirmPasswordInput = confirmPasswordField.querySelector('input[name="confirmPassword"]');
+    if (confirmPasswordInput) confirmPasswordInput.required = false;
   } else { // Default to login
     soulModalTitle.textContent = 'Enter the Sanctuary';
     confirmPasswordField.style.display = 'none';
     soulModalSubmit.textContent = 'Transcend';
     modalToggleView.innerHTML = switchToRegisterLinkHTML;
+    if (forgotPasswordLink) forgotPasswordLink.style.display = 'block'; // Show forgot password in login mode
+
+    // Restore password field if it was hidden
+    const passwordField = soulLoginForm.querySelector('label:has(input[name="password"])');
+    if (passwordField) passwordField.style.display = 'block';
+
     // Ensure confirm password input is NOT required for login
     const confirmPasswordInput = confirmPasswordField.querySelector('input[name="confirmPassword"]');
     if (confirmPasswordInput) confirmPasswordInput.required = false;
@@ -133,26 +164,73 @@ function closeSoulModal() {
   if (soulLoginForm) soulLoginForm.reset();
 }
 
-// Handle form submission for login/register
+// Handle form submission for login/register/forgot-password
 async function handleSoulModalSubmit(event) {
   event.preventDefault();
   const API_BASE_URL = window.NEXUS_CONFIG.API_BASE_URL; // Use from config
-  
+
   if (!soulLoginForm || !modalFeedback || !soulModalSubmit || !soulModal) return;
-  
+
   modalFeedback.textContent = '';
   modalFeedback.className = 'modal-feedback'; // Reset class
-  
+
   const username = soulLoginForm.username.value.trim();
-  const password = soulLoginForm.password.value;
+  const password = soulLoginForm.password?.value;
   const mode = soulModal.dataset.mode || 'login';
-  
+
+  // Handle forgot password mode separately
+  if (mode === 'forgot-password') {
+    if (!username) {
+      modalFeedback.textContent = 'Soul Identifier (Username) is required.';
+      modalFeedback.classList.add('error');
+      return;
+    }
+
+    soulModalSubmit.disabled = true;
+    soulModalSubmit.textContent = 'Submitting...';
+    modalFeedback.textContent = 'Processing your request...';
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/request-password-reset`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        modalFeedback.textContent = data.error || `Error: ${response.status}`;
+        modalFeedback.classList.add('error');
+        return;
+      }
+
+      modalFeedback.textContent = data.message || 'Password reset request submitted. An administrator will review your request shortly.';
+      modalFeedback.classList.add('success');
+
+      setTimeout(() => {
+        setSoulModalView('login');
+      }, 3000);
+
+    } catch (error) {
+      console.error('[Forgot Password Error]:', error);
+      modalFeedback.textContent = 'An unexpected error occurred. Please try again.';
+      modalFeedback.classList.add('error');
+    } finally {
+      soulModalSubmit.disabled = false;
+      soulModalSubmit.textContent = 'Submit Request';
+    }
+    return;
+  }
+
   if (!username || !password) {
     modalFeedback.textContent = 'Soul Identifier and Ethereal Key are required.';
     modalFeedback.classList.add('error');
     return;
   }
-  
+
   let url = '';
   let payload = { username, password };
   
@@ -334,7 +412,7 @@ function setupSoulModalEvents() {
   modalToggleView.addEventListener('click', (event) => {
     if (event.target.tagName === 'A') {
       event.preventDefault();
-      
+
       if (event.target.id === 'switchToRegisterLink') {
         setSoulModalView('register');
       } else if (event.target.id === 'switchToLoginLink') {
@@ -342,6 +420,15 @@ function setupSoulModalEvents() {
       }
     }
   });
+
+  // Forgot password link handler
+  const forgotPasswordBtn = document.getElementById('forgotPasswordBtn');
+  if (forgotPasswordBtn) {
+    forgotPasswordBtn.addEventListener('click', (event) => {
+      event.preventDefault();
+      setSoulModalView('forgot-password');
+    });
+  }
   
   // Form submission
   soulLoginForm.addEventListener('submit', handleSoulModalSubmit);
