@@ -55,26 +55,24 @@
 
             this.container.innerHTML = `
                 <button class="notification-icon" id="notificationIconBtn" aria-label="Notifications">
-                    <svg class="pigeon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <!-- Pigeon body -->
-                        <ellipse cx="12" cy="14" rx="4" ry="5" fill="currentColor" opacity="0.2"/>
-                        <!-- Pigeon head -->
-                        <circle cx="13" cy="7.5" r="2.5" fill="currentColor" opacity="0.2"/>
+                    <svg class="pigeon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <!-- Stylized dove/messenger pigeon -->
+                        <!-- Body -->
+                        <path d="M8 12 C8 12 6 14 6 16 C6 17 7 18 8 18 L16 18 C17 18 18 17 18 16 C18 14 16 12 16 12" fill="currentColor" opacity="0.15"/>
+                        <!-- Head and neck -->
+                        <circle cx="16" cy="10" r="2.5" fill="currentColor" opacity="0.15"/>
+                        <path d="M14 10 L10 12"/>
                         <!-- Eye -->
-                        <circle cx="14" cy="7" r="0.6" fill="currentColor"/>
-                        <!-- Beak -->
-                        <path d="M15.5 7.5 L17.5 7" stroke-width="1.5"/>
-                        <!-- Wing (left) -->
-                        <path d="M10 12 Q7 11 5 13" stroke-width="1.8"/>
-                        <path d="M9 13.5 Q6.5 13 5 15" stroke-width="1.5" opacity="0.7"/>
+                        <circle cx="17" cy="9.5" r="0.5" fill="currentColor"/>
+                        <!-- Beak with scroll/letter -->
+                        <path d="M18.5 10 L20 10 L20 12 L18.5 12 L18.5 10" fill="none" stroke="currentColor" opacity="0.8"/>
+                        <line x1="19" y1="10.5" x2="19" y2="11.5" opacity="0.5"/>
+                        <!-- Wing in flight -->
+                        <path d="M10 11 Q6 9 4 11 M10 12.5 Q6.5 11 4.5 12.5" opacity="0.7"/>
                         <!-- Tail feathers -->
-                        <path d="M9 17 L6 19" stroke-width="1.5"/>
-                        <path d="M9 18 L6.5 20.5" stroke-width="1.5" opacity="0.7"/>
-                        <!-- Feet -->
-                        <path d="M11 18.5 L10.5 20.5" stroke-width="1.2"/>
-                        <path d="M13 18.5 L13.5 20.5" stroke-width="1.2"/>
-                        <!-- Letter scroll (showing it's a carrier pigeon) -->
-                        <rect x="8" y="14.5" width="3" height="1.5" rx="0.3" stroke-width="1" opacity="0.9"/>
+                        <path d="M8 16 L6 19 M9 16.5 L7 19.5" opacity="0.7"/>
+                        <!-- Small sparkle/magic effect (immortal theme) -->
+                        <path d="M13 8 L13 6 M12 7 L14 7" opacity="0.4" stroke-width="1"/>
                     </svg>
                     ${unreadCount > 0 ? `<span class="notification-badge">${unreadCount > 99 ? '99+' : unreadCount}</span>` : ''}
                 </button>
@@ -120,18 +118,16 @@
                 <div class="notification-modal-content">
                     <div class="notification-modal-header">
                         <h2>
-                            <svg class="pigeon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <ellipse cx="12" cy="14" rx="4" ry="5" fill="currentColor" opacity="0.2"/>
-                                <circle cx="13" cy="7.5" r="2.5" fill="currentColor" opacity="0.2"/>
-                                <circle cx="14" cy="7" r="0.6" fill="currentColor"/>
-                                <path d="M15.5 7.5 L17.5 7" stroke-width="1.5"/>
-                                <path d="M10 12 Q7 11 5 13" stroke-width="1.8"/>
-                                <path d="M9 13.5 Q6.5 13 5 15" stroke-width="1.5" opacity="0.7"/>
-                                <path d="M9 17 L6 19" stroke-width="1.5"/>
-                                <path d="M9 18 L6.5 20.5" stroke-width="1.5" opacity="0.7"/>
-                                <path d="M11 18.5 L10.5 20.5" stroke-width="1.2"/>
-                                <path d="M13 18.5 L13.5 20.5" stroke-width="1.2"/>
-                                <rect x="8" y="14.5" width="3" height="1.5" rx="0.3" stroke-width="1" opacity="0.9"/>
+                            <svg class="pigeon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M8 12 C8 12 6 14 6 16 C6 17 7 18 8 18 L16 18 C17 18 18 17 18 16 C18 14 16 12 16 12" fill="currentColor" opacity="0.15"/>
+                                <circle cx="16" cy="10" r="2.5" fill="currentColor" opacity="0.15"/>
+                                <path d="M14 10 L10 12"/>
+                                <circle cx="17" cy="9.5" r="0.5" fill="currentColor"/>
+                                <path d="M18.5 10 L20 10 L20 12 L18.5 12 L18.5 10" fill="none" stroke="currentColor" opacity="0.8"/>
+                                <line x1="19" y1="10.5" x2="19" y1="11.5" opacity="0.5"/>
+                                <path d="M10 11 Q6 9 4 11 M10 12.5 Q6.5 11 4.5 12.5" opacity="0.7"/>
+                                <path d="M8 16 L6 19 M9 16.5 L7 19.5" opacity="0.7"/>
+                                <path d="M13 8 L13 6 M12 7 L14 7" opacity="0.4" stroke-width="1"/>
                             </svg>
                             Courier Pigeons
                         </h2>
@@ -313,20 +309,18 @@
                 container.innerHTML = `
                     <div class="notification-empty">
                         <svg class="pigeon-icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <ellipse cx="12" cy="14" rx="4" ry="5" fill="currentColor" opacity="0.2"/>
-                            <circle cx="13" cy="7.5" r="2.5" fill="currentColor" opacity="0.2"/>
-                            <circle cx="14" cy="7" r="0.6" fill="currentColor"/>
-                            <path d="M15.5 7.5 L17.5 7"/>
-                            <path d="M10 12 Q7 11 5 13"/>
-                            <path d="M9 13.5 Q6.5 13 5 15" opacity="0.7"/>
-                            <path d="M9 17 L6 19"/>
-                            <path d="M9 18 L6.5 20.5" opacity="0.7"/>
-                            <path d="M11 18.5 L10.5 20.5" stroke-width="1.2"/>
-                            <path d="M13 18.5 L13.5 20.5" stroke-width="1.2"/>
-                            <rect x="8" y="14.5" width="3" height="1.5" rx="0.3" opacity="0.9"/>
+                            <path d="M8 12 C8 12 6 14 6 16 C6 17 7 18 8 18 L16 18 C17 18 18 17 18 16 C18 14 16 12 16 12" fill="currentColor" opacity="0.15"/>
+                            <circle cx="16" cy="10" r="2.5" fill="currentColor" opacity="0.15"/>
+                            <path d="M14 10 L10 12"/>
+                            <circle cx="17" cy="9.5" r="0.5" fill="currentColor"/>
+                            <path d="M18.5 10 L20 10 L20 12 L18.5 12 L18.5 10" fill="none" stroke="currentColor" opacity="0.8"/>
+                            <line x1="19" y1="10.5" x2="19" y2="11.5" opacity="0.5"/>
+                            <path d="M10 11 Q6 9 4 11 M10 12.5 Q6.5 11 4.5 12.5" opacity="0.7"/>
+                            <path d="M8 16 L6 19 M9 16.5 L7 19.5" opacity="0.7"/>
+                            <path d="M13 8 L13 6 M12 7 L14 7" opacity="0.4" stroke-width="1"/>
                         </svg>
-                        <p>No pigeons have arrived yet</p>
-                        <small>You'll be notified when something happens</small>
+                        <p>No messages from the eternal realm</p>
+                        <small>Your courier pigeon will deliver notifications here</small>
                     </div>
                 `;
                 return;
