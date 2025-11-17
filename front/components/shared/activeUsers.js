@@ -156,13 +156,29 @@ async function populateActiveUsersList() {
     userListDiv.innerHTML = '<p class="loading-users">Summoning eternal souls...</p>'; // Loading message
 
     try {
-        // Skip health check - the actual API call will determine connectivity
-        
-        
+        // Fetch unread message senders first
+        let unreadSendersMap = new Map();
+        try {
+            const unreadResponse = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/messages/unread-senders`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (unreadResponse.ok) {
+                const unreadData = await unreadResponse.json();
+                unreadData.senders.forEach(sender => {
+                    unreadSendersMap.set(sender.user.username, sender.count);
+                });
+            }
+        } catch (e) {
+            console.warn('[ActiveUsers] Could not fetch unread messages:', e);
+        }
+
         // Try the online users endpoint first
         let response;
         let fetchedUsers;
-        
+
         try {
             response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/users/online?_cb=${new Date().getTime()}`, {
                 headers: {
@@ -170,7 +186,7 @@ async function populateActiveUsersList() {
                     'Content-Type': 'application/json'
                 }
             });
-            
+
             if (response.ok) {
                 fetchedUsers = await response.json();
             } else {
@@ -193,9 +209,9 @@ async function populateActiveUsersList() {
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}`);
                 }
-            
+
             const allUsers = await response.json();
-            
+
             // Filter for online users, excluding banned users
             if (Array.isArray(allUsers)) {
                 fetchedUsers = allUsers.filter(user => user.online === true && !user.banned).slice(0, 10);
@@ -221,19 +237,19 @@ async function populateActiveUsersList() {
         if (fetchedUsers && fetchedUsers.length > 0) {
             // Clear existing content
             userListDiv.innerHTML = '';
-            
+
             fetchedUsers.forEach(user => {
                 const displayName = user.displayName || user.username || 'Unnamed Soul';
                 const username = user.username || displayName;
                 const isOnline = user.online === true;
                 const statusMessage = user.status && user.status.trim() !== '' ? user.status : 'Wandering the eternal realms...';
-                
-                
+                const unreadCount = unreadSendersMap.get(username) || 0;
+
                 // Create unified user display using Nexus Avatar System
                 if (!window.NexusAvatars) {
                     return;
                 }
-                
+
                 const userDisplay = window.NexusAvatars.createUserDisplay({
                     username: username,
                     title: null, // Don't show title to avoid duplicate names
@@ -249,21 +265,30 @@ async function populateActiveUsersList() {
                     upvotes: user.upvotes || 0,
                     challenges: user.challenges || 0
                 });
-                
+
                 // Create user item container
                 const userItem = document.createElement('div');
                 userItem.className = 'user-item';
-                
+                if (unreadCount > 0) {
+                    userItem.classList.add('has-unread-message');
+                }
+
                 // Add the unified user display
                 userItem.appendChild(userDisplay);
-                
+
+                // Add unread count to avatar container
+                const avatarContainer = userDisplay.querySelector('.avatar-container');
+                if (avatarContainer && unreadCount > 0) {
+                    avatarContainer.setAttribute('data-unread-count', unreadCount);
+                }
+
                 // Add message button
                 const messageBtn = document.createElement('button');
                 messageBtn.className = 'message-btn';
                 messageBtn.setAttribute('data-username', username);
                 messageBtn.setAttribute('aria-label', `Message ${displayName}`);
                 messageBtn.innerHTML = '<i class="fas fa-comment"></i>';
-                
+
                 userItem.appendChild(messageBtn);
                 userListDiv.appendChild(userItem);
             });
@@ -271,13 +296,16 @@ async function populateActiveUsersList() {
             userListDiv.innerHTML = '<p class="no-users">No souls currently manifest.</p>';
         }
 
+        // Update active users button with unread state
+        updateActiveUsersButtonUnreadState(unreadSendersMap.size > 0);
+
         // Re-attach event listeners for new message buttons
         userListDiv.querySelectorAll('.message-btn').forEach(btn => {
             btn.addEventListener('click', (event) => {
-                event.stopPropagation(); 
-                event.preventDefault(); 
+                event.stopPropagation();
+                event.preventDefault();
                 const username = event.currentTarget.dataset.username;
-                
+
                 if (window.NEXUS && typeof window.NEXUS.openMessageModal === 'function') {
                     window.NEXUS.openMessageModal(username);
                 } else {
@@ -294,8 +322,8 @@ async function populateActiveUsersList() {
             apiUrl: window.NEXUS_CONFIG?.API_BASE_URL,
             hasToken: !!token
         });
-        
-        if (userListDiv) { 
+
+        if (userListDiv) {
             // Check if it's a network error and provide fallback
             if (error.message.includes('NetworkError') || error.message.includes('fetch')) {
                 userListDiv.innerHTML = `
@@ -309,6 +337,17 @@ async function populateActiveUsersList() {
                 userListDiv.innerHTML = `<p class="error-users">${errorMessage}</p>`;
             }
         }
+    }
+}
+
+function updateActiveUsersButtonUnreadState(hasUnread) {
+    const showUsersBtn = document.getElementById('showUsersBtn');
+    if (!showUsersBtn) return;
+
+    if (hasUnread) {
+        showUsersBtn.classList.add('has-unread-messages');
+    } else {
+        showUsersBtn.classList.remove('has-unread-messages');
     }
 }
 
