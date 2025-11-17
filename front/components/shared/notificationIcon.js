@@ -56,17 +56,25 @@
             this.container.innerHTML = `
                 <button class="notification-icon" id="notificationIconBtn" aria-label="Notifications">
                     <svg class="pigeon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 8c-2.5 0-4.5 1.5-5 3.5-.3 1.2-.2 2.5.5 3.5.7 1 2 1.5 3.5 1.5 1.2 0 2.3-.3 3-.8"/>
-                        <circle cx="13" cy="7" r="2"/>
-                        <path d="M14.5 6.5l2-1"/>
-                        <path d="M8 11c-1.5.5-2.5 1.5-3 2.5-.3.7-.3 1.5 0 2.2"/>
-                        <path d="M7.5 13.5l-2 2"/>
-                        <path d="M7 12.5l-2.5 1"/>
-                        <path d="M7 14.5l-1.5 2.5"/>
-                        <path d="M11 16.5v2"/>
-                        <path d="M13 16.5v2"/>
-                        <path d="M10 10l1-2h2l1 2" stroke-width="1.5"/>
-                        <circle cx="13.5" cy="6.8" r="0.4" fill="currentColor"/>
+                        <!-- Pigeon body -->
+                        <ellipse cx="12" cy="14" rx="4" ry="5" fill="currentColor" opacity="0.2"/>
+                        <!-- Pigeon head -->
+                        <circle cx="13" cy="7.5" r="2.5" fill="currentColor" opacity="0.2"/>
+                        <!-- Eye -->
+                        <circle cx="14" cy="7" r="0.6" fill="currentColor"/>
+                        <!-- Beak -->
+                        <path d="M15.5 7.5 L17.5 7" stroke-width="1.5"/>
+                        <!-- Wing (left) -->
+                        <path d="M10 12 Q7 11 5 13" stroke-width="1.8"/>
+                        <path d="M9 13.5 Q6.5 13 5 15" stroke-width="1.5" opacity="0.7"/>
+                        <!-- Tail feathers -->
+                        <path d="M9 17 L6 19" stroke-width="1.5"/>
+                        <path d="M9 18 L6.5 20.5" stroke-width="1.5" opacity="0.7"/>
+                        <!-- Feet -->
+                        <path d="M11 18.5 L10.5 20.5" stroke-width="1.2"/>
+                        <path d="M13 18.5 L13.5 20.5" stroke-width="1.2"/>
+                        <!-- Letter scroll (showing it's a carrier pigeon) -->
+                        <rect x="8" y="14.5" width="3" height="1.5" rx="0.3" stroke-width="1" opacity="0.9"/>
                     </svg>
                     ${unreadCount > 0 ? `<span class="notification-badge">${unreadCount > 99 ? '99+' : unreadCount}</span>` : ''}
                 </button>
@@ -112,11 +120,18 @@
                 <div class="notification-modal-content">
                     <div class="notification-modal-header">
                         <h2>
-                            <svg class="pigeon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 8c-2.5 0-4.5 1.5-5 3.5-.3 1.2-.2 2.5.5 3.5.7 1 2 1.5 3.5 1.5 1.2 0 2.3-.3 3-.8"/>
-                                <circle cx="13" cy="7" r="2"/>
-                                <path d="M14.5 6.5l2-1"/>
-                                <circle cx="13.5" cy="6.8" r="0.4" fill="currentColor"/>
+                            <svg class="pigeon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <ellipse cx="12" cy="14" rx="4" ry="5" fill="currentColor" opacity="0.2"/>
+                                <circle cx="13" cy="7.5" r="2.5" fill="currentColor" opacity="0.2"/>
+                                <circle cx="14" cy="7" r="0.6" fill="currentColor"/>
+                                <path d="M15.5 7.5 L17.5 7" stroke-width="1.5"/>
+                                <path d="M10 12 Q7 11 5 13" stroke-width="1.8"/>
+                                <path d="M9 13.5 Q6.5 13 5 15" stroke-width="1.5" opacity="0.7"/>
+                                <path d="M9 17 L6 19" stroke-width="1.5"/>
+                                <path d="M9 18 L6.5 20.5" stroke-width="1.5" opacity="0.7"/>
+                                <path d="M11 18.5 L10.5 20.5" stroke-width="1.2"/>
+                                <path d="M13 18.5 L13.5 20.5" stroke-width="1.2"/>
+                                <rect x="8" y="14.5" width="3" height="1.5" rx="0.3" stroke-width="1" opacity="0.9"/>
                             </svg>
                             Courier Pigeons
                         </h2>
@@ -297,10 +312,18 @@
             if (notifications.length === 0) {
                 container.innerHTML = `
                     <div class="notification-empty">
-                        <svg class="pigeon-icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M12 8c-2.5 0-4.5 1.5-5 3.5-.3 1.2-.2 2.5.5 3.5.7 1 2 1.5 3.5 1.5 1.2 0 2.3-.3 3-.8"/>
-                            <circle cx="13" cy="7" r="2"/>
-                            <circle cx="13.5" cy="6.8" r="0.4" fill="currentColor"/>
+                        <svg class="pigeon-icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <ellipse cx="12" cy="14" rx="4" ry="5" fill="currentColor" opacity="0.2"/>
+                            <circle cx="13" cy="7.5" r="2.5" fill="currentColor" opacity="0.2"/>
+                            <circle cx="14" cy="7" r="0.6" fill="currentColor"/>
+                            <path d="M15.5 7.5 L17.5 7"/>
+                            <path d="M10 12 Q7 11 5 13"/>
+                            <path d="M9 13.5 Q6.5 13 5 15" opacity="0.7"/>
+                            <path d="M9 17 L6 19"/>
+                            <path d="M9 18 L6.5 20.5" opacity="0.7"/>
+                            <path d="M11 18.5 L10.5 20.5" stroke-width="1.2"/>
+                            <path d="M13 18.5 L13.5 20.5" stroke-width="1.2"/>
+                            <rect x="8" y="14.5" width="3" height="1.5" rx="0.3" opacity="0.9"/>
                         </svg>
                         <p>No pigeons have arrived yet</p>
                         <small>You'll be notified when something happens</small>

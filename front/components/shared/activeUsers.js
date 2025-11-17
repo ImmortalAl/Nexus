@@ -49,6 +49,9 @@ function injectActiveUsersSidebar() {
         showUsersBtn.setAttribute('aria-label', 'Show active users');
         showUsersBtn.innerHTML = '<i class="fas fa-users"></i>';
 
+        // Hide by default, will be shown if user is logged in
+        showUsersBtn.style.display = 'none';
+
         floatingButtons.appendChild(showUsersBtn);
     }
 }
@@ -326,14 +329,24 @@ function updateActiveUsersButtonVisibility() {
 function initActiveUsers() {
     injectActiveUsersSidebar();
 
+    // Update visibility immediately
+    updateActiveUsersButtonVisibility();
+
     // Use setTimeout to ensure DOM updates have completed after injection
     setTimeout(() => {
         setupActiveUsersEvents();
-        updateActiveUsersButtonVisibility();
+        updateActiveUsersButtonVisibility(); // Update again after setup
     }, 0);
 
     // Listen for auth changes to update visibility
     window.addEventListener('authChange', updateActiveUsersButtonVisibility);
+
+    // Also subscribe to authManager if available
+    if (window.authManager) {
+        window.authManager.subscribe((isLoggedIn) => {
+            updateActiveUsersButtonVisibility();
+        });
+    }
 }
 
 // Expose the init function
