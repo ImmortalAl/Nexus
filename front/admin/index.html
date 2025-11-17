@@ -1308,51 +1308,75 @@
         }
         
         document.addEventListener('DOMContentLoaded', () => {
-            // Initialize core admin navigation first
+            // CRITICAL: Initialize admin modules FIRST before navigation to prevent null apiBaseUrl
+            if (typeof AdminDashboard !== 'undefined') {
+                AdminDashboard.init();
+            }
+
+            if (typeof UserManagement !== 'undefined') {
+                UserManagement.init();
+            }
+
+            if (typeof AdminAnalytics !== 'undefined') {
+                AdminAnalytics.init();
+            }
+
+            if (typeof AdminFeedback !== 'undefined') {
+                AdminFeedback.init();
+            }
+
+            // Now initialize core admin navigation (will call loadDashboardData)
             initAdminNavigation();
-            
+
             // Initialize Immortal Nexus core components (gracefully handle missing elements on admin page)
-            
-            // Ensure ImmortalNexus object exists
-            window.ImmortalNexus = window.ImmortalNexus || {};
-            
-            if (typeof ImmortalNexus !== 'undefined') {
+            // Use correct namespace: window.NEXUS instead of ImmortalNexus
+            if (typeof window.NEXUS !== 'undefined') {
                 try {
-                    ImmortalNexus.initThemeManager();
+                    if (typeof window.NEXUS.initThemeManager === 'function') {
+                        window.NEXUS.initThemeManager();
+                    }
                 } catch (error) {
                     console.warn('Theme manager init skipped on admin page:', error.message);
                 }
-                
+
                 try {
-                    ImmortalNexus.initNavigation();
+                    if (typeof window.NEXUS.initNavigation === 'function') {
+                        window.NEXUS.initNavigation();
+                    }
                 } catch (error) {
                     console.warn('Navigation init failed:', error.message);
                 }
-                
+
                 try {
-                    ImmortalNexus.initUserMenu();
+                    if (typeof window.NEXUS.initUserMenu === 'function') {
+                        window.NEXUS.initUserMenu();
+                    }
                 } catch (error) {
                     console.warn('User menu init failed:', error.message);
                 }
-                
+
                 try {
-                    ImmortalNexus.initAuthModal();
+                    if (typeof window.NEXUS.initAuthModal === 'function') {
+                        window.NEXUS.initAuthModal();
+                    }
                 } catch (error) {
                     console.warn('Auth modal init skipped on admin page:', error.message);
                 }
-                
+
                 try {
-                    ImmortalNexus.initMessageModal();
+                    if (typeof window.NEXUS.initMessageModal === 'function') {
+                        window.NEXUS.initMessageModal();
+                    }
                 } catch (error) {
                     console.warn('Message modal init skipped on admin page:', error.message);
                 }
             }
-            
+
             // Initialize active users with proper error handling
             setTimeout(() => {
-                if (typeof ImmortalNexus !== 'undefined' && typeof ImmortalNexus.initActiveUsers === 'function') {
+                if (typeof window.NEXUS !== 'undefined' && typeof window.NEXUS.initActiveUsers === 'function') {
                     try {
-                        ImmortalNexus.initActiveUsers();
+                        window.NEXUS.initActiveUsers();
                     } catch (error) {
                         console.error('Error initializing active users:', error);
                     }
@@ -1364,28 +1388,13 @@
                     }
                 }
             }, 1000);
-            
+
             // Initialize floating buttons
             initFloatingButtons();
-            
-            // Initialize admin components with delay to ensure all scripts are loaded
-            setTimeout(() => {
-                if (typeof AdminDashboard !== 'undefined') {
-                    AdminDashboard.init();
-                }
-                
-                if (typeof AdminAnalytics !== 'undefined') {
-                    AdminAnalytics.init();
-                }
-                
-                if (typeof AdminFeedback !== 'undefined') {
-                    AdminFeedback.init();
-                }
-            }, 500);
-            
+
             // Initialize curation highlights
             setTimeout(loadCurrentHighlights, 1000);
-            
+
             // Initialize mobile navigation
             initMobileNavigation();
         });
@@ -1401,8 +1410,10 @@
             if (themeToggle) {
                 themeToggle.addEventListener('click', () => {
                     // Use Immortal Nexus theme toggle if available
-                    if (typeof ImmortalNexus !== 'undefined' && typeof ImmortalNexus.toggleTheme === 'function') {
-                        ImmortalNexus.toggleTheme();
+                    if (typeof window.NEXUS !== 'undefined' && typeof window.NEXUS.toggleTheme === 'function') {
+                        window.NEXUS.toggleTheme();
+                    } else if (typeof window.NEXUSTheme !== 'undefined' && typeof window.NEXUSTheme.toggle === 'function') {
+                        window.NEXUSTheme.toggle();
                     } else {
                         // Fallback theme toggle
                         document.body.classList.toggle('dark-theme');
