@@ -1,3 +1,88 @@
+/* ========================================
+   IMMORTAL-THEMED MESSAGE NOTIFICATIONS
+   ======================================== */
+
+/* Unread message pulse effect for active users button */
+@keyframes immortal-pulse {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(255, 94, 120, 0.4),
+                    0 0 10px rgba(255, 94, 120, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 15px rgba(255, 94, 120, 0.8),
+                    0 0 25px rgba(255, 94, 120, 0.4),
+                    inset 0 0 10px rgba(255, 94, 120, 0.2);
+    }
+}
+
+.show-users-btn.has-unread-messages {
+    animation: immortal-pulse 2s ease-in-out infinite;
+    background: linear-gradient(135deg, rgba(255, 94, 120, 0.15), rgba(255, 202, 40, 0.15));
+}
+
+/* Ethereal glow for users with unread messages */
+@keyframes ethereal-glow {
+    0%, 100% {
+        box-shadow: 0 0 8px rgba(255, 202, 40, 0.5),
+                    0 0 12px rgba(255, 94, 120, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 15px rgba(255, 202, 40, 0.8),
+                    0 0 25px rgba(255, 94, 120, 0.5),
+                    inset 0 0 8px rgba(255, 202, 40, 0.2);
+    }
+}
+
+.user-item.has-unread-message {
+    position: relative;
+}
+
+.user-item.has-unread-message .avatar-container,
+.user-item.has-unread-message .user-avatar {
+    animation: ethereal-glow 2.5s ease-in-out infinite;
+    border: 2px solid rgba(255, 202, 40, 0.6);
+}
+
+.user-item.has-unread-message::before {
+    content: '';
+    position: absolute;
+    left: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 70%;
+    background: linear-gradient(to bottom,
+        rgba(255, 94, 120, 0.8),
+        rgba(255, 202, 40, 0.8));
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(255, 202, 40, 0.6);
+}
+
+/* Unread badge on avatar */
+.user-item.has-unread-message .avatar-container::after {
+    content: attr(data-unread-count);
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: linear-gradient(135deg, #ff5e78, #ffca28);
+    color: #1a1a33;
+    font-size: 0.7rem;
+    font-weight: bold;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--secondary, #1a1a33);
+    box-shadow: 0 0 10px rgba(255, 202, 40, 0.8);
+    z-index: 10;
+}
+
+/* ========================================
+   END IMMORTAL MESSAGE NOTIFICATIONS
+   ======================================== */
+
 /* Active Users Sidebar */
 .active-users {
     position: fixed;

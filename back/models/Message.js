@@ -20,6 +20,10 @@ const messageSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  read: {
+    type: Boolean,
+    default: false,
+  },
   // Feedback system fields
   isFeedback: {
     type: Boolean,

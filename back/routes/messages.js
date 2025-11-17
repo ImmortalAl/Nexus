@@ -43,18 +43,107 @@ router.get('/stats', authMiddleware, async (req, res) => {
   }
 });
 
+// Get unread message count for current user
+router.get('/unread-count', authMiddleware, async (req, res) => {
+  try {
+    const count = await Message.countDocuments({
+      recipient: req.user.id,
+      read: false
+    });
+    res.json({ count });
+  } catch (error) {
+    console.error('Get unread count error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Get list of users who have sent unread messages
+router.get('/unread-senders', authMiddleware, async (req, res) => {
+  try {
+    const unreadMessages = await Message.find({
+      recipient: req.user.id,
+      read: false
+    })
+    .populate('sender', 'username displayName avatar')
+    .sort({ timestamp: -1 });
+
+    // Get unique senders with their unread counts
+    const sendersMap = new Map();
+    unreadMessages.forEach(msg => {
+      const senderId = msg.sender._id.toString();
+      if (!sendersMap.has(senderId)) {
+        sendersMap.set(senderId, {
+          user: msg.sender,
+          count: 0,
+          latestTimestamp: msg.timestamp
+        });
+      }
+      sendersMap.get(senderId).count++;
+    });
+
+    const senders = Array.from(sendersMap.values());
+    res.json({ senders });
+  } catch (error) {
+    console.error('Get unread senders error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Mark a specific message as read
+router.put('/mark-read/:messageId', authMiddleware, async (req, res) => {
+  try {
+    const message = await Message.findOneAndUpdate(
+      { _id: req.params.messageId, recipient: req.user.id },
+      { read: true },
+      { new: true }
+    );
+
+    if (!message) {
+      return res.status(404).json({ error: 'Message not found' });
+    }
+
+    res.json({ message: 'Message marked as read', data: message });
+  } catch (error) {
+    console.error('Mark message read error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Mark all messages from a specific user as read
+router.put('/mark-conversation-read/:username', authMiddleware, async (req, res) => {
+  try {
+    const otherUser = await User.findOne({ username: req.params.username });
+    if (!otherUser) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const result = await Message.updateMany(
+      { sender: otherUser._id, recipient: req.user.id, read: false },
+      { read: true }
+    );
+
+    res.json({
+      message: 'Messages marked as read',
+      modifiedCount: result.modifiedCount
+    });
+  } catch (error) {
+    console.error('Mark conversation read error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // Get conversation between two users
 router.get('/conversation/:username', authMiddleware, async (req, res) => {
   try {
     const { username } = req.params;
     const currentUserId = req.user.id;
-    
+
     // Find the other user
     const otherUser = await User.findOne({ username });
     if (!otherUser) {
       return res.status(404).json({ error: 'User not found' });
     }
-    
+
     // Get messages between these two users
     const messages = await Message.find({
       $or: [
@@ -66,7 +155,13 @@ router.get('/conversation/:username', authMiddleware, async (req, res) => {
     .populate('recipient', 'username avatar')
     .sort({ timestamp: 1 })
     .limit(100); // Limit to last 100 messages
-    
+
+    // Mark incoming messages as read
+    await Message.updateMany(
+      { sender: otherUser._id, recipient: currentUserId, read: false },
+      { read: true }
+    );
+
     res.json(messages);
   } catch (error) {
     console.error('Fetch conversation error:', error.message);
