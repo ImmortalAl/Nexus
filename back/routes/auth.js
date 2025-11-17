@@ -1,6 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const rateLimit = require('express-rate-limit');
 const router = express.Router();
 const User = require('../models/User');
@@ -172,6 +173,91 @@ router.post('/logout', auth, async (req, res) => {
         res.json({ message: 'Logout successful' });
     } catch (error) {
         console.error(`Logout error for user ID: ${req.user.id} from ${req.ip}:`, error.message, error.stack);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// Request password reset
+router.post('/request-password-reset', authLimiter, async (req, res) => {
+    const { username } = req.body;
+    const ip = req.ip;
+    try {
+        if (!username) {
+            console.log(`[PASSWORD RESET REQUEST] Failed: Missing username from ${ip}`);
+            return res.status(400).json({ error: 'Username is required' });
+        }
+
+        // Find user (case-insensitive)
+        const user = await User.findOne({
+            username: {
+                $regex: `^${username.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`,
+                $options: 'i'
+            }
+        });
+
+        if (!user) {
+            console.log(`[PASSWORD RESET REQUEST] Failed: User not found for username: ${username} from ${ip}`);
+            // Don't reveal if user exists or not (security best practice)
+            return res.json({ message: 'If the user exists, a password reset request has been created. Please contact an administrator.' });
+        }
+
+        // Check if user is banned
+        if (user.banned) {
+            console.log(`[PASSWORD RESET REQUEST] Failed: Banned user attempted reset: ${username} from ${ip}`);
+            return res.status(403).json({ error: 'Your account has been banned from Immortal Nexus' });
+        }
+
+        // Set password reset requested flag (admin will approve and generate token)
+        await User.findByIdAndUpdate(user._id, {
+            passwordResetRequested: true
+        });
+
+        console.log(`[PASSWORD RESET REQUEST] Created for username: ${username} from ${ip}`);
+        res.json({ message: 'Password reset request submitted. An administrator will review your request shortly.' });
+
+    } catch (error) {
+        console.error(`[PASSWORD RESET REQUEST ERROR] For ${username} from ${ip}:`, error.message, error.stack);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// Reset password with token
+router.post('/reset-password', authLimiter, async (req, res) => {
+    const { token, newPassword } = req.body;
+    const ip = req.ip;
+    try {
+        if (!token || !newPassword) {
+            console.log(`[PASSWORD RESET] Failed: Missing token or password from ${ip}`);
+            return res.status(400).json({ error: 'Reset token and new password are required' });
+        }
+
+        if (newPassword.length < 6) {
+            return res.status(400).json({ error: 'Password must be at least 6 characters long' });
+        }
+
+        // Find user with valid reset token
+        const user = await User.findOne({
+            passwordResetToken: token,
+            passwordResetExpiry: { $gt: Date.now() }
+        });
+
+        if (!user) {
+            console.log(`[PASSWORD RESET] Failed: Invalid or expired token from ${ip}`);
+            return res.status(400).json({ error: 'Invalid or expired reset token' });
+        }
+
+        // Update password and clear reset fields
+        user.password = newPassword; // Will be hashed by pre-save hook
+        user.passwordResetToken = null;
+        user.passwordResetExpiry = null;
+        user.passwordResetRequested = false;
+        await user.save();
+
+        console.log(`[PASSWORD RESET SUCCESS] User: ${user.username} from ${ip}`);
+        res.json({ message: 'Password reset successful. You can now log in with your new password.' });
+
+    } catch (error) {
+        console.error(`[PASSWORD RESET ERROR] From ${ip}:`, error.message, error.stack);
         res.status(500).json({ error: 'Server error' });
     }
 });

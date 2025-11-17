@@ -196,6 +196,7 @@ const UserManagement = {
                     <td class="username">${user.username}</td>
                     <td class="display-name">${user.displayName || '-'}</td>
                     <td>
+                        ${user.passwordResetRequested ? '<span class="status-badge reset-requested" title="Password Reset Requested" style="background: rgba(255, 193, 7, 0.2); border: 1px solid #ffc107; color: #ffc107; font-size: 1.2em;">🔑</span>' : ''}
                         <span class="status-badge ${user.online ? 'online' : 'offline'}">
                             ${user.online ? 'Online' : 'Offline'}
                         </span>
@@ -210,7 +211,12 @@ const UserManagement = {
                         <button class="action-btn edit" onclick="UserManagement.editUser('${user._id || user.id}')" title="Edit User">
                             <i class="fas fa-edit"></i>
                         </button>
-                        ${!user.banned ? 
+                        ${user.passwordResetRequested ?
+                            `<button class="action-btn reset" onclick="UserManagement.approvePasswordReset('${user._id || user.id}')" title="Approve Password Reset" style="background: rgba(255, 193, 7, 0.2); border: 1px solid #ffc107; color: #ffc107;">
+                                <i class="fas fa-key"></i>
+                            </button>` : ''
+                        }
+                        ${!user.banned ?
                             `<button class="action-btn ban" onclick="UserManagement.banUser('${user._id || user.id}')" title="Ban User">
                                 <i class="fas fa-ban"></i>
                             </button>` :
@@ -239,6 +245,7 @@ const UserManagement = {
                             <div class="mobile-card-meta">@${user.username}</div>
                         </div>
                         <div class="status-badges">
+                            ${user.passwordResetRequested ? '<span class="status-badge reset-requested" title="Password Reset Requested" style="background: rgba(255, 193, 7, 0.2); border: 1px solid #ffc107; color: #ffc107; font-size: 1.2em;">🔑</span>' : ''}
                             <span class="status-badge ${user.online ? 'online' : 'offline'}">
                                 ${user.online ? 'Online' : 'Offline'}
                             </span>
@@ -262,7 +269,12 @@ const UserManagement = {
                         <button class="action-btn edit" onclick="UserManagement.editUser('${user._id || user.id}')" title="Edit User">
                             <i class="fas fa-edit"></i> Edit
                         </button>
-                        ${!user.banned ? 
+                        ${user.passwordResetRequested ?
+                            `<button class="action-btn reset" onclick="UserManagement.approvePasswordReset('${user._id || user.id}')" title="Approve Password Reset" style="background: rgba(255, 193, 7, 0.2); border: 1px solid #ffc107; color: #ffc107;">
+                                <i class="fas fa-key"></i> Reset
+                            </button>` : ''
+                        }
+                        ${!user.banned ?
                             `<button class="action-btn ban" onclick="UserManagement.banUser('${user._id || user.id}')" title="Ban User">
                                 <i class="fas fa-ban"></i> Ban
                             </button>` :
@@ -706,6 +718,51 @@ const UserManagement = {
             this.showSuccess(`User ${user.username} has been deleted successfully.`);
         } catch (error) {
             this.showError('Failed to delete user', error.message);
+        }
+    },
+
+    async approvePasswordReset(userId) {
+        const user = this.allUsers.find(u => (u._id || u.id) === userId);
+        if (!user) {
+            this.showError('User not found');
+            return;
+        }
+
+        if (!confirm(`Approve password reset request for ${user.username}?\n\nThis will generate a secure reset link and notify the user.`)) {
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem('sessionToken');
+            const response = await fetch(`${this.apiBaseUrl}/users/${userId}/approve-password-reset`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                let errorMessage = 'Failed to approve password reset';
+                try {
+                    const error = await response.json();
+                    errorMessage = error.error || error.message || errorMessage;
+                } catch (parseError) {
+                    errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+                }
+                throw new Error(errorMessage);
+            }
+
+            const result = await response.json();
+            this.showSuccess(`Password reset approved for ${user.username}. User has been notified.`);
+
+            // Show reset token details in console for admin reference
+            console.log(`[Password Reset] Token for ${user.username}:`, result.resetToken);
+            console.log(`[Password Reset] Expires:`, result.expiresAt);
+
+            await this.loadUsers(); // Reload to clear the indicator
+        } catch (error) {
+            this.showError('Failed to approve password reset', error.message);
         }
     },
 

@@ -5,7 +5,9 @@ const auth = require('../middleware/auth');
 const optionalAuth = require('../middleware/optionalAuth');
 const adminAuth = require('../middleware/adminAuth');
 const mongoose = require('mongoose');
+const crypto = require('crypto');
 const CredibilityService = require('../services/credibilityService');
+const NotificationService = require('../services/notificationService');
 
 // Get user analytics for admin dashboard
 router.get('/analytics', auth, async (req, res) => {
@@ -89,13 +91,13 @@ router.get('/', optionalAuth, async (req, res) => {
         
         // Include banned field for admin users
         let selectFields = 'username displayName avatar status bio createdAt online lastLogin';
-        
+
         // Check if user is admin to include sensitive fields
         if (req.user?.id) {
             try {
                 const requester = await User.findById(req.user.id);
                 if (requester && requester.role === 'admin') {
-                    selectFields += ' banned role';
+                    selectFields += ' banned role passwordResetRequested';
                 }
             } catch (err) {
                 console.error('Could not verify admin status:', err);
@@ -376,12 +378,12 @@ router.post('/cleanup-online-status', auth, adminAuth, async (req, res) => {
     try {
         // Find users who are marked online but have old lastLogin (more than 30 days ago)
         const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-        
+
         const staleUsers = await User.find({
             online: true,
             lastLogin: { $lt: thirtyDaysAgo }
         }).select('username lastLogin');
-        
+
         if (staleUsers.length === 0) {
             return res.json({
                 message: 'No stale online users found',
@@ -389,7 +391,7 @@ router.post('/cleanup-online-status', auth, adminAuth, async (req, res) => {
                 details: []
             });
         }
-        
+
         // Set these users offline
         const result = await User.updateMany(
             {
@@ -398,8 +400,8 @@ router.post('/cleanup-online-status', auth, adminAuth, async (req, res) => {
             },
             { online: false }
         );
-        
-        
+
+
         res.json({
             message: `Successfully cleaned up ${result.modifiedCount} stale online users`,
             cleaned: result.modifiedCount,
@@ -408,10 +410,73 @@ router.post('/cleanup-online-status', auth, adminAuth, async (req, res) => {
                 lastLogin: user.lastLogin
             }))
         });
-        
+
     } catch (error) {
         console.error('Admin error during online status cleanup:', error);
         res.status(500).json({ error: 'Server error during online status cleanup' });
+    }
+});
+
+// Admin endpoint to approve password reset request
+router.post('/:identifier/approve-password-reset', auth, adminAuth, async (req, res) => {
+    const { identifier } = req.params;
+    const ip = req.ip;
+
+    try {
+        let user;
+
+        // Find user by ID or username
+        if (mongoose.Types.ObjectId.isValid(identifier)) {
+            user = await User.findById(identifier);
+        }
+        if (!user) {
+            user = await User.findOne({ username: identifier });
+        }
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        if (!user.passwordResetRequested) {
+            return res.status(400).json({ error: 'No password reset request pending for this user' });
+        }
+
+        // Generate secure reset token
+        const resetToken = crypto.randomBytes(32).toString('hex');
+        const resetExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours from now
+
+        // Update user with reset token
+        user.passwordResetToken = resetToken;
+        user.passwordResetExpiry = resetExpiry;
+        user.passwordResetRequested = false; // Clear the request flag
+        await user.save();
+
+        // Send notification to user with reset link
+        const resetLink = `${process.env.FRONTEND_URL || 'https://immortal.nexus'}/reset-password?token=${resetToken}`;
+
+        await NotificationService.createNotification({
+            userId: user._id,
+            type: 'system',
+            title: 'Password Reset Approved',
+            message: `Your password reset request has been approved. Click the link below to reset your password. This link expires in 24 hours.`,
+            metadata: {
+                resetLink,
+                resetToken,
+                expiresAt: resetExpiry
+            }
+        });
+
+        console.log(`[PASSWORD RESET APPROVED] Admin ${req.user.username} approved reset for user: ${user.username} from ${ip}`);
+
+        res.json({
+            message: 'Password reset approved. User has been notified.',
+            resetToken, // Return token for admin reference
+            expiresAt: resetExpiry
+        });
+
+    } catch (error) {
+        console.error(`[PASSWORD RESET APPROVAL ERROR] From ${ip}:`, error.message, error.stack);
+        res.status(500).json({ error: 'Server error while approving password reset' });
     }
 });
 
