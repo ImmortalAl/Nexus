@@ -22,6 +22,7 @@ const notificationSchema = new mongoose.Schema({
             'governance_update',    // Governance/democracy update
             'moderation_action',    // Community moderation action
             'admin_broadcast',      // Admin announcement
+            'system',               // System-generated notifications (password reset, etc.)
             'mention',              // User was mentioned
             'clash_update',         // Clash of Immortals update (future)
             'vault_notification'    // Timeless Vault notification (future)
