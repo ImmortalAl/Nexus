@@ -383,7 +383,10 @@ const UserManagement = {
                     </div>
                 </div>
                 <div class="user-actions" style="margin-top: 1.5rem; display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
-                    ${!user.banned ? 
+                    <button class="btn btn-warning" onclick="UserManagement.approvePasswordReset('${user._id || user.id}'); UserManagement.closeModal();" style="background: rgba(255, 193, 7, 0.2); border: 1px solid #ffc107; padding: 0.5rem 1rem; border-radius: 0.25rem; color: #ffc107; font-weight: 500;">
+                        <i class="fas fa-key"></i> Reset Password
+                    </button>
+                    ${!user.banned ?
                         `<button class="btn btn-danger" onclick="UserManagement.banUser('${user._id || user.id}'); UserManagement.closeModal();" style="background: #dc267f; border: none; padding: 0.5rem 1rem; border-radius: 0.25rem; color: white;">
                             <i class="fas fa-ban"></i> Ban Soul
                         </button>` :
@@ -728,7 +731,11 @@ const UserManagement = {
             return;
         }
 
-        if (!confirm(`Approve password reset request for ${user.username}?\n\nThis will generate a secure reset link and notify the user.`)) {
+        const message = user.passwordResetRequested
+            ? `Approve password reset request for ${user.username}?\n\nThis will generate a secure reset link and notify the user.`
+            : `Manually trigger password reset for ${user.username}?\n\nThis will generate a secure reset link and notify the user. The link will be valid for 24 hours.`;
+
+        if (!confirm(message)) {
             return;
         }
 
@@ -754,7 +761,10 @@ const UserManagement = {
             }
 
             const result = await response.json();
-            this.showSuccess(`Password reset approved for ${user.username}. User has been notified.`);
+            const successMsg = user.passwordResetRequested
+                ? `Password reset request approved for ${user.username}. User has been notified.`
+                : `Password reset initiated for ${user.username}. User has been notified.`;
+            this.showSuccess(successMsg);
 
             // Show reset token details in console for admin reference
             console.log(`[Password Reset] Token for ${user.username}:`, result.resetToken);

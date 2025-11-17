@@ -437,9 +437,7 @@ router.post('/:identifier/approve-password-reset', auth, adminAuth, async (req, 
             return res.status(404).json({ error: 'User not found' });
         }
 
-        if (!user.passwordResetRequested) {
-            return res.status(400).json({ error: 'No password reset request pending for this user' });
-        }
+        // Note: Admin can trigger password reset at will, no pending request required
 
         // Generate secure reset token
         const resetToken = crypto.randomBytes(32).toString('hex');
