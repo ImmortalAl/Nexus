@@ -451,7 +451,7 @@ router.post('/:identifier/approve-password-reset', auth, adminAuth, async (req, 
         await user.save();
 
         // Send notification to user with reset link
-        const resetLink = `${process.env.FRONTEND_URL || 'https://immortal.nexus'}/reset-password?token=${resetToken}`;
+        const resetLink = `${process.env.FRONTEND_URL || 'https://immortalnexus.netlify.app'}/reset-password.html?token=${resetToken}`;
 
         await NotificationService.createNotification({
             userId: user._id,

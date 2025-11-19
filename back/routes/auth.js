@@ -294,7 +294,7 @@ router.get('/reset-status/:requestId', async (req, res) => {
             response.message = `Your request is pending. It will be automatically approved in ${timeRemaining} minute(s).`;
             response.timeRemaining = timeRemaining;
         } else if (user.resetStatus === 'active') {
-            const resetLink = `${process.env.FRONTEND_URL || 'https://immortalnexus.netlify.app'}/reset-password?token=${user.passwordResetToken}`;
+            const resetLink = `${process.env.FRONTEND_URL || 'https://immortalnexus.netlify.app'}/reset-password.html?token=${user.passwordResetToken}`;
             response.message = 'Your password reset has been approved! Click the link below to reset your password.';
             response.resetLink = resetLink;
             response.expiresAt = user.passwordResetExpiry;
