@@ -230,6 +230,17 @@ function setupUserMenuEventsForContainer(userMenuContainer) {
       handleLogout();
     }
   }, true); // Use capture phase to intercept before other handlers
+
+  // CRITICAL FIX: Add global document listener for change password button
+  // This ensures password change works even when dropdown is moved to document.body
+  document.addEventListener('click', (event) => {
+    const changePasswordBtn = event.target.closest('#changePasswordBtn');
+    if (changePasswordBtn) {
+      event.preventDefault();
+      event.stopPropagation();
+      openPasswordChangeModal();
+    }
+  }, true); // Use capture phase to intercept before other handlers
 }
 
 function handleToggleDropdown(event, button) {
