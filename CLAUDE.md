@@ -1,3 +1,6 @@
+Netlify claude key renewed
+nfp_JXnPcueWE2S41ufEugUwXAsM7TuwnuTG3de9
+
 # Immortal Nexus Development Instructions for Claude
 
 ## Critical Git Workflow
