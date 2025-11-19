@@ -383,6 +383,9 @@ const UserManagement = {
                     </div>
                 </div>
                 <div class="user-actions" style="margin-top: 1.5rem; display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+                    <button class="btn btn-success" onclick="UserManagement.generateLoginLink('${user._id || user.id}', '${user.username}'); UserManagement.closeModal();" style="background: rgba(76, 175, 80, 0.2); border: 1px solid #4caf50; padding: 0.5rem 1rem; border-radius: 0.25rem; color: #4caf50; font-weight: 500;">
+                        <i class="fas fa-link"></i> Generate Login Link
+                    </button>
                     <button class="btn btn-warning" onclick="UserManagement.emergencyPasswordReset('${user._id || user.id}', '${user.username}'); UserManagement.closeModal();" style="background: rgba(255, 152, 0, 0.2); border: 1px solid #ff9800; padding: 0.5rem 1rem; border-radius: 0.25rem; color: #ff9800; font-weight: 500;">
                         <i class="fas fa-bolt"></i> Emergency Reset
                     </button>
@@ -724,6 +727,46 @@ const UserManagement = {
             this.showSuccess(`User ${user.username} has been deleted successfully.`);
         } catch (error) {
             this.showError('Failed to delete user', error.message);
+        }
+    },
+
+    async generateLoginLink(userId, username) {
+        if (!confirm(`Generate temporary login link for ${username}?\n\nThis will create a one-time link (valid for 15 minutes) that you can share with the user.\n\nThe user will be forced to set a new password after clicking the link.`)) {
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem('sessionToken');
+            const response = await fetch(`${this.apiBaseUrl}/users/${userId}/generate-temp-login`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error || `Failed to generate link: ${response.status}`);
+            }
+
+            const result = await response.json();
+
+            // Show the link in a copyable format
+            const linkMessage = `✅ LOGIN LINK GENERATED!\n\nFor: ${username}\n\nLink (valid for 15 minutes):\n${result.loginLink}\n\nExpires: ${new Date(result.expiresAt).toLocaleString()}\n\nShare this link with ${username} via Discord, Signal, etc.\nThey will be required to set a new password after accessing it.\n\nClick OK to copy link to clipboard.`;
+
+            if (confirm(linkMessage)) {
+                navigator.clipboard.writeText(result.loginLink).then(() => {
+                    alert('✅ Link copied to clipboard!\n\nShare it with ' + username);
+                }).catch(err => {
+                    console.error('Failed to copy:', err);
+                    prompt('Copy this link:', result.loginLink);
+                });
+            }
+
+        } catch (error) {
+            console.error('Error generating login link:', error);
+            this.showError('Failed to generate login link', error.message);
         }
     },
 

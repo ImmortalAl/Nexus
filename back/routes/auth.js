@@ -355,4 +355,60 @@ router.post('/reset-password', authLimiter, async (req, res) => {
     }
 });
 
+// Temporary login via admin-generated link
+router.post('/temp-login', authLimiter, async (req, res) => {
+    const { token } = req.body;
+    const ip = req.ip;
+    try {
+        if (!token) {
+            console.log(`[TEMP LOGIN] Failed: Missing token from ${ip}`);
+            return res.status(400).json({ error: 'Login token is required' });
+        }
+
+        // Find user with valid temp login token
+        const user = await User.findOne({
+            tempLoginToken: token,
+            tempLoginExpiry: { $gt: Date.now() }
+        });
+
+        if (!user) {
+            console.log(`[TEMP LOGIN] Failed: Invalid or expired token from ${ip}`);
+            return res.status(400).json({ error: 'Invalid or expired login link' });
+        }
+
+        // Clear the temp token (one-time use)
+        user.tempLoginToken = null;
+        user.tempLoginExpiry = null;
+        user.online = true;
+        user.lastLogin = new Date();
+        await user.save();
+
+        // Generate regular session token
+        const sessionToken = await jwt.sign({ id: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '30d' });
+
+        console.log(`[TEMP LOGIN SUCCESS] User: ${user.username} from ${ip}`);
+
+        const safeUser = user.toObject({
+            getters: true,
+            versionKey: false,
+            transform: (doc, ret) => {
+                delete ret.password;
+                delete ret.seed;
+                delete ret.tempLoginToken;
+                return ret;
+            }
+        });
+
+        res.json({
+            token: sessionToken,
+            user: safeUser,
+            requiresPasswordChange: true // Flag to force password change
+        });
+
+    } catch (error) {
+        console.error(`[TEMP LOGIN ERROR] From ${ip}:`, error.message, error.stack);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
 module.exports = router;

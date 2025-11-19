@@ -76,6 +76,14 @@ const userSchema = new mongoose.Schema({
         enum: ['pending', 'approved', 'denied', 'active', null],
         default: null
     },
+    tempLoginToken: {
+        type: String,
+        default: null
+    },
+    tempLoginExpiry: {
+        type: Date,
+        default: null
+    },
     seed: {
         type: String
     },

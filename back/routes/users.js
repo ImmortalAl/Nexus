@@ -202,6 +202,77 @@ router.get('/:username', optionalAuth, async (req, res) => {
     }
 });
 
+// Set password (for temp login users who don't know current password)
+router.post('/me/set-password', auth, async (req, res) => {
+    const { newPassword } = req.body;
+    const ip = req.ip;
+    try {
+        if (!newPassword) {
+            return res.status(400).json({ error: 'New password is required' });
+        }
+
+        if (newPassword.length < 6) {
+            return res.status(400).json({ error: 'Password must be at least 6 characters' });
+        }
+
+        const user = await User.findById(req.user.id);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Set new password (will be hashed by pre-save hook)
+        user.password = newPassword;
+        await user.save();
+
+        console.log(`[PASSWORD SET SUCCESS] User: ${user.username} from ${ip}`);
+
+        res.json({ message: 'Password set successfully' });
+
+    } catch (error) {
+        console.error(`[PASSWORD SET ERROR] User ID: ${req.user.id} from ${ip}:`, error.message, error.stack);
+        res.status(500).json({ error: 'Server error while setting password' });
+    }
+});
+
+// Change password for logged-in user
+router.post('/me/change-password', auth, async (req, res) => {
+    const { currentPassword, newPassword } = req.body;
+    const ip = req.ip;
+    try {
+        if (!currentPassword || !newPassword) {
+            return res.status(400).json({ error: 'Current password and new password are required' });
+        }
+
+        if (newPassword.length < 6) {
+            return res.status(400).json({ error: 'New password must be at least 6 characters' });
+        }
+
+        const user = await User.findById(req.user.id);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Verify current password
+        const isMatch = await user.comparePassword(currentPassword);
+        if (!isMatch) {
+            console.log(`[PASSWORD CHANGE] Failed: Incorrect current password for user: ${user.username} from ${ip}`);
+            return res.status(401).json({ error: 'Current password is incorrect' });
+        }
+
+        // Set new password (will be hashed by pre-save hook)
+        user.password = newPassword;
+        await user.save();
+
+        console.log(`[PASSWORD CHANGE SUCCESS] User: ${user.username} from ${ip}`);
+
+        res.json({ message: 'Password changed successfully' });
+
+    } catch (error) {
+        console.error(`[PASSWORD CHANGE ERROR] User ID: ${req.user.id} from ${ip}:`, error.message, error.stack);
+        res.status(500).json({ error: 'Server error while changing password' });
+    }
+});
+
 // Update current user
 router.patch('/me', auth, async (req, res) => {
     const { username, displayName, avatar, status, bio } = req.body;
@@ -476,6 +547,53 @@ router.post('/:identifier/approve-password-reset', auth, adminAuth, async (req, 
     } catch (error) {
         console.error(`[PASSWORD RESET APPROVAL ERROR] From ${ip}:`, error.message, error.stack);
         res.status(500).json({ error: 'Server error while approving password reset' });
+    }
+});
+
+// Generate temporary login link (admin only)
+router.post('/:identifier/generate-temp-login', auth, adminAuth, async (req, res) => {
+    const { identifier } = req.params;
+    const ip = req.ip;
+
+    try {
+        let user;
+
+        // Find user by ID or username
+        if (mongoose.Types.ObjectId.isValid(identifier)) {
+            user = await User.findById(identifier);
+        }
+        if (!user) {
+            user = await User.findOne({ username: identifier });
+        }
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Generate temporary login token (valid for 15 minutes)
+        const tempToken = crypto.randomBytes(32).toString('hex');
+        const tempTokenExpiry = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
+
+        // Store temp token in user model
+        user.tempLoginToken = tempToken;
+        user.tempLoginExpiry = tempTokenExpiry;
+        await user.save();
+
+        // Generate shareable link
+        const loginLink = `${process.env.FRONTEND_URL || 'https://immortalnexus.netlify.app'}/temp-login.html?token=${tempToken}`;
+
+        console.log(`[TEMP LOGIN LINK] Admin ${req.user.username} generated login link for user: ${user.username} from ${ip}`);
+
+        res.json({
+            message: `Temporary login link generated for ${user.username}`,
+            loginLink,
+            expiresAt: tempTokenExpiry,
+            username: user.username
+        });
+
+    } catch (error) {
+        console.error(`[TEMP LOGIN LINK ERROR] From ${ip}:`, error.message, error.stack);
+        res.status(500).json({ error: 'Server error while generating login link' });
     }
 });
 
