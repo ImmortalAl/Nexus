@@ -383,6 +383,9 @@ const UserManagement = {
                     </div>
                 </div>
                 <div class="user-actions" style="margin-top: 1.5rem; display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+                    <button class="btn btn-warning" onclick="UserManagement.emergencyPasswordReset('${user._id || user.id}', '${user.username}'); UserManagement.closeModal();" style="background: rgba(255, 152, 0, 0.2); border: 1px solid #ff9800; padding: 0.5rem 1rem; border-radius: 0.25rem; color: #ff9800; font-weight: 500;">
+                        <i class="fas fa-bolt"></i> Emergency Reset
+                    </button>
                     <button class="btn btn-warning" onclick="UserManagement.approvePasswordReset('${user._id || user.id}'); UserManagement.closeModal();" style="background: rgba(255, 193, 7, 0.2); border: 1px solid #ffc107; padding: 0.5rem 1rem; border-radius: 0.25rem; color: #ffc107; font-weight: 500;">
                         <i class="fas fa-key"></i> Reset Password
                     </button>
@@ -721,6 +724,47 @@ const UserManagement = {
             this.showSuccess(`User ${user.username} has been deleted successfully.`);
         } catch (error) {
             this.showError('Failed to delete user', error.message);
+        }
+    },
+
+    async emergencyPasswordReset(userId, username) {
+        const newPassword = prompt(`🚨 EMERGENCY PASSWORD RESET for ${username}\n\nEnter a temporary password (min 6 characters):\n\nUser can log in immediately with this password.`, 'temp123');
+
+        if (!newPassword) {
+            return; // User cancelled
+        }
+
+        if (newPassword.length < 6) {
+            alert('Password must be at least 6 characters long.');
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem('sessionToken');
+            const response = await fetch(`${this.apiBaseUrl}/users/${userId}/emergency-password-reset`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ newPassword })
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error || `Failed to reset password: ${response.status}`);
+            }
+
+            const result = await response.json();
+
+            // Show success with the password (so admin can share with user)
+            alert(`✅ SUCCESS!\n\nPassword reset for: ${username}\nNew password: ${newPassword}\n\n${username} can now log in immediately with this password.\n\nShare this password with them securely!`);
+
+            await this.loadUsers(); // Reload to clear any reset flags
+
+        } catch (error) {
+            console.error('Error in emergency password reset:', error);
+            this.showError('Failed to reset password', error.message);
         }
     },
 

@@ -479,4 +479,59 @@ router.post('/:identifier/approve-password-reset', auth, adminAuth, async (req, 
     }
 });
 
+// EMERGENCY: Admin endpoint to directly set user password (bypass reset flow)
+router.post('/:identifier/emergency-password-reset', auth, adminAuth, async (req, res) => {
+    const { identifier } = req.params;
+    const { newPassword } = req.body;
+    const ip = req.ip;
+
+    try {
+        if (!newPassword) {
+            return res.status(400).json({ error: 'New password is required' });
+        }
+
+        if (newPassword.length < 6) {
+            return res.status(400).json({ error: 'Password must be at least 6 characters' });
+        }
+
+        let user;
+
+        // Find user by ID or username
+        if (mongoose.Types.ObjectId.isValid(identifier)) {
+            user = await User.findById(identifier);
+        }
+        if (!user) {
+            user = await User.findOne({ username: identifier });
+        }
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Directly set the password (will be hashed by pre-save hook)
+        user.password = newPassword;
+
+        // Clear any pending reset requests
+        user.passwordResetToken = null;
+        user.passwordResetExpiry = null;
+        user.passwordResetRequested = false;
+        user.resetRequestId = null;
+        user.resetRequestedAt = null;
+        user.resetStatus = null;
+
+        await user.save();
+
+        console.log(`[EMERGENCY PASSWORD RESET] Admin ${req.user.username} reset password for user: ${user.username} from ${ip}`);
+
+        res.json({
+            message: `Password successfully reset for ${user.username}. User can now log in with the new password.`,
+            username: user.username
+        });
+
+    } catch (error) {
+        console.error(`[EMERGENCY PASSWORD RESET ERROR] From ${ip}:`, error.message, error.stack);
+        res.status(500).json({ error: 'Server error while resetting password' });
+    }
+});
+
 module.exports = router;
