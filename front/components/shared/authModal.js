@@ -36,9 +36,33 @@ function injectSoulModal() {
           <span>Confirm Ethereal Key</span>
           <input type="password" name="confirmPassword" autocomplete="new-password" />
         </label>
-        <p class="forgot-password-link" id="forgotPasswordLink" style="text-align: right; margin: -8px 0 12px 0; font-size: 0.9em;">
-          <a href="#" id="forgotPasswordBtn" style="color: var(--accent, #d4af37); text-decoration: none;">Forgot your Ethereal Key?</a>
-        </p>
+        <div class="ethereal-recovery-link" id="forgotPasswordLink" style="text-align: center; margin: 1rem 0 1.5rem 0; padding: 1rem; background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(212, 175, 55, 0.02) 100%); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 8px; transition: all 0.3s ease;">
+          <a href="/request-reset.html" id="forgotPasswordBtn" style="color: var(--accent, #d4af37); text-decoration: none; font-weight: 600; font-size: 0.95em; display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: all 0.3s ease;">
+            <i class="fas fa-key" style="font-size: 1.1em; text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);"></i>
+            <span>Lost Your Ethereal Key? Reclaim Your Passage</span>
+            <i class="fas fa-arrow-right" style="font-size: 0.9em; opacity: 0.7;"></i>
+          </a>
+        </div>
+        <style>
+          .ethereal-recovery-link:hover {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(212, 175, 55, 0.05) 100%);
+            border-color: rgba(212, 175, 55, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+          }
+          .ethereal-recovery-link:hover a {
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+          }
+          .ethereal-recovery-link:hover .fa-arrow-right {
+            opacity: 1;
+            transform: translateX(3px);
+          }
+          @media (max-width: 768px) {
+            .ethereal-recovery-link a span {
+              font-size: 0.85em;
+            }
+          }
+        </style>
         <button type="submit" class="modal-btn" id="soulModalSubmit">Transcend</button>
       </form>
       <div class="modal-feedback" id="modalFeedback"></div>
@@ -421,14 +445,8 @@ function setupSoulModalEvents() {
     }
   });
 
-  // Forgot password link handler
-  const forgotPasswordBtn = document.getElementById('forgotPasswordBtn');
-  if (forgotPasswordBtn) {
-    forgotPasswordBtn.addEventListener('click', (event) => {
-      event.preventDefault();
-      setSoulModalView('forgot-password');
-    });
-  }
+  // Forgot password link - now redirects to /request-reset.html
+  // No event handler needed - native link behavior
   
   // Form submission
   soulLoginForm.addEventListener('submit', handleSoulModalSubmit);
