@@ -198,7 +198,7 @@ router.post('/request-password-reset', authLimiter, async (req, res) => {
         if (!user) {
             console.log(`[PASSWORD RESET REQUEST] Failed: User not found for username: ${username} from ${ip}`);
             // Don't reveal if user exists or not (security best practice)
-            return res.json({ message: 'If the user exists, a password reset request has been created. Please contact an administrator.' });
+            return res.json({ message: 'If the user exists, a password reset request has been created.' });
         }
 
         // Check if user is banned
@@ -207,16 +207,109 @@ router.post('/request-password-reset', authLimiter, async (req, res) => {
             return res.status(403).json({ error: 'Your account has been banned from Immortal Nexus' });
         }
 
-        // Set password reset requested flag (admin will approve and generate token)
+        // Generate unique request ID
+        const requestId = `REQ-${crypto.randomBytes(8).toString('hex')}`;
+
+        // Set password reset request with new fields
         await User.findByIdAndUpdate(user._id, {
-            passwordResetRequested: true
+            passwordResetRequested: true,
+            resetRequestId: requestId,
+            resetRequestedAt: new Date(),
+            resetStatus: 'pending'
         });
 
-        console.log(`[PASSWORD RESET REQUEST] Created for username: ${username} from ${ip}`);
-        res.json({ message: 'Password reset request submitted. An administrator will review your request shortly.' });
+        console.log(`[PASSWORD RESET REQUEST] Created for username: ${username} from ${ip}, Request ID: ${requestId}`);
+        res.json({
+            message: 'Password reset request submitted. Save your Request ID to check status.',
+            requestId: requestId,
+            estimatedWaitTime: '30 minutes'
+        });
 
     } catch (error) {
         console.error(`[PASSWORD RESET REQUEST ERROR] For ${username} from ${ip}:`, error.message, error.stack);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// Check password reset request status
+router.get('/reset-status/:requestId', async (req, res) => {
+    const { requestId } = req.params;
+    const ip = req.ip;
+    try {
+        if (!requestId) {
+            return res.status(400).json({ error: 'Request ID is required' });
+        }
+
+        // Find user by request ID
+        const user = await User.findOne({ resetRequestId: requestId });
+
+        if (!user) {
+            console.log(`[RESET STATUS CHECK] Failed: Invalid request ID: ${requestId} from ${ip}`);
+            return res.status(404).json({ error: 'Invalid request ID' });
+        }
+
+        // Check if request has expired (older than 24 hours)
+        const requestAge = Date.now() - new Date(user.resetRequestedAt).getTime();
+        const twentyFourHours = 24 * 60 * 60 * 1000;
+
+        if (requestAge > twentyFourHours) {
+            console.log(`[RESET STATUS CHECK] Request expired for user: ${user.username}, Request ID: ${requestId}`);
+            return res.json({
+                status: 'expired',
+                message: 'This reset request has expired. Please submit a new request.'
+            });
+        }
+
+        // Auto-approve if 30 minutes have passed and still pending
+        const thirtyMinutes = 30 * 60 * 1000;
+        if (user.resetStatus === 'pending' && requestAge >= thirtyMinutes) {
+            // Generate reset token
+            const resetToken = crypto.randomBytes(32).toString('hex');
+            const resetExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+
+            user.passwordResetToken = resetToken;
+            user.passwordResetExpiry = resetExpiry;
+            user.resetStatus = 'active';
+            await user.save();
+
+            console.log(`[RESET STATUS CHECK] Auto-approved after 30 minutes for user: ${user.username}, Request ID: ${requestId}`);
+        }
+
+        // Calculate time remaining for pending requests
+        let timeRemaining = null;
+        if (user.resetStatus === 'pending') {
+            const elapsed = Date.now() - new Date(user.resetRequestedAt).getTime();
+            const remaining = Math.max(0, thirtyMinutes - elapsed);
+            timeRemaining = Math.ceil(remaining / 60000); // Convert to minutes
+        }
+
+        // Build response based on status
+        const response = {
+            status: user.resetStatus,
+            username: user.username,
+            requestId: user.resetRequestId
+        };
+
+        if (user.resetStatus === 'pending') {
+            response.message = `Your request is pending. It will be automatically approved in ${timeRemaining} minute(s).`;
+            response.timeRemaining = timeRemaining;
+        } else if (user.resetStatus === 'active') {
+            const resetLink = `${process.env.FRONTEND_URL || 'https://immortalnexus.netlify.app'}/reset-password?token=${user.passwordResetToken}`;
+            response.message = 'Your password reset has been approved! Click the link below to reset your password.';
+            response.resetLink = resetLink;
+            response.expiresAt = user.passwordResetExpiry;
+        } else if (user.resetStatus === 'approved') {
+            // Admin approved but token not yet active
+            response.message = 'Your request has been approved and is being processed.';
+        } else if (user.resetStatus === 'denied') {
+            response.message = 'Your request was denied. Please contact an administrator.';
+        }
+
+        console.log(`[RESET STATUS CHECK] User: ${user.username}, Status: ${user.resetStatus}, Request ID: ${requestId}`);
+        res.json(response);
+
+    } catch (error) {
+        console.error(`[RESET STATUS CHECK ERROR] Request ID: ${requestId} from ${ip}:`, error.message, error.stack);
         res.status(500).json({ error: 'Server error' });
     }
 });

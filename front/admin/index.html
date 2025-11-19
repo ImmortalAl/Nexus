@@ -88,6 +88,7 @@
             <ul>
                 <li><a href="#dashboard" class="active"><i class="fas fa-chart-line"></i> Dashboard</a></li>
                 <li><a href="#users"><i class="fas fa-users"></i> Soul Management</a></li>
+                <li><a href="#password-resets"><i class="fas fa-key"></i> Password Resets</a></li>
                 <li><a href="#curation"><i class="fas fa-star"></i> Content Curation</a></li>
                 <li><a href="#analytics"><i class="fas fa-chart-bar"></i> Eternal Analytics</a></li>
                 <li><a href="#feedback"><i class="fas fa-heart"></i> Eternal Feedback</a></li>
@@ -262,6 +263,60 @@
             <div class="pagination" id="usersPagination">
                 <!-- Pagination controls will be generated here -->
             </div>
+        </section>
+
+        <!-- Password Resets Section -->
+        <section id="password-resets" class="admin-section">
+            <h2 class="section-title">
+                <i class="fas fa-key"></i> Password Reset Requests
+            </h2>
+
+            <div class="info-banner" style="background: rgba(33, 150, 243, 0.1); border-left: 4px solid #2196f3; padding: 1rem; margin-bottom: 1.5rem; border-radius: 4px;">
+                <i class="fas fa-info-circle"></i> Requests are auto-approved after 30 minutes. Click "Approve Now" to bypass the wait time for trusted users.
+            </div>
+
+            <div class="reset-requests-controls" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <div class="filter-controls">
+                    <select id="resetFilterStatus" style="padding: 0.5rem; border-radius: 4px; background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color);">
+                        <option value="all">All Requests</option>
+                        <option value="pending">Pending</option>
+                        <option value="active">Active</option>
+                        <option value="denied">Denied</option>
+                    </select>
+                </div>
+                <button id="refreshResetsBtn" class="btn btn-outline" title="Refresh reset requests">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+
+            <div class="resets-table-wrapper">
+                <div class="table-responsive">
+                    <table class="resets-table" style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: rgba(var(--accent-rgb), 0.1); border-bottom: 2px solid var(--accent);">
+                                <th style="padding: 1rem; text-align: left;">Username</th>
+                                <th style="padding: 1rem; text-align: left;">Request ID</th>
+                                <th style="padding: 1rem; text-align: left;">Requested</th>
+                                <th style="padding: 1rem; text-align: left;">Time Remaining</th>
+                                <th style="padding: 1rem; text-align: left;">Status</th>
+                                <th style="padding: 1rem; text-align: left;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resetsTableBody">
+                            <tr>
+                                <td colspan="6" class="loading" style="padding: 2rem; text-align: center;">Loading reset requests...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Mobile Cards View -->
+            <div class="mobile-reset-cards" id="mobileResetCards" style="display: none;">
+                <div class="loading">Loading reset requests...</div>
+            </div>
+
+            <div id="resetRequestsFeedback" style="margin-top: 1rem;"></div>
         </section>
 
         <!-- Content Curation Section -->
@@ -819,6 +874,7 @@
     <!-- Admin Components -->
     <script src="../js/admin/dashboard.js?v=1.4"></script>
     <script src="../js/admin/userManagement.js?v=2.1"></script>
+    <script src="../js/admin/passwordResets.js?v=1.0"></script>
     <script src="../js/admin/analytics.js?v=1.3"></script>
     <script src="../js/admin/feedback.js?v=2.4"></script>
     
@@ -1320,6 +1376,10 @@
 
             if (typeof UserManagement !== 'undefined') {
                 UserManagement.init();
+            }
+
+            if (typeof PasswordResetManager !== 'undefined') {
+                PasswordResetManager.init();
             }
 
             if (typeof AdminAnalytics !== 'undefined') {

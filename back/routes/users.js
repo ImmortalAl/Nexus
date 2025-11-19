@@ -443,10 +443,11 @@ router.post('/:identifier/approve-password-reset', auth, adminAuth, async (req, 
         const resetToken = crypto.randomBytes(32).toString('hex');
         const resetExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours from now
 
-        // Update user with reset token
+        // Update user with reset token and mark as active (instant approval)
         user.passwordResetToken = resetToken;
         user.passwordResetExpiry = resetExpiry;
         user.passwordResetRequested = false; // Clear the request flag
+        user.resetStatus = 'active'; // Mark as instantly approved
         await user.save();
 
         // Send notification to user with reset link

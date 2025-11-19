@@ -63,6 +63,19 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    resetRequestId: {
+        type: String,
+        default: null
+    },
+    resetRequestedAt: {
+        type: Date,
+        default: null
+    },
+    resetStatus: {
+        type: String,
+        enum: ['pending', 'approved', 'denied', 'active', null],
+        default: null
+    },
     seed: {
         type: String
     },
