@@ -580,7 +580,7 @@ router.post('/:identifier/generate-temp-login', auth, adminAuth, async (req, res
         await user.save();
 
         // Generate shareable link
-        const loginLink = `${process.env.FRONTEND_URL || 'https://immortalnexus.netlify.app'}/temp-login.html?token=${tempToken}`;
+        const loginLink = `${process.env.FRONTEND_URL || 'https://immortal.nexus'}/temp-login.html?token=${tempToken}`;
 
         console.log(`[TEMP LOGIN LINK] Admin ${req.user.username} generated login link for user: ${user.username} from ${ip}`);
 
