@@ -88,6 +88,7 @@
             <ul>
                 <li><a href="#dashboard" class="active"><i class="fas fa-chart-line"></i> Dashboard</a></li>
                 <li><a href="#users"><i class="fas fa-users"></i> Soul Management</a></li>
+                <li><a href="#posts-debugger"><i class="fas fa-bug"></i> Posts Debugger</a></li>
                 <li><a href="#password-resets"><i class="fas fa-key"></i> Password Resets</a></li>
                 <li><a href="#curation"><i class="fas fa-star"></i> Content Curation</a></li>
                 <li><a href="#analytics"><i class="fas fa-chart-bar"></i> Eternal Analytics</a></li>
@@ -123,6 +124,7 @@
         <ul>
             <li><a href="#dashboard" class="mobile-nav-link"><i class="fas fa-chart-line"></i> Dashboard</a></li>
             <li><a href="#users" class="mobile-nav-link"><i class="fas fa-users"></i> Soul Management</a></li>
+            <li><a href="#posts-debugger" class="mobile-nav-link"><i class="fas fa-bug"></i> Posts Debugger</a></li>
             <li><a href="#curation" class="mobile-nav-link"><i class="fas fa-star"></i> Content Curation</a></li>
             <li><a href="#analytics" class="mobile-nav-link"><i class="fas fa-chart-bar"></i> Eternal Analytics</a></li>
             <li><a href="#feedback" class="mobile-nav-link"><i class="fas fa-heart"></i> Eternal Feedback</a></li>
@@ -262,6 +264,30 @@
             
             <div class="pagination" id="usersPagination">
                 <!-- Pagination controls will be generated here -->
+            </div>
+        </section>
+
+        <!-- User Posts Debugger Section -->
+        <section id="posts-debugger" class="admin-section">
+            <h2 class="section-title">
+                <i class="fas fa-bug"></i> User Posts Debugger
+            </h2>
+
+            <div class="info-banner" style="background: rgba(255, 152, 0, 0.1); border-left: 4px solid #ff9800; padding: 1rem; margin-bottom: 1.5rem; border-radius: 4px;">
+                <i class="fas fa-info-circle"></i> Diagnostic tool to investigate scroll posting issues. Search for a user to see ALL their posts (published + drafts).
+            </div>
+
+            <div class="debugger-controls" style="margin-bottom: 1.5rem;">
+                <div class="search-wrapper" style="display: flex; gap: 1rem; max-width: 600px;">
+                    <input type="text" id="postsDebuggerSearch" placeholder="Enter username to debug..." style="flex: 1; padding: 0.75rem; border-radius: 4px; background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color);" />
+                    <button id="debugUserPostsBtn" class="btn btn-primary">
+                        <i class="fas fa-search"></i> Investigate
+                    </button>
+                </div>
+            </div>
+
+            <div id="debuggerResults" class="debugger-results">
+                <!-- Results will appear here -->
             </div>
         </section>
 
@@ -2323,6 +2349,164 @@
             // This would open the message modal
             alert(`Message compose for user ${userId} would be implemented here`);
         }
+
+        // User Posts Debugger Functions
+        async function debugUserPosts() {
+            const searchInput = document.getElementById('postsDebuggerSearch');
+            const resultsDiv = document.getElementById('debuggerResults');
+            const username = searchInput.value.trim();
+
+            if (!username) {
+                resultsDiv.innerHTML = '<div class="info-banner" style="background: rgba(244, 67, 54, 0.1); border-left: 4px solid #f44336; padding: 1rem; border-radius: 4px;"><i class="fas fa-exclamation-triangle"></i> Please enter a username to investigate</div>';
+                return;
+            }
+
+            resultsDiv.innerHTML = '<div class="loading" style="text-align: center; padding: 2rem;"><i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i><p>Investigating user posts...</p></div>';
+
+            try {
+                const apiBaseUrl = window.NEXUS_CONFIG?.API_BASE_URL || 'https://nexus-ytrg.onrender.com/api';
+
+                // Fetch user's public posts
+                const publicPostsRes = await fetch(`${apiBaseUrl}/blogs/user/${username}`);
+
+                if (!publicPostsRes.ok) {
+                    if (publicPostsRes.status === 404) {
+                        throw new Error('User not found');
+                    }
+                    throw new Error(`API error: ${publicPostsRes.status}`);
+                }
+
+                const posts = await publicPostsRes.json();
+
+                // Display results
+                displayDebugResults(username, posts);
+
+            } catch (error) {
+                console.error('Error debugging user posts:', error);
+                resultsDiv.innerHTML = `
+                    <div class="info-banner" style="background: rgba(244, 67, 54, 0.1); border-left: 4px solid #f44336; padding: 1rem; border-radius: 4px;">
+                        <i class="fas fa-exclamation-triangle"></i> Error: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        function displayDebugResults(username, posts) {
+            const resultsDiv = document.getElementById('debuggerResults');
+
+            if (posts.length === 0) {
+                resultsDiv.innerHTML = `
+                    <div class="info-banner" style="background: rgba(76, 175, 80, 0.1); border-left: 4px solid #4caf50; padding: 1rem; border-radius: 4px;">
+                        <i class="fas fa-info-circle"></i> User <strong>${username}</strong> has no published scrolls
+                    </div>
+                    <div style="margin-top: 1rem; padding: 1rem; background: var(--card-bg); border-radius: 4px;">
+                        <h4>Possible reasons:</h4>
+                        <ul style="margin-left: 1.5rem;">
+                            <li>User has never posted a scroll</li>
+                            <li>All scrolls are saved as drafts (status: 'draft')</li>
+                            <li>Scrolls were deleted</li>
+                        </ul>
+                        <p style="margin-top: 1rem;"><strong>Next steps:</strong> Ask the user to check the Eternal Hearth (lander.html) for drafts.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Sort posts by created date (newest first)
+            posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+            let html = `
+                <div class="info-banner" style="background: rgba(76, 175, 80, 0.1); border-left: 4px solid #4caf50; padding: 1rem; margin-bottom: 1.5rem; border-radius: 4px;">
+                    <i class="fas fa-check-circle"></i> Found <strong>${posts.length}</strong> published scroll${posts.length > 1 ? 's' : ''} for user <strong>${username}</strong>
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; background: var(--card-bg); border-radius: 4px;">
+                        <thead>
+                            <tr style="background: rgba(var(--accent-rgb), 0.1); border-bottom: 2px solid var(--accent);">
+                                <th style="padding: 1rem; text-align: left;">Title</th>
+                                <th style="padding: 1rem; text-align: left;">Status</th>
+                                <th style="padding: 1rem; text-align: left;">Created</th>
+                                <th style="padding: 1rem; text-align: left;">Likes</th>
+                                <th style="padding: 1rem; text-align: left;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            posts.forEach(post => {
+                const createdDate = new Date(post.createdAt);
+                const formattedDate = createdDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                const likesCount = post.likes ? post.likes.length : 0;
+                const statusBadge = post.status === 'published'
+                    ? '<span style="background: #4caf50; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.875rem;">Published</span>'
+                    : '<span style="background: #ff9800; color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.875rem;">Draft</span>';
+
+                html += `
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td style="padding: 1rem;">
+                            <strong>${post.title}</strong>
+                            <div style="font-size: 0.875rem; opacity: 0.7; margin-top: 0.25rem;">
+                                ID: ${post._id || post.id}
+                            </div>
+                        </td>
+                        <td style="padding: 1rem;">${statusBadge}</td>
+                        <td style="padding: 1rem;">${formattedDate}</td>
+                        <td style="padding: 1rem;">${likesCount}</td>
+                        <td style="padding: 1rem;">
+                            <a href="/pages/blog.html" target="_blank" class="btn btn-sm btn-outline" style="font-size: 0.875rem; padding: 0.25rem 0.5rem;">
+                                <i class="fas fa-external-link-alt"></i> View
+                            </a>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="margin-top: 1.5rem; padding: 1rem; background: var(--card-bg); border-radius: 4px;">
+                    <h4><i class="fas fa-lightbulb"></i> Diagnostic Information</h4>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li><strong>Most recent scroll:</strong> ${posts[0].title} (${new Date(posts[0].createdAt).toLocaleDateString()})</li>
+                        <li><strong>Total published scrolls:</strong> ${posts.length}</li>
+                        <li><strong>Main page visibility:</strong> Only the MOST RECENT scroll across all users appears on the main page</li>
+                    </ul>
+                    <p style="margin-top: 1rem; padding: 1rem; background: rgba(33, 150, 243, 0.1); border-left: 4px solid #2196f3; border-radius: 4px;">
+                        <strong>Note:</strong> If this user's scrolls don't appear on the main page, it's because someone else posted more recently.
+                        Their scrolls are still visible in the <a href="/pages/blog.html" target="_blank">Blog Archive</a> and <a href="/pages/scrolls-archive.html" target="_blank">Scrolls Archive</a>.
+                    </p>
+                </div>
+            `;
+
+            resultsDiv.innerHTML = html;
+        }
+
+        // Initialize debugger event listener
+        document.addEventListener('DOMContentLoaded', () => {
+            const debugBtn = document.getElementById('debugUserPostsBtn');
+            const debugInput = document.getElementById('postsDebuggerSearch');
+
+            if (debugBtn) {
+                debugBtn.addEventListener('click', debugUserPosts);
+            }
+
+            if (debugInput) {
+                debugInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        debugUserPosts();
+                    }
+                });
+            }
+        });
     </script>
 </body>
 </html> 
