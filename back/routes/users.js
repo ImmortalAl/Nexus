@@ -239,7 +239,17 @@ router.post('/me/change-password', auth, async (req, res) => {
     const { currentPassword, newPassword } = req.body;
     const ip = req.ip;
     try {
-        if (!currentPassword || !newPassword) {
+        const user = await User.findById(req.user.id);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // TEMPORARY: Allow Hexenhammer to change password from blank current password
+        const isHexenhammerBlankPasswordChange = (user.username.toLowerCase() === 'hexenhammer' &&
+                                                   (!currentPassword || currentPassword === ''));
+
+        // Validate inputs (allow blank currentPassword only for Hexenhammer)
+        if ((!currentPassword && !isHexenhammerBlankPasswordChange) || !newPassword) {
             return res.status(400).json({ error: 'Current password and new password are required' });
         }
 
@@ -247,13 +257,16 @@ router.post('/me/change-password', auth, async (req, res) => {
             return res.status(400).json({ error: 'New password must be at least 6 characters' });
         }
 
-        const user = await User.findById(req.user.id);
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
+        // Verify current password (skip verification for Hexenhammer's blank password)
+        let isMatch = false;
+        if (isHexenhammerBlankPasswordChange) {
+            // For Hexenhammer with blank password, verify by comparing blank string
+            isMatch = await user.comparePassword('');
+            console.log(`[TEMP PASSWORD CHANGE] Hexenhammer changing from blank password from ${ip}`);
+        } else {
+            isMatch = await user.comparePassword(currentPassword);
         }
 
-        // Verify current password
-        const isMatch = await user.comparePassword(currentPassword);
         if (!isMatch) {
             console.log(`[PASSWORD CHANGE] Failed: Incorrect current password for user: ${user.username} from ${ip}`);
             return res.status(401).json({ error: 'Current password is incorrect' });
