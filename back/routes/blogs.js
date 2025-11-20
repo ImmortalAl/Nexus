@@ -10,23 +10,40 @@ router.get('/test', (req, res) => res.json({ message: 'Blogs router is working' 
 // Create a new blog post
 router.post('/', auth, async (req, res) => {
     const { title, content, status } = req.body;
+    const ip = req.ip;
+
+    console.log(`[BLOG CREATE] Attempt by user: ${req.user?.username} (ID: ${req.user?.id || req.user?._id}) from ${ip}`);
 
     if (!title || !content) {
+        console.log(`[BLOG CREATE] Failed: Missing title or content for user: ${req.user?.username}`);
         return res.status(400).json({ error: 'Title and content are required' });
     }
 
     try {
-        const blog = new Blog({
+        const blogData = {
             title,
             content,
-            author: req.user.id,
+            author: req.user.id || req.user._id,
             status: status || 'published'
+        };
+
+        console.log(`[BLOG CREATE] Creating blog with data:`, {
+            title: title.substring(0, 50) + '...',
+            authorId: blogData.author,
+            authorUsername: req.user?.username,
+            status: blogData.status,
+            contentLength: content.length
         });
+
+        const blog = new Blog(blogData);
         await blog.save();
+
+        console.log(`[BLOG CREATE SUCCESS] Blog created with ID: ${blog._id} by user: ${req.user.username}`);
+
         const populatedBlog = await Blog.findById(blog._id).populate('author', 'username displayName avatar online');
         res.status(201).json(populatedBlog);
     } catch (error) {
-        console.error('Error creating blog post:', error);
+        console.error(`[BLOG CREATE ERROR] User: ${req.user?.username}, Error:`, error);
         res.status(500).json({ error: 'Failed to create blog post' });
     }
 });
