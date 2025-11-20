@@ -1859,6 +1859,8 @@
                 const response = await window.unifiedVoting.vote(contentType, id, voteType, parentId);
 
                 if (response) {
+                    console.log('[Voting] Response received:', response);
+
                     // Update BOTH vote count displays (upvote and challenge buttons)
                     const upvoteBtn = element.querySelector('[data-action="upvote"]');
                     const challengeBtn = element.querySelector('[data-action="challenge"]');
@@ -1867,6 +1869,7 @@
                         const upvoteCountElement = upvoteBtn.querySelector('.vote-count');
                         if (upvoteCountElement) {
                             upvoteCountElement.textContent = response.upvotes || 0;
+                            console.log('[Voting] Updated upvote count to:', response.upvotes);
                         }
                     }
 
@@ -1874,6 +1877,7 @@
                         const challengeCountElement = challengeBtn.querySelector('.vote-count');
                         if (challengeCountElement) {
                             challengeCountElement.textContent = response.challenges || 0;
+                            console.log('[Voting] Updated challenge count to:', response.challenges);
                         }
                     }
 
@@ -1886,6 +1890,16 @@
                         upvoteBtn?.classList.add('active', 'voted');
                     } else if (response.userChallenged) {
                         challengeBtn?.classList.add('active', 'voted');
+                    }
+
+                    // CRITICAL: Update the thread data in the global threads array
+                    if (contentType === 'echo' && window.currentThreads) {
+                        const threadIndex = window.currentThreads.findIndex(t => t._id === id);
+                        if (threadIndex !== -1) {
+                            window.currentThreads[threadIndex].upvotes = response.upvotesArray || [];
+                            window.currentThreads[threadIndex].downvotes = response.challengesArray || [];
+                            console.log('[Voting] Updated thread data in memory');
+                        }
                     }
                 }
 

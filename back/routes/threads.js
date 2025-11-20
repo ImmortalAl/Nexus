@@ -323,10 +323,20 @@ router.post('/:id/vote', auth, async (req, res) => {
 
         await thread.save();
 
+        // Check current user's vote status after save
+        const userUpvoted = thread.votes.upvotes.some(v => v.user.toString() === userId);
+        const userDownvoted = thread.votes.downvotes.some(v => v.user.toString() === userId);
+
+        // Return format compatible with unified voting system
         res.json({
             message: 'Vote recorded',
-            newScore,
-            userVote: existingUpvote ? 'upvote' : (existingDownvote ? 'downvote' : null)
+            upvotes: thread.votes.upvotes.length,
+            challenges: thread.votes.downvotes.length,
+            downvotes: thread.votes.downvotes.length,
+            userUpvoted: userUpvoted,
+            userChallenged: userDownvoted,
+            userDownvoted: userDownvoted,
+            newScore: newScore
         });
     } catch (error) {
         console.error('Error voting on thread:', error);
@@ -479,10 +489,11 @@ router.post('/:threadId/replies/:replyId/vote', auth, async (req, res) => {
             message: 'Vote recorded',
             newScore,
             upvotes: reply.votes.upvotes.length,
+            challenges: reply.votes.downvotes.length,
             downvotes: reply.votes.downvotes.length,
             userUpvoted: !!reply.votes.upvotes.find(v => v.user.toString() === userId),
-            userDownvoted: !!reply.votes.downvotes.find(v => v.user.toString() === userId),
-            userVote: existingUpvote ? 'upvote' : (existingDownvote ? 'downvote' : null)
+            userChallenged: !!reply.votes.downvotes.find(v => v.user.toString() === userId),
+            userDownvoted: !!reply.votes.downvotes.find(v => v.user.toString() === userId)
         });
     } catch (error) {
         console.error('Error voting on reply:', error);
