@@ -1859,25 +1859,35 @@
                 const response = await window.unifiedVoting.vote(contentType, id, voteType, parentId);
 
                 if (response) {
-                    console.log('[Voting] Response received:', response);
+                    console.log('[Voting] ✅ Response received:', response);
+                    console.log('[Voting] Element:', element);
 
                     // Update BOTH vote count displays (upvote and challenge buttons)
                     const upvoteBtn = element.querySelector('[data-action="upvote"]');
                     const challengeBtn = element.querySelector('[data-action="challenge"]');
 
+                    console.log('[Voting] Upvote button found:', !!upvoteBtn);
+                    console.log('[Voting] Challenge button found:', !!challengeBtn);
+
                     if (upvoteBtn) {
                         const upvoteCountElement = upvoteBtn.querySelector('.vote-count');
+                        console.log('[Voting] Upvote count element found:', !!upvoteCountElement);
                         if (upvoteCountElement) {
                             upvoteCountElement.textContent = response.upvotes || 0;
-                            console.log('[Voting] Updated upvote count to:', response.upvotes);
+                            console.log('[Voting] ✅ Updated upvote count to:', response.upvotes);
+                        } else {
+                            console.warn('[Voting] ⚠️ Could not find .vote-count inside upvote button!');
                         }
                     }
 
                     if (challengeBtn) {
                         const challengeCountElement = challengeBtn.querySelector('.vote-count');
+                        console.log('[Voting] Challenge count element found:', !!challengeCountElement);
                         if (challengeCountElement) {
                             challengeCountElement.textContent = response.challenges || 0;
-                            console.log('[Voting] Updated challenge count to:', response.challenges);
+                            console.log('[Voting] ✅ Updated challenge count to:', response.challenges);
+                        } else {
+                            console.warn('[Voting] ⚠️ Could not find .vote-count inside challenge button!');
                         }
                     }
 
