@@ -1859,20 +1859,33 @@
                 const response = await window.unifiedVoting.vote(contentType, id, voteType, parentId);
 
                 if (response) {
-                    // Update vote count display
-                    const voteCountElement = element.querySelector('.vote-count');
-                    if (voteCountElement) {
-                        const netVotes = response.upvotes - response.challenges;
-                        voteCountElement.textContent = netVotes;
+                    // Update BOTH vote count displays (upvote and challenge buttons)
+                    const upvoteBtn = element.querySelector('[data-action="upvote"]');
+                    const challengeBtn = element.querySelector('[data-action="challenge"]');
+
+                    if (upvoteBtn) {
+                        const upvoteCountElement = upvoteBtn.querySelector('.vote-count');
+                        if (upvoteCountElement) {
+                            upvoteCountElement.textContent = response.upvotes || 0;
+                        }
+                    }
+
+                    if (challengeBtn) {
+                        const challengeCountElement = challengeBtn.querySelector('.vote-count');
+                        if (challengeCountElement) {
+                            challengeCountElement.textContent = response.challenges || 0;
+                        }
                     }
 
                     // Update active button state
-                    element.querySelectorAll('.vote-btn.active').forEach(btn => btn.classList.remove('active'));
+                    element.querySelectorAll('.identity-vote-btn.active, .compact-vote.voted').forEach(btn => {
+                        btn.classList.remove('active', 'voted');
+                    });
 
                     if (response.userUpvoted) {
-                        element.querySelector('[data-action*="upvote"]')?.classList.add('active');
+                        upvoteBtn?.classList.add('active', 'voted');
                     } else if (response.userChallenged) {
-                        element.querySelector('[data-action*="downvote"]')?.classList.add('active');
+                        challengeBtn?.classList.add('active', 'voted');
                     }
                 }
 
