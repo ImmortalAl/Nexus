@@ -405,6 +405,10 @@ body.sidebar-open {
 
 .show-users-btn i {
     transition: transform 0.3s ease-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
 }
 
 .show-users-btn:hover {
