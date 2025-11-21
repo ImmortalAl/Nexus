@@ -1826,7 +1826,8 @@
 
         // Event delegation for voting using unified system
         document.querySelector('.lyceum-grid').addEventListener('click', async (e) => {
-            const voteBtn = e.target.closest('.vote-btn');
+            // Support both .vote-btn and .identity-vote-btn classes
+            const voteBtn = e.target.closest('.vote-btn, .identity-vote-btn, [data-action="upvote"], [data-action="challenge"]');
             if (!voteBtn) return;
 
             if (!window.authManager.isLoggedIn()) {
