@@ -54,8 +54,9 @@ app.use((req, res, next) => {
 
 // Middleware - Increase body size limit to support images in blog posts
 // Quill editor embeds images as base64, which can be large
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+// Generous limit to support multiple high-quality images
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(cors({
     origin: function(origin, callback) {
         // Allow requests with no origin (like mobile apps or curl requests)
