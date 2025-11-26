@@ -44,8 +44,8 @@
     <link rel="preload" href="../components/shared/active-users.css?v=7.2" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="../components/shared/active-users.css?v=7.2"></noscript>
     
-    <link rel="preload" href="../css/messageboard.css?v=2.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="../css/messageboard.css?v=2.3"></noscript>
+    <link rel="preload" href="../css/messageboard.css?v=3.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="../css/messageboard.css?v=3.0"></noscript>
     
     <!-- Democracy 3.0 Styles -->
     <link rel="preload" href="../css/democracy.css?v=1.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
@@ -97,16 +97,53 @@
         </section>
         <div class="lyceum-grid">
             <aside class="lyceum-column categories-column" id="lyceum-categories" aria-label="Message categories">
-                <h3>Categories</h3>
+                <div class="categories-header">
+                    <span class="header-text">Categories</span>
+                </div>
                 <nav>
-                    <ul>
-                        <li><a href="#" data-category="all" class="active">All Echoes</a></li>
-                        <li><a href="#" data-category="Ideas">Ideas</a></li>
-                        <li><a href="#" data-category="Debates">Debates</a></li>
-                        <li><a href="#" data-category="Trades">Trades</a></li>
-                        <li><a href="#" data-category="Events">Events</a></li>
-                        <li><a href="#" data-category="Governance">Governance</a></li>
-                        <li><a href="#" data-category="Anonymous Whispers">Anonymous Whispers</a></li>
+                    <ul class="immortal-categories">
+                        <li>
+                            <a href="#" data-category="all" class="category-link active">
+                                <span class="category-icon">🌟</span>
+                                <span class="category-name">All Echoes</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-category="Ideas" class="category-link">
+                                <span class="category-icon">💡</span>
+                                <span class="category-name">Ideas</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-category="Debates" class="category-link">
+                                <span class="category-icon">⚔️</span>
+                                <span class="category-name">Debates</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-category="Trades" class="category-link">
+                                <span class="category-icon">🤝</span>
+                                <span class="category-name">Trades</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-category="Events" class="category-link">
+                                <span class="category-icon">📅</span>
+                                <span class="category-name">Events</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-category="Governance" class="category-link">
+                                <span class="category-icon">🏛️</span>
+                                <span class="category-name">Governance</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-category="Anonymous Whispers" class="category-link">
+                                <span class="category-icon">🎭</span>
+                                <span class="category-name">Anonymous Whispers</span>
+                            </a>
+                        </li>
                     </ul>
                 </nav>
             </aside>
@@ -758,12 +795,12 @@
         handleCategoryChange();
 
         // Add click handlers for category navigation
-        document.querySelectorAll('[data-category]').forEach(categoryLink => {
+        document.querySelectorAll('.category-link').forEach(categoryLink => {
             categoryLink.addEventListener('click', (e) => {
                 e.preventDefault();
-                
+
                 // Remove active state from all category links
-                document.querySelectorAll('[data-category]').forEach(link => link.classList.remove('active'));
+                document.querySelectorAll('.category-link').forEach(link => link.classList.remove('active'));
                 
                 // Add active state to clicked link
                 categoryLink.classList.add('active');
@@ -817,7 +854,7 @@
         });
 
         // Set first category as active by default and fetch threads
-        const firstCategoryLink = document.querySelector('[data-category="all"]');
+        const firstCategoryLink = document.querySelector('.category-link[data-category="all"]');
         if (firstCategoryLink) {
             firstCategoryLink.classList.add('active');
             currentCategory = '';
