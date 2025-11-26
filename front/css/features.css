@@ -1539,6 +1539,13 @@ footer {
     bottom: 30px !important;
     right: 30px !important;
     z-index: 1000 !important;
+    pointer-events: none !important; /* Container doesn't block clicks - children re-enable */
+}
+
+/* Re-enable pointer events on actual buttons */
+.floating-buttons > button,
+.floating-buttons > a {
+    pointer-events: auto !important;
 }
 
 /* Theme toggle button positioning and sizing */

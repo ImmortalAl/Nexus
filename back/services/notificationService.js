@@ -97,16 +97,37 @@ class NotificationService {
     }
 
     /**
+     * Generate the correct link based on content type
+     * @param {String} contentType - Type of content
+     * @param {String} contentId - Content ID or slug
+     * @param {String} commentId - Comment ID
+     */
+    static generateCommentLink(contentType, contentId, commentId) {
+        switch (contentType) {
+            case 'chronicle':
+                return `/pages/news.html?openChronicle=${contentId}#comment-${commentId}`;
+            case 'blog':
+                return `/blog.html?post=${contentId}#comment-${commentId}`;
+            case 'profile':
+                return `/souls/profile.html?user=${contentId}#comment-${commentId}`;
+            case 'echo':
+                return `/messageboard.html?echo=${contentId}#comment-${commentId}`;
+            default:
+                return `/blog.html?id=${contentId}#comment-${commentId}`;
+        }
+    }
+
+    /**
      * Create notification for comment reply
      * @param {String} recipientId - Original commenter user ID
      * @param {String} replierId - User who replied
      * @param {String} replierUsername - Replier's username
      * @param {String} commentId - Comment ID
-     * @param {String} contentType - Type of content (blog, chronicle, echo)
-     * @param {String} contentTitle - Title of the content
+     * @param {String} contentType - Type of content (blog, chronicle, echo, profile)
+     * @param {String} contentId - The content ID (chronicle ID, blog slug, username, etc.)
      * @param {String} replyPreview - Reply preview text
      */
-    static async notifyCommentReply(recipientId, replierId, replierUsername, commentId, contentType, contentTitle, replyPreview) {
+    static async notifyCommentReply(recipientId, replierId, replierUsername, commentId, contentType, contentId, replyPreview) {
         try {
             const truncatedPreview = replyPreview.length > 100
                 ? replyPreview.substring(0, 100) + '...'
@@ -115,22 +136,23 @@ class NotificationService {
             const typeMap = {
                 'blog': 'comment_reply',
                 'chronicle': 'chronicle_comment',
-                'echo': 'echo_comment'
+                'echo': 'echo_comment',
+                'profile': 'soul_interaction'
             };
 
             return await this.createNotification({
                 userId: recipientId,
                 type: typeMap[contentType] || 'comment_reply',
                 title: `${replierUsername} replied to your comment`,
-                message: `On "${contentTitle}": ${truncatedPreview}`,
-                link: `/blog/${contentType}?comment=${commentId}`,
+                message: `${truncatedPreview}`,
+                link: this.generateCommentLink(contentType, contentId, commentId),
                 triggeredBy: replierId,
                 relatedId: commentId,
                 relatedModel: 'Comment',
                 metadata: {
                     replierUsername,
                     contentType,
-                    contentTitle
+                    contentId
                 }
             });
         } catch (error) {
@@ -145,10 +167,11 @@ class NotificationService {
      * @param {String} commenterUsername - Commenter's username
      * @param {String} commentId - Comment ID
      * @param {String} contentType - Type of content
+     * @param {String} contentId - The content ID (chronicle ID, blog slug, username, etc.)
      * @param {String} contentTitle - Title of the content
      * @param {String} commentPreview - Comment preview text
      */
-    static async notifyNewComment(authorId, commenterId, commenterUsername, commentId, contentType, contentTitle, commentPreview) {
+    static async notifyNewComment(authorId, commenterId, commenterUsername, commentId, contentType, contentId, contentTitle, commentPreview) {
         try {
             const truncatedPreview = commentPreview.length > 100
                 ? commentPreview.substring(0, 100) + '...'
@@ -157,21 +180,31 @@ class NotificationService {
             const typeMap = {
                 'chronicle': 'chronicle_comment',
                 'echo': 'echo_comment',
-                'blog': 'comment_reply'
+                'blog': 'comment_reply',
+                'profile': 'soul_interaction'
             };
+
+            // Generate human-readable content type name
+            const contentTypeName = {
+                'chronicle': 'chronicle',
+                'blog': 'blog post',
+                'profile': 'profile',
+                'echo': 'echo'
+            }[contentType] || contentType;
 
             return await this.createNotification({
                 userId: authorId,
                 type: typeMap[contentType] || 'comment_reply',
-                title: `${commenterUsername} commented on your ${contentType}`,
+                title: `${commenterUsername} commented on your ${contentTypeName}`,
                 message: `"${contentTitle}": ${truncatedPreview}`,
-                link: `/blog/${contentType}?comment=${commentId}`,
+                link: this.generateCommentLink(contentType, contentId, commentId),
                 triggeredBy: commenterId,
                 relatedId: commentId,
                 relatedModel: 'Comment',
                 metadata: {
                     commenterUsername,
                     contentType,
+                    contentId,
                     contentTitle
                 }
             });

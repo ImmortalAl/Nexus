@@ -91,15 +91,15 @@ router.post('/', auth, async (req, res) => {
                         commenterUsername,
                         comment._id.toString(),
                         targetType,
-                        targetId,
+                        targetId, // contentId - the chronicle ID, blog slug, username, etc.
                         content
                     );
                 }
             }
 
-            // Notify the content author (blog, chronicle, etc.)
+            // Notify the content author (blog, chronicle, profile, etc.)
             let contentAuthorId = null;
-            let contentTitle = targetId; // Fallback
+            let contentTitle = targetId; // Fallback to targetId if no title found
 
             if (targetType === 'blog') {
                 const blog = await Blog.findOne({ slug: targetId });
@@ -113,6 +113,14 @@ router.post('/', auth, async (req, res) => {
                     contentAuthorId = chronicle.author.toString();
                     contentTitle = chronicle.title || chronicle.content.substring(0, 50);
                 }
+            } else if (targetType === 'profile') {
+                // Profile comments - targetId is the username
+                // Find the profile owner to notify them
+                const profileOwner = await User.findOne({ username: targetId });
+                if (profileOwner && profileOwner._id.toString() !== req.user.id) {
+                    contentAuthorId = profileOwner._id.toString();
+                    contentTitle = `${targetId}'s profile`;
+                }
             }
 
             // Send notification to content author if found and not the commenter
@@ -123,6 +131,7 @@ router.post('/', auth, async (req, res) => {
                     commenterUsername,
                     comment._id.toString(),
                     targetType,
+                    targetId, // contentId - the chronicle ID, blog slug, username, etc.
                     contentTitle,
                     content
                 );
