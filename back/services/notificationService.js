@@ -103,10 +103,11 @@ class NotificationService {
      * @param {String} replierUsername - Replier's username
      * @param {String} commentId - Comment ID
      * @param {String} contentType - Type of content (blog, chronicle, echo)
+     * @param {String} contentId - ID of the content (blog post, chronicle, etc.)
      * @param {String} contentTitle - Title of the content
      * @param {String} replyPreview - Reply preview text
      */
-    static async notifyCommentReply(recipientId, replierId, replierUsername, commentId, contentType, contentTitle, replyPreview) {
+    static async notifyCommentReply(recipientId, replierId, replierUsername, commentId, contentType, contentId, contentTitle, replyPreview) {
         try {
             const truncatedPreview = replyPreview.length > 100
                 ? replyPreview.substring(0, 100) + '...'
@@ -118,18 +119,27 @@ class NotificationService {
                 'echo': 'echo_comment'
             };
 
+            // Generate correct link based on content type
+            const linkMap = {
+                'blog': `/pages/blog.html?id=${contentId}`,
+                'chronicle': `/pages/chronicles.html?id=${contentId}`,
+                'echo': `/pages/messageboard.html?id=${contentId}`
+            };
+            const link = linkMap[contentType] || `/pages/blog.html?id=${contentId}`;
+
             return await this.createNotification({
                 userId: recipientId,
                 type: typeMap[contentType] || 'comment_reply',
                 title: `${replierUsername} replied to your comment`,
                 message: `On "${contentTitle}": ${truncatedPreview}`,
-                link: `/blog/${contentType}?comment=${commentId}`,
+                link: link,
                 triggeredBy: replierId,
                 relatedId: commentId,
                 relatedModel: 'Comment',
                 metadata: {
                     replierUsername,
                     contentType,
+                    contentId,
                     contentTitle
                 }
             });
@@ -145,10 +155,11 @@ class NotificationService {
      * @param {String} commenterUsername - Commenter's username
      * @param {String} commentId - Comment ID
      * @param {String} contentType - Type of content
+     * @param {String} contentId - ID of the content (blog post, chronicle, etc.)
      * @param {String} contentTitle - Title of the content
      * @param {String} commentPreview - Comment preview text
      */
-    static async notifyNewComment(authorId, commenterId, commenterUsername, commentId, contentType, contentTitle, commentPreview) {
+    static async notifyNewComment(authorId, commenterId, commenterUsername, commentId, contentType, contentId, contentTitle, commentPreview) {
         try {
             const truncatedPreview = commentPreview.length > 100
                 ? commentPreview.substring(0, 100) + '...'
@@ -160,18 +171,27 @@ class NotificationService {
                 'blog': 'comment_reply'
             };
 
+            // Generate correct link based on content type
+            const linkMap = {
+                'blog': `/pages/blog.html?id=${contentId}`,
+                'chronicle': `/pages/chronicles.html?id=${contentId}`,
+                'echo': `/pages/messageboard.html?id=${contentId}`
+            };
+            const link = linkMap[contentType] || `/pages/blog.html?id=${contentId}`;
+
             return await this.createNotification({
                 userId: authorId,
                 type: typeMap[contentType] || 'comment_reply',
-                title: `${commenterUsername} commented on your ${contentType}`,
+                title: `${commenterUsername} commented on your ${contentType === 'blog' ? 'scroll' : contentType}`,
                 message: `"${contentTitle}": ${truncatedPreview}`,
-                link: `/blog/${contentType}?comment=${commentId}`,
+                link: link,
                 triggeredBy: commenterId,
                 relatedId: commentId,
                 relatedModel: 'Comment',
                 metadata: {
                     commenterUsername,
                     contentType,
+                    contentId,
                     contentTitle
                 }
             });
