@@ -135,7 +135,7 @@ router.get('/', async (req, res) => {
             .limit(parseInt(limit))
             .populate('author', 'username displayName avatar');
 
-        // Process threads to handle anonymous display
+        // Process threads to handle anonymous display and vote data
         const processedThreads = threads.map(thread => {
             const threadObj = thread.toObject();
             if (threadObj.isAnonymous) {
@@ -146,6 +146,18 @@ router.get('/', async (req, res) => {
                     isAnonymous: true
                 };
             }
+
+            // Transform votes from nested structure to flat arrays of user IDs
+            // Backend stores: thread.votes.upvotes = [{user, createdAt}]
+            // Frontend expects: thread.upvotes = [userId1, userId2, ...]
+            if (threadObj.votes) {
+                threadObj.upvotes = (threadObj.votes.upvotes || []).map(v => v.user.toString());
+                threadObj.downvotes = (threadObj.votes.downvotes || []).map(v => v.user.toString());
+            } else {
+                threadObj.upvotes = [];
+                threadObj.downvotes = [];
+            }
+
             return threadObj;
         });
         const total = await Thread.countDocuments(query);
@@ -194,7 +206,7 @@ router.get('/:id', async (req, res) => {
             };
         }
 
-        // Handle anonymous replies
+        // Handle anonymous replies and transform vote data
         if (threadObj.replies) {
             threadObj.replies = threadObj.replies.map(reply => {
                 if (reply.isAnonymous) {
@@ -206,8 +218,27 @@ router.get('/:id', async (req, res) => {
                         isAnonymous: true
                     };
                 }
+
+                // Transform reply votes from nested structure to flat arrays
+                if (reply.votes) {
+                    reply.upvotes = (reply.votes.upvotes || []).map(v => v.user.toString());
+                    reply.downvotes = (reply.votes.downvotes || []).map(v => v.user.toString());
+                } else {
+                    reply.upvotes = [];
+                    reply.downvotes = [];
+                }
+
                 return reply;
             });
+        }
+
+        // Transform thread votes from nested structure to flat arrays
+        if (threadObj.votes) {
+            threadObj.upvotes = (threadObj.votes.upvotes || []).map(v => v.user.toString());
+            threadObj.downvotes = (threadObj.votes.downvotes || []).map(v => v.user.toString());
+        } else {
+            threadObj.upvotes = [];
+            threadObj.downvotes = [];
         }
 
         res.json(threadObj);
