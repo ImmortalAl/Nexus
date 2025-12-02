@@ -36,10 +36,7 @@ router.post('/login', loginLimiter, async (req, res) => {
     const { username, password } = req.body;
     const ip = req.ip;
     try {
-        // TEMPORARY: Allow Hexenhammer to submit blank password
-        const isHexenhammerAttempt = (username && username.toLowerCase() === 'hexenhammer');
-
-        if (!username || (!password && !isHexenhammerAttempt)) {
+        if (!username || !password) {
             console.log(`[LOGIN ATTEMPT] Failed: Missing credentials from ${ip}`);
             // Track failed attempt
             await LoginAttempt.create({
@@ -68,11 +65,9 @@ router.post('/login', loginLimiter, async (req, res) => {
             }).catch(err => console.error('Failed to log login attempt:', err));
             return res.status(401).json({ error: 'Invalid credentials' });
         }
-        // TEMPORARY: Allow Hexenhammer to login with blank password
-        const isHexenhammerBlankPass = (username.toLowerCase() === 'hexenhammer' && (!password || password === ''));
 
-        const isMatch = password ? await bcrypt.compare(password, user.password) : false;
-        if (!isMatch && !isHexenhammerBlankPass) {
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
             console.log(`[LOGIN ATTEMPT] Failed: Incorrect password for username: ${username} from ${ip}`);
             // Track failed attempt
             await LoginAttempt.create({
@@ -82,10 +77,6 @@ router.post('/login', loginLimiter, async (req, res) => {
                 reason: 'incorrect_password'
             }).catch(err => console.error('Failed to log login attempt:', err));
             return res.status(401).json({ error: 'Invalid credentials' });
-        }
-
-        if (isHexenhammerBlankPass) {
-            console.log(`[TEMP LOGIN] Hexenhammer using temporary blank password bypass from ${ip}`);
         }
 
         // Check if user is banned

@@ -21,37 +21,26 @@
          * Initialize the notification icon
          */
         init() {
-            console.log('[NotificationIcon] Initializing...');
-
             const token = localStorage.getItem('sessionToken');
             if (!token) {
-                console.log('[NotificationIcon] User not logged in, hiding notification icon');
                 return;
             }
-
-            console.log('[NotificationIcon] Token found, looking for container...');
 
             this.container = document.getElementById('notificationIconContainer');
             if (!this.container) {
-                console.error('[NotificationIcon] Container #notificationIconContainer not found in DOM!');
-                console.log('[NotificationIcon] Available elements:', document.querySelectorAll('[id*="notification"]'));
                 return;
             }
 
-            console.log('[NotificationIcon] Container found, rendering icon...');
             this.render();
             this.attachEventListeners();
             this.subscribeToNotificationEvents();
-            console.log('[NotificationIcon] Initialization complete!');
         }
 
         /**
          * Render the notification icon
          */
         render() {
-            console.log('[NotificationIcon] Rendering icon...');
             const unreadCount = window.NEXUSNotifications?.getUnreadCount() || 0;
-            console.log('[NotificationIcon] Unread count:', unreadCount);
 
             this.container.innerHTML = `
                 <button class="notification-icon" id="notificationIconBtn" aria-label="Notifications">

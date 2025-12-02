@@ -135,7 +135,7 @@ router.get('/', async (req, res) => {
             .limit(parseInt(limit))
             .populate('author', 'username displayName avatar');
 
-        // Process threads to handle anonymous display
+        // Process threads to handle anonymous display and vote data
         const processedThreads = threads.map(thread => {
             const threadObj = thread.toObject();
             if (threadObj.isAnonymous) {
@@ -146,6 +146,26 @@ router.get('/', async (req, res) => {
                     isAnonymous: true
                 };
             }
+
+            // Transform votes from nested structure to flat arrays of user IDs
+            // Backend stores: thread.votes.upvotes = [{user, createdAt}]
+            // Frontend expects: thread.upvotes = [userId1, userId2, ...]
+            if (threadObj.votes && threadObj.votes.upvotes) {
+                threadObj.upvotes = threadObj.votes.upvotes
+                    .filter(v => v && v.user)
+                    .map(v => v.user.toString ? v.user.toString() : String(v.user));
+            } else {
+                threadObj.upvotes = [];
+            }
+
+            if (threadObj.votes && threadObj.votes.downvotes) {
+                threadObj.downvotes = threadObj.votes.downvotes
+                    .filter(v => v && v.user)
+                    .map(v => v.user.toString ? v.user.toString() : String(v.user));
+            } else {
+                threadObj.downvotes = [];
+            }
+
             return threadObj;
         });
         const total = await Thread.countDocuments(query);
@@ -194,7 +214,7 @@ router.get('/:id', async (req, res) => {
             };
         }
 
-        // Handle anonymous replies
+        // Handle anonymous replies and transform vote data
         if (threadObj.replies) {
             threadObj.replies = threadObj.replies.map(reply => {
                 if (reply.isAnonymous) {
@@ -206,8 +226,43 @@ router.get('/:id', async (req, res) => {
                         isAnonymous: true
                     };
                 }
+
+                // Transform reply votes from nested structure to flat arrays
+                if (reply.votes && reply.votes.upvotes) {
+                    reply.upvotes = reply.votes.upvotes
+                        .filter(v => v && v.user)
+                        .map(v => v.user.toString ? v.user.toString() : String(v.user));
+                } else {
+                    reply.upvotes = [];
+                }
+
+                if (reply.votes && reply.votes.downvotes) {
+                    reply.downvotes = reply.votes.downvotes
+                        .filter(v => v && v.user)
+                        .map(v => v.user.toString ? v.user.toString() : String(v.user));
+                } else {
+                    reply.downvotes = [];
+                }
+
                 return reply;
             });
+        }
+
+        // Transform thread votes from nested structure to flat arrays
+        if (threadObj.votes && threadObj.votes.upvotes) {
+            threadObj.upvotes = threadObj.votes.upvotes
+                .filter(v => v && v.user)
+                .map(v => v.user.toString ? v.user.toString() : String(v.user));
+        } else {
+            threadObj.upvotes = [];
+        }
+
+        if (threadObj.votes && threadObj.votes.downvotes) {
+            threadObj.downvotes = threadObj.votes.downvotes
+                .filter(v => v && v.user)
+                .map(v => v.user.toString ? v.user.toString() : String(v.user));
+        } else {
+            threadObj.downvotes = [];
         }
 
         res.json(threadObj);
@@ -321,6 +376,8 @@ router.post('/:id/vote', auth, async (req, res) => {
         const newScore = thread.votes.upvotes.length - thread.votes.downvotes.length;
         thread.voteScore = newScore;
 
+        // Mark votes as modified so Mongoose detects the nested object changes
+        thread.markModified('votes');
         await thread.save();
 
         // Check current user's vote status after save
@@ -483,6 +540,8 @@ router.post('/:threadId/replies/:replyId/vote', auth, async (req, res) => {
         const newScore = reply.votes.upvotes.length - reply.votes.downvotes.length;
         reply.voteScore = newScore;
 
+        // Mark replies as modified so Mongoose detects the nested object changes
+        thread.markModified('replies');
         await thread.save();
 
         res.json({
