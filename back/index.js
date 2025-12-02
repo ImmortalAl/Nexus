@@ -76,11 +76,12 @@ app.use(cors({
             'http://127.0.0.1:3001'
         ];
 
-        if (allowedOrigins.indexOf(origin) !== -1) {
+        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+            // Allow requests from allowed origins or same-origin (no origin header)
             callback(null, true);
         } else {
             console.log(`[CORS] Blocked origin: ${origin}`);
-            callback(null, true); // Temporarily allow all origins for debugging
+            callback(new Error('Not allowed by CORS'), false);
         }
     },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
