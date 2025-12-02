@@ -31,11 +31,8 @@
         async init() {
             const token = localStorage.getItem('sessionToken');
             if (!token) {
-                console.log('[NotificationManager] User not logged in, skipping initialization');
                 return;
             }
-
-            console.log('[NotificationManager] Initializing...');
 
             // Fetch initial notifications
             await this.fetchNotifications();
@@ -79,8 +76,6 @@
                 this.notifications = data.notifications || [];
                 this.unreadCount = data.unreadCount || 0;
 
-                console.log(`[NotificationManager] Loaded ${this.notifications.length} notifications, ${this.unreadCount} unread`);
-
                 this.trigger('notificationsLoaded', {
                     notifications: this.notifications,
                     unreadCount: this.unreadCount
@@ -109,7 +104,7 @@
                 this.wsConnection = new WebSocket(wsUrl);
 
                 this.wsConnection.onopen = () => {
-                    console.log('[NotificationManager] WebSocket connected');
+                    // WebSocket connected
                 };
 
                 this.wsConnection.onmessage = (event) => {
@@ -126,7 +121,7 @@
                 };
 
                 this.wsConnection.onclose = () => {
-                    console.log('[NotificationManager] WebSocket disconnected, reconnecting in 5s...');
+                    // Reconnect after disconnect
                     setTimeout(() => this.connectWebSocket(), 5000);
                 };
             } catch (error) {
@@ -146,7 +141,8 @@
                     this.handleCountUpdate(data.unreadCount);
                     break;
                 default:
-                    console.log('[NotificationManager] Unknown WebSocket message type:', data.type);
+                    // Unknown message type - ignore
+                    break;
             }
         }
 
@@ -154,8 +150,6 @@
          * Handle new real-time notification
          */
         handleNewNotification(notification) {
-            console.log('[NotificationManager] New notification received:', notification);
-
             // Add to notifications array
             this.notifications.unshift(notification);
             this.unreadCount++;
