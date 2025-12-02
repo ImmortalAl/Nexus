@@ -150,11 +150,19 @@ router.get('/', async (req, res) => {
             // Transform votes from nested structure to flat arrays of user IDs
             // Backend stores: thread.votes.upvotes = [{user, createdAt}]
             // Frontend expects: thread.upvotes = [userId1, userId2, ...]
-            if (threadObj.votes) {
-                threadObj.upvotes = (threadObj.votes.upvotes || []).map(v => v.user.toString());
-                threadObj.downvotes = (threadObj.votes.downvotes || []).map(v => v.user.toString());
+            if (threadObj.votes && threadObj.votes.upvotes) {
+                threadObj.upvotes = threadObj.votes.upvotes
+                    .filter(v => v && v.user)
+                    .map(v => v.user.toString ? v.user.toString() : String(v.user));
             } else {
                 threadObj.upvotes = [];
+            }
+
+            if (threadObj.votes && threadObj.votes.downvotes) {
+                threadObj.downvotes = threadObj.votes.downvotes
+                    .filter(v => v && v.user)
+                    .map(v => v.user.toString ? v.user.toString() : String(v.user));
+            } else {
                 threadObj.downvotes = [];
             }
 
@@ -220,11 +228,19 @@ router.get('/:id', async (req, res) => {
                 }
 
                 // Transform reply votes from nested structure to flat arrays
-                if (reply.votes) {
-                    reply.upvotes = (reply.votes.upvotes || []).map(v => v.user.toString());
-                    reply.downvotes = (reply.votes.downvotes || []).map(v => v.user.toString());
+                if (reply.votes && reply.votes.upvotes) {
+                    reply.upvotes = reply.votes.upvotes
+                        .filter(v => v && v.user)
+                        .map(v => v.user.toString ? v.user.toString() : String(v.user));
                 } else {
                     reply.upvotes = [];
+                }
+
+                if (reply.votes && reply.votes.downvotes) {
+                    reply.downvotes = reply.votes.downvotes
+                        .filter(v => v && v.user)
+                        .map(v => v.user.toString ? v.user.toString() : String(v.user));
+                } else {
                     reply.downvotes = [];
                 }
 
@@ -233,11 +249,19 @@ router.get('/:id', async (req, res) => {
         }
 
         // Transform thread votes from nested structure to flat arrays
-        if (threadObj.votes) {
-            threadObj.upvotes = (threadObj.votes.upvotes || []).map(v => v.user.toString());
-            threadObj.downvotes = (threadObj.votes.downvotes || []).map(v => v.user.toString());
+        if (threadObj.votes && threadObj.votes.upvotes) {
+            threadObj.upvotes = threadObj.votes.upvotes
+                .filter(v => v && v.user)
+                .map(v => v.user.toString ? v.user.toString() : String(v.user));
         } else {
             threadObj.upvotes = [];
+        }
+
+        if (threadObj.votes && threadObj.votes.downvotes) {
+            threadObj.downvotes = threadObj.votes.downvotes
+                .filter(v => v && v.user)
+                .map(v => v.user.toString ? v.user.toString() : String(v.user));
+        } else {
             threadObj.downvotes = [];
         }
 
@@ -352,6 +376,8 @@ router.post('/:id/vote', auth, async (req, res) => {
         const newScore = thread.votes.upvotes.length - thread.votes.downvotes.length;
         thread.voteScore = newScore;
 
+        // Mark votes as modified so Mongoose detects the nested object changes
+        thread.markModified('votes');
         await thread.save();
 
         // Check current user's vote status after save
@@ -514,6 +540,8 @@ router.post('/:threadId/replies/:replyId/vote', auth, async (req, res) => {
         const newScore = reply.votes.upvotes.length - reply.votes.downvotes.length;
         reply.voteScore = newScore;
 
+        // Mark replies as modified so Mongoose detects the nested object changes
+        thread.markModified('replies');
         await thread.save();
 
         res.json({
