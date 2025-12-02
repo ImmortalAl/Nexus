@@ -115,14 +115,9 @@ class NodeEditor {
         const tagsInput = document.getElementById('nodeTagsInput').value;
         const tags = tagsInput ? tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag) : [];
         
-        // Validate
+        // Validate - only title is required, content is optional
         if (!title) {
             this.showError('Please enter a title');
-            return;
-        }
-        
-        if (!content || content === '<p><br></p>') {
-            this.showError('Please enter some content');
             return;
         }
         

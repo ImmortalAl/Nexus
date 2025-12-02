@@ -143,7 +143,12 @@ class NexusEngine {
             
             // Interaction options
             minZoom: 0.1,
-            maxZoom: 3
+            maxZoom: 5,
+            wheelSensitivity: 0.3,  // More granular zoom (default is 1)
+            zoomingEnabled: true,
+            userZoomingEnabled: true,
+            panningEnabled: true,
+            userPanningEnabled: true
         });
     }
     
