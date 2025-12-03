@@ -212,7 +212,8 @@
     display: block;
 }
 
-.node-editor-form input[type="text"] {
+.node-editor-form input[type="text"],
+.node-editor-form input[type="url"] {
     width: 100%;
     padding: 12px;
     background: rgba(15, 52, 96, 0.5);
@@ -223,7 +224,8 @@
     transition: all 0.3s ease;
 }
 
-.node-editor-form input[type="text"]:focus {
+.node-editor-form input[type="text"]:focus,
+.node-editor-form input[type="url"]:focus {
     outline: none;
     border-color: #e94560;
     box-shadow: 0 0 10px rgba(233, 69, 96, 0.3);
