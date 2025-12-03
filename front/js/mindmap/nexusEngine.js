@@ -231,19 +231,28 @@ class NexusEngine {
     }
     
     addEdgeToGraph(edgeData) {
+        // Ensure IDs are strings (MongoDB ObjectIds can sometimes be objects)
+        const edgeId = String(edgeData._id);
+        const sourceId = typeof edgeData.sourceNode === 'object' ?
+            String(edgeData.sourceNode._id || edgeData.sourceNode) :
+            String(edgeData.sourceNode);
+        const targetId = typeof edgeData.targetNode === 'object' ?
+            String(edgeData.targetNode._id || edgeData.targetNode) :
+            String(edgeData.targetNode);
+
         const cyEdge = {
             group: 'edges',
             data: {
-                id: edgeData._id,
-                source: edgeData.sourceNode,
-                target: edgeData.targetNode,
+                id: edgeId,
+                source: sourceId,
+                target: targetId,
                 relationshipLabel: edgeData.relationshipLabel,
                 creator: edgeData.creator
             }
         };
-        
+
         this.cy.add(cyEdge);
-        this.edges.set(edgeData._id, edgeData);
+        this.edges.set(edgeId, edgeData);
     }
     
     updateNodeCredibilityClass(nodeId, score) {
@@ -689,19 +698,38 @@ class NexusEngine {
     
     editEdgeLabel(edge) {
         this.selectedEdge = edge;
-        const edgeData = this.edges.get(edge.id());
-        
+
+        // Try to get edge data from Map using string ID
+        const edgeId = String(edge.id());
+        let edgeData = this.edges.get(edgeId);
+
+        // Fallback: if not in Map, get data from Cytoscape element itself
+        if (!edgeData) {
+            const cyData = edge.data();
+            if (cyData && cyData.id) {
+                edgeData = {
+                    _id: cyData.id,
+                    relationshipLabel: cyData.relationshipLabel || '',
+                    sourceNode: cyData.source,
+                    targetNode: cyData.target,
+                    creator: cyData.creator
+                };
+                // Store it for future use
+                this.edges.set(edgeId, edgeData);
+            }
+        }
+
         if (!edgeData) {
             this.showError('Edge data not found');
             return;
         }
-        
+
         // Populate modal with current relationship label
         document.getElementById('editRelationshipLabel').value = edgeData.relationshipLabel || '';
-        
+
         // Show modal
         document.getElementById('editRelationshipModal').style.display = 'block';
-        
+
         // Focus input
         document.getElementById('editRelationshipLabel').focus();
         document.getElementById('editRelationshipLabel').select();
@@ -713,30 +741,33 @@ class NexusEngine {
             this.showError('Please enter a relationship type');
             return;
         }
-        
+
         if (!this.selectedEdge) {
             this.showError('No edge selected');
             return;
         }
-        
+
+        const edgeId = String(this.selectedEdge.id());
+
         try {
-            const response = await this.apiClient.put(`/mindmap/edges/${this.selectedEdge.id()}`, {
+            const response = await this.apiClient.put(`/mindmap/edges/${edgeId}`, {
                 relationshipLabel: newLabel
             });
-            
+
             // Update edge label in graph
             this.selectedEdge.data('relationshipLabel', newLabel);
-            
+
             // Update local data
-            const edgeData = this.edges.get(this.selectedEdge.id());
+            const edgeData = this.edges.get(edgeId);
             if (edgeData) {
                 edgeData.relationshipLabel = newLabel;
             }
-            
-            // Close modal
+
+            // Close modal and deselect
             document.getElementById('editRelationshipModal').style.display = 'none';
+            this.cy.edges().removeClass('edge-selected');
             this.selectedEdge = null;
-            
+
             this.showMessage('Relationship updated successfully');
         } catch (error) {
             console.error('Failed to update relationship:', error);
@@ -749,27 +780,31 @@ class NexusEngine {
             this.showError('No edge selected');
             return;
         }
-        
-        const edgeData = this.edges.get(this.selectedEdge.id());
-        const confirmed = confirm(`Are you sure you want to delete this relationship?\n\nType: "${edgeData?.relationshipLabel || 'Unknown'}"\n\nThis action cannot be undone.`);
-        
+
+        const edgeId = String(this.selectedEdge.id());
+        const edgeData = this.edges.get(edgeId);
+        const relationshipLabel = edgeData?.relationshipLabel ||
+            this.selectedEdge.data('relationshipLabel') || 'Unknown';
+
+        const confirmed = confirm(`Are you sure you want to delete this relationship?\n\nType: "${relationshipLabel}"\n\nThis action cannot be undone.`);
+
         if (!confirmed) {
             return;
         }
-        
+
         try {
-            await this.apiClient.delete(`/mindmap/edges/${this.selectedEdge.id()}`);
-            
+            await this.apiClient.delete(`/mindmap/edges/${edgeId}`);
+
             // Remove from graph
             this.selectedEdge.remove();
-            
+
             // Remove from local data
-            this.edges.delete(this.selectedEdge.id());
-            
+            this.edges.delete(edgeId);
+
             // Close modal
             document.getElementById('editRelationshipModal').style.display = 'none';
             this.selectedEdge = null;
-            
+
             this.showMessage('Relationship deleted successfully');
         } catch (error) {
             console.error('Failed to delete relationship:', error);
