@@ -378,8 +378,7 @@ class NexusEngine {
 
         document.getElementById('closeEditRelationship').addEventListener('click', () => {
             const modal = document.getElementById('editRelationshipModal');
-            modal.style.display = 'none';
-            modal.style.opacity = '0';
+            modal.style.cssText = 'display: none;';
             modal.classList.remove('show');
             modal.setAttribute('aria-hidden', 'true');
             this.cy.edges().removeClass('edge-selected');
@@ -492,8 +491,7 @@ class NexusEngine {
         // Close edit relationship modal properly
         const editModal = document.getElementById('editRelationshipModal');
         if (editModal) {
-            editModal.style.display = 'none';
-            editModal.style.opacity = '0';
+            editModal.style.cssText = 'display: none;';
             editModal.classList.remove('show');
             editModal.setAttribute('aria-hidden', 'true');
         }
@@ -754,13 +752,26 @@ class NexusEngine {
             return;
         }
 
-        // Force display and visibility
-        modal.style.display = 'flex';
-        modal.style.opacity = '1';
+        // Force display and visibility with explicit inline styles
+        modal.style.cssText = `
+            display: flex !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            z-index: 99999 !important;
+            background: rgba(0, 0, 0, 0.85) !important;
+            align-items: center !important;
+            justify-content: center !important;
+            pointer-events: auto !important;
+        `;
         modal.classList.add('show');
         modal.setAttribute('aria-hidden', 'false');
 
-        console.log('[NexusEngine] Opening edit relationship modal for edge:', edgeId, 'Modal:', modal);
+        console.log('[NexusEngine] Opening edit relationship modal for edge:', edgeId, 'Modal display:', modal.style.display);
 
         // Focus input after a brief delay to ensure modal is visible
         setTimeout(() => {
@@ -801,8 +812,7 @@ class NexusEngine {
 
             // Close modal and deselect
             const modal = document.getElementById('editRelationshipModal');
-            modal.style.display = 'none';
-            modal.style.opacity = '0';
+            modal.style.cssText = 'display: none;';
             modal.classList.remove('show');
             modal.setAttribute('aria-hidden', 'true');
             this.cy.edges().removeClass('edge-selected');
@@ -843,8 +853,7 @@ class NexusEngine {
 
             // Close modal
             const modal = document.getElementById('editRelationshipModal');
-            modal.style.display = 'none';
-            modal.style.opacity = '0';
+            modal.style.cssText = 'display: none;';
             modal.classList.remove('show');
             modal.setAttribute('aria-hidden', 'true');
             this.selectedEdge = null;
