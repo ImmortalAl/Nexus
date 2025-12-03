@@ -52,8 +52,6 @@ class ScrollsArchive {
      * Initialize the archive
      */
     async init() {
-        console.log('[ScrollsArchive] Initializing...');
-
         // Cache DOM elements
         this.cacheElements();
 
@@ -65,8 +63,6 @@ class ScrollsArchive {
 
         // Setup keyboard navigation
         this.setupKeyboardNavigation();
-
-        console.log('[ScrollsArchive] Initialized successfully');
     }
 
     /**
@@ -316,18 +312,23 @@ class ScrollsArchive {
             <div class="action-buttons">
                 <button class="action-btn btn-view"
                         onclick="window.BlogModal.open('${post._id}')"
-                        title="View full scroll">
-                    <i class="fas fa-eye"></i> View
+                        title="View full scroll"
+                        aria-label="View full scroll">
+                    <i class="fas fa-eye" aria-hidden="true"></i> View
                 </button>
                 <button class="action-btn btn-upvote ${voteStatus.liked ? 'voted' : ''}"
                         onclick="window.scrollsArchive.handleVote('${post._id}', 'like')"
-                        title="Upvote">
-                    <i class="fas fa-thumbs-up"></i>
+                        title="Upvote this scroll"
+                        aria-label="Upvote this scroll"
+                        aria-pressed="${voteStatus.liked}">
+                    <i class="fas fa-thumbs-up" aria-hidden="true"></i>
                 </button>
                 <button class="action-btn btn-downvote ${voteStatus.disliked ? 'voted' : ''}"
                         onclick="window.scrollsArchive.handleVote('${post._id}', 'dislike')"
-                        title="Downvote">
-                    <i class="fas fa-thumbs-down"></i>
+                        title="Downvote this scroll"
+                        aria-label="Downvote this scroll"
+                        aria-pressed="${voteStatus.disliked}">
+                    <i class="fas fa-thumbs-down" aria-hidden="true"></i>
                 </button>
             </div>
         `;
@@ -389,16 +390,21 @@ class ScrollsArchive {
 
             <div class="archive-card-actions">
                 <button class="btn btn-primary btn-sm"
-                        onclick="window.BlogModal.open('${post._id}')">
-                    <i class="fas fa-eye"></i> View Scroll
+                        onclick="window.BlogModal.open('${post._id}')"
+                        aria-label="View scroll">
+                    <i class="fas fa-eye" aria-hidden="true"></i> View Scroll
                 </button>
                 <button class="action-btn btn-upvote ${voteStatus.liked ? 'voted' : ''}"
-                        onclick="window.scrollsArchive.handleVote('${post._id}', 'like')">
-                    <i class="fas fa-thumbs-up"></i>
+                        onclick="window.scrollsArchive.handleVote('${post._id}', 'like')"
+                        aria-label="Upvote this scroll"
+                        aria-pressed="${voteStatus.liked}">
+                    <i class="fas fa-thumbs-up" aria-hidden="true"></i>
                 </button>
                 <button class="action-btn btn-downvote ${voteStatus.disliked ? 'voted' : ''}"
-                        onclick="window.scrollsArchive.handleVote('${post._id}', 'dislike')">
-                    <i class="fas fa-thumbs-down"></i>
+                        onclick="window.scrollsArchive.handleVote('${post._id}', 'dislike')"
+                        aria-label="Downvote this scroll"
+                        aria-pressed="${voteStatus.disliked}">
+                    <i class="fas fa-thumbs-down" aria-hidden="true"></i>
                 </button>
             </div>
         `;
@@ -873,8 +879,6 @@ class ScrollsArchive {
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log('[ScrollsArchive] DOM loaded, initializing...');
-
     // Create and initialize archive instance
     window.scrollsArchive = new ScrollsArchive();
     await window.scrollsArchive.init();

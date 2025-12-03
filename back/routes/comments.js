@@ -81,6 +81,29 @@ router.post('/', auth, async (req, res) => {
             const commenter = await User.findById(req.user.id);
             const commenterUsername = commenter.username;
 
+            // First, fetch the content to get title and author
+            let contentAuthorId = null;
+            let contentTitle = targetId; // Fallback
+
+            if (targetType === 'blog') {
+                // targetId is the MongoDB _id, not a slug
+                const blog = await Blog.findById(targetId);
+                if (blog) {
+                    contentTitle = blog.title;
+                    if (blog.author.toString() !== req.user.id) {
+                        contentAuthorId = blog.author.toString();
+                    }
+                }
+            } else if (targetType === 'chronicle') {
+                const chronicle = await Chronicle.findById(targetId);
+                if (chronicle) {
+                    contentTitle = chronicle.title || chronicle.content.substring(0, 50);
+                    if (chronicle.author.toString() !== req.user.id) {
+                        contentAuthorId = chronicle.author.toString();
+                    }
+                }
+            }
+
             // If this is a reply to another comment, notify the parent comment author
             if (req.body.parentId) {
                 const parentComment = await Comment.findById(req.body.parentId);
@@ -124,7 +147,7 @@ router.post('/', auth, async (req, res) => {
             }
 
             // Send notification to content author if found and not the commenter
-            if (contentAuthorId && contentAuthorId !== req.user.id) {
+            if (contentAuthorId) {
                 await NotificationService.notifyNewComment(
                     contentAuthorId,
                     req.user.id,

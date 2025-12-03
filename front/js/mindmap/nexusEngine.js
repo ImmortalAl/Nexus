@@ -71,9 +71,14 @@ class NexusEngine {
                         'text-valign': 'center',
                         'text-halign': 'center',
                         'color': '#f1f1f1',
-                        'font-size': '14px',
-                        'width': 'mapData(credibilityScore, 0, 100, 40, 120)',
-                        'height': 'mapData(credibilityScore, 0, 100, 40, 120)',
+                        'font-size': '11px',
+                        'text-wrap': 'wrap',
+                        'text-max-width': '90px',
+                        'text-outline-color': '#1a1a2e',
+                        'text-outline-width': 1,
+                        'width': 'mapData(credibilityScore, 0, 100, 60, 140)',
+                        'height': 'mapData(credibilityScore, 0, 100, 60, 140)',
+                        'padding': '10px',
                         'transition-property': 'width, height, background-color',
                         'transition-duration': '0.3s'
                     }
@@ -123,6 +128,15 @@ class NexusEngine {
                         'border-color': '#F44336',
                         'background-color': '#2d1b1b'
                     }
+                },
+                {
+                    selector: 'edge.edge-selected',
+                    style: {
+                        'width': 4,
+                        'line-color': '#e94560',
+                        'target-arrow-color': '#e94560',
+                        'z-index': 999
+                    }
                 }
             ],
             
@@ -143,7 +157,12 @@ class NexusEngine {
             
             // Interaction options
             minZoom: 0.1,
-            maxZoom: 3
+            maxZoom: 5,
+            wheelSensitivity: 0.3,  // More granular zoom (default is 1)
+            zoomingEnabled: true,
+            userZoomingEnabled: true,
+            panningEnabled: true,
+            userPanningEnabled: true
         });
     }
     
@@ -217,19 +236,28 @@ class NexusEngine {
     }
     
     addEdgeToGraph(edgeData) {
+        // Ensure IDs are strings (MongoDB ObjectIds can sometimes be objects)
+        const edgeId = String(edgeData._id);
+        const sourceId = typeof edgeData.sourceNode === 'object' ?
+            String(edgeData.sourceNode._id || edgeData.sourceNode) :
+            String(edgeData.sourceNode);
+        const targetId = typeof edgeData.targetNode === 'object' ?
+            String(edgeData.targetNode._id || edgeData.targetNode) :
+            String(edgeData.targetNode);
+
         const cyEdge = {
             group: 'edges',
             data: {
-                id: edgeData._id,
-                source: edgeData.sourceNode,
-                target: edgeData.targetNode,
+                id: edgeId,
+                source: sourceId,
+                target: targetId,
                 relationshipLabel: edgeData.relationshipLabel,
                 creator: edgeData.creator
             }
         };
-        
+
         this.cy.add(cyEdge);
-        this.edges.set(edgeData._id, edgeData);
+        this.edges.set(edgeId, edgeData);
     }
     
     updateNodeCredibilityClass(nodeId, score) {
@@ -251,114 +279,173 @@ class NexusEngine {
             const node = evt.target;
             this.selectNode(node);
         });
-        
+
+        // Edge selection
+        this.cy.on('tap', 'edge', (evt) => {
+            if (!this.connectMode) {
+                this.selectEdge(evt.target);
+            }
+        });
+
         // Background tap - deselect
         this.cy.on('tap', (evt) => {
             if (evt.target === this.cy) {
                 this.deselectAll();
             }
         });
-        
+
         // Edge creation in connect mode
         this.cy.on('tap', 'node', (evt) => {
             if (this.connectMode) {
                 this.handleConnectMode(evt.target);
             }
         });
-        
-        // Edge label editing
-        this.cy.on('tap', 'edge', (evt) => {
-            if (!this.connectMode) {
-                this.editEdgeLabel(evt.target);
-            }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            this.handleKeyboard(e);
         });
-        
+
         // Add node button
         document.getElementById('add-node-btn').addEventListener('click', () => {
             window.nodeEditor.openForCreate();
         });
-        
+
         // Connect mode button
         document.getElementById('connect-mode-btn').addEventListener('click', () => {
             this.toggleConnectMode();
         });
-        
+
         // Search functionality
         document.getElementById('search-btn').addEventListener('click', () => {
             this.performSearch();
         });
-        
+
         document.getElementById('mindmap-search').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 this.performSearch();
             }
         });
-        
+
         // Node details panel buttons
         document.getElementById('upvoteBtn').addEventListener('click', () => {
             this.voteOnNode(1);
         });
-        
+
         document.getElementById('downvoteBtn').addEventListener('click', () => {
             this.voteOnNode(-1);
         });
-        
+
         document.getElementById('editNodeBtn').addEventListener('click', () => {
             if (this.selectedNode) {
                 window.nodeEditor.openForEdit(this.nodes.get(this.selectedNode.id()));
             }
         });
-        
+
         document.getElementById('deleteNodeBtn').addEventListener('click', () => {
             if (this.selectedNode) {
                 this.deleteNode(this.selectedNode.id());
             }
         });
-        
+
         document.getElementById('addCitationBtn').addEventListener('click', () => {
             this.openCitationModal();
         });
-        
+
         // Connection modal
         document.getElementById('confirmConnection').addEventListener('click', () => {
             this.confirmConnection();
         });
-        
+
         document.getElementById('cancelConnection').addEventListener('click', () => {
             this.cancelConnection();
         });
-        
+
         // Relationship label autocomplete
         document.getElementById('relationshipLabel').addEventListener('input', (e) => {
             this.fetchLabelSuggestions(e.target.value);
         });
-        
+
         // Close buttons
         document.getElementById('closeNodeDetails').addEventListener('click', () => {
             document.getElementById('nodeDetailsPanel').style.display = 'none';
         });
-        
+
         document.getElementById('closeCitationModal').addEventListener('click', () => {
             document.getElementById('citationModal').style.display = 'none';
         });
-        
+
         // Edit relationship modal
         document.getElementById('editRelationshipForm').addEventListener('submit', (e) => {
             e.preventDefault();
             this.updateRelationship();
         });
-        
+
         document.getElementById('closeEditRelationship').addEventListener('click', () => {
-            document.getElementById('editRelationshipModal').style.display = 'none';
+            const modal = document.getElementById('editRelationshipModal');
+            modal.style.cssText = 'display: none;';
+            modal.classList.remove('show');
+            modal.setAttribute('aria-hidden', 'true');
+            this.cy.edges().removeClass('edge-selected');
+            this.selectedEdge = null;
         });
-        
+
         document.getElementById('deleteRelationshipBtn').addEventListener('click', () => {
             this.deleteRelationship();
         });
-        
+
         document.getElementById('editRelationshipLabel').addEventListener('input', (e) => {
             this.fetchRelationshipSuggestions(e.target.value);
         });
+    }
+
+    handleKeyboard(e) {
+        // Don't trigger if typing in an input field
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+            return;
+        }
+
+        // Delete or Backspace to delete selected element
+        if (e.key === 'Delete' || e.key === 'Backspace') {
+            e.preventDefault();
+
+            if (this.selectedNode) {
+                this.deleteNode(this.selectedNode.id());
+            } else if (this.selectedEdge) {
+                this.deleteRelationship();
+            }
+        }
+
+        // Escape to deselect all and close modals
+        if (e.key === 'Escape') {
+            this.deselectAll();
+            document.getElementById('nodeDetailsPanel').style.display = 'none';
+            document.getElementById('connectionModal').style.display = 'none';
+            document.getElementById('citationModal').style.display = 'none';
+
+            if (this.connectMode) {
+                this.toggleConnectMode();
+            }
+        }
+    }
+
+    selectEdge(edge) {
+        console.log('[NexusEngine] selectEdge called, edge id:', edge.id());
+
+        // Deselect any previously selected node
+        if (this.selectedNode) {
+            this.selectedNode = null;
+            document.getElementById('nodeDetailsPanel').style.display = 'none';
+        }
+
+        this.selectedEdge = edge;
+
+        // Visual feedback - add selected class to edge
+        this.cy.edges().removeClass('edge-selected');
+        edge.addClass('edge-selected');
+
+        // Open the edit relationship modal
+        this.editEdgeLabel(edge);
     }
     
     selectNode(node) {
@@ -403,8 +490,19 @@ class NexusEngine {
     
     deselectAll() {
         this.cy.elements().unselect();
+        this.cy.edges().removeClass('edge-selected');
         document.getElementById('nodeDetailsPanel').style.display = 'none';
+
+        // Close edit relationship modal properly
+        const editModal = document.getElementById('editRelationshipModal');
+        if (editModal) {
+            editModal.style.cssText = 'display: none;';
+            editModal.classList.remove('show');
+            editModal.setAttribute('aria-hidden', 'true');
+        }
+
         this.selectedNode = null;
+        this.selectedEdge = null;
     }
     
     toggleConnectMode() {
@@ -619,22 +717,74 @@ class NexusEngine {
     
     editEdgeLabel(edge) {
         this.selectedEdge = edge;
-        const edgeData = this.edges.get(edge.id());
-        
+
+        // Try to get edge data from Map using string ID
+        const edgeId = String(edge.id());
+        let edgeData = this.edges.get(edgeId);
+
+        // Fallback: if not in Map, get data from Cytoscape element itself
+        if (!edgeData) {
+            const cyData = edge.data();
+            if (cyData && cyData.id) {
+                edgeData = {
+                    _id: cyData.id,
+                    relationshipLabel: cyData.relationshipLabel || '',
+                    sourceNode: cyData.source,
+                    targetNode: cyData.target,
+                    creator: cyData.creator
+                };
+                // Store it for future use
+                this.edges.set(edgeId, edgeData);
+            }
+        }
+
         if (!edgeData) {
             this.showError('Edge data not found');
             return;
         }
-        
+
         // Populate modal with current relationship label
-        document.getElementById('editRelationshipLabel').value = edgeData.relationshipLabel || '';
-        
-        // Show modal
-        document.getElementById('editRelationshipModal').style.display = 'block';
-        
-        // Focus input
-        document.getElementById('editRelationshipLabel').focus();
-        document.getElementById('editRelationshipLabel').select();
+        const labelInput = document.getElementById('editRelationshipLabel');
+        if (labelInput) {
+            labelInput.value = edgeData.relationshipLabel || '';
+        }
+
+        // Show modal - use multiple approaches to ensure visibility
+        const modal = document.getElementById('editRelationshipModal');
+        if (!modal) {
+            console.error('[NexusEngine] Modal element #editRelationshipModal not found!');
+            this.showError('Modal not found');
+            return;
+        }
+
+        // Force display and visibility with explicit inline styles
+        modal.style.cssText = `
+            display: flex !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            z-index: 99999 !important;
+            background: rgba(0, 0, 0, 0.85) !important;
+            align-items: center !important;
+            justify-content: center !important;
+            pointer-events: auto !important;
+        `;
+        modal.classList.add('show');
+        modal.setAttribute('aria-hidden', 'false');
+
+        console.log('[NexusEngine] Opening edit relationship modal for edge:', edgeId, 'Modal display:', modal.style.display);
+
+        // Focus input after a brief delay to ensure modal is visible
+        setTimeout(() => {
+            if (labelInput) {
+                labelInput.focus();
+                labelInput.select();
+            }
+        }, 100);
     }
     
     async updateRelationship() {
@@ -643,30 +793,36 @@ class NexusEngine {
             this.showError('Please enter a relationship type');
             return;
         }
-        
+
         if (!this.selectedEdge) {
             this.showError('No edge selected');
             return;
         }
-        
+
+        const edgeId = String(this.selectedEdge.id());
+
         try {
-            const response = await this.apiClient.put(`/mindmap/edges/${this.selectedEdge.id()}`, {
+            const response = await this.apiClient.put(`/mindmap/edges/${edgeId}`, {
                 relationshipLabel: newLabel
             });
-            
+
             // Update edge label in graph
             this.selectedEdge.data('relationshipLabel', newLabel);
-            
+
             // Update local data
-            const edgeData = this.edges.get(this.selectedEdge.id());
+            const edgeData = this.edges.get(edgeId);
             if (edgeData) {
                 edgeData.relationshipLabel = newLabel;
             }
-            
-            // Close modal
-            document.getElementById('editRelationshipModal').style.display = 'none';
+
+            // Close modal and deselect
+            const modal = document.getElementById('editRelationshipModal');
+            modal.style.cssText = 'display: none;';
+            modal.classList.remove('show');
+            modal.setAttribute('aria-hidden', 'true');
+            this.cy.edges().removeClass('edge-selected');
             this.selectedEdge = null;
-            
+
             this.showMessage('Relationship updated successfully');
         } catch (error) {
             console.error('Failed to update relationship:', error);
@@ -679,27 +835,34 @@ class NexusEngine {
             this.showError('No edge selected');
             return;
         }
-        
-        const edgeData = this.edges.get(this.selectedEdge.id());
-        const confirmed = confirm(`Are you sure you want to delete this relationship?\n\nType: "${edgeData?.relationshipLabel || 'Unknown'}"\n\nThis action cannot be undone.`);
-        
+
+        const edgeId = String(this.selectedEdge.id());
+        const edgeData = this.edges.get(edgeId);
+        const relationshipLabel = edgeData?.relationshipLabel ||
+            this.selectedEdge.data('relationshipLabel') || 'Unknown';
+
+        const confirmed = confirm(`Are you sure you want to delete this relationship?\n\nType: "${relationshipLabel}"\n\nThis action cannot be undone.`);
+
         if (!confirmed) {
             return;
         }
-        
+
         try {
-            await this.apiClient.delete(`/mindmap/edges/${this.selectedEdge.id()}`);
-            
+            await this.apiClient.delete(`/mindmap/edges/${edgeId}`);
+
             // Remove from graph
             this.selectedEdge.remove();
-            
+
             // Remove from local data
-            this.edges.delete(this.selectedEdge.id());
-            
+            this.edges.delete(edgeId);
+
             // Close modal
-            document.getElementById('editRelationshipModal').style.display = 'none';
+            const modal = document.getElementById('editRelationshipModal');
+            modal.style.cssText = 'display: none;';
+            modal.classList.remove('show');
+            modal.setAttribute('aria-hidden', 'true');
             this.selectedEdge = null;
-            
+
             this.showMessage('Relationship deleted successfully');
         } catch (error) {
             console.error('Failed to delete relationship:', error);

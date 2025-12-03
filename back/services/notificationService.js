@@ -140,6 +140,14 @@ class NotificationService {
                 'profile': 'soul_interaction'
             };
 
+            // Generate correct link based on content type
+            const linkMap = {
+                'blog': `/pages/blog.html?id=${contentId}`,
+                'chronicle': `/pages/chronicles.html?id=${contentId}`,
+                'echo': `/pages/messageboard.html?id=${contentId}`
+            };
+            const link = linkMap[contentType] || `/pages/blog.html?id=${contentId}`;
+
             return await this.createNotification({
                 userId: recipientId,
                 type: typeMap[contentType] || 'comment_reply',

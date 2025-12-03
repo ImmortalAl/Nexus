@@ -28,6 +28,37 @@ router.post('/', authMiddleware, async (req, res) => {
   }
 });
 
+// Create debate from a scroll (Soul Scroll challenge)
+router.post('/from-scroll', authMiddleware, async (req, res) => {
+  try {
+    const { sourceScrollId, scrollTitle, originalAuthorId } = req.body;
+
+    if (!sourceScrollId || !scrollTitle) {
+      return res.status(400).json({ error: 'Source scroll ID and title are required' });
+    }
+
+    // TODO: Full debate implementation - for now return placeholder
+    const debate = {
+      id: Date.now(),
+      sourceScrollId,
+      scrollTitle,
+      originalAuthorId,
+      challengerId: req.user.id,
+      status: 'pending',
+      createdAt: new Date().toISOString()
+    };
+
+    res.json({
+      message: 'Debate challenge initiated',
+      debate,
+      note: 'Full debate system coming soon'
+    });
+  } catch (error) {
+    console.error('Create debate from scroll error:', error.message);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // Vote on debate
 router.post('/:id/vote', authMiddleware, async (req, res) => {
   try {

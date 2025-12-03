@@ -19,43 +19,48 @@
 </head>
 <body>
     <header>
-        <img src="../assets/logo.gif" alt="Immortal Nexus Logo" class="logo">
+        <a href="../index.html" class="logo" style="font-size: 1.5rem; font-weight: bold; text-decoration: none; color: var(--primary-color, #a855f7);">
+            <i class="fas fa-infinity"></i> Immortal Nexus
+        </a>
         <nav>
             <a href="../index.html">Home</a>
-            <a href="../videos.html">Videos</a>
-            <a href="../community.html">Community</a>
-            <a href="../about.html">About</a>
-            <a href="../merch.html">Merch</a>
+            <a href="../pages/blog.html">Soul Scrolls</a>
+            <a href="../souls/index.html">Souls Directory</a>
         </nav>
     </header>
     <section class="about">
         <h2>About Us</h2>
         <p>We're building a space for uncommon stories and unfiltered truths. Join us on this journey!</p>
-        <div class="creator-grid">
-            <div class="creator-card">
-                <img src="../assets/dk.png" alt="Creator 1">
+        <div class="creator-grid" style="display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center;">
+            <div class="creator-card" style="text-align: center; padding: 1.5rem; background: var(--card-bg, rgba(168, 85, 247, 0.1)); border-radius: 12px; max-width: 300px;">
+                <div style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, #a855f7, #6366f1); margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-user" style="font-size: 2.5rem; color: white;"></i>
+                </div>
                 <h3>DKspiracy</h3>
                 <p>Content Creator - Uncovering stories that matter.</p>
                 <div class="social-links">
-                    <a href="http://www.x.com/dkspiracy">Twitter</a> | <a href="http://dlive.tv/dkspiracy123">DLive</a>
+                    <a href="https://x.com/dkspiracy"><i class="fab fa-x-twitter"></i> Twitter</a> |
+                    <a href="https://dlive.tv/dkspiracy123"><i class="fas fa-tv"></i> DLive</a>
                 </div>
             </div>
-            <div class="creator-card">
-                <img src="../assets/immortal-icon.jpg" alt="Creator 2">
+            <div class="creator-card" style="text-align: center; padding: 1.5rem; background: var(--card-bg, rgba(168, 85, 247, 0.1)); border-radius: 12px; max-width: 300px;">
+                <div style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, #a855f7, #6366f1); margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-code" style="font-size: 2.5rem; color: white;"></i>
+                </div>
                 <h3>ImmortalAl</h3>
                 <p>Lead Dev - Building the unseen with code and curiosity.</p>
                 <div class="social-links">
-                    <a href="http://www.x.com/immortalal">Twitter</a> | <a href="http://dlive.tv/dkspiracy123">DLive</a>
+                    <a href="https://x.com/immortalal"><i class="fab fa-x-twitter"></i> Twitter</a> |
+                    <a href="https://dlive.tv/immortalal"><i class="fas fa-tv"></i> DLive</a>
                 </div>
             </div>
         </div>
     </section>
-    <footer>
+    <footer style="text-align: center; padding: 2rem; margin-top: 2rem;">
         <p>Stay Tuned @ Immortal Nexus 2025</p>
-        <div class="social-icons">
-            <a href="http://www.x.com/dkspiracy"><img src="../assets/twitter-icon.jpg" alt="Twitter"></a>
-            <a href="http://dlive.tv/dkspiracy123"><img src="../assets/dlive-icon.png" alt="DLive"></a>
-            <a href="http://dlive.tv/immortalal"><img src="../assets/immortal-icon.jpg" alt="ImmortalAl"></a>
+        <div class="social-icons" style="display: flex; gap: 1.5rem; justify-content: center; margin-top: 1rem;">
+            <a href="https://x.com/dkspiracy" style="font-size: 1.5rem;"><i class="fab fa-x-twitter"></i></a>
+            <a href="https://dlive.tv/dkspiracy123" style="font-size: 1.5rem;"><i class="fas fa-tv"></i></a>
         </div>
     </footer>
     <!-- <script src="../js/scripts.js"></script> --> <!-- Legacy script - functionality moved to components -->

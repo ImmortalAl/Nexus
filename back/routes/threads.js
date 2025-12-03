@@ -135,7 +135,7 @@ router.get('/', async (req, res) => {
             .limit(parseInt(limit))
             .populate('author', 'username displayName avatar');
 
-        // Process threads to handle anonymous display
+        // Process threads to handle anonymous display and vote data
         const processedThreads = threads.map(thread => {
             const threadObj = thread.toObject();
             if (threadObj.isAnonymous) {
@@ -146,6 +146,26 @@ router.get('/', async (req, res) => {
                     isAnonymous: true
                 };
             }
+
+            // Transform votes from nested structure to flat arrays of user IDs
+            // Backend stores: thread.votes.upvotes = [{user, createdAt}]
+            // Frontend expects: thread.upvotes = [userId1, userId2, ...]
+            if (threadObj.votes && threadObj.votes.upvotes) {
+                threadObj.upvotes = threadObj.votes.upvotes
+                    .filter(v => v && v.user)
+                    .map(v => v.user.toString ? v.user.toString() : String(v.user));
+            } else {
+                threadObj.upvotes = [];
+            }
+
+            if (threadObj.votes && threadObj.votes.downvotes) {
+                threadObj.downvotes = threadObj.votes.downvotes
+                    .filter(v => v && v.user)
+                    .map(v => v.user.toString ? v.user.toString() : String(v.user));
+            } else {
+                threadObj.downvotes = [];
+            }
+
             return threadObj;
         });
         const total = await Thread.countDocuments(query);
@@ -194,7 +214,7 @@ router.get('/:id', async (req, res) => {
             };
         }
 
-        // Handle anonymous replies
+        // Handle anonymous replies and transform vote data
         if (threadObj.replies) {
             threadObj.replies = threadObj.replies.map(reply => {
                 if (reply.isAnonymous) {
@@ -206,8 +226,43 @@ router.get('/:id', async (req, res) => {
                         isAnonymous: true
                     };
                 }
+
+                // Transform reply votes from nested structure to flat arrays
+                if (reply.votes && reply.votes.upvotes) {
+                    reply.upvotes = reply.votes.upvotes
+                        .filter(v => v && v.user)
+                        .map(v => v.user.toString ? v.user.toString() : String(v.user));
+                } else {
+                    reply.upvotes = [];
+                }
+
+                if (reply.votes && reply.votes.downvotes) {
+                    reply.downvotes = reply.votes.downvotes
+                        .filter(v => v && v.user)
+                        .map(v => v.user.toString ? v.user.toString() : String(v.user));
+                } else {
+                    reply.downvotes = [];
+                }
+
                 return reply;
             });
+        }
+
+        // Transform thread votes from nested structure to flat arrays
+        if (threadObj.votes && threadObj.votes.upvotes) {
+            threadObj.upvotes = threadObj.votes.upvotes
+                .filter(v => v && v.user)
+                .map(v => v.user.toString ? v.user.toString() : String(v.user));
+        } else {
+            threadObj.upvotes = [];
+        }
+
+        if (threadObj.votes && threadObj.votes.downvotes) {
+            threadObj.downvotes = threadObj.votes.downvotes
+                .filter(v => v && v.user)
+                .map(v => v.user.toString ? v.user.toString() : String(v.user));
+        } else {
+            threadObj.downvotes = [];
         }
 
         res.json(threadObj);
@@ -270,69 +325,81 @@ router.post('/:id/vote', auth, async (req, res) => {
             return res.status(400).json({ error: 'Vote must be "upvote" or "downvote"' });
         }
 
+        // First, get the thread to check ownership and current vote state
         const thread = await Thread.findById(threadId);
         if (!thread) {
             return res.status(404).json({ error: 'Thread not found' });
         }
 
-        // Prevent self-voting (users can't vote on their own threads)
+        // Prevent self-voting
         if (thread.author && thread.author.toString() === userId) {
             return res.status(403).json({ error: 'You cannot vote on your own threads' });
         }
 
-        // Initialize votes structure if it doesn't exist
-        if (!thread.votes) {
-            thread.votes = { upvotes: [], downvotes: [] };
-        }
-        if (!thread.votes.upvotes) thread.votes.upvotes = [];
-        if (!thread.votes.downvotes) thread.votes.downvotes = [];
+        // Check current vote state
+        const currentUpvotes = thread.votes?.upvotes || [];
+        const currentDownvotes = thread.votes?.downvotes || [];
+        const hasUpvoted = currentUpvotes.some(v => v.user && v.user.toString() === userId);
+        const hasDownvoted = currentDownvotes.some(v => v.user && v.user.toString() === userId);
 
-        // Check if user has already voted
-        const existingUpvote = thread.votes.upvotes.find(v => v.user.toString() === userId);
-        const existingDownvote = thread.votes.downvotes.find(v => v.user.toString() === userId);
+        // Build the update operation using atomic operators
+        let updateOps = {};
 
         if (vote === 'upvote') {
-            if (existingUpvote) {
-                // Remove upvote (toggle off)
-                thread.votes.upvotes = thread.votes.upvotes.filter(v => v.user.toString() !== userId);
+            if (hasUpvoted) {
+                // Toggle off - remove upvote
+                updateOps.$pull = { 'votes.upvotes': { user: userId } };
             } else {
-                // Remove any existing downvote first
-                if (existingDownvote) {
-                    thread.votes.downvotes = thread.votes.downvotes.filter(v => v.user.toString() !== userId);
+                // Add upvote (and remove downvote if exists)
+                updateOps.$push = { 'votes.upvotes': { user: userId, createdAt: new Date() } };
+                if (hasDownvoted) {
+                    updateOps.$pull = { 'votes.downvotes': { user: userId } };
                 }
-                // Add upvote
-                thread.votes.upvotes.push({ user: userId, createdAt: new Date() });
             }
         } else { // downvote
-            if (existingDownvote) {
-                // Remove downvote (toggle off)
-                thread.votes.downvotes = thread.votes.downvotes.filter(v => v.user.toString() !== userId);
+            if (hasDownvoted) {
+                // Toggle off - remove downvote
+                updateOps.$pull = { 'votes.downvotes': { user: userId } };
             } else {
-                // Remove any existing upvote first
-                if (existingUpvote) {
-                    thread.votes.upvotes = thread.votes.upvotes.filter(v => v.user.toString() !== userId);
+                // Add downvote (and remove upvote if exists)
+                updateOps.$push = { 'votes.downvotes': { user: userId, createdAt: new Date() } };
+                if (hasUpvoted) {
+                    updateOps.$pull = { 'votes.upvotes': { user: userId } };
                 }
-                // Add downvote
-                thread.votes.downvotes.push({ user: userId, createdAt: new Date() });
             }
         }
 
-        // Calculate new vote score
-        const newScore = thread.votes.upvotes.length - thread.votes.downvotes.length;
-        thread.voteScore = newScore;
+        // If we need both $push and $pull, we need to do them in sequence
+        // MongoDB doesn't allow both on the same field in one operation
+        if (updateOps.$push && updateOps.$pull) {
+            // First do the pull
+            await Thread.findByIdAndUpdate(threadId, { $pull: updateOps.$pull });
+            // Then do the push
+            await Thread.findByIdAndUpdate(threadId, { $push: updateOps.$push });
+        } else {
+            // Single operation
+            await Thread.findByIdAndUpdate(threadId, updateOps);
+        }
 
-        await thread.save();
+        // Fetch the updated thread to get accurate counts
+        const updatedThread = await Thread.findById(threadId);
+        const upvotesArray = updatedThread.votes?.upvotes || [];
+        const downvotesArray = updatedThread.votes?.downvotes || [];
 
-        // Check current user's vote status after save
-        const userUpvoted = thread.votes.upvotes.some(v => v.user.toString() === userId);
-        const userDownvoted = thread.votes.downvotes.some(v => v.user.toString() === userId);
+        // Calculate and save the vote score
+        const newScore = upvotesArray.length - downvotesArray.length;
+        await Thread.findByIdAndUpdate(threadId, { voteScore: newScore });
+
+        // Check current user's vote status
+        const userUpvoted = upvotesArray.some(v => v.user && v.user.toString() === userId);
+        const userDownvoted = downvotesArray.some(v => v.user && v.user.toString() === userId);
 
         // Return format compatible with unified voting system
         res.json({
             message: 'Vote recorded',
-            upvotes: thread.votes.upvotes.length,
-            challenges: thread.votes.downvotes.length,
-            downvotes: thread.votes.downvotes.length,
+            upvotes: upvotesArray.length,
+            challenges: downvotesArray.length,
+            downvotes: downvotesArray.length,
             userUpvoted: userUpvoted,
             userChallenged: userDownvoted,
             userDownvoted: userDownvoted,
@@ -432,68 +499,96 @@ router.post('/:threadId/replies/:replyId/vote', auth, async (req, res) => {
             return res.status(404).json({ error: 'Thread not found' });
         }
 
-        const reply = thread.replies.id(replyId);
-        if (!reply) {
+        const replyIndex = thread.replies.findIndex(r => r._id.toString() === replyId);
+        if (replyIndex === -1) {
             return res.status(404).json({ error: 'Reply not found' });
         }
 
-        // Prevent self-voting (users can't vote on their own replies)
+        const reply = thread.replies[replyIndex];
+
+        // Prevent self-voting
         if (reply.author && reply.author.toString() === userId) {
             return res.status(403).json({ error: 'You cannot vote on your own replies' });
         }
 
-        // Initialize votes structure if it doesn't exist
-        if (!reply.votes) {
-            reply.votes = { upvotes: [], downvotes: [] };
-        }
-        if (!reply.votes.upvotes) reply.votes.upvotes = [];
-        if (!reply.votes.downvotes) reply.votes.downvotes = [];
+        // Check current vote state
+        const currentUpvotes = reply.votes?.upvotes || [];
+        const currentDownvotes = reply.votes?.downvotes || [];
+        const hasUpvoted = currentUpvotes.some(v => v.user && v.user.toString() === userId);
+        const hasDownvoted = currentDownvotes.some(v => v.user && v.user.toString() === userId);
 
-        // Check if user has already voted on this reply
-        const existingUpvote = reply.votes.upvotes.find(v => v.user.toString() === userId);
-        const existingDownvote = reply.votes.downvotes.find(v => v.user.toString() === userId);
+        // For nested documents, we need to use arrayFilters with positional operators
+        const mongoose = require('mongoose');
+        const replyObjectId = new mongoose.Types.ObjectId(replyId);
 
         if (vote === 'upvote') {
-            if (existingUpvote) {
-                // Remove upvote (toggle off)
-                reply.votes.upvotes = reply.votes.upvotes.filter(v => v.user.toString() !== userId);
+            if (hasUpvoted) {
+                // Toggle off - remove upvote
+                await Thread.updateOne(
+                    { _id: threadId, 'replies._id': replyObjectId },
+                    { $pull: { 'replies.$.votes.upvotes': { user: userId } } }
+                );
             } else {
-                // Remove any existing downvote first
-                if (existingDownvote) {
-                    reply.votes.downvotes = reply.votes.downvotes.filter(v => v.user.toString() !== userId);
+                // Remove any downvote first, then add upvote
+                if (hasDownvoted) {
+                    await Thread.updateOne(
+                        { _id: threadId, 'replies._id': replyObjectId },
+                        { $pull: { 'replies.$.votes.downvotes': { user: userId } } }
+                    );
                 }
-                // Add upvote
-                reply.votes.upvotes.push({ user: userId, createdAt: new Date() });
+                await Thread.updateOne(
+                    { _id: threadId, 'replies._id': replyObjectId },
+                    { $push: { 'replies.$.votes.upvotes': { user: userId, createdAt: new Date() } } }
+                );
             }
         } else { // downvote
-            if (existingDownvote) {
-                // Remove downvote (toggle off)
-                reply.votes.downvotes = reply.votes.downvotes.filter(v => v.user.toString() !== userId);
+            if (hasDownvoted) {
+                // Toggle off - remove downvote
+                await Thread.updateOne(
+                    { _id: threadId, 'replies._id': replyObjectId },
+                    { $pull: { 'replies.$.votes.downvotes': { user: userId } } }
+                );
             } else {
-                // Remove any existing upvote first
-                if (existingUpvote) {
-                    reply.votes.upvotes = reply.votes.upvotes.filter(v => v.user.toString() !== userId);
+                // Remove any upvote first, then add downvote
+                if (hasUpvoted) {
+                    await Thread.updateOne(
+                        { _id: threadId, 'replies._id': replyObjectId },
+                        { $pull: { 'replies.$.votes.upvotes': { user: userId } } }
+                    );
                 }
-                // Add downvote
-                reply.votes.downvotes.push({ user: userId, createdAt: new Date() });
+                await Thread.updateOne(
+                    { _id: threadId, 'replies._id': replyObjectId },
+                    { $push: { 'replies.$.votes.downvotes': { user: userId, createdAt: new Date() } } }
+                );
             }
         }
 
-        // Calculate new vote score
-        const newScore = reply.votes.upvotes.length - reply.votes.downvotes.length;
-        reply.voteScore = newScore;
+        // Fetch updated thread to get accurate counts
+        const updatedThread = await Thread.findById(threadId);
+        const updatedReply = updatedThread.replies.id(replyId);
+        const upvotesArray = updatedReply?.votes?.upvotes || [];
+        const downvotesArray = updatedReply?.votes?.downvotes || [];
 
-        await thread.save();
+        // Calculate and update vote score
+        const newScore = upvotesArray.length - downvotesArray.length;
+        await Thread.updateOne(
+            { _id: threadId, 'replies._id': replyObjectId },
+            { $set: { 'replies.$.voteScore': newScore } }
+        );
+
+        // Check current user's vote status
+        const userUpvoted = upvotesArray.some(v => v.user && v.user.toString() === userId);
+        const userDownvoted = downvotesArray.some(v => v.user && v.user.toString() === userId);
 
         res.json({
             message: 'Vote recorded',
             newScore,
-            upvotes: reply.votes.upvotes.length,
-            challenges: reply.votes.downvotes.length,
-            downvotes: reply.votes.downvotes.length,
-            userUpvoted: !!reply.votes.upvotes.find(v => v.user.toString() === userId),
-            userChallenged: !!reply.votes.downvotes.find(v => v.user.toString() === userId),
-            userDownvoted: !!reply.votes.downvotes.find(v => v.user.toString() === userId)
+            upvotes: upvotesArray.length,
+            challenges: downvotesArray.length,
+            downvotes: downvotesArray.length,
+            userUpvoted: userUpvoted,
+            userChallenged: userDownvoted,
+            userDownvoted: userDownvoted
         });
     } catch (error) {
         console.error('Error voting on reply:', error);
