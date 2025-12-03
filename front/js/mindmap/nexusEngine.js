@@ -374,7 +374,11 @@ class NexusEngine {
         });
 
         document.getElementById('closeCitationModal').addEventListener('click', () => {
-            document.getElementById('citationModal').style.display = 'none';
+            const modal = document.getElementById('citationModal');
+            modal.style.cssText = 'display: none;';
+            modal.classList.remove('show');
+            modal.setAttribute('aria-hidden', 'true');
+            document.getElementById('citationForm').reset();
         });
 
         // Edit relationship modal
@@ -423,7 +427,14 @@ class NexusEngine {
             this.deselectAll();
             document.getElementById('nodeDetailsPanel').style.display = 'none';
             document.getElementById('connectionModal').style.display = 'none';
-            document.getElementById('citationModal').style.display = 'none';
+
+            // Close citation modal properly
+            const citationModal = document.getElementById('citationModal');
+            if (citationModal) {
+                citationModal.style.cssText = 'display: none;';
+                citationModal.classList.remove('show');
+                citationModal.setAttribute('aria-hidden', 'true');
+            }
 
             if (this.connectMode) {
                 this.toggleConnectMode();
@@ -643,12 +654,37 @@ class NexusEngine {
     
     openCitationModal() {
         if (!this.selectedNode) return;
-        
-        document.getElementById('citationModal').style.display = 'block';
+
+        const modal = document.getElementById('citationModal');
+
+        // Force display and visibility with explicit inline styles
+        modal.style.cssText = `
+            display: flex !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            z-index: 99999 !important;
+            background: rgba(0, 0, 0, 0.85) !important;
+            align-items: center !important;
+            justify-content: center !important;
+            pointer-events: auto !important;
+        `;
+        modal.classList.add('show');
+        modal.setAttribute('aria-hidden', 'false');
+
         document.getElementById('citationForm').onsubmit = async (e) => {
             e.preventDefault();
             await this.addCitation();
         };
+
+        // Focus the URL input
+        setTimeout(() => {
+            document.getElementById('citationUrl').focus();
+        }, 100);
     }
     
     async addCitation() {
@@ -667,11 +703,14 @@ class NexusEngine {
             
             // Refresh node details
             this.selectNode(this.selectedNode);
-            
-            // Close modal
-            document.getElementById('citationModal').style.display = 'none';
+
+            // Close modal properly
+            const modal = document.getElementById('citationModal');
+            modal.style.cssText = 'display: none;';
+            modal.classList.remove('show');
+            modal.setAttribute('aria-hidden', 'true');
             document.getElementById('citationForm').reset();
-            
+
             this.showMessage('Citation added successfully');
         } catch (error) {
             console.error('Failed to add citation:', error);
