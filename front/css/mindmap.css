@@ -909,3 +909,88 @@
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
 }
+/* Edit Relationship Modal Styles */
+#editRelationshipModal.modal {
+    backdrop-filter: blur(5px);
+    padding: 20px;
+    box-sizing: border-box;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+#editRelationshipModal.modal.show {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+#editRelationshipModal .modal-content {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-radius: 10px;
+    padding: 30px;
+    border: 1px solid rgba(233, 69, 96, 0.3);
+    box-shadow: 0 0 30px rgba(233, 69, 96, 0.2);
+    max-width: 450px;
+    width: 100%;
+    position: relative;
+}
+
+#editRelationshipModal .modal-content h3 {
+    color: #e94560;
+    margin-bottom: 20px;
+    font-size: 22px;
+}
+
+#editRelationshipModal .modal-content .close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    color: #e94560;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: none;
+    border: none;
+}
+
+#editRelationshipModal .modal-content .close:hover {
+    transform: rotate(90deg);
+}
+
+#editRelationshipModal .modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#editRelationshipModal .modal-content label {
+    color: #f1f1f1;
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: block;
+}
+
+#editRelationshipModal .modal-content input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    background: rgba(15, 52, 96, 0.5);
+    border: 1px solid rgba(233, 69, 96, 0.3);
+    border-radius: 5px;
+    color: #f1f1f1;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+#editRelationshipModal .modal-content input[type="text"]:focus {
+    outline: none;
+    border-color: #e94560;
+    box-shadow: 0 0 10px rgba(233, 69, 96, 0.3);
+}
+
+#editRelationshipModal .modal-content input[type="text"]::placeholder {
+    color: rgba(241, 241, 241, 0.5);
+}

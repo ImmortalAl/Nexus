@@ -378,6 +378,8 @@ class NexusEngine {
 
         document.getElementById('closeEditRelationship').addEventListener('click', () => {
             const modal = document.getElementById('editRelationshipModal');
+            modal.style.display = 'none';
+            modal.style.opacity = '0';
             modal.classList.remove('show');
             modal.setAttribute('aria-hidden', 'true');
             this.cy.edges().removeClass('edge-selected');
@@ -424,6 +426,8 @@ class NexusEngine {
     }
 
     selectEdge(edge) {
+        console.log('[NexusEngine] selectEdge called, edge id:', edge.id());
+
         // Deselect any previously selected node
         if (this.selectedNode) {
             this.selectedNode = null;
@@ -487,8 +491,12 @@ class NexusEngine {
 
         // Close edit relationship modal properly
         const editModal = document.getElementById('editRelationshipModal');
-        editModal.classList.remove('show');
-        editModal.setAttribute('aria-hidden', 'true');
+        if (editModal) {
+            editModal.style.display = 'none';
+            editModal.style.opacity = '0';
+            editModal.classList.remove('show');
+            editModal.setAttribute('aria-hidden', 'true');
+        }
 
         this.selectedNode = null;
         this.selectedEdge = null;
@@ -733,18 +741,34 @@ class NexusEngine {
         }
 
         // Populate modal with current relationship label
-        document.getElementById('editRelationshipLabel').value = edgeData.relationshipLabel || '';
+        const labelInput = document.getElementById('editRelationshipLabel');
+        if (labelInput) {
+            labelInput.value = edgeData.relationshipLabel || '';
+        }
 
-        // Show modal (use class-based visibility for unified-modals.css)
+        // Show modal - use multiple approaches to ensure visibility
         const modal = document.getElementById('editRelationshipModal');
+        if (!modal) {
+            console.error('[NexusEngine] Modal element #editRelationshipModal not found!');
+            this.showError('Modal not found');
+            return;
+        }
+
+        // Force display and visibility
+        modal.style.display = 'flex';
+        modal.style.opacity = '1';
         modal.classList.add('show');
         modal.setAttribute('aria-hidden', 'false');
 
+        console.log('[NexusEngine] Opening edit relationship modal for edge:', edgeId, 'Modal:', modal);
+
         // Focus input after a brief delay to ensure modal is visible
         setTimeout(() => {
-            document.getElementById('editRelationshipLabel').focus();
-            document.getElementById('editRelationshipLabel').select();
-        }, 50);
+            if (labelInput) {
+                labelInput.focus();
+                labelInput.select();
+            }
+        }, 100);
     }
     
     async updateRelationship() {
@@ -777,6 +801,8 @@ class NexusEngine {
 
             // Close modal and deselect
             const modal = document.getElementById('editRelationshipModal');
+            modal.style.display = 'none';
+            modal.style.opacity = '0';
             modal.classList.remove('show');
             modal.setAttribute('aria-hidden', 'true');
             this.cy.edges().removeClass('edge-selected');
@@ -817,6 +843,8 @@ class NexusEngine {
 
             // Close modal
             const modal = document.getElementById('editRelationshipModal');
+            modal.style.display = 'none';
+            modal.style.opacity = '0';
             modal.classList.remove('show');
             modal.setAttribute('aria-hidden', 'true');
             this.selectedEdge = null;
