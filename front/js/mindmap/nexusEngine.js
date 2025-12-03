@@ -123,6 +123,15 @@ class NexusEngine {
                         'border-color': '#F44336',
                         'background-color': '#2d1b1b'
                     }
+                },
+                {
+                    selector: 'edge.edge-selected',
+                    style: {
+                        'width': 4,
+                        'line-color': '#e94560',
+                        'target-arrow-color': '#e94560',
+                        'z-index': 999
+                    }
                 }
             ],
             
@@ -256,114 +265,167 @@ class NexusEngine {
             const node = evt.target;
             this.selectNode(node);
         });
-        
+
+        // Edge selection
+        this.cy.on('tap', 'edge', (evt) => {
+            if (!this.connectMode) {
+                this.selectEdge(evt.target);
+            }
+        });
+
         // Background tap - deselect
         this.cy.on('tap', (evt) => {
             if (evt.target === this.cy) {
                 this.deselectAll();
             }
         });
-        
+
         // Edge creation in connect mode
         this.cy.on('tap', 'node', (evt) => {
             if (this.connectMode) {
                 this.handleConnectMode(evt.target);
             }
         });
-        
-        // Edge label editing
-        this.cy.on('tap', 'edge', (evt) => {
-            if (!this.connectMode) {
-                this.editEdgeLabel(evt.target);
-            }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            this.handleKeyboard(e);
         });
-        
+
         // Add node button
         document.getElementById('add-node-btn').addEventListener('click', () => {
             window.nodeEditor.openForCreate();
         });
-        
+
         // Connect mode button
         document.getElementById('connect-mode-btn').addEventListener('click', () => {
             this.toggleConnectMode();
         });
-        
+
         // Search functionality
         document.getElementById('search-btn').addEventListener('click', () => {
             this.performSearch();
         });
-        
+
         document.getElementById('mindmap-search').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 this.performSearch();
             }
         });
-        
+
         // Node details panel buttons
         document.getElementById('upvoteBtn').addEventListener('click', () => {
             this.voteOnNode(1);
         });
-        
+
         document.getElementById('downvoteBtn').addEventListener('click', () => {
             this.voteOnNode(-1);
         });
-        
+
         document.getElementById('editNodeBtn').addEventListener('click', () => {
             if (this.selectedNode) {
                 window.nodeEditor.openForEdit(this.nodes.get(this.selectedNode.id()));
             }
         });
-        
+
         document.getElementById('deleteNodeBtn').addEventListener('click', () => {
             if (this.selectedNode) {
                 this.deleteNode(this.selectedNode.id());
             }
         });
-        
+
         document.getElementById('addCitationBtn').addEventListener('click', () => {
             this.openCitationModal();
         });
-        
+
         // Connection modal
         document.getElementById('confirmConnection').addEventListener('click', () => {
             this.confirmConnection();
         });
-        
+
         document.getElementById('cancelConnection').addEventListener('click', () => {
             this.cancelConnection();
         });
-        
+
         // Relationship label autocomplete
         document.getElementById('relationshipLabel').addEventListener('input', (e) => {
             this.fetchLabelSuggestions(e.target.value);
         });
-        
+
         // Close buttons
         document.getElementById('closeNodeDetails').addEventListener('click', () => {
             document.getElementById('nodeDetailsPanel').style.display = 'none';
         });
-        
+
         document.getElementById('closeCitationModal').addEventListener('click', () => {
             document.getElementById('citationModal').style.display = 'none';
         });
-        
+
         // Edit relationship modal
         document.getElementById('editRelationshipForm').addEventListener('submit', (e) => {
             e.preventDefault();
             this.updateRelationship();
         });
-        
+
         document.getElementById('closeEditRelationship').addEventListener('click', () => {
             document.getElementById('editRelationshipModal').style.display = 'none';
         });
-        
+
         document.getElementById('deleteRelationshipBtn').addEventListener('click', () => {
             this.deleteRelationship();
         });
-        
+
         document.getElementById('editRelationshipLabel').addEventListener('input', (e) => {
             this.fetchRelationshipSuggestions(e.target.value);
         });
+    }
+
+    handleKeyboard(e) {
+        // Don't trigger if typing in an input field
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) {
+            return;
+        }
+
+        // Delete or Backspace to delete selected element
+        if (e.key === 'Delete' || e.key === 'Backspace') {
+            e.preventDefault();
+
+            if (this.selectedNode) {
+                this.deleteNode(this.selectedNode.id());
+            } else if (this.selectedEdge) {
+                this.deleteRelationship();
+            }
+        }
+
+        // Escape to deselect all and close modals
+        if (e.key === 'Escape') {
+            this.deselectAll();
+            document.getElementById('nodeDetailsPanel').style.display = 'none';
+            document.getElementById('editRelationshipModal').style.display = 'none';
+            document.getElementById('connectionModal').style.display = 'none';
+            document.getElementById('citationModal').style.display = 'none';
+
+            if (this.connectMode) {
+                this.toggleConnectMode();
+            }
+        }
+    }
+
+    selectEdge(edge) {
+        // Deselect any previously selected node
+        if (this.selectedNode) {
+            this.selectedNode = null;
+            document.getElementById('nodeDetailsPanel').style.display = 'none';
+        }
+
+        this.selectedEdge = edge;
+
+        // Visual feedback - add selected class to edge
+        this.cy.edges().removeClass('edge-selected');
+        edge.addClass('edge-selected');
+
+        // Open the edit relationship modal
+        this.editEdgeLabel(edge);
     }
     
     selectNode(node) {
@@ -408,8 +470,11 @@ class NexusEngine {
     
     deselectAll() {
         this.cy.elements().unselect();
+        this.cy.edges().removeClass('edge-selected');
         document.getElementById('nodeDetailsPanel').style.display = 'none';
+        document.getElementById('editRelationshipModal').style.display = 'none';
         this.selectedNode = null;
+        this.selectedEdge = null;
     }
     
     toggleConnectMode() {
