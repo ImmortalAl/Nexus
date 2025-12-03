@@ -377,7 +377,11 @@ class NexusEngine {
         });
 
         document.getElementById('closeEditRelationship').addEventListener('click', () => {
-            document.getElementById('editRelationshipModal').style.display = 'none';
+            const modal = document.getElementById('editRelationshipModal');
+            modal.classList.remove('show');
+            modal.setAttribute('aria-hidden', 'true');
+            this.cy.edges().removeClass('edge-selected');
+            this.selectedEdge = null;
         });
 
         document.getElementById('deleteRelationshipBtn').addEventListener('click', () => {
@@ -410,7 +414,6 @@ class NexusEngine {
         if (e.key === 'Escape') {
             this.deselectAll();
             document.getElementById('nodeDetailsPanel').style.display = 'none';
-            document.getElementById('editRelationshipModal').style.display = 'none';
             document.getElementById('connectionModal').style.display = 'none';
             document.getElementById('citationModal').style.display = 'none';
 
@@ -481,7 +484,12 @@ class NexusEngine {
         this.cy.elements().unselect();
         this.cy.edges().removeClass('edge-selected');
         document.getElementById('nodeDetailsPanel').style.display = 'none';
-        document.getElementById('editRelationshipModal').style.display = 'none';
+
+        // Close edit relationship modal properly
+        const editModal = document.getElementById('editRelationshipModal');
+        editModal.classList.remove('show');
+        editModal.setAttribute('aria-hidden', 'true');
+
         this.selectedNode = null;
         this.selectedEdge = null;
     }
@@ -727,12 +735,16 @@ class NexusEngine {
         // Populate modal with current relationship label
         document.getElementById('editRelationshipLabel').value = edgeData.relationshipLabel || '';
 
-        // Show modal
-        document.getElementById('editRelationshipModal').style.display = 'block';
+        // Show modal (use class-based visibility for unified-modals.css)
+        const modal = document.getElementById('editRelationshipModal');
+        modal.classList.add('show');
+        modal.setAttribute('aria-hidden', 'false');
 
-        // Focus input
-        document.getElementById('editRelationshipLabel').focus();
-        document.getElementById('editRelationshipLabel').select();
+        // Focus input after a brief delay to ensure modal is visible
+        setTimeout(() => {
+            document.getElementById('editRelationshipLabel').focus();
+            document.getElementById('editRelationshipLabel').select();
+        }, 50);
     }
     
     async updateRelationship() {
@@ -764,7 +776,9 @@ class NexusEngine {
             }
 
             // Close modal and deselect
-            document.getElementById('editRelationshipModal').style.display = 'none';
+            const modal = document.getElementById('editRelationshipModal');
+            modal.classList.remove('show');
+            modal.setAttribute('aria-hidden', 'true');
             this.cy.edges().removeClass('edge-selected');
             this.selectedEdge = null;
 
@@ -802,7 +816,9 @@ class NexusEngine {
             this.edges.delete(edgeId);
 
             // Close modal
-            document.getElementById('editRelationshipModal').style.display = 'none';
+            const modal = document.getElementById('editRelationshipModal');
+            modal.classList.remove('show');
+            modal.setAttribute('aria-hidden', 'true');
             this.selectedEdge = null;
 
             this.showMessage('Relationship deleted successfully');
