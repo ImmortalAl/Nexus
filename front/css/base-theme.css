@@ -88,6 +88,28 @@
     --surface-secondary: var(--background-secondary);
     --surface-tertiary: var(--background-tertiary);
     --border-color: var(--border);
+
+    /* Accent Color System */
+    --accent-gold: #ffca28;
+    --accent-pink: #ff8fa3;
+    --accent-coral: #ff5e78;
+    --accent-gradient: linear-gradient(135deg, var(--accent) 0%, var(--accent-gold) 50%, var(--accent) 100%);
+    --accent-shimmer: linear-gradient(135deg,
+        var(--accent) 0%,
+        var(--accent-gold) 25%,
+        var(--accent-pink) 50%,
+        var(--accent-gold) 75%,
+        var(--accent) 100%);
+
+    /* Status Color Variants */
+    --success-bright: #5ee89a;
+    --success-muted: #4ade80;
+    --error-bright: #ff6b6b;
+    --info-bright: #60a5fa;
+
+    /* Mystical Colors */
+    --mystical-purple: #9d4edd;
+    --immortal-gold: #d4af37;
 }
 
 /* Light Theme Variables */
@@ -134,6 +156,28 @@ body.light-theme {
     --surface-secondary: var(--background-secondary);
     --surface-tertiary: var(--background-tertiary);
     --border-color: var(--border);
+
+    /* Accent Color System - Light Theme */
+    --accent-gold: #b45309;
+    --accent-pink: #be185d;
+    --accent-coral: #dc2626;
+    --accent-gradient: linear-gradient(135deg, var(--accent) 0%, var(--accent-gold) 50%, var(--accent) 100%);
+    --accent-shimmer: linear-gradient(135deg,
+        var(--accent) 0%,
+        var(--accent-gold) 25%,
+        var(--accent-pink) 50%,
+        var(--accent-gold) 75%,
+        var(--accent) 100%);
+
+    /* Status Color Variants - Light Theme */
+    --success-bright: #15803d;
+    --success-muted: #16a34a;
+    --error-bright: #b91c1c;
+    --info-bright: #1d4ed8;
+
+    /* Mystical Colors - Light Theme */
+    --mystical-purple: #7c3aed;
+    --immortal-gold: #92400e;
 }
 
 /* Dark Theme Variables (Default) */

@@ -586,12 +586,7 @@ body.light-theme .debate-position h4 {
     font-family: 'Montserrat', sans-serif !important;
     font-size: 1.75rem !important;
     font-weight: 700 !important;
-    background: linear-gradient(135deg,
-        #ff5e78 0%,
-        #ffca28 25%,
-        #ff8fa3 50%,
-        #ffca28 75%,
-        #ff5e78 100%) !important;
+    background: var(--accent-shimmer) !important;
     background-size: 300% 300% !important;
     -webkit-background-clip: text !important;
     background-clip: text !important;
@@ -609,9 +604,9 @@ body.light-theme .debate-position h4 {
 /* Enhanced fallback for browsers that don't support background-clip */
 @supports not (background-clip: text) {
     .echo-title-prominent {
-        color: #ff5e78 !important;
+        color: var(--accent) !important;
         background: none !important;
-        text-shadow: 0 0 8px rgba(255, 94, 120, 0.4) !important;
+        text-shadow: 0 0 8px rgba(var(--accent-rgb, 255, 94, 120), 0.4) !important;
     }
 }
 
@@ -622,12 +617,7 @@ body.light-theme .debate-position h4 {
 
 /* Additional specificity to override any conflicting styles */
 .echo-highlight-card .echo-title-prominent {
-    background: linear-gradient(135deg,
-        #ff5e78 0%,
-        #ffca28 25%,
-        #ff8fa3 50%,
-        #ffca28 75%,
-        #ff5e78 100%) !important;
+    background: var(--accent-shimmer) !important;
     -webkit-background-clip: text !important;
     background-clip: text !important;
     color: transparent !important;
@@ -3410,8 +3400,8 @@ body .floating-buttons button.theme-toggle#themeToggle {
     background: linear-gradient(135deg,
         rgba(74, 222, 128, 0.3) 0%,
         rgba(74, 222, 128, 0.1) 100%);
-    border-color: #4ade80;
-    color: #4ade80;
+    border-color: var(--success);
+    color: var(--success);
     box-shadow: 0 4px 15px rgba(74, 222, 128, 0.3);
 }
 
@@ -3424,8 +3414,8 @@ body .floating-buttons button.theme-toggle#themeToggle {
     background: linear-gradient(135deg,
         rgba(239, 68, 68, 0.3) 0%,
         rgba(239, 68, 68, 0.1) 100%);
-    border-color: #ef4444;
-    color: #ef4444;
+    border-color: var(--error);
+    color: var(--error);
     box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
 }
 

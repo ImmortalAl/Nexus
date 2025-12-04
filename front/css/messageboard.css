@@ -400,16 +400,31 @@ section {
     transition: grid-template-columns 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* When third column is visible (details-column has display:block from JS) */
-.lyceum-grid:has(.details-column[style*="display: block"]),
-.lyceum-grid:has(.details-column[style*="display:block"]) {
+/* Fallback for older browsers: JS adds .details-visible class */
+.lyceum-grid.details-visible {
     grid-template-columns: 180px minmax(280px, 1fr) minmax(350px, 1.5fr);
 }
 
-@media (max-width: 1200px) {
+/* Modern browsers: use :has() for automatic detection */
+@supports selector(:has(*)) {
     .lyceum-grid:has(.details-column[style*="display: block"]),
     .lyceum-grid:has(.details-column[style*="display:block"]) {
+        grid-template-columns: 180px minmax(280px, 1fr) minmax(350px, 1.5fr);
+    }
+}
+
+@media (max-width: 1200px) {
+    /* Fallback class */
+    .lyceum-grid.details-visible {
         grid-template-columns: 160px 1fr 1.2fr;
+    }
+
+    /* Modern browsers */
+    @supports selector(:has(*)) {
+        .lyceum-grid:has(.details-column[style*="display: block"]),
+        .lyceum-grid:has(.details-column[style*="display:block"]) {
+            grid-template-columns: 160px 1fr 1.2fr;
+        }
     }
 }
 
@@ -417,11 +432,20 @@ section {
     .lyceum-grid {
         grid-template-columns: 180px 1fr;
     }
-    /* On tablet, show details as overlay/modal instead */
-    .lyceum-grid:has(.details-column[style*="display: block"]),
-    .lyceum-grid:has(.details-column[style*="display:block"]) {
+
+    /* Fallback class - tablet overlay */
+    .lyceum-grid.details-visible {
         grid-template-columns: 180px 1fr;
     }
+
+    /* Modern browsers - tablet overlay */
+    @supports selector(:has(*)) {
+        .lyceum-grid:has(.details-column[style*="display: block"]),
+        .lyceum-grid:has(.details-column[style*="display:block"]) {
+            grid-template-columns: 180px 1fr;
+        }
+    }
+
     .lyceum-column.details-column[style*="display: block"],
     .lyceum-column.details-column[style*="display:block"] {
         position: fixed;
@@ -2615,5 +2639,153 @@ input[type="radio"]:checked + .radio-custom::after {
     
     .proposal-card-actions {
         justify-content: center;
+    }
+}
+
+/* ==========================================================================
+   PRINT STYLES - Echoes Unbound Message Board
+   Clean, readable print output for archiving discussions
+   ========================================================================== */
+@media print {
+    /* Base print setup */
+    .lyceum-main {
+        background: white !important;
+        color: black !important;
+        padding: 0 !important;
+    }
+
+    /* Hide interactive and navigation elements */
+    .lyceum-header,
+    .categories-column,
+    .details-column,
+    .thread-actions,
+    .reply-actions,
+    .create-thread-btn,
+    .governance-actions,
+    .lyceum-footer,
+    nav,
+    header,
+    aside,
+    .active-users,
+    .modal,
+    .floating-theme-toggle,
+    .btn {
+        display: none !important;
+    }
+
+    /* Thread list layout for print */
+    .lyceum-grid {
+        display: block !important;
+        grid-template-columns: none !important;
+    }
+
+    .threads-column {
+        max-height: none !important;
+        overflow: visible !important;
+        padding: 0 !important;
+    }
+
+    /* Thread cards - clean readable format */
+    .thread-card {
+        background: white !important;
+        border: 1px solid #333 !important;
+        border-radius: 0 !important;
+        margin-bottom: 1rem !important;
+        padding: 1rem !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+        box-shadow: none !important;
+    }
+
+    .thread-card:hover {
+        transform: none !important;
+        box-shadow: none !important;
+    }
+
+    .thread-title {
+        color: black !important;
+        font-size: 1.1rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .thread-excerpt {
+        color: #333 !important;
+        font-size: 0.9rem !important;
+    }
+
+    .thread-meta {
+        color: #666 !important;
+        font-size: 0.8rem !important;
+        border-top: 1px solid #ccc !important;
+        padding-top: 0.5rem !important;
+        margin-top: 0.5rem !important;
+    }
+
+    /* Reply styling */
+    .reply {
+        border: 1px solid #ccc !important;
+        border-radius: 0 !important;
+        margin: 0.5rem 0 !important;
+        padding: 0.75rem !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+        background: #f9f9f9 !important;
+    }
+
+    .reply-author {
+        color: black !important;
+        font-weight: bold !important;
+    }
+
+    .reply-content {
+        color: #333 !important;
+    }
+
+    .reply-date {
+        color: #666 !important;
+        font-size: 0.75rem !important;
+    }
+
+    /* Governance/Proposals section */
+    .proposal-card {
+        border: 1px solid #333 !important;
+        background: white !important;
+        margin-bottom: 1rem !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    .proposal-title {
+        color: black !important;
+    }
+
+    .proposal-description {
+        color: #333 !important;
+    }
+
+    /* Page headers for print */
+    .threads-column::before {
+        content: "Echoes Unbound - Message Board Archive";
+        display: block;
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-align: center;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid black;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Links should show URL in print */
+    a[href]::after {
+        content: " (" attr(href) ")";
+        font-size: 0.75rem;
+        color: #666;
+    }
+
+    /* Don't show URL for internal/JS links */
+    a[href^="javascript"]::after,
+    a[href^="#"]::after,
+    a.thread-title::after {
+        content: none;
     }
 }

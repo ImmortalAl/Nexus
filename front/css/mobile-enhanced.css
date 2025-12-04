@@ -24,12 +24,22 @@
         padding: 12px 20px;
     }
 
-    /* Icon-only buttons */
-    button:not(:has(span)),
+    /* Icon-only buttons - fallback class */
+    button.icon-only,
     .icon-btn {
         min-width: 48px;
         min-height: 48px;
         padding: 12px;
+    }
+
+    /* Modern browsers: detect icon-only buttons automatically */
+    @supports selector(:has(*)) {
+        button:not(:has(span)):not(:has(.btn-text)),
+        .icon-btn {
+            min-width: 48px;
+            min-height: 48px;
+            padding: 12px;
+        }
     }
 
     /* Links with icons */
@@ -428,11 +438,19 @@
     }
 
     /* Show only current, prev, next, first, last */
+    /* Fallback: use .page-btn-nav class for prev/next buttons */
     .page-btn.active,
     .page-btn:first-child,
     .page-btn:last-child,
-    .page-btn:has(i) {
+    .page-btn.page-btn-nav {
         display: inline-flex;
+    }
+
+    /* Modern browsers: detect buttons with icons */
+    @supports selector(:has(*)) {
+        .page-btn:has(i) {
+            display: inline-flex;
+        }
     }
 }
 
