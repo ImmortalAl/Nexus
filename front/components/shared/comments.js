@@ -8,13 +8,53 @@ class CommentsSystem {
         this.comments = [];
         this.currentUser = JSON.parse(localStorage.getItem('user') || '{}');
         this.token = localStorage.getItem('sessionToken');
-        
+        this.maxRetries = 2; // Retry network requests up to 2 times
+
         if (!this.container) {
             console.error(`Comments container #${containerId} not found`);
             return;
         }
-        
+
         this.init();
+    }
+
+    /**
+     * Validate JWT token - checks expiration
+     */
+    isTokenValid(token) {
+        if (!token) return false;
+        try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            const decoded = JSON.parse(jsonPayload);
+            const now = Math.floor(Date.now() / 1000);
+            return decoded.exp > now && decoded.id;
+        } catch (error) {
+            console.error('[Comments] Token validation error:', error.message);
+            return false;
+        }
+    }
+
+    /**
+     * Fetch with retry logic for network errors
+     */
+    async fetchWithRetry(url, options, retries = this.maxRetries) {
+        for (let attempt = 0; attempt <= retries; attempt++) {
+            try {
+                const response = await fetch(url, options);
+                return response;
+            } catch (error) {
+                console.warn(`[Comments] Fetch attempt ${attempt + 1} failed:`, error.message);
+                if (attempt === retries) {
+                    throw error;
+                }
+                // Wait before retrying (exponential backoff: 1s, 2s)
+                await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
+            }
+        }
     }
     
     async init() {
@@ -58,16 +98,27 @@ class CommentsSystem {
                 'Content-Type': 'application/json'
             };
 
-            // Only add auth header if user is logged in
-            if (this.token) {
+            // Refresh and validate token
+            this.token = localStorage.getItem('sessionToken');
+            if (this.token && this.isTokenValid(this.token)) {
                 headers['Authorization'] = `Bearer ${this.token}`;
+            }
+
+            // Validate API configuration
+            const apiUrl = window.NEXUS_CONFIG?.API_BASE_URL;
+            if (!apiUrl) {
+                console.error('[Comments] API_BASE_URL not configured');
+                this.comments = [];
+                this.renderComments();
+                return;
             }
 
             // Ensure targetId is properly encoded in URL
             const encodedTargetId = encodeURIComponent(this.targetId);
-            const url = `${window.NEXUS_CONFIG.API_BASE_URL}/comments/${this.targetType}/${encodedTargetId}`;
+            const url = `${apiUrl}/comments/${this.targetType}/${encodedTargetId}`;
 
-            const response = await fetch(url, { headers });
+            // Use fetchWithRetry for network resilience
+            const response = await this.fetchWithRetry(url, { headers });
             
             
             if (!response.ok) {
@@ -285,8 +336,24 @@ class CommentsSystem {
         const content = inputField.value.trim();
         if (!content) return;
 
-        if (!this.token) {
-            alert('Please log in to share your eternal thoughts.');
+        // Refresh token from localStorage in case it was updated
+        this.token = localStorage.getItem('sessionToken');
+
+        // Validate token before attempting to submit
+        if (!this.token || !this.isTokenValid(this.token)) {
+            alert('Your session has expired. Please log in again to share your eternal thoughts.');
+            // Clear invalid token
+            if (this.token && !this.isTokenValid(this.token)) {
+                console.log('[Comments] Clearing expired token');
+            }
+            return;
+        }
+
+        // Validate API configuration
+        const apiUrl = window.NEXUS_CONFIG?.API_BASE_URL;
+        if (!apiUrl) {
+            console.error('[Comments] API_BASE_URL not configured');
+            alert('Configuration error. Please refresh the page and try again.');
             return;
         }
 
@@ -295,10 +362,11 @@ class CommentsSystem {
                 targetType: this.targetType,
                 targetId: this.targetId,
                 contentLength: content.length,
-                hasToken: !!this.token
+                apiUrl: apiUrl
             });
 
-            const response = await fetch(`${window.NEXUS_CONFIG.API_BASE_URL}/comments`, {
+            // Use fetchWithRetry for network resilience
+            const response = await this.fetchWithRetry(`${apiUrl}/comments`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${this.token}`,
@@ -315,13 +383,16 @@ class CommentsSystem {
                 const errorData = await response.json().catch(() => ({}));
                 console.error('[Comments] Server error:', errorData);
 
-                // Build detailed error message
-                let errorMessage = errorData.error || `HTTP ${response.status}`;
-                if (errorData.details) {
-                    errorMessage += `\nDetails: ${errorData.details}`;
+                // Handle specific error codes
+                if (response.status === 401) {
+                    alert('Your session has expired. Please log in again.');
+                    return;
                 }
-                if (errorData.validationErrors) {
-                    errorMessage += `\nValidation: ${JSON.stringify(errorData.validationErrors)}`;
+
+                // Build detailed error message
+                let errorMessage = errorData.error || `Server error (${response.status})`;
+                if (errorData.details) {
+                    errorMessage += `: ${errorData.details}`;
                 }
 
                 throw new Error(errorMessage);
@@ -331,11 +402,24 @@ class CommentsSystem {
             this.comments.unshift(newComment);
             this.renderComments();
             inputField.value = '';
+
+            // Show success feedback
+            console.log('[Comments] Comment posted successfully');
         } catch (error) {
             console.error('[Comments] Error posting comment:', error);
 
-            // Show detailed error in alert for mobile debugging
-            alert(`Failed to post comment!\n\nError: ${error.message}\n\nTarget Type: ${this.targetType}\nTarget ID: ${this.targetId}\n\nPlease screenshot this message.`);
+            // Provide user-friendly error messages
+            let userMessage = 'Failed to post comment.';
+
+            if (error.message.includes('NetworkError') || error.message.includes('Failed to fetch')) {
+                userMessage = 'Network error - the server may be temporarily unavailable. Please try again in a moment.';
+            } else if (error.message.includes('timeout')) {
+                userMessage = 'Request timed out. Please check your connection and try again.';
+            } else {
+                userMessage = `Failed to post comment: ${error.message}`;
+            }
+
+            alert(userMessage);
         }
     }
     

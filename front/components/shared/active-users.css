@@ -449,30 +449,63 @@ body.sidebar-open {
 }
 
 /* Hide active users overlay when any modal is open */
-body:has(.modal.active) .active-users-overlay {
+/* Fallback: JS adds .modal-open class to body */
+body.modal-open .active-users-overlay {
     opacity: 0 !important;
     visibility: hidden !important;
     pointer-events: none !important;
-    z-index: -1 !important; /* Move behind everything when modal is open */
+    z-index: -1 !important;
+}
+
+/* Modern browsers: use :has() */
+@supports selector(:has(*)) {
+    body:has(.modal.active) .active-users-overlay {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        z-index: -1 !important;
+    }
 }
 
 /* Hide active users sidebar when any modal is open - BEST PRACTICE for focus management */
-/* High specificity to override all other rules */
-body:has(.modal.active) aside#activeUsers.active-users,
-body:has(.modal.active) aside#activeUsers.active-users.active {
-    right: -340px !important; /* Force completely off-screen */
-    visibility: hidden !important; /* Ensure not visible */
+/* Fallback: JS adds .modal-open class to body */
+body.modal-open aside#activeUsers.active-users,
+body.modal-open aside#activeUsers.active-users.active {
+    right: -340px !important;
+    visibility: hidden !important;
     transition: right 0.3s ease !important;
-    z-index: -1 !important; /* Move behind everything */
+    z-index: -1 !important;
+}
+
+/* Modern browsers: use :has() for automatic detection */
+@supports selector(:has(*)) {
+    body:has(.modal.active) aside#activeUsers.active-users,
+    body:has(.modal.active) aside#activeUsers.active-users.active {
+        right: -340px !important;
+        visibility: hidden !important;
+        transition: right 0.3s ease !important;
+        z-index: -1 !important;
+    }
 }
 
 /* Mobile: Hide sidebar when modal is open */
 @media (max-width: 480px) {
-    body:has(.modal.active) aside#activeUsers.active-users,
-    body:has(.modal.active) aside#activeUsers.active-users.active {
-        right: -300px !important; /* Adjusted for mobile width */
+    /* Fallback class */
+    body.modal-open aside#activeUsers.active-users,
+    body.modal-open aside#activeUsers.active-users.active {
+        right: -300px !important;
         visibility: hidden !important;
         z-index: -1 !important;
+    }
+
+    /* Modern browsers */
+    @supports selector(:has(*)) {
+        body:has(.modal.active) aside#activeUsers.active-users,
+        body:has(.modal.active) aside#activeUsers.active-users.active {
+            right: -300px !important;
+            visibility: hidden !important;
+            z-index: -1 !important;
+        }
     }
 }
 

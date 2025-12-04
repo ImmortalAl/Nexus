@@ -404,6 +404,23 @@ select:focus {
 }
 
 /* ===== TOOLTIP SYSTEM ===== */
+/*
+ * ACCESSIBILITY REQUIREMENTS:
+ * For proper screen reader support, elements with data-tooltip should also have:
+ * 1. aria-describedby pointing to a visually-hidden element with the tooltip text, OR
+ * 2. aria-label attribute if the tooltip is the only text description
+ *
+ * Example HTML:
+ * <button data-tooltip="Save document" aria-label="Save document">
+ *   <i class="fas fa-save"></i>
+ * </button>
+ *
+ * OR for more complex tooltips:
+ * <button data-tooltip="Save document" aria-describedby="save-tooltip">
+ *   <i class="fas fa-save"></i>
+ * </button>
+ * <span id="save-tooltip" class="visually-hidden">Save document</span>
+ */
 
 [data-tooltip] {
     position: relative;
@@ -443,9 +460,28 @@ select:focus {
     border-top-color: rgba(255, 94, 120, 0.3);
 }
 
+/* Show tooltip on hover AND focus for keyboard accessibility */
 [data-tooltip]:hover::before,
-[data-tooltip]:hover::after {
+[data-tooltip]:hover::after,
+[data-tooltip]:focus::before,
+[data-tooltip]:focus::after,
+[data-tooltip]:focus-visible::before,
+[data-tooltip]:focus-visible::after {
     opacity: 1;
+}
+
+/* Ensure focusable elements have visible focus indicator */
+[data-tooltip]:focus-visible {
+    outline: 2px solid var(--accent, #ff5e78);
+    outline-offset: 2px;
+}
+
+/* Respect user preferences for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    [data-tooltip]::before,
+    [data-tooltip]::after {
+        transition: opacity 0.1s ease;
+    }
 }
 
 /* ===== IMMORTAL SPECIAL EFFECTS ===== */

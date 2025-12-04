@@ -3752,7 +3752,7 @@ nav a {
     justify-content: center !important;
     cursor: pointer !important;
     transition: all 0.3s ease !important;
-    z-index: 999 !important;
+    z-index: 1002 !important; /* Above .floating-buttons (1000) to prevent overlap blocking */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
 }
 

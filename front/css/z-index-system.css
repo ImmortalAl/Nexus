@@ -204,3 +204,64 @@ header {
     z-index: var(--z-base) !important;
     outline: 3px solid green !important;
 }
+
+/* ==========================================================================
+   ADDITIONAL COMPONENT Z-INDEX MAPPINGS
+   These rules consolidate hardcoded z-index values across the codebase
+   ========================================================================== */
+
+/* Featured blog cards - elevated above others */
+.blog-card.featured,
+.post-card.featured,
+.post-item-featured {
+    z-index: var(--z-elevated) !important;
+}
+
+/* Author identity cards and bylines */
+.author-identity-card,
+.byline-container {
+    z-index: var(--z-elevated) !important;
+}
+
+/* Section containers */
+.highlight-section,
+#blog,
+#echoes,
+.scroll-highlight-card,
+.echo-highlight-card {
+    z-index: var(--z-base) !important;
+}
+
+/* Blog and news specific */
+.blog-modal,
+.news-modal,
+.chronicle-modal {
+    z-index: var(--z-modal) !important;
+}
+
+/* Autocomplete and search dropdowns */
+.autocomplete-results,
+.search-results,
+.search-dropdown {
+    z-index: var(--z-dropdown) !important;
+}
+
+/* Mindmap specific */
+.mindmap-container {
+    z-index: var(--z-base) !important;
+}
+
+.mindmap-modal {
+    z-index: var(--z-modal) !important;
+}
+
+/* Democracy/Governance modals */
+.democracy-modal,
+.proposal-modal {
+    z-index: var(--z-modal) !important;
+}
+
+/* Legacy owls animation - kept at high z-index */
+.owl-animation {
+    z-index: var(--z-notification) !important;
+}
