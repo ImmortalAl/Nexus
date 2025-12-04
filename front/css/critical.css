@@ -200,14 +200,14 @@ header {
     top: 0;
     left: 0;
     right: 0;
-    z-index: 2500;
+    /* Use z-index system variable, fallback to high value for dropdowns */
+    z-index: var(--z-header, 500);
     min-height: var(--header-height, 70px);
     width: 100%;
     margin-left: 0;
     box-sizing: border-box;
-    overflow-x: hidden; /* Prevent horizontal overflow */
-    overflow-y: visible; /* Allow vertical overflow for dropdowns */
-    overflow: visible !important; /* Force visible overflow */
+    /* Allow dropdown overflow while preventing horizontal page overflow */
+    overflow: visible;
     height: auto !important; /* Ensure height adjusts automatically */
 }
 
