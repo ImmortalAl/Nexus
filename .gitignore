@@ -54,4 +54,7 @@ temp/
 
 # Trashed/temporary screenshot files
 .trashed-*
-*/.trashed-* 
+*/.trashed-*
+
+# Design audit generated output
+design-audit-results/
