@@ -1506,32 +1506,7 @@ body.light-theme .reply::before {
     line-height: 1.5;
 }
 
-/* Thread Improvements */
-.thread-preview {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    line-height: 1.4;
-    margin-bottom: 0.5rem;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-}
-
-.thread-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    margin-bottom: 0.5rem;
-}
-
-.thread-meta span {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-}
+/* Thread Improvements - consolidated with Enhanced Thread section above */
 
 .category-tag {
     background: linear-gradient(135deg, var(--accent), rgba(139, 92, 246, 0.8));
@@ -2788,4 +2763,132 @@ input[type="radio"]:checked + .radio-custom::after {
     a.thread-title::after {
         content: none;
     }
+}
+
+/* ============================================================================
+   UX IMPROVEMENTS - Messageboard Enhancements
+   ============================================================================ */
+
+/* Thread Card Click Hint - shows clickability */
+.thread {
+    cursor: pointer;
+}
+
+.thread::after {
+    content: '';
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid var(--text-muted);
+    border-bottom: 2px solid var(--text-muted);
+    transform: translateY(-50%) rotate(-45deg);
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.thread:hover::after {
+    opacity: 0.6;
+    transform: translateY(-50%) rotate(-45deg) translateX(3px);
+}
+
+/* Column 3 Close Button Improvements */
+.close-thread-btn {
+    min-width: 80px;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Visual indicator when thread detail is open */
+.lyceum-grid.details-visible .threads-column {
+    position: relative;
+}
+
+.lyceum-grid.details-visible .threads-column::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -8px;
+    width: 3px;
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    opacity: 0.5;
+}
+
+/* Mobile Category Improvements */
+@media (max-width: 768px) {
+    /* Show abbreviated labels on mobile instead of hiding completely */
+    .categories-column .category-link {
+        flex-direction: column;
+        gap: 0.25rem;
+        text-align: center;
+        padding: 0.75rem 0.5rem;
+    }
+
+    .categories-column .category-name {
+        display: block;
+        font-size: 0.65rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 60px;
+    }
+
+    /* Better touch targets */
+    .categories-column .category-link {
+        min-height: 60px;
+        min-width: 60px;
+    }
+
+    /* Thread detail overlay header */
+    .details-column .active-thread-header {
+        position: sticky;
+        top: 0;
+        background: inherit;
+        z-index: 10;
+        padding: 1rem;
+        border-bottom: 1px solid rgba(255, 94, 120, 0.2);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .details-column .active-thread-header::before {
+        content: 'Thread Details';
+        font-weight: 600;
+        color: var(--accent);
+        font-family: 'Cinzel', serif;
+    }
+
+    /* Full-width close button on mobile */
+    .details-column .close-thread-btn {
+        min-width: 100px;
+    }
+}
+
+/* Accessibility: Focus states */
+.thread:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.category-link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+/* Empty state improvements */
+.thread-list:empty::before {
+    content: 'No threads found. Be the first to start a conversation!';
+    display: block;
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--text-muted);
+    font-style: italic;
 }
