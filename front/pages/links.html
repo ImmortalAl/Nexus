@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Eternal Gateways: Community-curated links and resources in the Immortal Nexus.">
+    <meta name="theme-color" content="#0d0d1a">
+    <title>Eternal Gateways - Immortal Nexus</title>
+
+    <!-- Immortal-themed favicon -->
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="apple-touch-icon" href="../favicon.svg">
+
+    <!-- 1. BASE THEME & CRITICAL STYLES -->
+    <link rel="stylesheet" href="../css/base-theme.css?v=1.0">
+    <link rel="stylesheet" href="../css/light-theme-immortal.css?v=1.0">
+    <link rel="stylesheet" href="../css/mobile-enhanced.css?v=1.0">
+
+    <!-- Z-INDEX SYSTEM - Centralized layering control -->
+    <link rel="stylesheet" href="../css/z-index-system.css?v=1.2">
+    <link rel="stylesheet" href="../css/critical.css?v=7.1">
+
+    <!-- 2. EXTERNAL RESOURCES -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+    <!-- 3. CORE GLOBAL STYLES -->
+    <link rel="stylesheet" href="../css/styles.css?v=6.3">
+    <link rel="stylesheet" href="../css/notifications.css?v=1.0">
+
+    <!-- 4. FEATURES & SHARED COMPONENTS -->
+    <link rel="stylesheet" href="../css/features.css?v=8.6">
+    <link rel="stylesheet" href="../components/shared/styles.css?v=6.3">
+
+    <!-- 4.5. COMPONENT SYSTEMS -->
+    <link rel="stylesheet" href="../css/components/buttons.css?v=1.1">
+    <link rel="stylesheet" href="../css/components/spinners.css?v=1.0">
+    <link rel="stylesheet" href="../css/unified-modals.css?v=2.0">
+    <link rel="stylesheet" href="../css/viewport-optimizations.css?v=1.2">
+
+    <!-- 5. PAGE-SPECIFIC FEATURES -->
+    <link rel="stylesheet" href="../components/shared/active-users.css?v=2.1">
+
+    <!-- 6. PAGE-SPECIFIC STYLES -->
+    <link rel="stylesheet" href="../css/links.css?v=1.0">
+
+    <!-- Fonts (lazy loaded) -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap"></noscript>
+</head>
+<body>
+    <!-- Active Users Sidebar, Floating Buttons, and Message Modal will be dynamically injected by shared components -->
+
+    <header>
+        <!-- SHARED_HEADER -->
+    </header>
+
+    <main class="links-main container">
+        <!-- Page Header -->
+        <section class="links-header">
+            <h1 class="links-title">
+                <i class="fas fa-portal-exit"></i>
+                Eternal Gateways
+            </h1>
+            <p class="links-subtitle">Community-curated pathways to realms of knowledge and creation</p>
+
+            <div class="links-controls">
+                <div class="links-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="linkSearch" placeholder="Search gateways...">
+                </div>
+                <button class="btn btn-primary" id="submitLinkBtn">
+                    <i class="fas fa-plus"></i> Submit Gateway
+                </button>
+            </div>
+        </section>
+
+        <!-- Pending Links Notice (for logged-in users) -->
+        <section class="pending-notice" id="pendingNotice" style="display: none;">
+            <i class="fas fa-clock"></i>
+            <span><strong id="pendingCount">0</strong> gateways await community approval</span>
+            <button class="btn btn-sm btn-secondary" id="viewPendingBtn">Review</button>
+        </section>
+
+        <!-- Category Filters -->
+        <section class="category-filters">
+            <button class="category-filter active" data-category="all">
+                <i class="fas fa-globe"></i> All Gateways
+            </button>
+            <button class="category-filter" data-category="knowledge">
+                <i class="fas fa-book"></i> Knowledge & Learning
+            </button>
+            <button class="category-filter" data-category="philosophy">
+                <i class="fas fa-brain"></i> Philosophy & Thought
+            </button>
+            <button class="category-filter" data-category="technology">
+                <i class="fas fa-microchip"></i> Technology & Tools
+            </button>
+            <button class="category-filter" data-category="creative">
+                <i class="fas fa-palette"></i> Creative & Arts
+            </button>
+            <button class="category-filter" data-category="community">
+                <i class="fas fa-handshake"></i> Community Partners
+            </button>
+            <button class="category-filter" data-category="reading">
+                <i class="fas fa-bookmark"></i> Recommended Reading
+            </button>
+        </section>
+
+        <!-- Links Grid -->
+        <section class="links-grid" id="linksGrid">
+            <div class="loading-state">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Opening the gateways...</p>
+            </div>
+        </section>
+
+        <!-- Empty State -->
+        <section class="empty-state" id="emptyState" style="display: none;">
+            <i class="fas fa-door-open"></i>
+            <h3>No Gateways Found</h3>
+            <p>Be the first to share a pathway to knowledge.</p>
+            <button class="btn btn-primary" id="emptySubmitBtn">
+                <i class="fas fa-plus"></i> Submit the First Gateway
+            </button>
+        </section>
+    </main>
+
+    <!-- Submit Link Modal -->
+    <div id="submitLinkModal" class="modal" aria-hidden="true">
+        <div class="modal-content" role="dialog" aria-labelledby="submitLinkTitle">
+            <div class="modal-header">
+                <h3 id="submitLinkTitle"><i class="fas fa-link"></i> Submit a Gateway</h3>
+                <button class="modal-close" id="closeSubmitModal" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="submitLinkForm">
+                    <div class="form-group">
+                        <label for="linkUrl">
+                            <i class="fas fa-globe"></i> URL <span class="required">*</span>
+                        </label>
+                        <input type="url" id="linkUrl" name="url" placeholder="https://example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="linkTitle">
+                            <i class="fas fa-heading"></i> Title <span class="required">*</span>
+                        </label>
+                        <input type="text" id="linkTitle" name="title" placeholder="Name of the resource" maxlength="100" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="linkDescription">
+                            <i class="fas fa-align-left"></i> Description <span class="required">*</span>
+                        </label>
+                        <textarea id="linkDescription" name="description" placeholder="Brief description of what this resource offers..." maxlength="200" rows="3" required></textarea>
+                        <span class="char-count"><span id="descCharCount">0</span>/200</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="linkCategory">
+                            <i class="fas fa-folder"></i> Category <span class="required">*</span>
+                        </label>
+                        <select id="linkCategory" name="category" required>
+                            <option value="">Select a category...</option>
+                            <option value="knowledge">Knowledge & Learning</option>
+                            <option value="philosophy">Philosophy & Thought</option>
+                            <option value="technology">Technology & Tools</option>
+                            <option value="creative">Creative & Arts</option>
+                            <option value="community">Community Partners</option>
+                            <option value="reading">Recommended Reading</option>
+                        </select>
+                    </div>
+
+                    <div class="form-info">
+                        <i class="fas fa-info-circle"></i>
+                        <p>Submitted gateways require <strong>3 community approvals</strong> before appearing publicly. No adult content permitted.</p>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="cancelSubmit">Cancel</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Submit Gateway
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending Links Modal -->
+    <div id="pendingLinksModal" class="modal" aria-hidden="true">
+        <div class="modal-content modal-lg" role="dialog" aria-labelledby="pendingLinksTitle">
+            <div class="modal-header">
+                <h3 id="pendingLinksTitle"><i class="fas fa-clock"></i> Pending Gateways</h3>
+                <button class="modal-close" id="closePendingModal" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="pending-info">Vote to approve gateways. Each link needs 3 approvals to go live.</p>
+                <div id="pendingLinksList" class="pending-links-list">
+                    <!-- Pending links will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Immortal Nexus Components -->
+    <script src="../components/shared/config.js?v=2.0"></script>
+    <script src="../components/shared/apiClient.js?v=2.0"></script>
+    <script src="../components/shared/authManager.js?v=2.0"></script>
+    <script src="../components/shared/nexus-core.js?v=1.5"></script>
+    <script src="../components/shared/themeManager.js?v=2.2"></script>
+    <script src="../components/shared/navigation.js?v=2.7"></script>
+    <script src="../components/shared/userMenu.js?v=7.4"></script>
+    <script src="../components/shared/authModal.js?v=4.4"></script>
+    <script src="../components/shared/activeUsers.js?v=1.8"></script>
+    <script src="../components/shared/messageModal.js?v=6.9"></script>
+
+    <!-- Notification System -->
+    <script src="../components/shared/notificationManager.js?v=1.1"></script>
+    <script src="../components/shared/notificationIcon.js?v=1.2"></script>
+    <script src="../components/shared/governanceIndicator.js?v=1.0"></script>
+
+    <!-- Page-specific JavaScript -->
+    <script src="../js/links.js?v=1.0"></script>
+</body>
+</html>

@@ -23,6 +23,7 @@ const debugRoutes = require('./routes/debug');
 const errorsRoutes = require('./routes/errors');
 const pollRoutes = require('./routes/polls');
 const notificationRoutes = require('./routes/notifications');
+const linksRoutes = require('./routes/links');
 const cors = require('cors');
 const http = require('http');
 const WebSocketManager = require('./websocket');
@@ -115,6 +116,7 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/debug', debugRoutes);
 app.use('/api/errors', errorsRoutes);
 app.use('/api/poll', pollRoutes);
+app.use('/api/links', linksRoutes);
 app.use('/api', owlRoutes);
 
 // --- Test & Health Routes ---
