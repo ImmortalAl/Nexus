@@ -355,8 +355,20 @@ router.get('/proposals', async (req, res) => {
 
         const total = await Proposal.countDocuments(query);
 
+        // Add computed fields for frontend
+        const proposalsWithVirtuals = proposals.map(p => {
+            const obj = p.toObject({ virtuals: true });
+            return {
+                ...obj,
+                isVotingActive: p.isVotingActive,
+                hasPassed: p.hasPassed,
+                approvalPercentage: p.approvalPercentage,
+                totalVotes: p.totalVotes
+            };
+        });
+
         res.json({
-            proposals,
+            proposals: proposalsWithVirtuals,
             pagination: {
                 page: parseInt(page),
                 pages: Math.ceil(total / limit),
@@ -395,8 +407,15 @@ router.get('/proposals/:id', async (req, res) => {
             userVote = await Vote.hasUserVoted(proposal._id, req.user.id);
         }
 
+        // Include virtual fields for frontend
         res.json({
-            ...proposal.toObject(),
+            proposal: {
+                ...proposal.toObject({ virtuals: true }),
+                isVotingActive: proposal.isVotingActive,
+                hasPassed: proposal.hasPassed,
+                approvalPercentage: proposal.approvalPercentage,
+                totalVotes: proposal.totalVotes
+            },
             userVote
         });
         
