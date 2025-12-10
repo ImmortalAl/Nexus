@@ -1,4 +1,5 @@
-// index.js
+// index.js - Immortal Nexus Backend
+// Last deployment trigger: 2025-12-10
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');

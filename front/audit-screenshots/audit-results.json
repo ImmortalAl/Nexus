@@ -1,0 +1,499 @@
+{
+  "timestamp": "2025-12-10T11:05:54.543Z",
+  "pages": [
+    {
+      "name": "home",
+      "url": "https://immortal.nexus/",
+      "status": 200,
+      "loadTime": 2272,
+      "errors": [],
+      "warnings": [],
+      "consoleMessages": [
+        {
+          "type": "log",
+          "text": "[Logger] Structured logging system initialized ✓"
+        },
+        {
+          "type": "log",
+          "text": "[ErrorBoundary] System initialized ✓"
+        },
+        {
+          "type": "log",
+          "text": "[Navigation] Attempting to initialize notification icon..."
+        },
+        {
+          "type": "log",
+          "text": "[Navigation] Calling window.NEXUS.initNotificationIcon()"
+        }
+      ],
+      "networkErrors": [],
+      "missingImages": [],
+      "brokenLinks": [],
+      "accessibility": []
+    },
+    {
+      "name": "lander",
+      "url": "https://immortal.nexus/lander.html",
+      "status": 200,
+      "loadTime": 1653,
+      "errors": [],
+      "warnings": [
+        "[ThemeManager] No theme toggle buttons found!",
+        "[ThemeManager] No theme toggle buttons found!"
+      ],
+      "consoleMessages": [
+        {
+          "type": "warning",
+          "text": "[ThemeManager] No theme toggle buttons found!"
+        },
+        {
+          "type": "log",
+          "text": "[Navigation] Attempting to initialize notification icon..."
+        },
+        {
+          "type": "log",
+          "text": "[Navigation] Calling window.NEXUS.initNotificationIcon()"
+        },
+        {
+          "type": "warning",
+          "text": "[ThemeManager] No theme toggle buttons found!"
+        }
+      ],
+      "networkErrors": [],
+      "missingImages": [],
+      "brokenLinks": [],
+      "accessibility": []
+    },
+    {
+      "name": "messageboard",
+      "url": "https://immortal.nexus/pages/messageboard.html",
+      "status": 200,
+      "loadTime": 1793,
+      "errors": [
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "warnings": [
+        "[ThemeManager] No theme toggle buttons found!",
+        "[ThemeManager] No theme toggle buttons found!"
+      ],
+      "consoleMessages": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()"
+        },
+        {
+          "type": "warning",
+          "text": "[ThemeManager] No theme toggle buttons found!"
+        },
+        {
+          "type": "log",
+          "text": "[Navigation] Attempting to initialize notification icon..."
+        },
+        {
+          "type": "log",
+          "text": "[Navigation] Calling window.NEXUS.initNotificationIcon()"
+        },
+        {
+          "type": "warning",
+          "text": "[ThemeManager] No theme toggle buttons found!"
+        }
+      ],
+      "networkErrors": [
+        {
+          "url": "https://immortal.nexus/pages/components/shared/governanceIndicator.js?v=1.0",
+          "failure": "net::ERR_ABORTED"
+        }
+      ],
+      "missingImages": [],
+      "brokenLinks": [],
+      "accessibility": []
+    },
+    {
+      "name": "news",
+      "url": "https://immortal.nexus/pages/news.html",
+      "status": 200,
+      "loadTime": 1214,
+      "errors": [
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "warnings": [
+        "[ThemeManager] No theme toggle buttons found!",
+        "[ThemeManager] No theme toggle buttons found!",
+        "[ThemeManager] No theme toggle buttons found!"
+      ],
+      "consoleMessages": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()"
+        },
+        {
+          "type": "log",
+          "text": "[Logger] Structured logging system initialized ✓"
+        },
+        {
+          "type": "log",
+          "text": "[ErrorBoundary] System initialized ✓"
+        },
+        {
+          "type": "warning",
+          "text": "[ThemeManager] No theme toggle buttons found!"
+        },
+        {
+          "type": "log",
+          "text": "[Navigation] Attempting to initialize notification icon..."
+        },
+        {
+          "type": "log",
+          "text": "[Navigation] Calling window.NEXUS.initNotificationIcon()"
+        },
+        {
+          "type": "warning",
+          "text": "[ThemeManager] No theme toggle buttons found!"
+        },
+        {
+          "type": "warning",
+          "text": "[ThemeManager] No theme toggle buttons found!"
+        }
+      ],
+      "networkErrors": [
+        {
+          "url": "https://immortal.nexus/pages/components/shared/governanceIndicator.js?v=1.0",
+          "failure": "net::ERR_ABORTED"
+        }
+      ],
+      "missingImages": [],
+      "brokenLinks": [],
+      "accessibility": []
+    },
+    {
+      "name": "blog",
+      "url": "https://immortal.nexus/pages/blog.html",
+      "status": 200,
+      "loadTime": 2418,
+      "errors": [
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "warnings": [
+        "[ThemeManager] No theme toggle buttons found!",
+        "[ThemeManager] No theme toggle buttons found!"
+      ],
+      "consoleMessages": [
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()"
+        },
+        {
+          "type": "log",
+          "text": "[Logger] Structured logging system initialized ✓"
+        },
+        {
+          "type": "log",
+          "text": "[ErrorBoundary] System initialized ✓"
+        },
+        {
+          "type": "log",
+          "text": "[Blog] Blog system module loaded ✓"
+        },
+        {
+          "type": "log",
+          "text": "[Blog] DOM loaded, initializing..."
+        },
+        {
+          "type": "log",
+          "text": "[Blog] Initializing Immortal Nexus Blog System..."
+        },
+        {
+          "type": "log",
+          "text": "[Blog] All required modules loaded ✓"
+        },
+        {
+          "type": "log",
+          "text": "[BlogUI] Initializing..."
+        },
+        {
+          "type": "warning",
+          "text": "[ThemeManager] No theme toggle buttons found!"
+        },
+        {
+          "type": "log",
+          "text": "[Navigation] Attempting to initialize notification icon..."
+        },
+        {
+          "type": "log",
+          "text": "[Navigation] Calling window.NEXUS.initNotificationIcon()"
+        },
+        {
+          "type": "warning",
+          "text": "[ThemeManager] No theme toggle buttons found!"
+        },
+        {
+          "type": "log",
+          "text": "[Blog] Blog system initialized successfully"
+        }
+      ],
+      "networkErrors": [
+        {
+          "url": "https://immortal.nexus/pages/components/shared/governanceIndicator.js?v=1.0",
+          "failure": "net::ERR_ABORTED"
+        }
+      ],
+      "missingImages": [],
+      "brokenLinks": [],
+      "accessibility": []
+    },
+    {
+      "name": "souls",
+      "url": "https://immortal.nexus/souls/",
+      "status": 200,
+      "loadTime": 1285,
+      "errors": [
+        "[ErrorBoundary] Global Error: SyntaxError: Unexpected token '<' {filename: https://immortal.nexus/souls/components/shared/governanceIndicator.js?v=1.0, lineno: 1, colno: 1}"
+      ],
+      "warnings": [
+        "[ThemeManager] No theme toggle buttons found!",
+        "[ThemeManager] No theme toggle buttons found!"
+      ],
+      "consoleMessages": [
+        {
+          "type": "log",
+          "text": "[Logger] Structured logging system initialized ✓"
+        },
+        {
+          "type": "log",
+          "text": "[ErrorBoundary] System initialized ✓"
+        },
+        {
+          "type": "error",
+          "text": "[ErrorBoundary] Global Error: SyntaxError: Unexpected token '<' {filename: https://immortal.nexus/souls/components/shared/governanceIndicator.js?v=1.0, lineno: 1, colno: 1}"
+        },
+        {
+          "type": "warning",
+          "text": "[ThemeManager] No theme toggle buttons found!"
+        },
+        {
+          "type": "log",
+          "text": "[Navigation] Attempting to initialize notification icon..."
+        },
+        {
+          "type": "log",
+          "text": "[Navigation] Calling window.NEXUS.initNotificationIcon()"
+        },
+        {
+          "type": "warning",
+          "text": "[ThemeManager] No theme toggle buttons found!"
+        }
+      ],
+      "networkErrors": [],
+      "missingImages": [],
+      "brokenLinks": [],
+      "accessibility": []
+    },
+    {
+      "name": "links",
+      "url": "https://immortal.nexus/pages/links.html",
+      "status": 200,
+      "loadTime": 1095,
+      "errors": [
+        "Failed to load resource: the server responded with a status of 404 ()",
+        "[API Client] Non-JSON Error Response (404): <!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<title>Error</title>\n</head>\n<body>\n<pre>Cannot GET /api/links</pre>\n</body>\n</html>\n",
+        "Failed to load links: Error: HTTP error! Status: 404\n    at Object.request (https://immortal.nexus/components/shared/apiClient.js?v=2.0:139:31)\n    at async loadLinks (https://immortal.nexus/js/links.js?v=1.0:105:30)"
+      ],
+      "warnings": [
+        "[ThemeManager] No theme toggle buttons found!",
+        "[ThemeManager] No theme toggle buttons found!"
+      ],
+      "consoleMessages": [
+        {
+          "type": "warning",
+          "text": "[ThemeManager] No theme toggle buttons found!"
+        },
+        {
+          "type": "log",
+          "text": "[Navigation] Attempting to initialize notification icon..."
+        },
+        {
+          "type": "log",
+          "text": "[Navigation] Calling window.NEXUS.initNotificationIcon()"
+        },
+        {
+          "type": "warning",
+          "text": "[ThemeManager] No theme toggle buttons found!"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load resource: the server responded with a status of 404 ()"
+        },
+        {
+          "type": "error",
+          "text": "[API Client] Non-JSON Error Response (404): <!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<title>Error</title>\n</head>\n<body>\n<pre>Cannot GET /api/links</pre>\n</body>\n</html>\n"
+        },
+        {
+          "type": "error",
+          "text": "Failed to load links: Error: HTTP error! Status: 404\n    at Object.request (https://immortal.nexus/components/shared/apiClient.js?v=2.0:139:31)\n    at async loadLinks (https://immortal.nexus/js/links.js?v=1.0:105:30)"
+        }
+      ],
+      "networkErrors": [],
+      "missingImages": [],
+      "brokenLinks": [],
+      "accessibility": []
+    },
+    {
+      "name": "manifesto",
+      "url": "https://immortal.nexus/pages/manifesto.html",
+      "status": 200,
+      "loadTime": 722,
+      "errors": [],
+      "warnings": [],
+      "consoleMessages": [],
+      "networkErrors": [],
+      "missingImages": [],
+      "brokenLinks": [],
+      "accessibility": []
+    },
+    {
+      "name": "celestial-commons",
+      "url": "https://immortal.nexus/pages/celestial-commons.html",
+      "status": 200,
+      "loadTime": 3352,
+      "errors": [
+        "[Navigation] window.NEXUS.initNotificationIcon not found! {initThemeManager: , ThemeManager: , AuthManager: AuthManager, initNavigation: , injectNavigation: }"
+      ],
+      "warnings": [
+        "[ThemeManager] No theme toggle buttons found!",
+        "[ThemeManager] No theme toggle buttons found!"
+      ],
+      "consoleMessages": [
+        {
+          "type": "log",
+          "text": "[Logger] Structured logging system initialized ✓"
+        },
+        {
+          "type": "log",
+          "text": "[ErrorBoundary] System initialized ✓"
+        },
+        {
+          "type": "warning",
+          "text": "[ThemeManager] No theme toggle buttons found!"
+        },
+        {
+          "type": "log",
+          "text": "[Navigation] Attempting to initialize notification icon..."
+        },
+        {
+          "type": "error",
+          "text": "[Navigation] window.NEXUS.initNotificationIcon not found! {initThemeManager: , ThemeManager: , AuthManager: AuthManager, initNavigation: , injectNavigation: }"
+        },
+        {
+          "type": "warning",
+          "text": "[ThemeManager] No theme toggle buttons found!"
+        },
+        {
+          "type": "log",
+          "text": "[Celestial Commons] Iframe loaded successfully"
+        }
+      ],
+      "networkErrors": [],
+      "missingImages": [],
+      "brokenLinks": [],
+      "accessibility": []
+    },
+    {
+      "name": "mindmap",
+      "url": "https://immortal.nexus/pages/mindmap.html",
+      "status": 200,
+      "loadTime": 1388,
+      "errors": [
+        "[Navigation] window.NEXUS.initNotificationIcon not found! {initThemeManager: , ThemeManager: , AuthManager: AuthManager, initNavigation: , injectNavigation: }"
+      ],
+      "warnings": [
+        "You have set a custom wheel sensitivity.  This will make your app zoom unnaturally when using mainstream mice.  You should change this value from the default only if you can guarantee that all your users will use the same hardware and OS configuration as your current machine.",
+        "[ThemeManager] No theme toggle buttons found!",
+        "[ThemeManager] No theme toggle buttons found!"
+      ],
+      "consoleMessages": [
+        {
+          "type": "log",
+          "text": "[Logger] Structured logging system initialized ✓"
+        },
+        {
+          "type": "log",
+          "text": "[ErrorBoundary] System initialized ✓"
+        },
+        {
+          "type": "warning",
+          "text": "You have set a custom wheel sensitivity.  This will make your app zoom unnaturally when using mainstream mice.  You should change this value from the default only if you can guarantee that all your users will use the same hardware and OS configuration as your current machine."
+        },
+        {
+          "type": "warning",
+          "text": "[ThemeManager] No theme toggle buttons found!"
+        },
+        {
+          "type": "log",
+          "text": "[Navigation] Attempting to initialize notification icon..."
+        },
+        {
+          "type": "error",
+          "text": "[Navigation] window.NEXUS.initNotificationIcon not found! {initThemeManager: , ThemeManager: , AuthManager: AuthManager, initNavigation: , injectNavigation: }"
+        },
+        {
+          "type": "warning",
+          "text": "[ThemeManager] No theme toggle buttons found!"
+        }
+      ],
+      "networkErrors": [],
+      "missingImages": [],
+      "brokenLinks": [],
+      "accessibility": []
+    },
+    {
+      "name": "scrolls-archive",
+      "url": "https://immortal.nexus/pages/scrolls-archive.html",
+      "status": 200,
+      "loadTime": 1744,
+      "errors": [
+        "[Navigation] window.NEXUS.initNotificationIcon not found! {initThemeManager: , ThemeManager: , AuthManager: AuthManager, initAuthModal: , openSoulModal: }"
+      ],
+      "warnings": [
+        "[ThemeManager] No theme toggle buttons found!",
+        "[ThemeManager] No theme toggle buttons found!"
+      ],
+      "consoleMessages": [
+        {
+          "type": "log",
+          "text": "[Logger] Structured logging system initialized ✓"
+        },
+        {
+          "type": "log",
+          "text": "[ErrorBoundary] System initialized ✓"
+        },
+        {
+          "type": "warning",
+          "text": "[ThemeManager] No theme toggle buttons found!"
+        },
+        {
+          "type": "log",
+          "text": "[Navigation] Attempting to initialize notification icon..."
+        },
+        {
+          "type": "error",
+          "text": "[Navigation] window.NEXUS.initNotificationIcon not found! {initThemeManager: , ThemeManager: , AuthManager: AuthManager, initAuthModal: , openSoulModal: }"
+        },
+        {
+          "type": "warning",
+          "text": "[ThemeManager] No theme toggle buttons found!"
+        }
+      ],
+      "networkErrors": [],
+      "missingImages": [],
+      "brokenLinks": [],
+      "accessibility": []
+    }
+  ],
+  "issues": [],
+  "summary": {
+    "totalPages": 11,
+    "pagesWithErrors": 8,
+    "pagesWithNetworkErrors": 3,
+    "averageLoadTime": 1721
+  }
+}
