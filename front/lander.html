@@ -1046,7 +1046,7 @@
         .quick-actions-bar {
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: var(--z-dropdown, 100); /* Use centralized z-index system */
             background: linear-gradient(135deg, var(--secondary, #1a1a33) 0%, var(--primary, #0d0d1a) 100%);
             border-bottom: 1px solid rgba(255, 94, 120, 0.2);
             padding: 0.75rem 1rem;
@@ -1218,7 +1218,7 @@
             border-top-right-radius: 20px;
             transform: translateY(100%);
             transition: transform 0.3s ease;
-            z-index: 200;
+            z-index: var(--z-tooltip, 200); /* Use centralized z-index system */
             box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3);
         }
         
@@ -1350,7 +1350,7 @@
             background: var(--gradient-secondary, linear-gradient(to bottom, #1a1a33, rgba(26, 26, 51, 0.9)));
             border: 1px solid var(--accent, #ff5e78);
             border-radius: 12px;
-            z-index: 1000;
+            z-index: var(--z-overlay, 1000); /* Use centralized z-index system */
             animation: slideUp 0.3s ease;
         }
         
@@ -1461,7 +1461,7 @@
                 right: 1rem;
                 font-size: 2rem;
                 padding: 0.75rem;
-                z-index: 100000 !important;
+                z-index: var(--z-modal-inner, 5100) !important; /* Use centralized z-index - must be above modal */
                 background: rgba(0, 0, 0, 0.8) !important;
                 border-radius: 50%;
                 width: 48px;
@@ -1471,12 +1471,12 @@
                 justify-content: center;
                 border: 2px solid var(--accent, #ff5e78) !important;
             }
-            
+
             .soul-tabs {
                 position: sticky;
                 top: 0;
                 background: linear-gradient(135deg, var(--secondary, #1a1a33) 0%, var(--primary, #0d0d1a) 100%);
-                z-index: 5;
+                z-index: var(--z-float, 3); /* Use centralized z-index */
                 margin: 0 -1rem 1rem;
                 padding: 1rem;
                 flex-wrap: nowrap;
@@ -1876,8 +1876,8 @@
                     <h2 id="eternalName">Eternal Seeker</h2>
                     <div class="soul-whisper-container">
                         <p id="soulWhisper" class="soul-whisper editable" contenteditable="false">Click to set your soul whisper...</p>
-                        <button id="editWhisperBtn" class="edit-whisper-btn" title="Edit Soul Whisper">
-                            <i class="fas fa-edit"></i>
+                        <button id="editWhisperBtn" class="edit-whisper-btn" title="Edit Soul Whisper" aria-label="Edit soul whisper">
+                            <i class="fas fa-edit" aria-hidden="true"></i>
                         </button>
                     </div>
                 </div>
@@ -1887,12 +1887,12 @@
         <!-- Essence Chamber -->
         <section class="essence-chamber">
             <div class="essence-actions">
-                <button id="viewSoulEssenceBtn" class="btn btn-primary">
-                    <i class="fas fa-eye"></i>
+                <button id="viewSoulEssenceBtn" class="btn btn-primary" aria-label="View your soul essence profile">
+                    <i class="fas fa-eye" aria-hidden="true"></i>
                     View Soul Essence
                 </button>
-                <button id="cultivateEssenceBtn" class="btn btn-secondary">
-                    <i class="fas fa-edit"></i>
+                <button id="cultivateEssenceBtn" class="btn btn-secondary" aria-label="Edit your soul essence profile">
+                    <i class="fas fa-edit" aria-hidden="true"></i>
                     Cultivate Essence
                 </button>
             </div>
@@ -1902,19 +1902,19 @@
         <section class="inscription-forge collapsed">
             <div class="forge-header">
                 <h2>Inscription Forge</h2>
-                <div class="forge-tabs">
-                    <button class="forge-tab active" data-type="scroll">
-                        <i class="fas fa-scroll"></i>
+                <div class="forge-tabs" role="tablist" aria-label="Content type selection">
+                    <button class="forge-tab active" data-type="scroll" role="tab" aria-selected="true" aria-label="Write a scroll post">
+                        <i class="fas fa-scroll" aria-hidden="true"></i>
                         Inscribe Scroll
                     </button>
-                    <button class="forge-tab" data-type="chronicle">
-                        <i class="fas fa-newspaper"></i>
+                    <button class="forge-tab" data-type="chronicle" role="tab" aria-selected="false" aria-label="Write a news chronicle">
+                        <i class="fas fa-newspaper" aria-hidden="true"></i>
                         Chronicle News
                     </button>
                 </div>
-                <button id="toggleForgeBtn" class="toggle-forge-btn" title="Expand/Collapse Editor">
+                <button id="toggleForgeBtn" class="toggle-forge-btn" title="Expand/Collapse Editor" aria-expanded="false" aria-controls="forgeContent" aria-label="Toggle editor visibility">
                     <span class="toggle-text">Editor</span>
-                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chevron-down" aria-hidden="true"></i>
                 </button>
             </div>
             <div class="forge-content" id="forgeContent">
@@ -1930,8 +1930,8 @@
                         <option value="" disabled selected>Slumbering Scrolls</option>
                         <!-- Drafts will be populated here -->
                     </select>
-                    <button id="saveDraftButton" class="btn btn-secondary">Save to Slumber</button>
-                    <button id="publishButton" class="btn btn-primary">Eternalize</button>
+                    <button id="saveDraftButton" class="btn btn-secondary" aria-label="Save post as draft">Save to Slumber</button>
+                    <button id="publishButton" class="btn btn-primary" aria-label="Publish post">Eternalize</button>
                 </div>
             </div>
         </section>
@@ -1940,16 +1940,16 @@
         <section class="recent-scrolls">
             <div class="section-header">
                 <h2>Recent Scrolls</h2>
-                <a href="/pages/blog.html?filter=mine" class="witness-all-link">
+                <a href="/pages/blog.html?filter=mine" class="witness-all-link" aria-label="View all your published scrolls">
                     Witness All Scrolls
-                    <i class="fas fa-arrow-right"></i>
+                    <i class="fas fa-arrow-right" aria-hidden="true"></i>
                 </a>
             </div>
             <div class="scrolls-list" id="recentScrollsList">
                 <div class="empty-state">
-                    <i class="fas fa-feather-alt"></i>
+                    <i class="fas fa-feather-alt" aria-hidden="true"></i>
                     <p>Your scrolls await inscription...</p>
-                    <button class="btn btn-primary" onclick="document.getElementById('toggleForgeBtn').click()">
+                    <button class="btn btn-primary" onclick="document.getElementById('toggleForgeBtn').click()" aria-label="Open the editor to write your first scroll">
                         Begin Your First Scroll
                     </button>
                 </div>
@@ -3500,7 +3500,7 @@
                     padding: 1rem 1.5rem;
                     border-radius: 12px;
                     box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
-                    z-index: 15000;
+                    z-index: 10000;
                     font-weight: 600;
                     animation: slideInRight 0.3s ease;
                 `;
@@ -3535,7 +3535,7 @@
                     padding: 1rem 1.5rem;
                     border-radius: 12px;
                     box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
-                    z-index: 15000;
+                    z-index: 10000;
                     font-weight: 600;
                     animation: slideInRight 0.3s ease;
                 `;
