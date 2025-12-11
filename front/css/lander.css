@@ -141,6 +141,11 @@ h3 {
     border-radius: var(--border-radius);
     margin-bottom: 2rem;
     border: 1px solid rgba(255, 94, 120, 0.25);
+    overflow: visible; /* Changed from hidden to allow dropdowns to show */
+}
+
+/* Only hide overflow when collapsed */
+.inscription-forge.collapsed {
     overflow: hidden;
 }
 
@@ -317,8 +322,9 @@ h3 {
 
 .forge-content {
     padding: 1.5rem;
+    padding-bottom: 2rem; /* Extra padding for form actions */
     transition: max-height 0.4s ease, padding 0.3s ease, opacity 0.3s ease;
-    max-height: 800px; /* Increased to accommodate editor */
+    max-height: 1000px; /* Increased to accommodate editor + form actions */
     overflow: visible;
     opacity: 1;
 }
@@ -329,6 +335,15 @@ h3 {
     overflow: hidden;
     opacity: 0;
     pointer-events: none; /* Prevent interaction when collapsed */
+}
+
+/* Ensure form actions are always visible */
+.forge-content .form-actions {
+    position: relative;
+    z-index: 5;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 94, 120, 0.15);
 }
 
 /* Recent Scrolls */
@@ -686,7 +701,11 @@ footer {
 
     /* Inscription Forge Mobile - FIXED overlapping elements */
     .inscription-forge {
-        overflow: hidden;
+        overflow: visible; /* Allow content to show properly */
+    }
+
+    .inscription-forge.collapsed {
+        overflow: hidden; /* Only hide when collapsed */
     }
 
     .forge-header {
