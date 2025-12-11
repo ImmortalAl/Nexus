@@ -261,8 +261,9 @@
     border-radius: 6px;
     font-size: 0.875rem;
     font-weight: 500;
-    min-height: 32px;
-    min-width: 32px;
+    /* Minimum touch target size for accessibility */
+    min-height: 44px;
+    min-width: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
