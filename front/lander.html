@@ -2626,32 +2626,43 @@
         function initInscriptionForge() {
             const toggleBtn = document.getElementById('toggleForgeBtn');
             const forge = document.querySelector('.inscription-forge');
-            
+            const forgeContent = document.getElementById('forgeContent');
+
             if (!toggleBtn || !forge) return;
-            
+
             // Check if we should auto-expand the editor (e.g., coming from "Inscribe a Scroll")
             const urlParams = new URLSearchParams(window.location.search);
             const shouldExpand = urlParams.get('expand') === 'editor';
-            
+
             let isCollapsed = !shouldExpand; // Start expanded if coming from inscribe scroll, collapsed otherwise
-            
-            toggleBtn.addEventListener('click', () => {
-                isCollapsed = !isCollapsed;
+
+            function updateForgeState() {
                 forge.classList.toggle('collapsed', isCollapsed);
-                
-                // Update toggle button icon
+
+                // Update toggle button icon and aria state
                 const icon = toggleBtn.querySelector('i');
                 if (icon) {
                     icon.className = isCollapsed ? 'fas fa-chevron-down' : 'fas fa-chevron-up';
                 }
-            });
-            
-            // Set initial state
-            forge.classList.toggle('collapsed', isCollapsed);
-            const icon = toggleBtn.querySelector('i');
-            if (icon) {
-                icon.className = isCollapsed ? 'fas fa-chevron-down' : 'fas fa-chevron-up';
+                toggleBtn.setAttribute('aria-expanded', !isCollapsed);
+
+                // Re-initialize Quill if expanding and it exists
+                if (!isCollapsed && window.quill) {
+                    // Force Quill to recalculate its dimensions
+                    setTimeout(() => {
+                        window.quill.root.style.height = 'auto';
+                        window.quill.update();
+                    }, 100);
+                }
             }
+
+            toggleBtn.addEventListener('click', () => {
+                isCollapsed = !isCollapsed;
+                updateForgeState();
+            });
+
+            // Set initial state
+            updateForgeState();
             
             // Initialize forge tabs
             const tabs = document.querySelectorAll('.forge-tab');
