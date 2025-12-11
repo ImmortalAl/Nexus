@@ -65,16 +65,18 @@ class NodeEditor {
     openForCreate() {
         this.isEditMode = false;
         this.currentNode = null;
-        
+
         // Reset form
         document.getElementById('editorTitle').textContent = 'Create Node';
         document.getElementById('nodeTitleInput').value = '';
         document.getElementById('nodeTagsInput').value = '';
+        document.getElementById('nodeReferenceUrl').value = '';
+        document.getElementById('nodeReferenceDescription').value = '';
         this.quill.setText('');
-        
+
         // Show modal
         document.getElementById('nodeEditorModal').style.display = 'block';
-        
+
         // Focus title input
         setTimeout(() => {
             document.getElementById('nodeTitleInput').focus();
@@ -84,24 +86,29 @@ class NodeEditor {
     openForEdit(nodeData) {
         this.isEditMode = true;
         this.currentNode = nodeData;
-        
+
         // Populate form
         document.getElementById('editorTitle').textContent = 'Edit Node';
         document.getElementById('nodeTitleInput').value = nodeData.title;
-        document.getElementById('nodeTagsInput').value = nodeData.tags.join(', ');
-        
+        document.getElementById('nodeTagsInput').value = nodeData.tags ? nodeData.tags.join(', ') : '';
+
+        // Populate reference fields if citations exist
+        const firstCitation = nodeData.credibility?.citations?.[0];
+        document.getElementById('nodeReferenceUrl').value = firstCitation?.url || '';
+        document.getElementById('nodeReferenceDescription').value = firstCitation?.description || '';
+
         // Set content in Quill
-        if (nodeData.content.startsWith('<')) {
+        if (nodeData.content && nodeData.content.startsWith('<')) {
             // Content is HTML
             this.quill.root.innerHTML = nodeData.content;
         } else {
             // Content is plain text
-            this.quill.setText(nodeData.content);
+            this.quill.setText(nodeData.content || '');
         }
-        
+
         // Show modal
         document.getElementById('nodeEditorModal').style.display = 'block';
-        
+
         // Focus title input
         setTimeout(() => {
             document.getElementById('nodeTitleInput').focus();
@@ -114,16 +121,18 @@ class NodeEditor {
         const content = this.quill.root.innerHTML;
         const tagsInput = document.getElementById('nodeTagsInput').value;
         const tags = tagsInput ? tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag) : [];
-        
+        const referenceUrl = document.getElementById('nodeReferenceUrl').value.trim();
+        const referenceDescription = document.getElementById('nodeReferenceDescription').value.trim();
+
         // Validate - only title is required, content is optional
         if (!title) {
             this.showError('Please enter a title');
             return;
         }
-        
+
         try {
             let response;
-            
+
             if (this.isEditMode) {
                 // Update existing node
                 response = await this.apiClient.put(`/mindmap/nodes/${this.currentNode._id}`, {
@@ -131,6 +140,18 @@ class NodeEditor {
                     content,
                     tags
                 });
+
+                // If reference URL provided, add it as a citation
+                if (referenceUrl) {
+                    try {
+                        await this.apiClient.post(`/mindmap/nodes/${this.currentNode._id}/citations`, {
+                            url: referenceUrl,
+                            description: referenceDescription
+                        });
+                    } catch (citationError) {
+                        console.warn('Failed to add citation:', citationError);
+                    }
+                }
                 
                 
                 if (!response) {
@@ -178,6 +199,19 @@ class NodeEditor {
                     this.showError('Malformed response from server (missing node _id, or not authenticated)');
                     return;
                 }
+
+                // If reference URL provided, add it as a citation
+                if (referenceUrl) {
+                    try {
+                        await this.apiClient.post(`/mindmap/nodes/${response._id}/citations`, {
+                            url: referenceUrl,
+                            description: referenceDescription
+                        });
+                    } catch (citationError) {
+                        console.warn('Failed to add citation:', citationError);
+                    }
+                }
+
                 // Add node to graph
                 window.nexusEngine.addNodeToGraph(response);
                 // Center view on new node

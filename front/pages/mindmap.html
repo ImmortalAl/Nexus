@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="../css/components/buttons.css?v=1.1">
     <link rel="stylesheet" href="../css/components/spinners.css?v=1.0">
     <link rel="stylesheet" href="../components/shared/active-users.css?v=2.1">
-    <link rel="stylesheet" href="../css/mindmap.css?v=2.0">
+    <link rel="stylesheet" href="../css/mindmap.css?v=2.2">
     <link rel="stylesheet" href="../css/features.css?v=8.6">
     <link rel="stylesheet" href="../css/z-index-system.css?v=1.2">
     <link rel="stylesheet" href="../css/micro-interactions.css?v=1.0">
@@ -53,7 +53,7 @@
                     <div class="mindmap-controls">
                         <div class="search-container">
                             <input type="text" id="mindmap-search" placeholder="Search the Infinite Nexus..." />
-                            <button id="search-btn"><i class="fas fa-search"></i></button>
+                            <button id="search-btn" aria-label="Search the Infinite Nexus"><i class="fas fa-search"></i></button>
                         </div>
                         <button id="add-node-btn"><i class="fas fa-plus"></i> Add Node</button>
                         <button id="connect-mode-btn"><i class="fas fa-link"></i> Connect</button>
@@ -75,8 +75,8 @@
                                 <div class="credibility-score" id="credibilityScore">50</div>
                             </div>
                             <div class="vote-buttons">
-                                <button id="upvoteBtn" title="Upvote"><i class="fas fa-arrow-up"></i></button>
-                                <button id="downvoteBtn" title="Downvote"><i class="fas fa-arrow-down"></i></button>
+                                <button id="upvoteBtn" title="Upvote" aria-label="Upvote this node"><i class="fas fa-arrow-up"></i></button>
+                                <button id="downvoteBtn" title="Downvote" aria-label="Downvote this node"><i class="fas fa-arrow-down"></i></button>
                             </div>
                         </div>
 
@@ -141,7 +141,17 @@
                     <label for="nodeTagsInput">Tags (comma separated)</label>
                     <input type="text" id="nodeTagsInput" placeholder="science, philosophy, technology" />
                 </div>
-                
+
+                <div>
+                    <label for="nodeReferenceUrl">Reference URL (optional)</label>
+                    <input type="url" id="nodeReferenceUrl" placeholder="https://example.com/source" />
+                </div>
+
+                <div>
+                    <label for="nodeReferenceDescription">Reference Description (optional)</label>
+                    <input type="text" id="nodeReferenceDescription" placeholder="Brief description of the source" maxlength="500" />
+                </div>
+
                 <button type="submit">Save Node</button>
             </form>
         </div>
@@ -220,6 +230,8 @@
 
     <script src="../components/shared/activeUsers.js?v=2.3"></script>
     <script src="../components/shared/messageModal.js?v=6.9"></script>
+    <script src="../components/shared/notificationManager.js?v=1.1"></script>
+    <script src="../components/shared/notificationIcon.js?v=1.2"></script>
     <script src="../components/shared/websocket.js?v=20240701"></script>
     <script src="../js/main.js?v=2.3"></script>
 
@@ -228,8 +240,8 @@
     <script src="../components/shared/authorIdentityCard.js?v=2.3"></script>
 
     <!-- Mindmap specific scripts -->
-    <script src="../js/mindmap/nexusEngine.js?v=20250120g"></script>
-    <script src="../js/mindmap/nodeEditor.js?v=20240701g"></script>
+    <script src="../js/mindmap/nexusEngine.js?v=20250120i"></script>
+    <script src="../js/mindmap/nodeEditor.js?v=20250120a"></script>
     <script src="../js/mindmap/search.js?v=20240701j"></script>
     <script src="../js/mindmap/tiltNavigation.js?v=20240701g"></script>
     
