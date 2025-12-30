@@ -21,7 +21,7 @@ const messageBoardSectionSchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        enum: ['Ideas', 'Debates', 'Trades', 'Events', 'Governance', 'Anonymous'],
+        enum: ['Ideas', 'Debates', 'Trades', 'Events', 'Governance', 'Anonymous', 'Nexus Central'],
         default: 'Ideas'
     },
     moderationLevel: {

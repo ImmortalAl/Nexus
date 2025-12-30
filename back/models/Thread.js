@@ -22,7 +22,7 @@ const threadSchema = new mongoose.Schema({
     category: {
         type: String,
         required: true,
-        enum: ['Ideas', 'Debates', 'Trades', 'Events', 'Governance', 'Anonymous Whispers'],
+        enum: ['Ideas', 'Debates', 'Trades', 'Events', 'Governance', 'Anonymous Whispers', 'Nexus Central'],
         default: 'Ideas'
     },
     tags: {
