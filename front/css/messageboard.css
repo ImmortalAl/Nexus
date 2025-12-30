@@ -1305,6 +1305,21 @@ body.light-theme .reply::before {
     height: 200px;
 }
 
+/* Fix Quill editor toolbar overlapping in thread composer */
+#threadComposerModal #editor {
+    position: relative;
+    z-index: 1;
+}
+
+#threadComposerModal .ql-toolbar {
+    position: relative;
+    z-index: 2;
+}
+
+#threadComposerModal .ql-container {
+    position: relative;
+    z-index: 1;
+}
 #threadComposerModal .form-actions {
     margin-top: 1rem;
     text-align: right;
