@@ -2998,31 +2998,28 @@ body.light-theme .proposal-card-actions .btn-secondary {
 
 /* Mobile Category Improvements */
 @media (max-width: 768px) {
-    /* Show abbreviated labels on mobile instead of hiding completely */
+    /* Icons only on mobile - hide names for consistency */
     .categories-column .category-link {
-        flex-direction: column;
-        gap: 0.25rem;
         text-align: center;
-        padding: 0.75rem 0.5rem;
+        padding: 0.5rem;
+        justify-content: center;
     }
 
     .categories-column .category-name {
-        display: block;
-        font-size: 0.65rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 50px;
-        width: 50px;
+        display: none;
     }
 
-    /* Better touch targets */
+    /* Consistent touch targets */
     .categories-column .category-link {
-        min-height: 60px;
-        min-width: 55px;
-        width: 55px;
+        min-height: 48px;
+        min-width: 48px;
     }
 
+    .categories-column .category-icon {
+        font-size: 1.4rem;
+    }
+
+    /* Thread detail overlay header */
     /* Thread detail overlay header */
     .details-column .active-thread-header {
         position: sticky;
