@@ -1351,28 +1351,87 @@ body.light-theme .reply::before {
 
 @media (max-width: 480px) {
     #threadComposerModal .modal-content-lg {
-        width: 98vw;
-        max-height: 90vh;
-        padding: 0.75rem;
-        margin: 1vh auto;
-        border-radius: 8px;
+        width: 100vw;
+        max-width: 100vw;
+        max-height: 95vh;
+        height: 95vh;
+        padding: 0;
+        margin: 0;
+        border-radius: 0;
+        display: flex;
+        flex-direction: column;
     }
 
     #threadComposerModal .modal-header {
-        padding-bottom: 0.5rem;
-        margin-bottom: 0.75rem;
+        padding: 1rem;
+        padding-bottom: 0.75rem;
+        margin-bottom: 0;
+        flex-shrink: 0;
+        border-bottom: 1px solid rgba(255, 94, 120, 0.2);
     }
 
     #threadComposerModal .modal-header h3 {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
+    }
+
+    #threadComposerModal .modal-body {
+        flex: 1;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 1rem;
     }
 
     #threadComposerModal #editor {
-        height: 120px;
+        height: 150px;
+        min-height: 150px;
     }
 
     #threadComposerModal .form-group {
-        margin-bottom: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    #threadComposerModal .form-group label {
+        font-size: 0.9rem;
+        margin-bottom: 0.4rem;
+    }
+
+    #threadComposerModal input[type="text"],
+    #threadComposerModal select,
+    #threadComposerModal textarea {
+        font-size: 16px; /* Prevents iOS zoom on focus */
+        min-height: 44px; /* Better touch target */
+    }
+
+    #threadComposerModal select {
+        padding: 0.75rem;
+    }
+
+    #threadComposerModal .modal-footer {
+        padding: 1rem;
+        flex-shrink: 0;
+        border-top: 1px solid rgba(255, 94, 120, 0.2);
+    }
+
+    #threadComposerModal .btn {
+        min-height: 44px;
+        font-size: 1rem;
+    }
+
+    /* Fix for governance options on mobile */
+    #threadComposerModal .governance-options {
+        margin-top: 0.75rem;
+    }
+
+    #threadComposerModal .governance-type-selector label {
+        padding: 0.75rem;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Close button touch target */
+    #threadComposerModal .close-modal {
+        min-width: 44px;
+        min-height: 44px;
+        padding: 0.5rem;
     }
 }
 
