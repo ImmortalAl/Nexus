@@ -42,6 +42,9 @@ async function initializeBlog() {
         // Initialize voting system
         window.BlogVoting.init();
 
+        // Initialize modal system (enables auto-opening from sessionStorage, URL params, hash)
+        window.BlogModal.init();
+
         // Initialize UI and load posts
         await window.BlogUI.init();
 
