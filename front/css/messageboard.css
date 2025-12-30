@@ -3012,13 +3012,15 @@ body.light-theme .proposal-card-actions .btn-secondary {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: 60px;
+        max-width: 50px;
+        width: 50px;
     }
 
     /* Better touch targets */
     .categories-column .category-link {
         min-height: 60px;
-        min-width: 60px;
+        min-width: 55px;
+        width: 55px;
     }
 
     /* Thread detail overlay header */
