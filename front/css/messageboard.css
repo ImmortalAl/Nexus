@@ -2998,26 +2998,37 @@ body.light-theme .proposal-card-actions .btn-secondary {
 
 /* Mobile Category Improvements */
 @media (max-width: 768px) {
-    /* Icons only on mobile - hide names for consistency */
+    /* Stack icons and names vertically */
     .categories-column .category-link {
+        flex-direction: column;
         text-align: center;
-        padding: 0.5rem;
+        padding: 0.5rem 0.25rem;
         justify-content: center;
+        align-items: center;
     }
 
     .categories-column .category-name {
-        display: none;
+        display: block;
+        font-size: 0.6rem;
+        line-height: 1.2;
+        word-break: break-word;
+        max-width: 50px;
+        text-align: center;
     }
 
     /* Consistent touch targets */
     .categories-column .category-link {
-        min-height: 48px;
-        min-width: 48px;
+        min-height: 55px;
+        min-width: 50px;
+        width: 50px;
     }
 
     .categories-column .category-icon {
-        font-size: 1.4rem;
+        font-size: 1.3rem;
+        margin-bottom: 0.15rem;
     }
+
+    /* Thread detail overlay header */
 
     /* Thread detail overlay header */
     /* Thread detail overlay header */
