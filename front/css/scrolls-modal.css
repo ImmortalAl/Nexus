@@ -49,7 +49,7 @@
     max-width: min(900px, 95vw);
     max-height: min(85vh, 900px);
     width: 100%;
-    overflow: visible; /* Changed from hidden to allow dropdown to show */
+    overflow: hidden; /* Constrain scroll to modal-body */
     position: relative;
     display: flex;
     flex-direction: column;
@@ -110,7 +110,7 @@
         rgba(42, 64, 102, 0.6)
     ) !important;
     position: relative !important; /* Force non-sticky - avatar scrolls away */
-    overflow: visible !important; /* Allow dropdown to extend beyond header */
+    overflow: hidden; /* Contain within header */
     margin: 0 !important; /* Remove any margin */
 }
 
