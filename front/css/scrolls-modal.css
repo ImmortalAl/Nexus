@@ -38,7 +38,7 @@
 }
 
 /* ===== MODAL CONTENT CONTAINER ===== */
-.blog-modal-content {
+.scrolls-modal-content {
     background: linear-gradient(135deg,
         rgba(26, 26, 51, 0.98),
         rgba(42, 64, 102, 0.95)
@@ -86,7 +86,7 @@
     }
 }
 
-#blogModal.modal.show .blog-modal-content {
+#blogModal.modal.show .scrolls-modal-content {
     /* REMOVED transform - it breaks position:fixed for dropdown */
     /* transform: scale(1) translateY(0); */
     opacity: 1; /* Fade in to full opacity */
@@ -505,7 +505,7 @@ body.modal-open {
         padding: 0.5rem;
     }
 
-    .blog-modal-content {
+    .scrolls-modal-content {
         max-height: 95vh;
         border-radius: 16px;
     }
@@ -615,20 +615,20 @@ body.modal-open {
 /* ===== ACCESSIBILITY ===== */
 @media (prefers-reduced-motion: reduce) {
     #blogModal.modal,
-    .blog-modal-content,
+    .scrolls-modal-content,
     .close-modal,
     .modal-actions button {
         transition: none;
         animation: none;
     }
     
-    .blog-modal-content::before {
+    .scrolls-modal-content::before {
         animation: none;
     }
 }
 
 @media (prefers-contrast: high) {
-    .blog-modal-content {
+    .scrolls-modal-content {
         border-width: 3px;
         border-color: rgba(255, 94, 120, 0.8);
     }
@@ -820,7 +820,7 @@ body.modal-open {
 
 /* ===== DARK MODE SUPPORT ===== */
 @media (prefers-color-scheme: dark) {
-    .blog-modal-content {
+    .scrolls-modal-content {
         background: linear-gradient(135deg,
             rgba(13, 13, 26, 0.98),
             rgba(21, 32, 51, 0.95)
