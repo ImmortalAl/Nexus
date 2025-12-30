@@ -75,6 +75,7 @@ function generateNavLinksHTML(currentPath, navType = 'main') {
         { href: "/pages/messageboard.html", icon: "fas fa-comments", text: "Echoes Unbound" },
         { href: "/souls", icon: "fas fa-users", text: "Eternal Souls" },
         { href: "/pages/links.html", icon: "fas fa-door-open", text: "The Gateways" },
+        { href: "/pages/governance.html", icon: "fas fa-scroll", text: "Echoes Unbound" },
         { href: "/pages/mindmap.html", icon: "fas fa-project-diagram", text: "Infinite Nexus" },
         { href: "/pages/celestial-commons.html", icon: "fas fa-star", text: "Celestial Commons" },
         { href: "/pages/debate.html", icon: "fas fa-gavel", text: "Clash of Immortals" },

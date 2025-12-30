@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Echoes Unbound: Community governance and proposals in the Immortal Nexus.">
+    <meta name="theme-color" content="#0d0d1a">
+    <title>Echoes Unbound - Immortal Nexus</title>
+
+    <!-- Immortal-themed favicon -->
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link rel="apple-touch-icon" href="../favicon.svg">
+
+    <!-- 1. BASE THEME & CRITICAL STYLES -->
+    <link rel="stylesheet" href="../css/base-theme.css?v=1.0">
+    <link rel="stylesheet" href="../css/light-theme-immortal.css?v=1.0">
+    <link rel="stylesheet" href="../css/mobile-enhanced.css?v=1.0">
+
+    <!-- Z-INDEX SYSTEM -->
+    <link rel="stylesheet" href="../css/z-index-system.css?v=1.2">
+    <link rel="stylesheet" href="../css/critical.css?v=7.1">
+
+    <!-- 2. EXTERNAL RESOURCES -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+    <!-- 3. CORE GLOBAL STYLES -->
+    <link rel="stylesheet" href="../css/styles.css?v=6.3">
+    <link rel="stylesheet" href="../css/notifications.css?v=1.0">
+
+    <!-- 4. FEATURES & SHARED COMPONENTS -->
+    <link rel="stylesheet" href="../css/features.css?v=8.6">
+    <link rel="stylesheet" href="../components/shared/styles.css?v=6.3">
+
+    <!-- 4.5. COMPONENT SYSTEMS -->
+    <link rel="stylesheet" href="../css/components/buttons.css?v=1.1">
+    <link rel="stylesheet" href="../css/components/spinners.css?v=1.0">
+    <link rel="stylesheet" href="../css/unified-modals.css?v=2.0">
+    <link rel="stylesheet" href="../css/viewport-optimizations.css?v=1.2">
+
+    <!-- 5. PAGE-SPECIFIC FEATURES -->
+    <link rel="stylesheet" href="../components/shared/active-users.css?v=2.1">
+
+    <!-- 6. PAGE-SPECIFIC STYLES -->
+    <link rel="stylesheet" href="../css/governance.css?v=1.0">
+
+    <!-- Fonts -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap"></noscript>
+</head>
+<body>
+    <!-- Floating Theme Toggle Button -->
+    <button class="theme-toggle floating-theme-toggle" data-theme-toggle="true" aria-label="Toggle theme">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <header>
+        <!-- SHARED_HEADER -->
+    </header>
+
+    <main class="governance-main container">
+        <!-- Page Header -->
+        <section class="governance-header">
+            <h1 class="governance-title">
+                <i class="fas fa-scroll"></i>
+                Echoes Unbound
+            </h1>
+            <p class="governance-subtitle">Shape the future of the Nexus through community governance</p>
+
+            <div class="governance-controls">
+                <div class="governance-filters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="discussion">Discussion</button>
+                    <button class="filter-btn" data-filter="voting">Voting</button>
+                    <button class="filter-btn" data-filter="passed">Passed</button>
+                    <button class="filter-btn" data-filter="implemented">Implemented</button>
+                </div>
+                <button class="btn btn-primary" id="submitProposalBtn">
+                    <i class="fas fa-plus"></i> Submit Proposal
+                </button>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section class="how-it-works">
+            <h3><i class="fas fa-info-circle"></i> How Governance Works</h3>
+            <div class="steps">
+                <div class="step">
+                    <span class="step-num">1</span>
+                    <span class="step-text">Submit a proposal</span>
+                </div>
+                <div class="step">
+                    <span class="step-num">2</span>
+                    <span class="step-text">Get 3 community seconds</span>
+                </div>
+                <div class="step">
+                    <span class="step-num">3</span>
+                    <span class="step-text">Voting period opens</span>
+                </div>
+                <div class="step">
+                    <span class="step-num">4</span>
+                    <span class="step-text">Majority decides</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Proposals Grid -->
+        <section class="proposals-grid" id="proposalsGrid">
+            <div class="loading-state">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading proposals...</p>
+            </div>
+        </section>
+
+        <!-- Empty State -->
+        <section class="empty-state" id="emptyState" style="display: none;">
+            <i class="fas fa-scroll"></i>
+            <h3>No Proposals Yet</h3>
+            <p>Be the first to shape the future of the Nexus.</p>
+            <button class="btn btn-primary" id="emptySubmitBtn">
+                <i class="fas fa-plus"></i> Submit First Proposal
+            </button>
+        </section>
+    </main>
+
+    <!-- Submit Proposal Modal -->
+    <div id="submitProposalModal" class="modal" aria-hidden="true">
+        <div class="modal-content" role="dialog" aria-labelledby="submitProposalTitle">
+            <div class="modal-header">
+                <h3 id="submitProposalTitle"><i class="fas fa-scroll"></i> Submit a Proposal</h3>
+                <button class="modal-close" id="closeSubmitModal" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="submitProposalForm">
+                    <div class="form-group">
+                        <label for="proposalTitle">
+                            <i class="fas fa-heading"></i> Title <span class="required">*</span>
+                        </label>
+                        <input type="text" id="proposalTitle" name="title" placeholder="Brief, descriptive title" maxlength="150" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="proposalType">
+                            <i class="fas fa-folder"></i> Type <span class="required">*</span>
+                        </label>
+                        <select id="proposalType" name="type" required>
+                            <option value="">Select type...</option>
+                            <option value="feature_request">Feature Request</option>
+                            <option value="policy_change">Policy Change</option>
+                            <option value="community_standard">Community Standard</option>
+                            <option value="platform_improvement">Platform Improvement</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="proposalDescription">
+                            <i class="fas fa-align-left"></i> Description <span class="required">*</span>
+                        </label>
+                        <textarea id="proposalDescription" name="description" placeholder="Explain your proposal in detail. What problem does it solve? How should it be implemented?" rows="6" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="votingPeriod">
+                            <i class="fas fa-clock"></i> Voting Period (days)
+                        </label>
+                        <select id="votingPeriod" name="votingPeriodDays">
+                            <option value="3">3 days</option>
+                            <option value="7" selected>7 days (recommended)</option>
+                            <option value="14">14 days</option>
+                            <option value="30">30 days</option>
+                        </select>
+                    </div>
+
+                    <div class="form-info">
+                        <i class="fas fa-info-circle"></i>
+                        <p>Your proposal needs <strong>3 community seconds</strong> before voting begins. A discussion thread will be created automatically.</p>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="cancelSubmit">Cancel</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Submit Proposal
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Proposal Detail Modal -->
+    <div id="proposalDetailModal" class="modal" aria-hidden="true">
+        <div class="modal-content modal-lg" role="dialog" aria-labelledby="proposalDetailTitle">
+            <div class="modal-header">
+                <h3 id="proposalDetailTitle"><i class="fas fa-scroll"></i> Proposal Details</h3>
+                <button class="modal-close" id="closeDetailModal" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body" id="proposalDetailBody">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Immortal Nexus Components -->
+    <script src="../components/shared/config.js?v=2.0"></script>
+    <script src="../components/shared/apiClient.js?v=2.0"></script>
+    <script src="../components/shared/authManager.js?v=2.0"></script>
+    <script src="../components/shared/nexus-core.js?v=1.5"></script>
+    <script src="../components/shared/themeManager.js?v=2.2"></script>
+    <script src="../components/shared/navigation.js?v=2.7"></script>
+    <script src="../components/shared/userMenu.js?v=7.4"></script>
+    <script src="../components/shared/authModal.js?v=4.4"></script>
+    <script src="../components/shared/activeUsers.js?v=1.8"></script>
+    <script src="../components/shared/messageModal.js?v=6.9"></script>
+
+    <!-- Notification System -->
+    <script src="../components/shared/notificationManager.js?v=1.1"></script>
+    <script src="../components/shared/notificationIcon.js?v=1.2"></script>
+    <script src="../components/shared/governanceIndicator.js?v=1.0"></script>
+
+    <!-- Page-specific JavaScript -->
+    <script src="../js/governance.js?v=1.0"></script>
+</body>
+</html>
