@@ -133,20 +133,11 @@
     <link rel="preload" href="../components/shared/active-users.css?v=2.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="../components/shared/active-users.css?v=2.1"></noscript>
     
-    <!-- Blog-specific modules (lazy loaded) -->
-    <!-- scrolls-cards.css now loaded synchronously above -->
-
-    <link rel="preload" href="../css/scrolls-modal.css?v=4.0" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="../css/scrolls-modal.css?v=4.0"></noscript>
-    
-    <link rel="preload" href="../css/scrolls-forms.css?v=2.3" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="../css/scrolls-forms.css?v=2.3"></noscript>
-    
-    <link rel="preload" href="../css/scrolls-comments.css?v=2.5" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="../css/scrolls-comments.css?v=2.5"></noscript>
-    
-    <link rel="preload" href="../css/scrolls-responsive.css?v=2.4" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="../css/scrolls-responsive.css?v=2.4"></noscript>
+    <!-- Blog-specific modules (loaded synchronously to ensure styles apply before interaction) -->
+    <link rel="stylesheet" href="../css/scrolls-modal.css?v=4.2">
+    <link rel="stylesheet" href="../css/scrolls-forms.css?v=2.3">
+    <link rel="stylesheet" href="../css/scrolls-comments.css?v=2.5">
+    <link rel="stylesheet" href="../css/scrolls-responsive.css?v=2.4">
     
     <!-- 7. EXTERNAL RESOURCES (lazy loaded) -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer">

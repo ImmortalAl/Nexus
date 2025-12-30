@@ -45,12 +45,9 @@
     <!-- 7. ARCHIVE-SPECIFIC STYLES -->
     <link rel="stylesheet" href="../css/scrolls-archive.css?v=1.1">
 
-    <!-- 8. SCROLLS MODAL STYLES (needed for viewing scrolls) -->
-    <link rel="preload" href="../css/scrolls-modal.css?v=4.1" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="../css/scrolls-modal.css?v=4.1"></noscript>
-
-    <link rel="preload" href="../css/blog-comments.css?v=2.5" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="../css/blog-comments.css?v=2.5"></noscript>
+    <!-- 8. SCROLLS MODAL STYLES (loaded synchronously to ensure styles apply before modal opens) -->
+    <link rel="stylesheet" href="../css/scrolls-modal.css?v=4.2">
+    <link rel="stylesheet" href="../css/blog-comments.css?v=2.5">
 
     <!-- 9. EXTERNAL RESOURCES -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"

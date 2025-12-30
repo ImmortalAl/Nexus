@@ -47,13 +47,12 @@
     border-radius: 20px;
     padding: 0;
     max-width: min(900px, 95vw);
-    max-height: min(85vh, 900px) !important; /* CRITICAL: Constrain height for scroll */
-    height: auto;
+    max-height: min(85vh, 900px);
     width: 100%;
-    overflow: hidden !important; /* CRITICAL: Constrain scroll to modal-body */
+    overflow: hidden;
     position: relative;
-    display: flex !important; /* CRITICAL: Flex container for scrolling */
-    flex-direction: column !important; /* CRITICAL: Stack children vertically */
+    display: flex;
+    flex-direction: column;
     box-shadow: 
         0 25px 50px rgba(0, 0, 0, 0.8),
         0 15px 35px rgba(255, 94, 120, 0.2),
@@ -273,22 +272,19 @@
 
 /* ===== MODAL BODY ===== */
 .modal-body {
-    padding: 1.5rem !important; /* Reduced from 2rem for less wasted space - FORCE override unified-modals.css */
-    padding-top: 0 !important; /* No padding at top since header is inside now */
-    flex: 1 1 auto !important; /* CRITICAL: Allow flex item to grow AND shrink */
-    overflow-y: auto !important; /* CRITICAL: Enable vertical scrolling */
-    overflow-x: hidden !important;
+    padding: 1.5rem;
+    padding-top: 0;
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     scroll-behavior: smooth;
     position: relative;
-    min-height: 0 !important; /* CRITICAL: Required for flexbox scrolling to work */
-    max-height: 100% !important; /* CRITICAL: Constrain to parent height */
-    height: auto !important; /* CRITICAL: Let flex determine actual height */
-    cursor: auto; /* Fix cursor issues */
+    min-height: 0;
+    cursor: auto;
 
     /* SCROLL PERFORMANCE OPTIMIZATIONS */
-    -webkit-overflow-scrolling: touch; /* iOS momentum scrolling */
-    overscroll-behavior-y: contain; /* Prevent scroll chaining */
-    will-change: scroll-position; /* Optimize for scrolling */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
 }
 
 .modal-body * {
