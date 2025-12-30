@@ -1,5 +1,5 @@
 /**
- * Eternal Gateways - Links Page JavaScript
+ * Runic Gateways - Links Page JavaScript
  * Community-curated links with light governance
  * Version: 1.0
  */
