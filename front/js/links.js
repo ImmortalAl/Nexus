@@ -1,5 +1,5 @@
 /**
- * Runic Gateways - Links Page JavaScript
+ * The Gateways - Links Page JavaScript
  * Community-curated links with light governance
  * Version: 1.0
  */
