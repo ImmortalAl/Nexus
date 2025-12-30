@@ -51,7 +51,7 @@
 
 .moderation-alert-banner .view-thread-btn {
     margin-left: auto;
-    white-space: nowrap;
+    white-space: normal;
     padding: 0.5rem 1rem;
     background: #ffffff;
     border: 1px solid #fbbf24;
@@ -466,28 +466,28 @@ section {
         gap: var(--space-4);
     }
 
-    /* Categories become horizontal scrollable on mobile */
+    /* Categories in 2-row grid on mobile */
     .categories-column {
         max-height: none;
-        overflow-x: auto;
-        overflow-y: hidden;
+        overflow-x: visible;
+        overflow-y: visible;
         padding: var(--space-3);
     }
 
     .categories-column .immortal-categories {
-        display: flex;
-        flex-wrap: nowrap;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
         gap: var(--space-2);
     }
 
     .categories-column .immortal-categories li {
-        flex-shrink: 0;
+        width: 100%;
         margin-bottom: 0;
     }
 
     .categories-column .category-link {
         padding: 0.5rem 0.75rem;
-        white-space: nowrap;
+        white-space: normal;
     }
 
     .categories-column .category-name {
@@ -597,7 +597,7 @@ body.light-theme .reply::before {
 
 /* Categories Header with Toggle */
 .categories-header {
-    display: flex;
+    display: grid;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
@@ -643,7 +643,7 @@ body.light-theme .reply::before {
 
 /* Category Links with Icons */
 .category-link {
-    display: flex;
+    display: grid;
     align-items: center;
     gap: 0.5rem;
     padding: 1rem;
@@ -698,7 +698,7 @@ body.light-theme .reply::before {
     font-size: 1.4rem;
     min-width: 2rem;
     width: 2rem;
-    flex-shrink: 0;
+    width: 100%;
     text-align: center;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
     transition: all 0.3s ease;
@@ -766,14 +766,14 @@ body.light-theme .reply::before {
     list-style: none;
     padding: 0;
     margin: 0;
-    display: flex;
+    display: grid;
     flex-direction: column;
     gap: 1rem;
 }
 
 /* Enhanced Thread Card Design */
 .thread {
-    display: flex;
+    display: grid;
     gap: 1rem;
     background: linear-gradient(135deg, rgba(26, 26, 51, 0.9), rgba(15, 15, 35, 0.95));
     backdrop-filter: blur(20px);
@@ -875,7 +875,7 @@ body.light-theme .reply::before {
 /* Enhanced Thread Content */
 .thread-main {
     flex-grow: 1;
-    display: flex;
+    display: grid;
     flex-direction: column;
     justify-content: space-between;
     min-height: 120px;
@@ -925,7 +925,7 @@ body.light-theme .reply::before {
 
 /* Thread Footer with Meta Info */
 .thread-footer {
-    display: flex;
+    display: grid;
     justify-content: space-between;
     align-items: center;
     margin-top: auto;
@@ -934,7 +934,7 @@ body.light-theme .reply::before {
 }
 
 .thread-meta {
-    display: flex;
+    display: grid;
     flex-wrap: wrap;
     gap: 1rem;
     font-size: 0.85rem;
@@ -948,7 +948,7 @@ body.light-theme .reply::before {
 }
 
 .thread-meta span {
-    display: flex;
+    display: grid;
     align-items: center;
     gap: 0.3rem;
 }
@@ -963,7 +963,7 @@ body.light-theme .reply::before {
    ============================================================================ */
 
 .thread-voting {
-    display: flex;
+    display: grid;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -990,7 +990,7 @@ body.light-theme .reply::before {
     overflow: hidden;
     width: 44px;
     height: 44px;
-    display: flex;
+    display: grid;
     align-items: center;
     justify-content: center;
 }
@@ -1052,7 +1052,7 @@ body.light-theme .reply::before {
 
 /* Enhanced Reply Cards */
 .reply {
-    display: flex;
+    display: grid;
     gap: 1.5rem;
     padding: 2rem;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.005));
@@ -1251,7 +1251,7 @@ body.light-theme .reply::before {
     font-weight: 600;
     color: var(--accent);
     margin-bottom: 0.4rem;
-    display: flex;
+    display: grid;
     align-items: center;
     gap: 0.5rem;
     font-size: 0.9rem;
@@ -1377,7 +1377,7 @@ body.light-theme .reply::before {
         padding: 0;
         margin: 0;
         border-radius: 0;
-        display: flex;
+        display: grid;
         flex-direction: column;
     }
 
@@ -1385,7 +1385,7 @@ body.light-theme .reply::before {
         padding: 1rem;
         padding-bottom: 0.75rem;
         margin-bottom: 0;
-        flex-shrink: 0;
+        width: 100%;
         border-bottom: 1px solid rgba(255, 94, 120, 0.2);
     }
 
@@ -1427,7 +1427,7 @@ body.light-theme .reply::before {
 
     #threadComposerModal .modal-footer {
         padding: 1rem;
-        flex-shrink: 0;
+        width: 100%;
         border-top: 1px solid rgba(255, 94, 120, 0.2);
     }
 
@@ -1457,14 +1457,14 @@ body.light-theme .reply::before {
 /* Search and Controls */
 .thread-controls {
     margin-bottom: 1rem;
-    display: flex;
+    display: grid;
     gap: 0.5rem;
     align-items: center;
     flex-wrap: wrap;
 }
 
 .search-bar {
-    display: flex;
+    display: grid;
     gap: 0.5rem;
     align-items: center;
     flex: 1;
@@ -1488,7 +1488,7 @@ body.light-theme .reply::before {
 
 /* Create Thread Button */
 #newThreadBtn {
-    white-space: nowrap;
+    white-space: normal;
 }
 
 /* Mobile responsive for thread controls */
@@ -1516,7 +1516,7 @@ body.light-theme .reply::before {
 
 /* Category Header */
 .category-header {
-    display: flex;
+    display: grid;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
@@ -1604,14 +1604,14 @@ body.light-theme .reply::before {
 }
 
 .thread-actions {
-    display: flex;
+    display: grid;
     align-items: center;
     justify-content: space-between;
     margin-top: 0.5rem;
 }
 
 .thread-tags {
-    display: flex;
+    display: grid;
     gap: 0.25rem;
     flex-wrap: wrap;
 }
@@ -1633,7 +1633,7 @@ body.light-theme .reply::before {
 
 /* Active Thread Header */
 .active-thread-header {
-    display: flex;
+    display: grid;
     justify-content: flex-end;
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
@@ -1647,7 +1647,7 @@ body.light-theme .reply::before {
 
 /* Improved Reply Voting */
 .reply-voting {
-    display: flex;
+    display: grid;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
@@ -1666,7 +1666,7 @@ body.light-theme .reply::before {
 }
 
 .toggle-container {
-    display: flex;
+    display: grid;
     align-items: center;
     gap: 0.75rem;
     cursor: pointer;
@@ -1680,7 +1680,7 @@ body.light-theme .reply::before {
     background: var(--highlight);
     border-radius: 12px;
     transition: background-color 0.3s ease;
-    flex-shrink: 0;
+    width: 100%;
 }
 
 .toggle-slider::after {
@@ -1708,7 +1708,7 @@ input[type="checkbox"] {
 }
 
 .toggle-label {
-    display: flex;
+    display: grid;
     align-items: center;
     gap: 0.5rem;
     color: var(--text);
@@ -1733,7 +1733,7 @@ input[type="checkbox"] {
 }
 
 .anonymous-author-preview {
-    display: flex;
+    display: grid;
     align-items: center;
     gap: 0.5rem;
     color: var(--accent);
@@ -1751,7 +1751,7 @@ input[type="checkbox"] {
 }
 
 .anonymous-reply-toggle {
-    display: flex;
+    display: grid;
     align-items: center;
     gap: 0.5rem;
     cursor: pointer;
@@ -1788,7 +1788,7 @@ input[type="checkbox"] {
 /* Anonymous User Display */
 .thread .anonymous-user,
 .reply .anonymous-user {
-    display: flex;
+    display: grid;
     align-items: center;
     gap: 0.5rem;
     color: var(--accent);
@@ -1833,7 +1833,7 @@ input[type="checkbox"] {
 
 /* Reply Actions */
 .reply-actions {
-    display: flex;
+    display: grid;
     gap: 0.5rem;
     margin-top: 0.5rem;
     align-items: center;
@@ -1879,7 +1879,7 @@ input[type="checkbox"] {
 }
 
 .reply-edit-actions {
-    display: flex;
+    display: grid;
     gap: 0.5rem;
     margin-top: 1rem;
     justify-content: flex-end;
@@ -1962,7 +1962,7 @@ input[type="checkbox"] {
 }
 
 .governance-type-selector label {
-    display: flex;
+    display: grid;
     align-items: flex-start;
     padding: 1rem;
     border: 1px solid rgba(147, 51, 234, 0.2);
@@ -1990,7 +1990,7 @@ input[type="checkbox"] {
     margin-top: 0.2rem;
     position: relative;
     transition: all 0.3s ease;
-    flex-shrink: 0;
+    width: 100%;
 }
 
 .radio-custom::after {
@@ -2137,7 +2137,7 @@ input[type="radio"]:checked + .radio-custom::after {
 }
 
 .voting-header {
-    display: flex;
+    display: grid;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
@@ -2148,7 +2148,7 @@ input[type="radio"]:checked + .radio-custom::after {
 .voting-header h4 {
     margin: 0;
     color: var(--accent);
-    display: flex;
+    display: grid;
     align-items: center;
     gap: 0.5rem;
 }
@@ -2291,7 +2291,7 @@ input[type="radio"]:checked + .radio-custom::after {
 }
 
 .result-label {
-    display: flex;
+    display: grid;
     justify-content: space-between;
     margin-bottom: 0.3rem;
     font-size: 0.9rem;
@@ -2323,7 +2323,7 @@ input[type="radio"]:checked + .radio-custom::after {
 }
 
 .vote-summary {
-    display: flex;
+    display: grid;
     justify-content: space-between;
     align-items: center;
     margin-top: 1.5rem;
@@ -2391,7 +2391,7 @@ input[type="radio"]:checked + .radio-custom::after {
 }
 
 .notification-content {
-    display: flex;
+    display: grid;
     align-items: center;
     gap: 0.5rem;
 }
@@ -2460,7 +2460,7 @@ input[type="radio"]:checked + .radio-custom::after {
 }
 
 .governance-actions {
-    display: flex;
+    display: grid;
     gap: 1rem;
     justify-content: center;
     margin-bottom: 2rem;
@@ -2515,7 +2515,7 @@ input[type="radio"]:checked + .radio-custom::after {
 }
 
 .governance-header {
-    display: flex;
+    display: grid;
     justify-content: space-between;
     align-items: center;
     padding: 1.5rem;
@@ -2526,7 +2526,7 @@ input[type="radio"]:checked + .radio-custom::after {
 }
 
 .governance-stats {
-    display: flex;
+    display: grid;
     gap: 2rem;
 }
 
@@ -2600,7 +2600,7 @@ input[type="radio"]:checked + .radio-custom::after {
 }
 
 .proposal-card-header {
-    display: flex;
+    display: grid;
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 1rem;
@@ -2610,14 +2610,14 @@ input[type="radio"]:checked + .radio-custom::after {
     margin: 0;
     color: var(--text-primary);
     font-size: 1.2rem;
-    display: flex;
+    display: grid;
     align-items: center;
     gap: 0.5rem;
     flex: 1;
 }
 
 .proposal-card-meta {
-    display: flex;
+    display: grid;
     gap: 1rem;
     margin-bottom: 1rem;
     flex-wrap: wrap;
@@ -2657,7 +2657,7 @@ input[type="radio"]:checked + .radio-custom::after {
 }
 
 .vote-progress-mini {
-    display: flex;
+    display: grid;
     align-items: center;
     gap: 1rem;
 }
@@ -2679,11 +2679,11 @@ input[type="radio"]:checked + .radio-custom::after {
 .vote-stats {
     font-size: 0.8rem;
     color: var(--text-muted);
-    white-space: nowrap;
+    white-space: normal;
 }
 
 .proposal-card-actions {
-    display: flex;
+    display: grid;
     gap: 0.5rem;
     flex-wrap: wrap;
     margin-top: 1rem;
@@ -2974,7 +2974,7 @@ body.light-theme .proposal-card-actions .btn-secondary {
     min-width: 80px;
     padding: 0.5rem 1rem;
     font-weight: 600;
-    display: flex;
+    display: grid;
     align-items: center;
     gap: 0.5rem;
 }
@@ -3039,7 +3039,7 @@ body.light-theme .proposal-card-actions .btn-secondary {
         z-index: 10;
         padding: 1rem;
         border-bottom: 1px solid rgba(255, 94, 120, 0.2);
-        display: flex;
+        display: grid;
         justify-content: space-between;
         align-items: center;
     }
