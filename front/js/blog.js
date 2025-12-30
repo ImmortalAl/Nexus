@@ -82,18 +82,27 @@ function verifyModules() {
     console.log('[Blog] All required modules loaded ✓');
     return true;
 }
-
 /**
- * Handle URL parameters (e.g., ?post=123)
+ * Handle URL parameters (e.g., ?post=123) and sessionStorage
  */
 function handleUrlParameters() {
     const urlParams = new URLSearchParams(window.location.search);
-    const postId = urlParams.get('post');
+    const postId = urlParams.get("post");
 
-    if (postId) {
+    // Check sessionStorage for scroll ID from homepage navigation
+    const sessionScrollId = sessionStorage.getItem("openScrollId");
+    
+    const scrollToOpen = postId || sessionScrollId;
+
+    if (scrollToOpen) {
+        // Clear sessionStorage to prevent re-opening on refresh
+        if (sessionScrollId) {
+            sessionStorage.removeItem("openScrollId");
+        }
+
         // Open modal for specific post
         setTimeout(() => {
-            window.BlogModal.open(postId);
+            window.BlogModal.open(scrollToOpen);
         }, 500);
     }
 }
