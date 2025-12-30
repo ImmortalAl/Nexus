@@ -293,3 +293,19 @@
         gap: 0.5rem;
     }
 }
+
+/* Prevent word breaking in text areas and descriptions */
+.proposal-description,
+.proposal-detail,
+textarea,
+.modal-body p,
+.form-info p {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: none;
+}
+
+textarea {
+    white-space: pre-wrap;
+}
