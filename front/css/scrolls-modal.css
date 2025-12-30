@@ -110,7 +110,7 @@
         rgba(42, 64, 102, 0.6)
     ) !important;
     position: relative !important; /* Force non-sticky - avatar scrolls away */
-    overflow: hidden; /* Contain within header */
+    overflow: visible; /* Allow author card content to display fully */
     margin: 0 !important; /* Remove any margin */
 }
 
