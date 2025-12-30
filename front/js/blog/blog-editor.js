@@ -19,6 +19,7 @@ class BlogEditor {
 
         // Bind methods
         this.initializeEditor = this.initializeEditor.bind(this);
+        this.imageHandler = this.imageHandler.bind(this);
         this.openCreateModal = this.openCreateModal.bind(this);
         this.openEditModal = this.openEditModal.bind(this);
         this.submitPost = this.submitPost.bind(this);
@@ -60,6 +61,71 @@ class BlogEditor {
         });
 
         console.log('[BlogEditor] Quill initialized');
+
+        // Register custom image handler to support file uploads
+        const toolbar = this.quillInstance.getModule('toolbar');
+        toolbar.addHandler('image', () => this.imageHandler());
+    }
+
+    /**
+     * Custom image upload handler
+     * Supports: JPG, JPEG, PNG, GIF, WebP, SVG
+     */
+    imageHandler() {
+        const input = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/jpeg,image/jpg,image/png,image/gif,image/webp,image/svg+xml');
+        input.click();
+
+        input.onchange = async () => {
+            const file = input.files[0];
+
+            if (!file) {
+                return;
+            }
+
+            // Validate file type
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
+            if (!validTypes.includes(file.type)) {
+                alert('Please select a valid image file (JPG, PNG, GIF, WebP, or SVG)');
+                return;
+            }
+
+            // Validate file size (max 10MB)
+            if (file.size > 10 * 1024 * 1024) {
+                alert('Image file is too large. Maximum size is 10MB.');
+                return;
+            }
+
+            try {
+                // Convert image to base64
+                const base64 = await this.fileToBase64(file);
+
+                // Insert image into editor
+                const range = this.quillInstance.getSelection(true);
+                this.quillInstance.insertEmbed(range.index, 'image', base64);
+
+                // Move cursor to next position
+                this.quillInstance.setSelection(range.index + 1);
+
+                console.log(`[BlogEditor] Image inserted: ${file.name} (${file.type}, ${(file.size / 1024).toFixed(2)}KB)`);
+            } catch (error) {
+                console.error('[BlogEditor] Error uploading image:', error);
+                alert('Failed to upload image: ' + error.message);
+            }
+        };
+    }
+
+    /**
+     * Convert file to base64
+     */
+    fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
     }
 
     /**
