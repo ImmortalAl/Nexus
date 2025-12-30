@@ -71,7 +71,7 @@ function generateNavLinksHTML(currentPath, navType = 'main') {
         { href: "/", icon: "fas fa-home", text: "Home" },
         { href: "/lander.html", icon: "fas fa-fire", text: "Eternal Hearth" },
         { href: "/pages/news.html", icon: "fas fa-newspaper", text: "Boundless Chronicles" },
-        { href: "/pages/blog.html", icon: "fas fa-scroll", text: "Soul Scrolls" },
+        { href: "/pages/scrolls.html", icon: "fas fa-scroll", text: "Soul Scrolls" },
         { href: "/pages/messageboard.html", icon: "fas fa-comments", text: "Echoes Unbound" },
         { href: "/souls", icon: "fas fa-users", text: "Eternal Souls" },
         { href: "/pages/links.html", icon: "fas fa-door-open", text: "The Gateways" },

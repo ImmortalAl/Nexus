@@ -308,7 +308,7 @@ class BlogUI {
         const shareData = {
             title: post.title,
             text: `Check out this scroll: ${post.title}`,
-            url: `${window.location.origin}/pages/blog.html?post=${postId}`
+            url: `${window.location.origin}/pages/scrolls.html?post=${postId}`
         };
 
         // Try Web Share API first

@@ -677,7 +677,7 @@
                                 <i class="fas fa-clock"></i>
                                 ${new Date(blog.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                             </div>
-                            <a href="/pages/blog.html?id=${blog._id}" class="blog-preview-link">
+                            <a href="/pages/scrolls.html?id=${blog._id}" class="blog-preview-link">
                                 Read More <i class="fas fa-arrow-right"></i>
                             </a>
                         </div>
@@ -686,7 +686,7 @@
                     // Make the whole preview clickable
                     blogElement.addEventListener('click', (e) => {
                         if (!e.target.closest('.blog-preview-link')) {
-                            window.location.href = `/pages/blog.html?id=${blog._id}`;
+                            window.location.href = `/pages/scrolls.html?id=${blog._id}`;
                         }
                     });
                     

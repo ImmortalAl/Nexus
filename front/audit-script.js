@@ -11,7 +11,7 @@ const PAGES = [
     { name: 'lander', path: '/lander.html' },
     { name: 'messageboard', path: '/pages/messageboard.html' },
     { name: 'news', path: '/pages/news.html' },
-    { name: 'blog', path: '/pages/blog.html' },
+    { name: 'blog', path: '/pages/scrolls.html' },
     { name: 'souls', path: '/souls/' },
     { name: 'links', path: '/pages/links.html' },
     { name: 'manifesto', path: '/pages/manifesto.html' },

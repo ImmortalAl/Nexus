@@ -13,7 +13,7 @@ const STATIC_ASSETS = [
   '/index.html',
   '/lander.html',
   '/offline.html', // Offline fallback page
-  '/pages/blog.html',
+  '/pages/scrolls.html',
   '/pages/celestial-commons.html',
   '/pages/news.html',
   '/pages/messageboard.html',

@@ -195,7 +195,7 @@
                         <h3>Soul Scrolls</h3>
                         <p>Inscribe your essence for eternity. Share thoughts that echo beyond time.</p>
                     </div>
-                    <a href="pages/blog.html" class="btn btn-primary">Write Now</a>
+                    <a href="pages/scrolls.html" class="btn btn-primary">Write Now</a>
                 </article>
                 <article class="feature-card" data-feature="echoes">
                     <div class="feature-content">
@@ -282,7 +282,7 @@
                 </div>
             </div>
             <div class="section-footer">
-                <a href="pages/blog.html" class="btn btn-primary">Read Scrolls</a>
+                <a href="pages/scrolls.html" class="btn btn-primary">Read Scrolls</a>
             </div>
         </section>
 
@@ -784,7 +784,7 @@
         
         // Create highlight card container with click navigation
         const highlightCard = document.createElement('a');
-        highlightCard.href = 'pages/blog.html';
+        highlightCard.href = 'pages/scrolls.html';
         highlightCard.className = `highlight-item scroll-highlight-card ${cardType}-highlight`;
         highlightCard.setAttribute('data-scroll-id', scroll._id || scroll.id);
         
@@ -792,7 +792,7 @@
         highlightCard.addEventListener('click', function(e) {
             e.preventDefault();
             sessionStorage.setItem('openScrollId', scroll._id || scroll.id);
-            window.location.href = 'pages/blog.html';
+            window.location.href = 'pages/scrolls.html';
         });
         
         // Create title

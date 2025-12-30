@@ -620,7 +620,7 @@ class BlogModal {
     copyPostLink() {
         if (!this.currentPostId) return;
 
-        const postUrl = `${window.location.origin}/pages/blog.html?id=${this.currentPostId}`;
+        const postUrl = `${window.location.origin}/pages/scrolls.html?id=${this.currentPostId}`;
 
         if (navigator.clipboard && window.isSecureContext) {
             navigator.clipboard.writeText(postUrl).then(() => {

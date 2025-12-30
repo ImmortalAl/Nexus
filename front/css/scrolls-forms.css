@@ -389,3 +389,15 @@ body.light-theme .blog-form .error {
     font-style: italic;
     opacity: 0.8;
 }
+/* Prevent word breaking in editors */
+textarea,
+[contenteditable],
+.scroll-content,
+.blog-content,
+.ql-editor {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: none;
+    white-space: pre-wrap;
+}
