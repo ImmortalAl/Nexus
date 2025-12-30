@@ -175,7 +175,7 @@ class BlogModal {
         const modalBody = document.getElementById('modalBody');
 
         if (modalLoading) modalLoading.style.display = 'none';
-        if (modalBody) modalBody.style.display = 'block';
+        if (modalBody) modalBody.style.display = ''; // Let CSS handle display, don't override with 'block'
     }
 
     /**
