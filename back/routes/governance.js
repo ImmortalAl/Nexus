@@ -716,3 +716,104 @@ router.get('/stats', async (req, res) => {
 });
 
 module.exports = router;
+
+// @route   POST /api/governance/proposals/:id/second
+
+// @route   POST /api/governance/proposals/:id/second
+// @desc    Second a proposal (support moving it to voting)
+// @access  Private
+router.post('/proposals/:id/second', auth, async (req, res) => {
+    try {
+        const proposal = await Proposal.findById(req.params.id);
+        
+        if (!proposal) {
+            return res.status(404).json({ error: 'Proposal not found' });
+        }
+        
+        if (proposal.status !== 'discussion') {
+            return res.status(400).json({ error: 'Proposal is not in discussion phase' });
+        }
+        
+        // Check if user already seconded
+        const alreadySeconded = proposal.seconds && proposal.seconds.some(
+            s => s.user && s.user.toString() === req.user._id.toString()
+        );
+        
+        if (alreadySeconded) {
+            return res.status(400).json({ error: 'You have already seconded this proposal' });
+        }
+        
+        // Can't second your own proposal
+        if (proposal.author && proposal.author.toString() === req.user._id.toString()) {
+            return res.status(400).json({ error: 'You cannot second your own proposal' });
+        }
+        
+        // Initialize seconds array if needed
+        if (!proposal.seconds) {
+            proposal.seconds = [];
+        }
+        
+        // Add second
+        proposal.seconds.push({ user: req.user._id });
+        
+        const secondsRequired = proposal.secondsRequired || 3;
+        const hasEnough = proposal.seconds.length >= secondsRequired;
+        
+        // Check if we have enough seconds to open voting
+        let votingOpened = false;
+        if (hasEnough && proposal.status === 'discussion') {
+            proposal.status = 'voting';
+            proposal.votingStartDate = new Date();
+            const days = proposal.votingPeriodDays || 7;
+            proposal.votingEndDate = new Date(Date.now() + days * 24 * 60 * 60 * 1000);
+            votingOpened = true;
+        }
+        
+        await proposal.save();
+        
+        const remaining = Math.max(0, secondsRequired - proposal.seconds.length);
+        
+        res.json({
+            success: true,
+            secondsCount: proposal.seconds.length,
+            secondsNeeded: remaining,
+            votingOpened,
+            message: votingOpened 
+                ? 'Proposal has enough support! Voting is now open.'
+                : 
+        });
+        
+    } catch (error) {
+        console.error('Error seconding proposal:', error);
+        res.status(500).json({ error: 'Failed to second proposal' });
+    }
+});
+
+// @route   GET /api/governance/proposals/:id/seconds
+// @desc    Get list of users who seconded a proposal
+// @access  Public
+router.get('/proposals/:id/seconds', async (req, res) => {
+    try {
+        const proposal = await Proposal.findById(req.params.id)
+            .populate('seconds.user', 'username displayName');
+        
+        if (!proposal) {
+            return res.status(404).json({ error: 'Proposal not found' });
+        }
+        
+        const secondsRequired = proposal.secondsRequired || 3;
+        
+        res.json({
+            count: proposal.seconds ? proposal.seconds.length : 0,
+            needed: secondsRequired,
+            hasEnough: proposal.seconds && proposal.seconds.length >= secondsRequired,
+            seconds: proposal.seconds || []
+        });
+        
+    } catch (error) {
+        console.error('Error fetching seconds:', error);
+        res.status(500).json({ error: 'Failed to fetch seconds' });
+    }
+});
+
+module.exports = router;

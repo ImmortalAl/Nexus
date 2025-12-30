@@ -113,6 +113,21 @@ const proposalSchema = new mongoose.Schema({
             default: null
         }
     },
+    // Community seconds - support for moving to voting
+    seconds: [{
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now
+        }
+    }],
+    secondsRequired: {
+        type: Number,
+        default: 3
+    },
     votes: {
         approve: {
             type: Number,
@@ -153,6 +168,16 @@ proposalSchema.virtual('approvalPercentage').get(function() {
 // Calculate total vote count
 proposalSchema.virtual('totalVotes').get(function() {
     return this.votes.approve + this.votes.reject + this.votes.abstain;
+});
+
+// Check if proposal has enough seconds to move to voting
+proposalSchema.virtual("hasEnoughSeconds").get(function() {
+    return this.seconds.length >= this.secondsRequired;
+});
+
+// Get remaining seconds needed
+proposalSchema.virtual("secondsNeeded").get(function() {
+    return Math.max(0, this.secondsRequired - this.seconds.length);
 });
 
 // Check if proposal has passed
