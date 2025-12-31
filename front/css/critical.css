@@ -391,6 +391,14 @@ nav.main-nav a.active span::after {
     white-space: nowrap;
 }
 
+/* Button text switching - show full text by default, hide short */
+.header-auth-buttons .btn-text-short {
+    display: none;
+}
+.header-auth-buttons .btn-text-full {
+    display: inline;
+}
+
 .header-auth-buttons .btn-primary:hover,
 .header-auth-buttons .btn-outline:hover {
     transform: translateY(-1px);
@@ -444,16 +452,20 @@ nav.main-nav a.active span::after {
     }
     .header-auth-buttons {
         gap: 0.3rem; /* Small gap between buttons */
-        flex-direction: row; /* Keep buttons horizontal but smaller */
+        flex-direction: row; /* Keep buttons horizontal */
         margin-right: 0; /* Ensure no negative margins */
     }
     .header-auth-buttons .btn {
-        padding: 0.3rem 0.5rem; /* Balanced padding */
-        font-size: 0.62rem; /* Smaller font to fit better */
-        letter-spacing: -0.015em; /* Slight letter spacing adjustment */
-        min-width: 0; /* Remove any minimum width constraints */
-        overflow: hidden; /* Prevent overflow */
-        text-overflow: ellipsis; /* Add ellipsis if needed */
+        padding: 0.4rem 0.6rem; /* Comfortable padding for short text */
+        font-size: 0.75rem; /* Readable font size */
+        min-width: 0;
+    }
+    /* Switch to short button text on mobile */
+    .header-auth-buttons .btn-text-full {
+        display: none;
+    }
+    .header-auth-buttons .btn-text-short {
+        display: inline;
     }
 }
 

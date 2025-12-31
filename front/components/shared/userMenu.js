@@ -101,8 +101,14 @@ function updateUserMenu() {
 
 function populateHeaderAuthButtons(container) {
   container.innerHTML = `
-    <a href="#" class="btn btn-primary" id="headerSignupButton">Embrace Immortality</a>
-    <a href="#" class="btn btn-outline" id="headerLoginButton">Enter Sanctuary</a>
+    <a href="#" class="btn btn-primary" id="headerSignupButton">
+      <span class="btn-text-full">Embrace Immortality</span>
+      <span class="btn-text-short">Join</span>
+    </a>
+    <a href="#" class="btn btn-outline" id="headerLoginButton">
+      <span class="btn-text-full">Enter Sanctuary</span>
+      <span class="btn-text-short">Login</span>
+    </a>
   `;
   const headerSignupButton = document.getElementById('headerSignupButton');
   const headerLoginButton = document.getElementById('headerLoginButton');
