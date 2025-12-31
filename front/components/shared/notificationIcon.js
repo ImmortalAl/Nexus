@@ -45,23 +45,26 @@
             this.container.innerHTML = `
                 <button class="notification-icon" id="notificationIconBtn" aria-label="Notifications">
                     <svg class="pigeon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        <!-- Stylized dove/messenger pigeon -->
-                        <!-- Body -->
-                        <path d="M8 12 C8 12 6 14 6 16 C6 17 7 18 8 18 L16 18 C17 18 18 17 18 16 C18 14 16 12 16 12" fill="currentColor" opacity="0.15"/>
-                        <!-- Head and neck -->
-                        <circle cx="16" cy="10" r="2.5" fill="currentColor" opacity="0.15"/>
-                        <path d="M14 10 L10 12"/>
+                        <!-- Messenger Pigeon - Clean silhouette design -->
+                        <!-- Body - plump pigeon shape -->
+                        <path d="M6 14 C6 11 8 9 12 9 C16 9 18 11 18 14 C18 17 15 19 12 19 C9 19 6 17 6 14" fill="currentColor" opacity="0.15"/>
+                        <!-- Head -->
+                        <circle cx="17" cy="8" r="3" fill="currentColor" opacity="0.15"/>
+                        <circle cx="17" cy="8" r="3"/>
                         <!-- Eye -->
-                        <circle cx="17" cy="9.5" r="0.5" fill="currentColor"/>
-                        <!-- Beak with scroll/letter -->
-                        <path d="M18.5 10 L20 10 L20 12 L18.5 12 L18.5 10" fill="none" stroke="currentColor" opacity="0.8"/>
-                        <line x1="19" y1="10.5" x2="19" y2="11.5" opacity="0.5"/>
-                        <!-- Wing in flight -->
-                        <path d="M10 11 Q6 9 4 11 M10 12.5 Q6.5 11 4.5 12.5" opacity="0.7"/>
+                        <circle cx="18" cy="7.5" r="0.8" fill="currentColor"/>
+                        <!-- Beak -->
+                        <path d="M20 8 L22 9 L20 10"/>
+                        <!-- Neck connecting head to body -->
+                        <path d="M14.5 10 C15 11 15 12 14 13"/>
+                        <!-- Wing raised in flight -->
+                        <path d="M8 12 C6 10 4 9 2 10 C4 11 5 12 6 14" fill="currentColor" opacity="0.1"/>
+                        <path d="M8 12 C6 10 4 9 2 10"/>
+                        <path d="M7 13 C5 12 3 11 2 12"/>
                         <!-- Tail feathers -->
-                        <path d="M8 16 L6 19 M9 16.5 L7 19.5" opacity="0.7"/>
-                        <!-- Small sparkle/magic effect (immortal theme) -->
-                        <path d="M13 8 L13 6 M12 7 L14 7" opacity="0.4" stroke-width="1"/>
+                        <path d="M6 16 L3 18 M7 17 L4 19 M8 17.5 L5.5 19.5"/>
+                        <!-- Letter/scroll in beak -->
+                        <rect x="21" y="7.5" width="2" height="3" rx="0.3" fill="currentColor" opacity="0.6" stroke="none"/>
                     </svg>
                     ${unreadCount > 0 ? `<span class="notification-badge">${unreadCount > 99 ? '99+' : unreadCount}</span>` : ''}
                 </button>
@@ -108,15 +111,26 @@
                     <div class="notification-modal-header">
                         <h2>
                             <svg class="pigeon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M8 12 C8 12 6 14 6 16 C6 17 7 18 8 18 L16 18 C17 18 18 17 18 16 C18 14 16 12 16 12" fill="currentColor" opacity="0.15"/>
-                                <circle cx="16" cy="10" r="2.5" fill="currentColor" opacity="0.15"/>
-                                <path d="M14 10 L10 12"/>
-                                <circle cx="17" cy="9.5" r="0.5" fill="currentColor"/>
-                                <path d="M18.5 10 L20 10 L20 12 L18.5 12 L18.5 10" fill="none" stroke="currentColor" opacity="0.8"/>
-                                <line x1="19" y1="10.5" x2="19" y1="11.5" opacity="0.5"/>
-                                <path d="M10 11 Q6 9 4 11 M10 12.5 Q6.5 11 4.5 12.5" opacity="0.7"/>
-                                <path d="M8 16 L6 19 M9 16.5 L7 19.5" opacity="0.7"/>
-                                <path d="M13 8 L13 6 M12 7 L14 7" opacity="0.4" stroke-width="1"/>
+                                <!-- Messenger Pigeon - Clean silhouette design -->
+                                <!-- Body - plump pigeon shape -->
+                                <path d="M6 14 C6 11 8 9 12 9 C16 9 18 11 18 14 C18 17 15 19 12 19 C9 19 6 17 6 14" fill="currentColor" opacity="0.15"/>
+                                <!-- Head -->
+                                <circle cx="17" cy="8" r="3" fill="currentColor" opacity="0.15"/>
+                                <circle cx="17" cy="8" r="3"/>
+                                <!-- Eye -->
+                                <circle cx="18" cy="7.5" r="0.8" fill="currentColor"/>
+                                <!-- Beak -->
+                                <path d="M20 8 L22 9 L20 10"/>
+                                <!-- Neck connecting head to body -->
+                                <path d="M14.5 10 C15 11 15 12 14 13"/>
+                                <!-- Wing raised in flight -->
+                                <path d="M8 12 C6 10 4 9 2 10 C4 11 5 12 6 14" fill="currentColor" opacity="0.1"/>
+                                <path d="M8 12 C6 10 4 9 2 10"/>
+                                <path d="M7 13 C5 12 3 11 2 12"/>
+                                <!-- Tail feathers -->
+                                <path d="M6 16 L3 18 M7 17 L4 19 M8 17.5 L5.5 19.5"/>
+                                <!-- Letter/scroll in beak -->
+                                <rect x="21" y="7.5" width="2" height="3" rx="0.3" fill="currentColor" opacity="0.6" stroke="none"/>
                             </svg>
                             Courier Pigeons
                         </h2>
@@ -298,15 +312,26 @@
                 container.innerHTML = `
                     <div class="notification-empty">
                         <svg class="pigeon-icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M8 12 C8 12 6 14 6 16 C6 17 7 18 8 18 L16 18 C17 18 18 17 18 16 C18 14 16 12 16 12" fill="currentColor" opacity="0.15"/>
-                            <circle cx="16" cy="10" r="2.5" fill="currentColor" opacity="0.15"/>
-                            <path d="M14 10 L10 12"/>
-                            <circle cx="17" cy="9.5" r="0.5" fill="currentColor"/>
-                            <path d="M18.5 10 L20 10 L20 12 L18.5 12 L18.5 10" fill="none" stroke="currentColor" opacity="0.8"/>
-                            <line x1="19" y1="10.5" x2="19" y2="11.5" opacity="0.5"/>
-                            <path d="M10 11 Q6 9 4 11 M10 12.5 Q6.5 11 4.5 12.5" opacity="0.7"/>
-                            <path d="M8 16 L6 19 M9 16.5 L7 19.5" opacity="0.7"/>
-                            <path d="M13 8 L13 6 M12 7 L14 7" opacity="0.4" stroke-width="1"/>
+                            <!-- Messenger Pigeon - Clean silhouette design -->
+                            <!-- Body - plump pigeon shape -->
+                            <path d="M6 14 C6 11 8 9 12 9 C16 9 18 11 18 14 C18 17 15 19 12 19 C9 19 6 17 6 14" fill="currentColor" opacity="0.15"/>
+                            <!-- Head -->
+                            <circle cx="17" cy="8" r="3" fill="currentColor" opacity="0.15"/>
+                            <circle cx="17" cy="8" r="3"/>
+                            <!-- Eye -->
+                            <circle cx="18" cy="7.5" r="0.8" fill="currentColor"/>
+                            <!-- Beak -->
+                            <path d="M20 8 L22 9 L20 10"/>
+                            <!-- Neck connecting head to body -->
+                            <path d="M14.5 10 C15 11 15 12 14 13"/>
+                            <!-- Wing raised in flight -->
+                            <path d="M8 12 C6 10 4 9 2 10 C4 11 5 12 6 14" fill="currentColor" opacity="0.1"/>
+                            <path d="M8 12 C6 10 4 9 2 10"/>
+                            <path d="M7 13 C5 12 3 11 2 12"/>
+                            <!-- Tail feathers -->
+                            <path d="M6 16 L3 18 M7 17 L4 19 M8 17.5 L5.5 19.5"/>
+                            <!-- Letter/scroll in beak -->
+                            <rect x="21" y="7.5" width="2" height="3" rx="0.3" fill="currentColor" opacity="0.6" stroke="none"/>
                         </svg>
                         <p>No messages from the eternal realm</p>
                         <small>Your courier pigeon will deliver notifications here</small>
