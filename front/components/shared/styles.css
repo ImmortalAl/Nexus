@@ -298,7 +298,8 @@
         position: relative;
         z-index: var(--z-sidebar); /* Keep this high to be above header */
         overflow: visible;
-        flex: 0 0 auto; /* Don't grow or shrink */
+        flex: 0 1 auto; /* Allow shrinking to prevent overflow */
+        min-width: 0;
     }
     
     .user-menu-btn {
