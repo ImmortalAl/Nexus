@@ -406,14 +406,16 @@
     
     .header-controls {
         order: 2;
-        flex: 0 0 auto;
+        flex: 0 1 auto; /* Allow shrinking (middle value) to prevent overflow */
         display: flex;
         align-items: center;
         gap: var(--space-xs);
+        min-width: 0; /* Allow shrinking below content size */
     }
-    
+
     .user-menu {
-        flex: 0 0 auto;
+        flex: 0 1 auto; /* Allow shrinking to prevent overflow */
+        min-width: 0;
     }
     
     .user-menu-btn {
