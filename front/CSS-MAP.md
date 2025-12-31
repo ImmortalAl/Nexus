@@ -1,53 +1,65 @@
 # Immortal Nexus - CSS Architecture Map
 
 **Created**: December 31, 2025
+**Last Updated**: December 31, 2025
 **Purpose**: Complete mapping of CSS/HTML/JS relationships for debugging and refactoring
 **Total CSS Lines**: ~45,410 across 49 files
 
 ---
 
-## CRITICAL ISSUES IDENTIFIED
+## FIXES APPLIED (December 31, 2025)
 
-### 1. JavaScript Inline Style Injection (ROOT CAUSE)
+### ✅ FIX 1: Removed JavaScript Inline Style Injection
+**File**: `components/shared/navigation.js`
+**Commit**: Removed ~100 lines of inline style injection (lines 145-249)
+**Result**: CSS now controls layout without JS override
+
+### ✅ FIX 2: Removed !important Overrides from critical.css
+**File**: `css/critical.css`
+**Commit**: Removed 207 lines of conflicting @media queries
+**Key fix**: `.user-menu { max-width: 120px !important; overflow: hidden !important; }` was cutting off avatar
+
+### Header Now Controlled By:
+1. `css/critical.css` - Base header structure (display: flex, position: sticky)
+2. `css/immortal-theme.css` - All mobile responsive styles (SINGLE SOURCE OF TRUTH)
+
+---
+
+## REMAINING CLEANUP (Future Tasks)
+
+### Dead Code - Mobile CSS Files (404s)
+These files exist but are referenced with WRONG PATHS in HTML:
+- `css/mobile-enhanced.css` - Referenced as `css/` instead of `../css/` from /pages/
+- `css/mobile-immortal-enhanced.css` - Same issue
+- `css/mobile-ux-enhanced.css` - Same issue
+
+**Action Required**: Remove `<link>` tags from all HTML files, then delete files.
+
+---
+
+## ISSUES IDENTIFIED (Historical Reference)
+
+### 1. JavaScript Inline Style Injection ~~(ROOT CAUSE)~~ ✅ FIXED
 **File**: `components/shared/navigation.js` (lines 145-249)
 
-On mobile devices (< 900px), JavaScript **overwrites CSS** with inline styles:
-```javascript
-// Lines 169-249 inject these inline styles:
-headerElement.style.display = 'grid';
-headerElement.style.gridTemplateColumns = 'auto 1fr auto';
-headerControls.style.gridColumn = '3';
-headerControls.style.justifySelf = 'end';
-userMenu.style.display = 'inline-flex';
-// ... and 30+ more style properties
-```
+~~On mobile devices (< 900px), JavaScript **overwrites CSS** with inline styles~~
 
-**Impact**: CSS fixes are ignored because inline styles have highest specificity.
+**Status**: REMOVED - Now only applies minimal fallback if CSS fails to load.
 
-### 2. Header Defined in 5+ Places (Specificity War)
-The `header` element is styled in:
-1. `base-theme.css:205-209` - background-color, border-bottom
-2. `critical.css:190-212` - display: flex, position: sticky, z-index
-3. `critical.css:426-515` - @media 850px overrides
-4. `critical.css:611-699` - @media 900px GRID layout overrides
-5. `styles.css:8-9` - dark-theme header background
-6. `immortal-theme.css` - Mobile-first header styles
-7. `mobile-enhanced.css:97-100` - @media 768px position: sticky
-8. **INLINE** via navigation.js (highest priority!)
+### 2. Header Defined in 5+ Places ~~(Specificity War)~~ ✅ SIMPLIFIED
+The `header` element is now styled in:
+1. `critical.css` - Base structure only
+2. `immortal-theme.css` - All responsive styles (SINGLE SOURCE)
+3. ~~`critical.css` @media overrides~~ REMOVED
+4. ~~**INLINE** via navigation.js~~ REMOVED
 
-### 3. Conflicting Mobile Breakpoints
-Different CSS files use different breakpoints for the same elements:
-- `critical.css`: 850px, 768px, 480px, 900px
-- `mobile-enhanced.css`: 768px, 640px
-- `viewport-optimizations.css`: 1440px, 1200px, 1024px, 768px, 640px, 480px, 375px
-- `immortal-theme.css`: 768px, 1024px
+### 3. Conflicting Mobile Breakpoints - CONSOLIDATED
+All mobile header styles now in `immortal-theme.css` using:
+- 768px breakpoint for tablet
+- 1024px breakpoint for desktop
 
-### 4. Excessive !important Declarations
-Found in `critical.css` alone:
-- `background-image: url(...) !important` (line 31)
-- `display: flex !important` (line 427)
-- `min-height: 55px !important` (line 432)
-- 50+ more !important declarations
+### 4. Excessive !important Declarations - CLEANED
+Removed 50+ !important declarations from critical.css @media queries.
 
 ---
 
