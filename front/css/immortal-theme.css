@@ -173,34 +173,88 @@ h1.eternal,
    4. NAVIGATION & HEADER
    ============================================================================ */
 
-header,
-.main-nav {
+header {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
-    padding: 1rem 1.5rem;
+    padding: 0.75rem 1rem;
     background: linear-gradient(135deg,
         rgba(26, 27, 78, 0.98) 0%,
         rgba(22, 33, 62, 0.98) 100%);
     border-bottom: 1px solid rgba(255, 94, 120, 0.3);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    /* FLEX LAYOUT - logo left, controls right */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
 }
 
 @supports (padding: max(0px)) {
     header {
-        padding-top: max(1rem, env(safe-area-inset-top));
+        padding-top: max(0.75rem, env(safe-area-inset-top));
         padding-left: max(1rem, env(safe-area-inset-left));
         padding-right: max(1rem, env(safe-area-inset-right));
     }
 }
 
-/* Header controls container */
+/* Logo container */
+.logo {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+}
+
+.logo a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--text);
+}
+
+.logo i {
+    font-size: 1.5rem;
+    color: rgba(255, 94, 120, 0.9);
+}
+
+.logo .full-title {
+    display: none;
+}
+
+.logo .short-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--text);
+}
+
+/* Header controls container - RIGHT SIDE */
 .header-controls {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    flex-shrink: 0;
+    max-width: 60%;
+    overflow: hidden;
+}
+
+/* User menu avatar constraint */
+.user-menu,
+#userMenuContainer {
+    flex-shrink: 0;
+}
+
+.user-menu img,
+.user-avatar,
+#userMenuContainer img {
+    width: 36px;
+    height: 36px;
+    max-width: 36px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 /* Hide empty notification/user containers when not logged in */
