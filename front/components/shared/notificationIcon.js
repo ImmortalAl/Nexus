@@ -173,6 +173,9 @@
 
             // Refresh list when new notification arrives
             window.NEXUSNotifications.on('newNotification', () => {
+                // Trigger pigeon flying animation
+                this.triggerFlyingAnimation();
+
                 if (this.isDropdownOpen || this.isModalOpen) {
                     this.renderNotificationList();
                 }
@@ -401,11 +404,39 @@
                     badge.textContent = badgeText;
                     iconBtn.appendChild(badge);
                 }
+                // Add has-unread class for idle bobbing animation
+                iconBtn.classList.add('has-unread');
             } else {
                 if (existingBadge) {
                     existingBadge.remove();
                 }
+                iconBtn.classList.remove('has-unread');
             }
+        }
+
+        /**
+         * Trigger flying animation when new notification arrives
+         */
+        triggerFlyingAnimation() {
+            const iconBtn = document.getElementById('notificationIconBtn');
+            if (!iconBtn) return;
+
+            const pigeonIcon = iconBtn.querySelector('.pigeon-icon');
+            if (!pigeonIcon) return;
+
+            // Remove any existing animation classes
+            pigeonIcon.classList.remove('flying', 'flutter');
+
+            // Force reflow to restart animation
+            void pigeonIcon.offsetWidth;
+
+            // Add flying animation
+            pigeonIcon.classList.add('flying');
+
+            // Remove class after animation completes
+            setTimeout(() => {
+                pigeonIcon.classList.remove('flying');
+            }, 800);
         }
 
         /**

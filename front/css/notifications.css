@@ -76,6 +76,90 @@ button.notification-icon,
     }
 }
 
+/* Pigeon flying animation when notification arrives */
+@keyframes pigeon-fly {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+    10% {
+        transform: translateY(-3px) rotate(-8deg);
+    }
+    20% {
+        transform: translateY(-5px) rotate(5deg);
+    }
+    30% {
+        transform: translateY(-3px) rotate(-6deg);
+    }
+    40% {
+        transform: translateY(-6px) rotate(4deg);
+    }
+    50% {
+        transform: translateY(-4px) rotate(-5deg);
+    }
+    60% {
+        transform: translateY(-5px) rotate(3deg);
+    }
+    70% {
+        transform: translateY(-2px) rotate(-3deg);
+    }
+    80% {
+        transform: translateY(-3px) rotate(2deg);
+    }
+    90% {
+        transform: translateY(-1px) rotate(-1deg);
+    }
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+}
+
+/* Quick excited flutter */
+@keyframes pigeon-flutter {
+    0%, 100% {
+        transform: rotate(0deg) scale(1);
+    }
+    15% {
+        transform: rotate(-12deg) scale(1.1);
+    }
+    30% {
+        transform: rotate(10deg) scale(1.05);
+    }
+    45% {
+        transform: rotate(-8deg) scale(1.1);
+    }
+    60% {
+        transform: rotate(6deg) scale(1.05);
+    }
+    75% {
+        transform: rotate(-4deg) scale(1.02);
+    }
+    90% {
+        transform: rotate(2deg) scale(1);
+    }
+}
+
+.pigeon-icon.flying {
+    animation: pigeon-fly 0.8s ease-in-out;
+}
+
+.pigeon-icon.flutter {
+    animation: pigeon-flutter 0.6s ease-in-out;
+}
+
+/* Continuous gentle hover when there are unread notifications */
+.notification-icon.has-unread .pigeon-icon {
+    animation: pigeon-idle-bob 2s ease-in-out infinite;
+}
+
+@keyframes pigeon-idle-bob {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-2px);
+    }
+}
+
 /* ========================================
    NOTIFICATION DROPDOWN (DESKTOP)
    ======================================== */
