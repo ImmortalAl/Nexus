@@ -3,14 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pigeon Icon Design - Round 2</title>
+    <title>Pigeon Icon - Professional Options</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background: #0d0d1a;
             color: #f0e6ff;
@@ -18,46 +13,14 @@
             padding: 40px;
             min-height: 100vh;
         }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 10px;
-            color: #ff5e78;
-            font-size: 1.8rem;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: #a099b0;
-            margin-bottom: 20px;
-        }
-
-        .anatomy-note {
-            max-width: 700px;
-            margin: 0 auto 40px;
-            background: rgba(255, 94, 120, 0.1);
-            border: 1px solid rgba(255, 94, 120, 0.3);
-            border-radius: 12px;
-            padding: 20px;
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-
-        .anatomy-note h3 {
-            color: #ff5e78;
-            margin-bottom: 10px;
-        }
-
-        .anatomy-note ul {
-            margin-left: 20px;
-            color: #c0b8d0;
-        }
+        h1 { text-align: center; margin-bottom: 10px; color: #ff5e78; font-size: 1.8rem; }
+        .subtitle { text-align: center; color: #a099b0; margin-bottom: 40px; }
 
         .options-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
             gap: 30px;
-            max-width: 1400px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
@@ -69,24 +32,15 @@
             text-align: center;
         }
 
-        .option-card h2 {
-            color: #ff5e78;
-            font-size: 1.1rem;
-            margin-bottom: 8px;
-        }
-
-        .option-card .description {
-            color: #a099b0;
-            font-size: 0.85rem;
-            margin-bottom: 25px;
-            line-height: 1.5;
-        }
+        .option-card h2 { color: #ff5e78; font-size: 1.2rem; margin-bottom: 8px; }
+        .option-card .source { color: #888; font-size: 0.75rem; margin-bottom: 15px; }
+        .option-card .description { color: #a099b0; font-size: 0.9rem; margin-bottom: 25px; line-height: 1.5; }
 
         .icon-display {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 25px;
+            gap: 30px;
             margin-bottom: 20px;
             flex-wrap: wrap;
         }
@@ -97,11 +51,7 @@
             align-items: center;
             gap: 8px;
         }
-
-        .size-demo span {
-            font-size: 0.7rem;
-            color: #666;
-        }
+        .size-demo span { font-size: 0.7rem; color: #666; }
 
         .icon-wrapper {
             display: flex;
@@ -111,30 +61,11 @@
             border: 2px solid rgba(255, 94, 120, 0.3);
             border-radius: 50%;
         }
-
-        .icon-wrapper.size-64 {
-            width: 72px;
-            height: 72px;
-        }
-
-        .icon-wrapper.size-48 {
-            width: 56px;
-            height: 56px;
-        }
-
-        .icon-wrapper.size-40 {
-            width: 48px;
-            height: 48px;
-        }
-
-        .icon-wrapper.size-24 {
-            width: 32px;
-            height: 32px;
-        }
-
-        .icon-wrapper svg {
-            color: #f0e6ff;
-        }
+        .icon-wrapper.size-80 { width: 88px; height: 88px; }
+        .icon-wrapper.size-48 { width: 56px; height: 56px; }
+        .icon-wrapper.size-40 { width: 48px; height: 48px; }
+        .icon-wrapper.size-24 { width: 32px; height: 32px; }
+        .icon-wrapper svg { color: #f0e6ff; }
 
         .winner-badge {
             display: inline-block;
@@ -146,7 +77,15 @@
             font-weight: 600;
             margin-bottom: 10px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+        }
+
+        .license {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            font-size: 0.75rem;
+            color: #888;
         }
 
         .comparison {
@@ -155,527 +94,142 @@
             border-radius: 20px;
             padding: 40px;
             margin-top: 50px;
-            max-width: 900px;
+            max-width: 600px;
             margin-left: auto;
             margin-right: auto;
-        }
-
-        .comparison h2 {
             text-align: center;
-            color: #ff5e78;
-            margin-bottom: 30px;
         }
-
+        .comparison h2 { color: #ff5e78; margin-bottom: 30px; }
         .comparison-row {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 40px;
+            gap: 60px;
             flex-wrap: wrap;
         }
-
-        .comparison-item {
-            text-align: center;
-        }
-
-        .comparison-item .label {
-            margin-top: 10px;
-            font-size: 0.9rem;
-            color: #a099b0;
-        }
+        .comparison-item { text-align: center; }
+        .comparison-item .label { margin-top: 10px; font-size: 0.9rem; color: #a099b0; }
     </style>
 </head>
 <body>
-    <h1>Pigeon Icon Designs - Round 2</h1>
-    <p class="subtitle">Proper pigeon anatomy: plump body, tiny head, stubby beak</p>
-
-    <div class="anatomy-note">
-        <h3>Pigeon Anatomy Rules:</h3>
-        <ul>
-            <li><strong>Body is 80% of the bird</strong> - Pigeons are CHUBBY. The body dominates.</li>
-            <li><strong>Head is tiny</strong> - About 1/5 the body size, sits on short neck</li>
-            <li><strong>Beak is short and stubby</strong> - Not pointed like eagles or long like herons</li>
-            <li><strong>Wings are rounded</strong> - Curved tips, not angular/swept like raptors</li>
-            <li><strong>Overall shape: pear/teardrop</strong> - Heavy bottom, small top</li>
-        </ul>
-    </div>
+    <h1>Professional Pigeon Icons</h1>
+    <p class="subtitle">From Iconify - properly designed icons from professional icon libraries</p>
 
     <div class="options-grid">
 
-        <!-- Option 1: Chubby Profile -->
+        <!-- Option 1: Streamline Freehand -->
         <div class="option-card">
-            <span class="winner-badge">Most Pigeon-Like</span>
-            <h2>Option A: Chubby Profile</h2>
-            <p class="description">Classic fat pigeon silhouette. Massive round body, tiny head perched on top. Letter in beak. Unmistakably a pigeon.</p>
+            <span class="winner-badge">Recommended</span>
+            <h2>Streamline Freehand: Envelope Pigeon</h2>
+            <p class="source">From Streamline Icons - hand-drawn style</p>
+            <p class="description">A messenger pigeon carrying an envelope. Hand-drawn freehand style that's warm and approachable. Perfect for notifications.</p>
 
             <div class="icon-display">
                 <div class="size-demo">
-                    <div class="icon-wrapper size-64">
-                        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-                            <!-- BIG FAT BODY - this is 80% of a pigeon -->
-                            <ellipse cx="11" cy="14" rx="7" ry="6" fill="currentColor" opacity="0.15"/>
-                            <ellipse cx="11" cy="14" rx="7" ry="6"/>
-                            <!-- TINY head - pigeons have small heads! -->
-                            <circle cx="16" cy="8" r="2" fill="currentColor" opacity="0.15"/>
-                            <circle cx="16" cy="8" r="2"/>
-                            <!-- Short stubby beak - NOT pointed -->
-                            <path d="M18 8 L19.5 8.5 L18 9" stroke-width="1.2"/>
-                            <!-- Tiny eye -->
-                            <circle cx="16.8" cy="7.5" r="0.5" fill="currentColor"/>
-                            <!-- Short neck connecting to body -->
-                            <path d="M14.5 9.5 C14 10.5 13.5 11 13 12" stroke-width="1.8"/>
-                            <!-- Wing detail on body -->
-                            <path d="M7 12 C5 13 5 15 7 16" opacity="0.5"/>
-                            <!-- Rounded wing feathers (not angular!) -->
-                            <path d="M5 13 Q3 12 2 13 Q3 14 4 14.5"/>
-                            <path d="M4.5 14.5 Q2.5 14 2 15"/>
-                            <!-- Tail - short fan -->
-                            <path d="M4 17 L2 19 M5 17.5 L3 20 M6 18 L4.5 20"/>
-                            <!-- Letter in beak -->
-                            <rect x="19" y="7" width="2.5" height="1.8" rx="0.2" fill="currentColor" opacity="0.6" stroke="none"/>
+                    <div class="icon-wrapper size-80">
+                        <!-- Streamline Envelope Pigeon -->
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="none">
+                            <path fill="currentColor" d="M10.306 12.482c-.15-.11-.27-.1-.791.15c-.52.25-1.241.67-2.693 1.431a.35.35 0 0 0-.16.48a.34.34 0 0 0 .47.16c1.002-.46 1.772-.81 2.253-1c-.18.59-.48 1.441-.821 2.272q-.405 1.031-.94 2.002a1.8 1.8 0 0 1-.411.56h-.13l-.38-.06c-.361-.09-.721-.22-.922-.28l-4.153-1.301l1.33-.571a.32.32 0 0 0 .191-.41a.31.31 0 0 0-.4-.18c-.64.22-2.522.92-2.543.93a.32.32 0 0 0-.19.4q.28.862.44 1.752c.18.911.311 1.822.461 2.733q.054.661.18 1.31c.06.3.223.57.46.762c.237.147.513.217.791.2q.652-.08 1.272-.3c.68-.2 1.36-.42 2.001-.651c.64-.23 1.332-.48 2.002-.73a75 75 0 0 0 2.502-1.002c.5-.22 1.001-.46 1.632-.76a4.3 4.3 0 0 0 1.321-.921c.219-.248.334-.57.32-.901a12 12 0 0 0-1.23-3.193a11.7 11.7 0 0 0-1.863-2.882m1.721 6.465a4 4 0 0 1-.76.41L7.152 21.01l-3.913 1.45c-.2.07-.48.2-.75.27s-.43.281-.53-.45c-.081-.36-.121-.74-.151-.91c-.22-.901-.4-1.812-.64-2.713q-.136-.57-.33-1.12c.57.23 1.57.64 2.571 1c.771.29 1.522.57 2.062.75q.707.272 1.451.401c.343.07.698.013 1.001-.16a6.2 6.2 0 0 0 1.462-2.522q.612-1.592 1-3.253c.3.51.661 1.25 1.002 2.002a11 11 0 0 1 1 2.872c-.04.13-.21.22-.36.32"/>
+                            <path fill="currentColor" d="M15.49 1.892c.22.36.295.789.21 1.201c0 .12-.44.69-.54.951a.62.62 0 0 0 0 .53c.083.152.203.28.35.37c.18.121.42.181.57.281c.298.2.55.458.741.76a.82.82 0 0 1 .13.802q-.096.182-.25.32a2 2 0 0 1-.37.24a2.4 2.4 0 0 0-.43.19a.45.45 0 0 0-.22.3a.75.75 0 0 0 .19.561c.21.26.64.59.72.8a.88.88 0 0 1-.11.861c-.403.43-.89.77-1.431 1.001a.31.31 0 0 0-.14.42a.32.32 0 0 0 .43.14a5 5 0 0 0 1.691-1.1a1.52 1.52 0 0 0 .25-1.522a3.3 3.3 0 0 0-.49-1q.237-.114.44-.28c.19-.147.346-.331.461-.541a1.5 1.5 0 0 0 0-1.371a3.4 3.4 0 0 0-1.13-1.392l-.291-.16c.162-.268.287-.558.37-.86a2.93 2.93 0 0 0-.4-2.403a1.84 1.84 0 0 0-1.632-.8a2.19 2.19 0 0 0-1.861 1.16c-.333.85-.558 1.738-.67 2.643c-.19.866-.483 1.706-.872 2.502a6.9 6.9 0 0 1-1.511 2.062c-.18.16-.59.56-1.001.92a5 5 0 0 1-.61.451a8.4 8.4 0 0 0-1.442-1.2c.13-.944.13-1.9 0-2.843a4.8 4.8 0 0 0-.81-2.002c-.31-.42-1.001-.95-1.402-1.541a.87.87 0 0 1-.24-.761a.31.31 0 0 1 .24-.18c.21-.068.43-.098.65-.09c.48-.003.956.1 1.392.3c.13.08.15.23.2.34q.082.213.21.4q.076.106.18.18a.8.8 0 0 0 .411.16q.399.005.79-.06c.213.003.423.044.621.12c.192.082.366.201.51.351q.122.148.18.33q.067.19.06.39c0 .07-.11.341-.12.511a.53.53 0 0 0 .1.41a.35.35 0 0 0 .501 0s.18-.08.28-.9a1.9 1.9 0 0 0-.06-.67a1.7 1.7 0 0 0-.37-.541a2.15 2.15 0 0 0-.75-.64a3.75 3.75 0 0 0-1.592-.321a2.4 2.4 0 0 0-.19-.48a1.15 1.15 0 0 0-.4-.45A4.4 4.4 0 0 0 4.66.18a1.72 1.72 0 0 0-1.7 1.09a1.77 1.77 0 0 0 .21 1.482a15.6 15.6 0 0 0 1.792 1.832c.37.44.64.955.79 1.51c.177.775.248 1.57.21 2.363a2 2 0 0 0-.31-.07a3.6 3.6 0 0 0-1.691.21A2.69 2.69 0 0 0 2.118 11a3.1 3.1 0 0 0 1.251 2.443a2 2 0 0 0 0 .22q.02.324.1.64l.14.57c.063.331.24.63.501.842c.22.11.53.15.86-.28l.21-.321l.782-1.111a.36.36 0 0 0-.56-.44l-.842 1.19l-.08.12a.8.8 0 0 1-.08-.16l-.12-.55c0-.14 0-.29-.06-.44a1.1 1.1 0 0 1 0-.36a.42.42 0 0 0-.15-.36a2.33 2.33 0 0 1-1.001-1.883A1.71 1.71 0 0 1 4.27 9.59a2.55 2.55 0 0 1 1.231-.13c.388.085.739.292 1.001.59c.14.15.49.621.76.861a1 1 0 0 0 .551.29a2 2 0 0 0 1.151-.46a19 19 0 0 0 1.562-1.291a8 8 0 0 0 1.751-2.452c.446-.877.782-1.804 1.001-2.763c.08-.803.258-1.593.53-2.352a1.09 1.09 0 0 1 .931-.59c.32 0 .581.28.751.6m8.488 13.301a12.5 12.5 0 0 0-.791-3.003a2.4 2.4 0 0 0-.51-.84a1.4 1.4 0 0 0-.781-.32c-.484.002-.965.07-1.432.2q-1.04.293-2.111.44a2.56 2.56 0 0 1-1.272-.22a.36.36 0 0 0-.3.65a3.4 3.4 0 0 0 1.592.37q1.137-.081 2.252-.32q.431-.092.87-.13c.581 0 .54.21.611.39q.326.935.53 1.902c.49 2.002 0 2.162-.88 2.092c-1.151-.09-2.372-.74-3.443-.61a1.06 1.06 0 0 0-.56.24q-.273.314-.501.66q-.36.397-.771.741q-.399.346-.86.6l-1.112.491a.31.31 0 0 0-.19.4a.31.31 0 0 0 .39.2l1.221-.45a6 6 0 0 0 1.001-.61a7.5 7.5 0 0 0 .911-.761q.206-.218.38-.46a.24.24 0 0 1 .13-.09c.511.02 1.014.135 1.482.34q.86.338 1.771.49a2.87 2.87 0 0 0 1.792-.37a1.18 1.18 0 0 0 .51-.76a3.9 3.9 0 0 0 .07-1.262"/>
                         </svg>
                     </div>
-                    <span>56px</span>
+                    <span>64px</span>
                 </div>
                 <div class="size-demo">
-                    <div class="icon-wrapper size-40">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-                            <ellipse cx="11" cy="14" rx="7" ry="6" fill="currentColor" opacity="0.15"/>
-                            <ellipse cx="11" cy="14" rx="7" ry="6"/>
-                            <circle cx="16" cy="8" r="2" fill="currentColor" opacity="0.15"/>
-                            <circle cx="16" cy="8" r="2"/>
-                            <path d="M18 8 L19.5 8.5 L18 9" stroke-width="1.2"/>
-                            <circle cx="16.8" cy="7.5" r="0.5" fill="currentColor"/>
-                            <path d="M14.5 9.5 C14 10.5 13.5 11 13 12" stroke-width="1.8"/>
-                            <path d="M5 13 Q3 12 2 13 Q3 14 4 14.5"/>
-                            <path d="M4 17 L2 19 M5 17.5 L3 20"/>
-                            <rect x="19" y="7" width="2.5" height="1.8" rx="0.2" fill="currentColor" opacity="0.6" stroke="none"/>
+                    <div class="icon-wrapper size-48">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="none">
+                            <path fill="currentColor" d="M10.306 12.482c-.15-.11-.27-.1-.791.15c-.52.25-1.241.67-2.693 1.431a.35.35 0 0 0-.16.48a.34.34 0 0 0 .47.16c1.002-.46 1.772-.81 2.253-1c-.18.59-.48 1.441-.821 2.272q-.405 1.031-.94 2.002a1.8 1.8 0 0 1-.411.56h-.13l-.38-.06c-.361-.09-.721-.22-.922-.28l-4.153-1.301l1.33-.571a.32.32 0 0 0 .191-.41a.31.31 0 0 0-.4-.18c-.64.22-2.522.92-2.543.93a.32.32 0 0 0-.19.4q.28.862.44 1.752c.18.911.311 1.822.461 2.733q.054.661.18 1.31c.06.3.223.57.46.762c.237.147.513.217.791.2q.652-.08 1.272-.3c.68-.2 1.36-.42 2.001-.651c.64-.23 1.332-.48 2.002-.73a75 75 0 0 0 2.502-1.002c.5-.22 1.001-.46 1.632-.76a4.3 4.3 0 0 0 1.321-.921c.219-.248.334-.57.32-.901a12 12 0 0 0-1.23-3.193a11.7 11.7 0 0 0-1.863-2.882m1.721 6.465a4 4 0 0 1-.76.41L7.152 21.01l-3.913 1.45c-.2.07-.48.2-.75.27s-.43.281-.53-.45c-.081-.36-.121-.74-.151-.91c-.22-.901-.4-1.812-.64-2.713q-.136-.57-.33-1.12c.57.23 1.57.64 2.571 1c.771.29 1.522.57 2.062.75q.707.272 1.451.401c.343.07.698.013 1.001-.16a6.2 6.2 0 0 0 1.462-2.522q.612-1.592 1-3.253c.3.51.661 1.25 1.002 2.002a11 11 0 0 1 1 2.872c-.04.13-.21.22-.36.32"/><path fill="currentColor" d="M15.49 1.892c.22.36.295.789.21 1.201c0 .12-.44.69-.54.951a.62.62 0 0 0 0 .53c.083.152.203.28.35.37c.18.121.42.181.57.281c.298.2.55.458.741.76a.82.82 0 0 1 .13.802q-.096.182-.25.32a2 2 0 0 1-.37.24a2.4 2.4 0 0 0-.43.19a.45.45 0 0 0-.22.3a.75.75 0 0 0 .19.561c.21.26.64.59.72.8a.88.88 0 0 1-.11.861c-.403.43-.89.77-1.431 1.001a.31.31 0 0 0-.14.42a.32.32 0 0 0 .43.14a5 5 0 0 0 1.691-1.1a1.52 1.52 0 0 0 .25-1.522a3.3 3.3 0 0 0-.49-1q.237-.114.44-.28c.19-.147.346-.331.461-.541a1.5 1.5 0 0 0 0-1.371a3.4 3.4 0 0 0-1.13-1.392l-.291-.16c.162-.268.287-.558.37-.86a2.93 2.93 0 0 0-.4-2.403a1.84 1.84 0 0 0-1.632-.8a2.19 2.19 0 0 0-1.861 1.16c-.333.85-.558 1.738-.67 2.643c-.19.866-.483 1.706-.872 2.502a6.9 6.9 0 0 1-1.511 2.062c-.18.16-.59.56-1.001.92a5 5 0 0 1-.61.451a8.4 8.4 0 0 0-1.442-1.2c.13-.944.13-1.9 0-2.843a4.8 4.8 0 0 0-.81-2.002c-.31-.42-1.001-.95-1.402-1.541a.87.87 0 0 1-.24-.761a.31.31 0 0 1 .24-.18c.21-.068.43-.098.65-.09c.48-.003.956.1 1.392.3c.13.08.15.23.2.34q.082.213.21.4q.076.106.18.18a.8.8 0 0 0 .411.16q.399.005.79-.06c.213.003.423.044.621.12c.192.082.366.201.51.351q.122.148.18.33q.067.19.06.39c0 .07-.11.341-.12.511a.53.53 0 0 0 .1.41a.35.35 0 0 0 .501 0s.18-.08.28-.9a1.9 1.9 0 0 0-.06-.67a1.7 1.7 0 0 0-.37-.541a2.15 2.15 0 0 0-.75-.64a3.75 3.75 0 0 0-1.592-.321a2.4 2.4 0 0 0-.19-.48a1.15 1.15 0 0 0-.4-.45A4.4 4.4 0 0 0 4.66.18a1.72 1.72 0 0 0-1.7 1.09a1.77 1.77 0 0 0 .21 1.482a15.6 15.6 0 0 0 1.792 1.832c.37.44.64.955.79 1.51c.177.775.248 1.57.21 2.363a2 2 0 0 0-.31-.07a3.6 3.6 0 0 0-1.691.21A2.69 2.69 0 0 0 2.118 11a3.1 3.1 0 0 0 1.251 2.443a2 2 0 0 0 0 .22q.02.324.1.64l.14.57c.063.331.24.63.501.842c.22.11.53.15.86-.28l.21-.321l.782-1.111a.36.36 0 0 0-.56-.44l-.842 1.19l-.08.12a.8.8 0 0 1-.08-.16l-.12-.55c0-.14 0-.29-.06-.44a1.1 1.1 0 0 1 0-.36a.42.42 0 0 0-.15-.36a2.33 2.33 0 0 1-1.001-1.883A1.71 1.71 0 0 1 4.27 9.59a2.55 2.55 0 0 1 1.231-.13c.388.085.739.292 1.001.59c.14.15.49.621.76.861a1 1 0 0 0 .551.29a2 2 0 0 0 1.151-.46a19 19 0 0 0 1.562-1.291a8 8 0 0 0 1.751-2.452c.446-.877.782-1.804 1.001-2.763c.08-.803.258-1.593.53-2.352a1.09 1.09 0 0 1 .931-.59c.32 0 .581.28.751.6m8.488 13.301a12.5 12.5 0 0 0-.791-3.003a2.4 2.4 0 0 0-.51-.84a1.4 1.4 0 0 0-.781-.32c-.484.002-.965.07-1.432.2q-1.04.293-2.111.44a2.56 2.56 0 0 1-1.272-.22a.36.36 0 0 0-.3.65a3.4 3.4 0 0 0 1.592.37q1.137-.081 2.252-.32q.431-.092.87-.13c.581 0 .54.21.611.39q.326.935.53 1.902c.49 2.002 0 2.162-.88 2.092c-1.151-.09-2.372-.74-3.443-.61a1.06 1.06 0 0 0-.56.24q-.273.314-.501.66q-.36.397-.771.741q-.399.346-.86.6l-1.112.491a.31.31 0 0 0-.19.4a.31.31 0 0 0 .39.2l1.221-.45a6 6 0 0 0 1.001-.61a7.5 7.5 0 0 0 .911-.761q.206-.218.38-.46a.24.24 0 0 1 .13-.09c.511.02 1.014.135 1.482.34q.86.338 1.771.49a2.87 2.87 0 0 0 1.792-.37a1.18 1.18 0 0 0 .51-.76a3.9 3.9 0 0 0 .07-1.262"/>
                         </svg>
                     </div>
-                    <span>32px</span>
+                    <span>40px</span>
                 </div>
                 <div class="size-demo">
                     <div class="icon-wrapper size-24">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                            <ellipse cx="11" cy="14" rx="7" ry="6" fill="currentColor" opacity="0.15"/>
-                            <ellipse cx="11" cy="14" rx="7" ry="6"/>
-                            <circle cx="16" cy="8" r="2" fill="currentColor" opacity="0.15"/>
-                            <circle cx="16" cy="8" r="2"/>
-                            <path d="M18 8 L19.5 8.5 L18 9" stroke-width="1.3"/>
-                            <circle cx="16.8" cy="7.5" r="0.5" fill="currentColor"/>
-                            <path d="M14.5 9.5 C14 10.5 13.5 11 13 12" stroke-width="2"/>
-                            <path d="M4 17 L2 19"/>
-                            <rect x="19" y="7" width="2.5" height="1.8" rx="0.2" fill="currentColor" opacity="0.6" stroke="none"/>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="none">
+                            <path fill="currentColor" d="M10.306 12.482c-.15-.11-.27-.1-.791.15c-.52.25-1.241.67-2.693 1.431a.35.35 0 0 0-.16.48a.34.34 0 0 0 .47.16c1.002-.46 1.772-.81 2.253-1c-.18.59-.48 1.441-.821 2.272q-.405 1.031-.94 2.002a1.8 1.8 0 0 1-.411.56h-.13l-.38-.06c-.361-.09-.721-.22-.922-.28l-4.153-1.301l1.33-.571a.32.32 0 0 0 .191-.41a.31.31 0 0 0-.4-.18c-.64.22-2.522.92-2.543.93a.32.32 0 0 0-.19.4q.28.862.44 1.752c.18.911.311 1.822.461 2.733q.054.661.18 1.31c.06.3.223.57.46.762c.237.147.513.217.791.2q.652-.08 1.272-.3c.68-.2 1.36-.42 2.001-.651c.64-.23 1.332-.48 2.002-.73a75 75 0 0 0 2.502-1.002c.5-.22 1.001-.46 1.632-.76a4.3 4.3 0 0 0 1.321-.921c.219-.248.334-.57.32-.901a12 12 0 0 0-1.23-3.193a11.7 11.7 0 0 0-1.863-2.882m1.721 6.465a4 4 0 0 1-.76.41L7.152 21.01l-3.913 1.45c-.2.07-.48.2-.75.27s-.43.281-.53-.45c-.081-.36-.121-.74-.151-.91c-.22-.901-.4-1.812-.64-2.713q-.136-.57-.33-1.12c.57.23 1.57.64 2.571 1c.771.29 1.522.57 2.062.75q.707.272 1.451.401c.343.07.698.013 1.001-.16a6.2 6.2 0 0 0 1.462-2.522q.612-1.592 1-3.253c.3.51.661 1.25 1.002 2.002a11 11 0 0 1 1 2.872c-.04.13-.21.22-.36.32"/><path fill="currentColor" d="M15.49 1.892c.22.36.295.789.21 1.201c0 .12-.44.69-.54.951a.62.62 0 0 0 0 .53c.083.152.203.28.35.37c.18.121.42.181.57.281c.298.2.55.458.741.76a.82.82 0 0 1 .13.802q-.096.182-.25.32a2 2 0 0 1-.37.24a2.4 2.4 0 0 0-.43.19a.45.45 0 0 0-.22.3a.75.75 0 0 0 .19.561c.21.26.64.59.72.8a.88.88 0 0 1-.11.861c-.403.43-.89.77-1.431 1.001a.31.31 0 0 0-.14.42a.32.32 0 0 0 .43.14a5 5 0 0 0 1.691-1.1a1.52 1.52 0 0 0 .25-1.522a3.3 3.3 0 0 0-.49-1q.237-.114.44-.28c.19-.147.346-.331.461-.541a1.5 1.5 0 0 0 0-1.371a3.4 3.4 0 0 0-1.13-1.392l-.291-.16c.162-.268.287-.558.37-.86a2.93 2.93 0 0 0-.4-2.403a1.84 1.84 0 0 0-1.632-.8a2.19 2.19 0 0 0-1.861 1.16c-.333.85-.558 1.738-.67 2.643c-.19.866-.483 1.706-.872 2.502a6.9 6.9 0 0 1-1.511 2.062c-.18.16-.59.56-1.001.92a5 5 0 0 1-.61.451a8.4 8.4 0 0 0-1.442-1.2c.13-.944.13-1.9 0-2.843a4.8 4.8 0 0 0-.81-2.002c-.31-.42-1.001-.95-1.402-1.541a.87.87 0 0 1-.24-.761a.31.31 0 0 1 .24-.18c.21-.068.43-.098.65-.09c.48-.003.956.1 1.392.3c.13.08.15.23.2.34q.082.213.21.4q.076.106.18.18a.8.8 0 0 0 .411.16q.399.005.79-.06c.213.003.423.044.621.12c.192.082.366.201.51.351q.122.148.18.33q.067.19.06.39c0 .07-.11.341-.12.511a.53.53 0 0 0 .1.41a.35.35 0 0 0 .501 0s.18-.08.28-.9a1.9 1.9 0 0 0-.06-.67a1.7 1.7 0 0 0-.37-.541a2.15 2.15 0 0 0-.75-.64a3.75 3.75 0 0 0-1.592-.321a2.4 2.4 0 0 0-.19-.48a1.15 1.15 0 0 0-.4-.45A4.4 4.4 0 0 0 4.66.18a1.72 1.72 0 0 0-1.7 1.09a1.77 1.77 0 0 0 .21 1.482a15.6 15.6 0 0 0 1.792 1.832c.37.44.64.955.79 1.51c.177.775.248 1.57.21 2.363a2 2 0 0 0-.31-.07a3.6 3.6 0 0 0-1.691.21A2.69 2.69 0 0 0 2.118 11a3.1 3.1 0 0 0 1.251 2.443a2 2 0 0 0 0 .22q.02.324.1.64l.14.57c.063.331.24.63.501.842c.22.11.53.15.86-.28l.21-.321l.782-1.111a.36.36 0 0 0-.56-.44l-.842 1.19l-.08.12a.8.8 0 0 1-.08-.16l-.12-.55c0-.14 0-.29-.06-.44a1.1 1.1 0 0 1 0-.36a.42.42 0 0 0-.15-.36a2.33 2.33 0 0 1-1.001-1.883A1.71 1.71 0 0 1 4.27 9.59a2.55 2.55 0 0 1 1.231-.13c.388.085.739.292 1.001.59c.14.15.49.621.76.861a1 1 0 0 0 .551.29a2 2 0 0 0 1.151-.46a19 19 0 0 0 1.562-1.291a8 8 0 0 0 1.751-2.452c.446-.877.782-1.804 1.001-2.763c.08-.803.258-1.593.53-2.352a1.09 1.09 0 0 1 .931-.59c.32 0 .581.28.751.6m8.488 13.301a12.5 12.5 0 0 0-.791-3.003a2.4 2.4 0 0 0-.51-.84a1.4 1.4 0 0 0-.781-.32c-.484.002-.965.07-1.432.2q-1.04.293-2.111.44a2.56 2.56 0 0 1-1.272-.22a.36.36 0 0 0-.3.65a3.4 3.4 0 0 0 1.592.37q1.137-.081 2.252-.32q.431-.092.87-.13c.581 0 .54.21.611.39q.326.935.53 1.902c.49 2.002 0 2.162-.88 2.092c-1.151-.09-2.372-.74-3.443-.61a1.06 1.06 0 0 0-.56.24q-.273.314-.501.66q-.36.397-.771.741q-.399.346-.86.6l-1.112.491a.31.31 0 0 0-.19.4a.31.31 0 0 0 .39.2l1.221-.45a6 6 0 0 0 1.001-.61a7.5 7.5 0 0 0 .911-.761q.206-.218.38-.46a.24.24 0 0 1 .13-.09c.511.02 1.014.135 1.482.34q.86.338 1.771.49a2.87 2.87 0 0 0 1.792-.37a1.18 1.18 0 0 0 .51-.76a3.9 3.9 0 0 0 .07-1.262"/>
                         </svg>
                     </div>
                     <span>20px</span>
                 </div>
             </div>
+
+            <div class="license">License: CC BY 4.0 (Streamline)</div>
         </div>
 
-        <!-- Option 2: Perched Pigeon -->
+        <!-- Option 2: IconPark Outline -->
         <div class="option-card">
-            <h2>Option B: Perched Pigeon</h2>
-            <p class="description">Pigeon at rest, puffed up chest. Classic city pigeon stance with letter tied to leg. Very recognizable shape.</p>
+            <h2>IconPark Outline: Pigeon</h2>
+            <p class="source">From ByteDance IconPark - clean line style</p>
+            <p class="description">Clean outline pigeon icon. More geometric and modern. Works well at all sizes with clear strokes.</p>
 
             <div class="icon-display">
                 <div class="size-demo">
-                    <div class="icon-wrapper size-64">
-                        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-                            <!-- Puffed chest body - sitting upright -->
-                            <path d="M8 10 C6 10 5 12 5 15 C5 18 7 20 10 20 C13 20 15 18 15 15 C15 11 13 9 10 9 C9 9 8 9.5 8 10" fill="currentColor" opacity="0.15"/>
-                            <path d="M8 10 C6 10 5 12 5 15 C5 18 7 20 10 20 C13 20 15 18 15 15 C15 11 13 9 10 9 C9 9 8 9.5 8 10"/>
-                            <!-- Tiny round head -->
-                            <circle cx="12" cy="6" r="2.2" fill="currentColor" opacity="0.15"/>
-                            <circle cx="12" cy="6" r="2.2"/>
-                            <!-- Stubby beak -->
-                            <path d="M14 6 L15.5 6.3 L14 7" stroke-width="1.2"/>
-                            <!-- Eye -->
-                            <circle cx="12.8" cy="5.5" r="0.5" fill="currentColor"/>
-                            <!-- Iridescent neck patch (pigeon trademark!) -->
-                            <path d="M10.5 7.5 C10 8 10 9 11 9.5" stroke-width="1.5" opacity="0.6"/>
-                            <!-- Wing folded on body -->
-                            <path d="M7 12 C6 13 6 16 8 17" opacity="0.5"/>
-                            <!-- Feet -->
-                            <path d="M8 20 L8 22 M10 20 L10 22 M9 22 L7 23 M9 22 L11 23"/>
-                            <!-- Letter tied to leg -->
-                            <rect x="11" y="20.5" width="2" height="1.5" rx="0.2" fill="currentColor" opacity="0.6" stroke="none"/>
+                    <div class="icon-wrapper size-80">
+                        <!-- IconPark Pigeon (scaled from 48 to 24 viewBox) -->
+                        <svg width="64" height="64" viewBox="0 0 48 48" fill="none">
+                            <g fill="none">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M14 26c-1.04-1.793-2.15-5.551 2.008-10.244c1.213-1.141 2.806-2.64 5.716-3.423C24.842 10.867 26.401 8.52 24.323 5C25.882 5.978 29 9.693 29 16.733"/>
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M16.253 27.93C8 23.57 4.51 30.195 4 33.755c4 0 8.679 2.911 10.721 5.823c3.676 4.66 9.36 3.56 11.742 2.427c7.352-3.883 9.87-3.56 10.21-2.912c.41 3.106 1.532 3.883 2.043 3.883c3.676.388 4.935-4.045 5.105-6.31c.817-9.319-1.361-9.707-2.552-8.736c-4.902 5.824-7.829 6.957-8.68 6.795c-3.675-.777-3.233-2.265-2.552-2.913C36.572 26.377 36.504 14.34 35.653 9c-2.45 5.825-6.467 8.251-8.169 8.737c-10.21 2.718-11.742 7.928-11.231 10.193"/>
+                                <circle cx="12" cy="31.412" r="2" fill="currentColor"/>
+                            </g>
                         </svg>
                     </div>
-                    <span>56px</span>
+                    <span>64px</span>
                 </div>
                 <div class="size-demo">
-                    <div class="icon-wrapper size-40">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M8 10 C6 10 5 12 5 15 C5 18 7 20 10 20 C13 20 15 18 15 15 C15 11 13 9 10 9 C9 9 8 9.5 8 10" fill="currentColor" opacity="0.15"/>
-                            <path d="M8 10 C6 10 5 12 5 15 C5 18 7 20 10 20 C13 20 15 18 15 15 C15 11 13 9 10 9 C9 9 8 9.5 8 10"/>
-                            <circle cx="12" cy="6" r="2.2" fill="currentColor" opacity="0.15"/>
-                            <circle cx="12" cy="6" r="2.2"/>
-                            <path d="M14 6 L15.5 6.3 L14 7" stroke-width="1.2"/>
-                            <circle cx="12.8" cy="5.5" r="0.5" fill="currentColor"/>
-                            <path d="M10.5 7.5 C10 8 10 9 11 9.5" stroke-width="1.5" opacity="0.6"/>
-                            <path d="M8 20 L8 22 M10 20 L10 22"/>
-                            <rect x="11" y="20.5" width="2" height="1.5" rx="0.2" fill="currentColor" opacity="0.6" stroke="none"/>
+                    <div class="icon-wrapper size-48">
+                        <svg width="40" height="40" viewBox="0 0 48 48" fill="none">
+                            <g fill="none">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M14 26c-1.04-1.793-2.15-5.551 2.008-10.244c1.213-1.141 2.806-2.64 5.716-3.423C24.842 10.867 26.401 8.52 24.323 5C25.882 5.978 29 9.693 29 16.733"/>
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M16.253 27.93C8 23.57 4.51 30.195 4 33.755c4 0 8.679 2.911 10.721 5.823c3.676 4.66 9.36 3.56 11.742 2.427c7.352-3.883 9.87-3.56 10.21-2.912c.41 3.106 1.532 3.883 2.043 3.883c3.676.388 4.935-4.045 5.105-6.31c.817-9.319-1.361-9.707-2.552-8.736c-4.902 5.824-7.829 6.957-8.68 6.795c-3.675-.777-3.233-2.265-2.552-2.913C36.572 26.377 36.504 14.34 35.653 9c-2.45 5.825-6.467 8.251-8.169 8.737c-10.21 2.718-11.742 7.928-11.231 10.193"/>
+                                <circle cx="12" cy="31.412" r="2" fill="currentColor"/>
+                            </g>
                         </svg>
                     </div>
-                    <span>32px</span>
+                    <span>40px</span>
                 </div>
                 <div class="size-demo">
                     <div class="icon-wrapper size-24">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M8 10 C6 10 5 12 5 15 C5 18 7 20 10 20 C13 20 15 18 15 15 C15 11 13 9 10 9 C9 9 8 9.5 8 10" fill="currentColor" opacity="0.15"/>
-                            <path d="M8 10 C6 10 5 12 5 15 C5 18 7 20 10 20 C13 20 15 18 15 15 C15 11 13 9 10 9 C9 9 8 9.5 8 10"/>
-                            <circle cx="12" cy="6" r="2.2" fill="currentColor" opacity="0.15"/>
-                            <circle cx="12" cy="6" r="2.2"/>
-                            <path d="M14 6 L15.5 6.3 L14 7" stroke-width="1.3"/>
-                            <circle cx="12.8" cy="5.5" r="0.5" fill="currentColor"/>
+                        <svg width="20" height="20" viewBox="0 0 48 48" fill="none">
+                            <g fill="none">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M14 26c-1.04-1.793-2.15-5.551 2.008-10.244c1.213-1.141 2.806-2.64 5.716-3.423C24.842 10.867 26.401 8.52 24.323 5C25.882 5.978 29 9.693 29 16.733"/>
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M16.253 27.93C8 23.57 4.51 30.195 4 33.755c4 0 8.679 2.911 10.721 5.823c3.676 4.66 9.36 3.56 11.742 2.427c7.352-3.883 9.87-3.56 10.21-2.912c.41 3.106 1.532 3.883 2.043 3.883c3.676.388 4.935-4.045 5.105-6.31c.817-9.319-1.361-9.707-2.552-8.736c-4.902 5.824-7.829 6.957-8.68 6.795c-3.675-.777-3.233-2.265-2.552-2.913C36.572 26.377 36.504 14.34 35.653 9c-2.45 5.825-6.467 8.251-8.169 8.737c-10.21 2.718-11.742 7.928-11.231 10.193"/>
+                                <circle cx="12" cy="31.412" r="2" fill="currentColor"/>
+                            </g>
                         </svg>
                     </div>
                     <span>20px</span>
                 </div>
             </div>
-        </div>
 
-        <!-- Option 3: Flying Blob -->
-        <div class="option-card">
-            <h2>Option C: Flying Blob</h2>
-            <p class="description">Pigeon in flight, but still chunky. Rounded wings, fat body. Carrying envelope. Motion feel.</p>
-
-            <div class="icon-display">
-                <div class="size-demo">
-                    <div class="icon-wrapper size-64">
-                        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-                            <!-- Chunky flying body -->
-                            <ellipse cx="12" cy="13" rx="6" ry="4.5" fill="currentColor" opacity="0.15"/>
-                            <ellipse cx="12" cy="13" rx="6" ry="4.5"/>
-                            <!-- Tiny head in front -->
-                            <circle cx="18" cy="11" r="2" fill="currentColor" opacity="0.15"/>
-                            <circle cx="18" cy="11" r="2"/>
-                            <!-- Stubby beak with envelope -->
-                            <path d="M20 11 L21 11.3 L20 12" stroke-width="1.2"/>
-                            <rect x="20.5" y="10" width="2" height="1.5" rx="0.2" fill="currentColor" opacity="0.6" stroke="none"/>
-                            <!-- Eye -->
-                            <circle cx="18.7" cy="10.5" r="0.5" fill="currentColor"/>
-                            <!-- Neck -->
-                            <path d="M16.5 12 C16 12.5 15.5 12.5 15 13" stroke-width="1.6"/>
-                            <!-- ROUNDED wings - not pointed! -->
-                            <path d="M8 11 Q5 8 3 9 Q4 11 6 12" fill="currentColor" opacity="0.1"/>
-                            <path d="M8 11 Q5 8 3 9"/>
-                            <path d="M9 12 Q6 10 4 11"/>
-                            <path d="M10 13 Q7 12 5 13"/>
-                            <!-- Short tail -->
-                            <path d="M6 15 L4 17 M7 15.5 L5 18"/>
-                        </svg>
-                    </div>
-                    <span>56px</span>
-                </div>
-                <div class="size-demo">
-                    <div class="icon-wrapper size-40">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-                            <ellipse cx="12" cy="13" rx="6" ry="4.5" fill="currentColor" opacity="0.15"/>
-                            <ellipse cx="12" cy="13" rx="6" ry="4.5"/>
-                            <circle cx="18" cy="11" r="2" fill="currentColor" opacity="0.15"/>
-                            <circle cx="18" cy="11" r="2"/>
-                            <path d="M20 11 L21 11.3 L20 12" stroke-width="1.2"/>
-                            <rect x="20.5" y="10" width="2" height="1.5" rx="0.2" fill="currentColor" opacity="0.6" stroke="none"/>
-                            <circle cx="18.7" cy="10.5" r="0.5" fill="currentColor"/>
-                            <path d="M16.5 12 C16 12.5 15.5 12.5 15 13" stroke-width="1.6"/>
-                            <path d="M8 11 Q5 8 3 9"/>
-                            <path d="M9 12 Q6 10 4 11"/>
-                            <path d="M6 15 L4 17"/>
-                        </svg>
-                    </div>
-                    <span>32px</span>
-                </div>
-                <div class="size-demo">
-                    <div class="icon-wrapper size-24">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                            <ellipse cx="12" cy="13" rx="6" ry="4.5" fill="currentColor" opacity="0.15"/>
-                            <ellipse cx="12" cy="13" rx="6" ry="4.5"/>
-                            <circle cx="18" cy="11" r="2" fill="currentColor" opacity="0.15"/>
-                            <circle cx="18" cy="11" r="2"/>
-                            <path d="M20 11 L21 11.3 L20 12" stroke-width="1.3"/>
-                            <circle cx="18.7" cy="10.5" r="0.5" fill="currentColor"/>
-                            <path d="M8 11 Q5 8 3 9"/>
-                            <path d="M6 15 L4 17"/>
-                        </svg>
-                    </div>
-                    <span>20px</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Option 4: Simplified Silhouette -->
-        <div class="option-card">
-            <h2>Option D: Bold Silhouette</h2>
-            <p class="description">Maximum simplification while keeping pigeon proportions. Heavy body, small head dot. Works at tiny sizes.</p>
-
-            <div class="icon-display">
-                <div class="size-demo">
-                    <div class="icon-wrapper size-64">
-                        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                            <!-- Big chunky body blob -->
-                            <path d="M5 12 C5 8 9 7 12 8 C17 10 18 14 17 17 C16 20 11 21 7 19 C4 17 4 14 5 12" fill="currentColor" opacity="0.15"/>
-                            <path d="M5 12 C5 8 9 7 12 8 C17 10 18 14 17 17 C16 20 11 21 7 19 C4 17 4 14 5 12"/>
-                            <!-- Small head bump -->
-                            <circle cx="17" cy="9" r="2.5" fill="currentColor" opacity="0.15"/>
-                            <circle cx="17" cy="9" r="2.5"/>
-                            <!-- Simple beak -->
-                            <path d="M19.5 9 L21 9.5 L19.5 10.5"/>
-                            <!-- Eye -->
-                            <circle cx="17.8" cy="8.3" r="0.6" fill="currentColor"/>
-                            <!-- Letter -->
-                            <rect x="20.5" y="8" width="2" height="1.5" rx="0.2" fill="currentColor" opacity="0.5" stroke="none"/>
-                            <!-- Single wing curve -->
-                            <path d="M6 11 C3 10 2 12 3 14"/>
-                            <!-- Tail -->
-                            <path d="M5 18 L2 21"/>
-                        </svg>
-                    </div>
-                    <span>56px</span>
-                </div>
-                <div class="size-demo">
-                    <div class="icon-wrapper size-40">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M5 12 C5 8 9 7 12 8 C17 10 18 14 17 17 C16 20 11 21 7 19 C4 17 4 14 5 12" fill="currentColor" opacity="0.15"/>
-                            <path d="M5 12 C5 8 9 7 12 8 C17 10 18 14 17 17 C16 20 11 21 7 19 C4 17 4 14 5 12"/>
-                            <circle cx="17" cy="9" r="2.5" fill="currentColor" opacity="0.15"/>
-                            <circle cx="17" cy="9" r="2.5"/>
-                            <path d="M19.5 9 L21 9.5 L19.5 10.5"/>
-                            <circle cx="17.8" cy="8.3" r="0.6" fill="currentColor"/>
-                            <rect x="20.5" y="8" width="2" height="1.5" rx="0.2" fill="currentColor" opacity="0.5" stroke="none"/>
-                            <path d="M6 11 C3 10 2 12 3 14"/>
-                            <path d="M5 18 L2 21"/>
-                        </svg>
-                    </div>
-                    <span>32px</span>
-                </div>
-                <div class="size-demo">
-                    <div class="icon-wrapper size-24">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M5 12 C5 8 9 7 12 8 C17 10 18 14 17 17 C16 20 11 21 7 19 C4 17 4 14 5 12" fill="currentColor" opacity="0.15"/>
-                            <path d="M5 12 C5 8 9 7 12 8 C17 10 18 14 17 17 C16 20 11 21 7 19 C4 17 4 14 5 12"/>
-                            <circle cx="17" cy="9" r="2.5" fill="currentColor" opacity="0.15"/>
-                            <circle cx="17" cy="9" r="2.5"/>
-                            <path d="M19.5 9 L21 9.5"/>
-                            <circle cx="17.8" cy="8.3" r="0.6" fill="currentColor"/>
-                        </svg>
-                    </div>
-                    <span>20px</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Option 5: Dove with Letter -->
-        <div class="option-card">
-            <h2>Option E: Classic Dove</h2>
-            <p class="description">Peace dove pose but with pigeon proportions. Wings up, letter visible. Elegant but still chubby.</p>
-
-            <div class="icon-display">
-                <div class="size-demo">
-                    <div class="icon-wrapper size-64">
-                        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-                            <!-- Plump dove body -->
-                            <ellipse cx="12" cy="15" rx="5" ry="4" fill="currentColor" opacity="0.15"/>
-                            <ellipse cx="12" cy="15" rx="5" ry="4"/>
-                            <!-- Small head -->
-                            <circle cx="16" cy="10" r="2" fill="currentColor" opacity="0.15"/>
-                            <circle cx="16" cy="10" r="2"/>
-                            <!-- Stubby beak with letter -->
-                            <path d="M18 10 L19 10.3 L18 11" stroke-width="1.2"/>
-                            <rect x="18.5" y="9" width="2" height="1.5" rx="0.2" fill="currentColor" opacity="0.6" stroke="none"/>
-                            <!-- Eye -->
-                            <circle cx="16.6" cy="9.5" r="0.4" fill="currentColor"/>
-                            <!-- Neck -->
-                            <path d="M14.5 11.5 C14 12 13.5 13 13 13.5" stroke-width="1.5"/>
-                            <!-- Wing raised up (dove pose) - rounded! -->
-                            <path d="M9 13 Q7 9 5 8 Q4 9 4 11 Q5 12 7 13" fill="currentColor" opacity="0.1"/>
-                            <path d="M9 13 Q7 9 5 8"/>
-                            <path d="M8 14 Q5 11 4 12"/>
-                            <!-- Tail spread -->
-                            <path d="M7 17 L4 19 M8 18 L6 21 M9 18.5 L8 21"/>
-                        </svg>
-                    </div>
-                    <span>56px</span>
-                </div>
-                <div class="size-demo">
-                    <div class="icon-wrapper size-40">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-                            <ellipse cx="12" cy="15" rx="5" ry="4" fill="currentColor" opacity="0.15"/>
-                            <ellipse cx="12" cy="15" rx="5" ry="4"/>
-                            <circle cx="16" cy="10" r="2" fill="currentColor" opacity="0.15"/>
-                            <circle cx="16" cy="10" r="2"/>
-                            <path d="M18 10 L19 10.3 L18 11" stroke-width="1.2"/>
-                            <rect x="18.5" y="9" width="2" height="1.5" rx="0.2" fill="currentColor" opacity="0.6" stroke="none"/>
-                            <circle cx="16.6" cy="9.5" r="0.4" fill="currentColor"/>
-                            <path d="M14.5 11.5 C14 12 13.5 13 13 13.5" stroke-width="1.5"/>
-                            <path d="M9 13 Q7 9 5 8"/>
-                            <path d="M7 17 L4 19 M8 18 L6 21"/>
-                        </svg>
-                    </div>
-                    <span>32px</span>
-                </div>
-                <div class="size-demo">
-                    <div class="icon-wrapper size-24">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                            <ellipse cx="12" cy="15" rx="5" ry="4" fill="currentColor" opacity="0.15"/>
-                            <ellipse cx="12" cy="15" rx="5" ry="4"/>
-                            <circle cx="16" cy="10" r="2" fill="currentColor" opacity="0.15"/>
-                            <circle cx="16" cy="10" r="2"/>
-                            <path d="M18 10 L19 10.3" stroke-width="1.3"/>
-                            <circle cx="16.6" cy="9.5" r="0.4" fill="currentColor"/>
-                            <path d="M9 13 Q7 9 5 8"/>
-                            <path d="M7 17 L5 20"/>
-                        </svg>
-                    </div>
-                    <span>20px</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Option 6: Ultra Simple -->
-        <div class="option-card">
-            <h2>Option F: Ultra Minimal</h2>
-            <p class="description">Just the essential pigeon shapes. Fat oval + small circle head. Maximum readability at tiny sizes.</p>
-
-            <div class="icon-display">
-                <div class="size-demo">
-                    <div class="icon-wrapper size-64">
-                        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                            <!-- Just a fat oval body -->
-                            <ellipse cx="10" cy="14" rx="7" ry="5.5" fill="currentColor" opacity="0.12"/>
-                            <ellipse cx="10" cy="14" rx="7" ry="5.5"/>
-                            <!-- Just a small circle head -->
-                            <circle cx="17" cy="10" r="2.5" fill="currentColor" opacity="0.12"/>
-                            <circle cx="17" cy="10" r="2.5"/>
-                            <!-- Beak stub -->
-                            <line x1="19.5" y1="10" x2="21" y2="10.5"/>
-                            <!-- Eye dot -->
-                            <circle cx="17.8" cy="9.3" r="0.7" fill="currentColor"/>
-                            <!-- Envelope -->
-                            <rect x="20" y="9" width="2.5" height="1.8" rx="0.2" fill="currentColor" opacity="0.5" stroke="none"/>
-                        </svg>
-                    </div>
-                    <span>56px</span>
-                </div>
-                <div class="size-demo">
-                    <div class="icon-wrapper size-40">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                            <ellipse cx="10" cy="14" rx="7" ry="5.5" fill="currentColor" opacity="0.12"/>
-                            <ellipse cx="10" cy="14" rx="7" ry="5.5"/>
-                            <circle cx="17" cy="10" r="2.5" fill="currentColor" opacity="0.12"/>
-                            <circle cx="17" cy="10" r="2.5"/>
-                            <line x1="19.5" y1="10" x2="21" y2="10.5"/>
-                            <circle cx="17.8" cy="9.3" r="0.7" fill="currentColor"/>
-                            <rect x="20" y="9" width="2.5" height="1.8" rx="0.2" fill="currentColor" opacity="0.5" stroke="none"/>
-                        </svg>
-                    </div>
-                    <span>32px</span>
-                </div>
-                <div class="size-demo">
-                    <div class="icon-wrapper size-24">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <ellipse cx="10" cy="14" rx="7" ry="5.5" fill="currentColor" opacity="0.12"/>
-                            <ellipse cx="10" cy="14" rx="7" ry="5.5"/>
-                            <circle cx="17" cy="10" r="2.5" fill="currentColor" opacity="0.12"/>
-                            <circle cx="17" cy="10" r="2.5"/>
-                            <circle cx="17.8" cy="9.3" r="0.7" fill="currentColor"/>
-                        </svg>
-                    </div>
-                    <span>20px</span>
-                </div>
-            </div>
+            <div class="license">License: Apache 2.0 (ByteDance)</div>
         </div>
 
     </div>
 
-    <!-- Side by side comparison at actual button size -->
+    <!-- Comparison at notification size -->
     <div class="comparison">
-        <h2>All Options at 20px (Actual Notification Button Size)</h2>
+        <h2>At Actual Notification Button Size (20px)</h2>
         <div class="comparison-row">
             <div class="comparison-item">
                 <div class="icon-wrapper size-24">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                        <ellipse cx="11" cy="14" rx="7" ry="6" fill="currentColor" opacity="0.15"/>
-                        <ellipse cx="11" cy="14" rx="7" ry="6"/>
-                        <circle cx="16" cy="8" r="2" fill="currentColor" opacity="0.15"/>
-                        <circle cx="16" cy="8" r="2"/>
-                        <path d="M18 8 L19.5 8.5 L18 9" stroke-width="1.3"/>
-                        <circle cx="16.8" cy="7.5" r="0.5" fill="currentColor"/>
-                        <path d="M14.5 9.5 C14 10.5 13.5 11 13 12" stroke-width="2"/>
-                        <path d="M4 17 L2 19"/>
-                        <rect x="19" y="7" width="2.5" height="1.8" rx="0.2" fill="currentColor" opacity="0.6" stroke="none"/>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="none">
+                        <path fill="currentColor" d="M10.306 12.482c-.15-.11-.27-.1-.791.15c-.52.25-1.241.67-2.693 1.431a.35.35 0 0 0-.16.48a.34.34 0 0 0 .47.16c1.002-.46 1.772-.81 2.253-1c-.18.59-.48 1.441-.821 2.272q-.405 1.031-.94 2.002a1.8 1.8 0 0 1-.411.56h-.13l-.38-.06c-.361-.09-.721-.22-.922-.28l-4.153-1.301l1.33-.571a.32.32 0 0 0 .191-.41a.31.31 0 0 0-.4-.18c-.64.22-2.522.92-2.543.93a.32.32 0 0 0-.19.4q.28.862.44 1.752c.18.911.311 1.822.461 2.733q.054.661.18 1.31c.06.3.223.57.46.762c.237.147.513.217.791.2q.652-.08 1.272-.3c.68-.2 1.36-.42 2.001-.651c.64-.23 1.332-.48 2.002-.73a75 75 0 0 0 2.502-1.002c.5-.22 1.001-.46 1.632-.76a4.3 4.3 0 0 0 1.321-.921c.219-.248.334-.57.32-.901a12 12 0 0 0-1.23-3.193a11.7 11.7 0 0 0-1.863-2.882m1.721 6.465a4 4 0 0 1-.76.41L7.152 21.01l-3.913 1.45c-.2.07-.48.2-.75.27s-.43.281-.53-.45c-.081-.36-.121-.74-.151-.91c-.22-.901-.4-1.812-.64-2.713q-.136-.57-.33-1.12c.57.23 1.57.64 2.571 1c.771.29 1.522.57 2.062.75q.707.272 1.451.401c.343.07.698.013 1.001-.16a6.2 6.2 0 0 0 1.462-2.522q.612-1.592 1-3.253c.3.51.661 1.25 1.002 2.002a11 11 0 0 1 1 2.872c-.04.13-.21.22-.36.32"/><path fill="currentColor" d="M15.49 1.892c.22.36.295.789.21 1.201c0 .12-.44.69-.54.951a.62.62 0 0 0 0 .53c.083.152.203.28.35.37c.18.121.42.181.57.281c.298.2.55.458.741.76a.82.82 0 0 1 .13.802q-.096.182-.25.32a2 2 0 0 1-.37.24a2.4 2.4 0 0 0-.43.19a.45.45 0 0 0-.22.3a.75.75 0 0 0 .19.561c.21.26.64.59.72.8a.88.88 0 0 1-.11.861c-.403.43-.89.77-1.431 1.001a.31.31 0 0 0-.14.42a.32.32 0 0 0 .43.14a5 5 0 0 0 1.691-1.1a1.52 1.52 0 0 0 .25-1.522a3.3 3.3 0 0 0-.49-1q.237-.114.44-.28c.19-.147.346-.331.461-.541a1.5 1.5 0 0 0 0-1.371a3.4 3.4 0 0 0-1.13-1.392l-.291-.16c.162-.268.287-.558.37-.86a2.93 2.93 0 0 0-.4-2.403a1.84 1.84 0 0 0-1.632-.8a2.19 2.19 0 0 0-1.861 1.16c-.333.85-.558 1.738-.67 2.643c-.19.866-.483 1.706-.872 2.502a6.9 6.9 0 0 1-1.511 2.062c-.18.16-.59.56-1.001.92a5 5 0 0 1-.61.451a8.4 8.4 0 0 0-1.442-1.2c.13-.944.13-1.9 0-2.843a4.8 4.8 0 0 0-.81-2.002c-.31-.42-1.001-.95-1.402-1.541a.87.87 0 0 1-.24-.761a.31.31 0 0 1 .24-.18c.21-.068.43-.098.65-.09c.48-.003.956.1 1.392.3c.13.08.15.23.2.34q.082.213.21.4q.076.106.18.18a.8.8 0 0 0 .411.16q.399.005.79-.06c.213.003.423.044.621.12c.192.082.366.201.51.351q.122.148.18.33q.067.19.06.39c0 .07-.11.341-.12.511a.53.53 0 0 0 .1.41a.35.35 0 0 0 .501 0s.18-.08.28-.9a1.9 1.9 0 0 0-.06-.67a1.7 1.7 0 0 0-.37-.541a2.15 2.15 0 0 0-.75-.64a3.75 3.75 0 0 0-1.592-.321a2.4 2.4 0 0 0-.19-.48a1.15 1.15 0 0 0-.4-.45A4.4 4.4 0 0 0 4.66.18a1.72 1.72 0 0 0-1.7 1.09a1.77 1.77 0 0 0 .21 1.482a15.6 15.6 0 0 0 1.792 1.832c.37.44.64.955.79 1.51c.177.775.248 1.57.21 2.363a2 2 0 0 0-.31-.07a3.6 3.6 0 0 0-1.691.21A2.69 2.69 0 0 0 2.118 11a3.1 3.1 0 0 0 1.251 2.443a2 2 0 0 0 0 .22q.02.324.1.64l.14.57c.063.331.24.63.501.842c.22.11.53.15.86-.28l.21-.321l.782-1.111a.36.36 0 0 0-.56-.44l-.842 1.19l-.08.12a.8.8 0 0 1-.08-.16l-.12-.55c0-.14 0-.29-.06-.44a1.1 1.1 0 0 1 0-.36a.42.42 0 0 0-.15-.36a2.33 2.33 0 0 1-1.001-1.883A1.71 1.71 0 0 1 4.27 9.59a2.55 2.55 0 0 1 1.231-.13c.388.085.739.292 1.001.59c.14.15.49.621.76.861a1 1 0 0 0 .551.29a2 2 0 0 0 1.151-.46a19 19 0 0 0 1.562-1.291a8 8 0 0 0 1.751-2.452c.446-.877.782-1.804 1.001-2.763c.08-.803.258-1.593.53-2.352a1.09 1.09 0 0 1 .931-.59c.32 0 .581.28.751.6m8.488 13.301a12.5 12.5 0 0 0-.791-3.003a2.4 2.4 0 0 0-.51-.84a1.4 1.4 0 0 0-.781-.32c-.484.002-.965.07-1.432.2q-1.04.293-2.111.44a2.56 2.56 0 0 1-1.272-.22a.36.36 0 0 0-.3.65a3.4 3.4 0 0 0 1.592.37q1.137-.081 2.252-.32q.431-.092.87-.13c.581 0 .54.21.611.39q.326.935.53 1.902c.49 2.002 0 2.162-.88 2.092c-1.151-.09-2.372-.74-3.443-.61a1.06 1.06 0 0 0-.56.24q-.273.314-.501.66q-.36.397-.771.741q-.399.346-.86.6l-1.112.491a.31.31 0 0 0-.19.4a.31.31 0 0 0 .39.2l1.221-.45a6 6 0 0 0 1.001-.61a7.5 7.5 0 0 0 .911-.761q.206-.218.38-.46a.24.24 0 0 1 .13-.09c.511.02 1.014.135 1.482.34q.86.338 1.771.49a2.87 2.87 0 0 0 1.792-.37a1.18 1.18 0 0 0 .51-.76a3.9 3.9 0 0 0 .07-1.262"/>
                     </svg>
                 </div>
-                <div class="label">A</div>
+                <div class="label">Streamline</div>
             </div>
             <div class="comparison-item">
                 <div class="icon-wrapper size-24">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M8 10 C6 10 5 12 5 15 C5 18 7 20 10 20 C13 20 15 18 15 15 C15 11 13 9 10 9 C9 9 8 9.5 8 10" fill="currentColor" opacity="0.15"/>
-                        <path d="M8 10 C6 10 5 12 5 15 C5 18 7 20 10 20 C13 20 15 18 15 15 C15 11 13 9 10 9 C9 9 8 9.5 8 10"/>
-                        <circle cx="12" cy="6" r="2.2" fill="currentColor" opacity="0.15"/>
-                        <circle cx="12" cy="6" r="2.2"/>
-                        <path d="M14 6 L15.5 6.3 L14 7" stroke-width="1.3"/>
-                        <circle cx="12.8" cy="5.5" r="0.5" fill="currentColor"/>
+                    <svg width="20" height="20" viewBox="0 0 48 48" fill="none">
+                        <g fill="none">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M14 26c-1.04-1.793-2.15-5.551 2.008-10.244c1.213-1.141 2.806-2.64 5.716-3.423C24.842 10.867 26.401 8.52 24.323 5C25.882 5.978 29 9.693 29 16.733"/>
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M16.253 27.93C8 23.57 4.51 30.195 4 33.755c4 0 8.679 2.911 10.721 5.823c3.676 4.66 9.36 3.56 11.742 2.427c7.352-3.883 9.87-3.56 10.21-2.912c.41 3.106 1.532 3.883 2.043 3.883c3.676.388 4.935-4.045 5.105-6.31c.817-9.319-1.361-9.707-2.552-8.736c-4.902 5.824-7.829 6.957-8.68 6.795c-3.675-.777-3.233-2.265-2.552-2.913C36.572 26.377 36.504 14.34 35.653 9c-2.45 5.825-6.467 8.251-8.169 8.737c-10.21 2.718-11.742 7.928-11.231 10.193"/>
+                            <circle cx="12" cy="31.412" r="2" fill="currentColor"/>
+                        </g>
                     </svg>
                 </div>
-                <div class="label">B</div>
-            </div>
-            <div class="comparison-item">
-                <div class="icon-wrapper size-24">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                        <ellipse cx="12" cy="13" rx="6" ry="4.5" fill="currentColor" opacity="0.15"/>
-                        <ellipse cx="12" cy="13" rx="6" ry="4.5"/>
-                        <circle cx="18" cy="11" r="2" fill="currentColor" opacity="0.15"/>
-                        <circle cx="18" cy="11" r="2"/>
-                        <path d="M20 11 L21 11.3 L20 12" stroke-width="1.3"/>
-                        <circle cx="18.7" cy="10.5" r="0.5" fill="currentColor"/>
-                        <path d="M8 11 Q5 8 3 9"/>
-                        <path d="M6 15 L4 17"/>
-                    </svg>
-                </div>
-                <div class="label">C</div>
-            </div>
-            <div class="comparison-item">
-                <div class="icon-wrapper size-24">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M5 12 C5 8 9 7 12 8 C17 10 18 14 17 17 C16 20 11 21 7 19 C4 17 4 14 5 12" fill="currentColor" opacity="0.15"/>
-                        <path d="M5 12 C5 8 9 7 12 8 C17 10 18 14 17 17 C16 20 11 21 7 19 C4 17 4 14 5 12"/>
-                        <circle cx="17" cy="9" r="2.5" fill="currentColor" opacity="0.15"/>
-                        <circle cx="17" cy="9" r="2.5"/>
-                        <path d="M19.5 9 L21 9.5"/>
-                        <circle cx="17.8" cy="8.3" r="0.6" fill="currentColor"/>
-                    </svg>
-                </div>
-                <div class="label">D</div>
-            </div>
-            <div class="comparison-item">
-                <div class="icon-wrapper size-24">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                        <ellipse cx="12" cy="15" rx="5" ry="4" fill="currentColor" opacity="0.15"/>
-                        <ellipse cx="12" cy="15" rx="5" ry="4"/>
-                        <circle cx="16" cy="10" r="2" fill="currentColor" opacity="0.15"/>
-                        <circle cx="16" cy="10" r="2"/>
-                        <path d="M18 10 L19 10.3" stroke-width="1.3"/>
-                        <circle cx="16.6" cy="9.5" r="0.4" fill="currentColor"/>
-                        <path d="M9 13 Q7 9 5 8"/>
-                        <path d="M7 17 L5 20"/>
-                    </svg>
-                </div>
-                <div class="label">E</div>
-            </div>
-            <div class="comparison-item">
-                <div class="icon-wrapper size-24">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <ellipse cx="10" cy="14" rx="7" ry="5.5" fill="currentColor" opacity="0.12"/>
-                        <ellipse cx="10" cy="14" rx="7" ry="5.5"/>
-                        <circle cx="17" cy="10" r="2.5" fill="currentColor" opacity="0.12"/>
-                        <circle cx="17" cy="10" r="2.5"/>
-                        <circle cx="17.8" cy="9.3" r="0.7" fill="currentColor"/>
-                    </svg>
-                </div>
-                <div class="label">F</div>
+                <div class="label">IconPark</div>
             </div>
         </div>
     </div>
