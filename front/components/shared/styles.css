@@ -2611,8 +2611,8 @@ body.light-theme .user-dropdown .divider {
 
     .mobile-nav-toggle { order: 0; flex: 0 0 auto; width: 36px; height: 36px; }
     .logo { order: 1; flex: 1 1 auto; padding-left: 0.5rem; }
-    .header-controls { order: 2; flex: 0 0 auto; flex-wrap: nowrap !important; gap: 0.25rem; padding-right: 0.5rem; }
-    .user-menu { flex: 0 0 auto; }
+    .header-controls { order: 2; flex: 0 1 auto; flex-wrap: nowrap !important; gap: 0.25rem; padding-right: 0.5rem; min-width: 0; }
+    .user-menu { flex: 0 1 auto; min-width: 0; }
 }
 
 
