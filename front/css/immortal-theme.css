@@ -236,7 +236,8 @@ header {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    flex-shrink: 0;
+    flex-shrink: 1; /* Allow shrinking on mobile to prevent overflow */
+    min-width: 0; /* Allow flex item to shrink below content size */
     /* Allow overflow for dropdowns */
     overflow: visible;
 }
@@ -244,7 +245,8 @@ header {
 /* User menu avatar constraint */
 .user-menu,
 #userMenuContainer {
-    flex-shrink: 0;
+    flex-shrink: 1; /* Allow shrinking on mobile */
+    min-width: 0;
     position: relative;
 }
 
