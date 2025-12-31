@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pigeon Icon Design Options</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0d0d1a;
+            color: #f0e6ff;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            padding: 40px;
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #ff5e78;
+            font-size: 1.8rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #a099b0;
+            margin-bottom: 40px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .option-card {
+            background: linear-gradient(135deg, #1a0d33 0%, #2d1b4e 100%);
+            border: 1px solid rgba(255, 94, 120, 0.2);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .option-card h2 {
+            color: #ff5e78;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .option-card .description {
+            color: #a099b0;
+            font-size: 0.85rem;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .icon-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .size-demo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .size-demo span {
+            font-size: 0.7rem;
+            color: #666;
+        }
+
+        .icon-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 94, 120, 0.1);
+            border: 2px solid rgba(255, 94, 120, 0.3);
+            border-radius: 50%;
+        }
+
+        .icon-wrapper.size-48 {
+            width: 56px;
+            height: 56px;
+        }
+
+        .icon-wrapper.size-40 {
+            width: 48px;
+            height: 48px;
+        }
+
+        .icon-wrapper.size-24 {
+            width: 32px;
+            height: 32px;
+        }
+
+        .icon-wrapper.size-20 {
+            width: 28px;
+            height: 28px;
+        }
+
+        .icon-wrapper svg {
+            color: #f0e6ff;
+        }
+
+        .code-block {
+            background: #0a0a12;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: left;
+            font-family: 'Consolas', monospace;
+            font-size: 0.65rem;
+            color: #88c0d0;
+            overflow-x: auto;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .winner-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff5e78, #ff8a5b);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .comparison {
+            background: linear-gradient(135deg, #1a0d33 0%, #0d0d1a 100%);
+            border: 2px solid rgba(255, 94, 120, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 50px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .comparison h2 {
+            text-align: center;
+            color: #ff5e78;
+            margin-bottom: 30px;
+        }
+
+        .comparison-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 60px;
+            flex-wrap: wrap;
+        }
+
+        .comparison-item {
+            text-align: center;
+        }
+
+        .comparison-item .label {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #a099b0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Messenger Pigeon Icon Designs</h1>
+    <p class="subtitle">Comparing approaches for maximum recognition at small sizes</p>
+
+    <div class="options-grid">
+
+        <!-- Option 1: Classic Profile -->
+        <div class="option-card">
+            <span class="winner-badge">Recommended</span>
+            <h2>Option A: Classic Profile</h2>
+            <p class="description">Clean side profile with distinctive pigeon silhouette. Plump breast, small head, swept wing, fan tail. Letter tucked under wing.</p>
+
+            <div class="icon-display">
+                <div class="size-demo">
+                    <div class="icon-wrapper size-48">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <!-- Body - plump pigeon breast -->
+                            <ellipse cx="10" cy="13" rx="6" ry="5" fill="currentColor" opacity="0.12"/>
+                            <ellipse cx="10" cy="13" rx="6" ry="5"/>
+                            <!-- Head - small and round -->
+                            <circle cx="17" cy="9" r="2.5" fill="currentColor" opacity="0.12"/>
+                            <circle cx="17" cy="9" r="2.5"/>
+                            <!-- Neck connection -->
+                            <path d="M14.5 10.5 Q13 11.5 12 12" stroke-width="2"/>
+                            <!-- Eye -->
+                            <circle cx="18" cy="8.5" r="0.7" fill="currentColor"/>
+                            <!-- Beak - short and pointed -->
+                            <path d="M19.5 9 L21.5 9.5 L19.5 10.5" stroke-width="1.2"/>
+                            <!-- Wing - swept back -->
+                            <path d="M6 11 Q3 9 2 11 Q3 12 5 13" fill="currentColor" opacity="0.08"/>
+                            <path d="M6 11 Q3 9 2 11"/>
+                            <path d="M5.5 12.5 Q3 11 2 12.5"/>
+                            <!-- Tail fan -->
+                            <path d="M4 15 L1 17 M4.5 16 L2 18.5 M5.5 16.5 L3.5 19"/>
+                            <!-- Letter/envelope under wing -->
+                            <rect x="6" y="14" width="3" height="2" rx="0.3" fill="currentColor" opacity="0.5" stroke="none"/>
+                            <line x1="6" y1="14" x2="7.5" y2="15" stroke="currentColor" opacity="0.3" stroke-width="0.5"/>
+                            <line x1="9" y1="14" x2="7.5" y2="15" stroke="currentColor" opacity="0.3" stroke-width="0.5"/>
+                        </svg>
+                    </div>
+                    <span>40px</span>
+                </div>
+                <div class="size-demo">
+                    <div class="icon-wrapper size-24">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <ellipse cx="10" cy="13" rx="6" ry="5" fill="currentColor" opacity="0.12"/>
+                            <ellipse cx="10" cy="13" rx="6" ry="5"/>
+                            <circle cx="17" cy="9" r="2.5" fill="currentColor" opacity="0.12"/>
+                            <circle cx="17" cy="9" r="2.5"/>
+                            <path d="M14.5 10.5 Q13 11.5 12 12" stroke-width="2"/>
+                            <circle cx="18" cy="8.5" r="0.7" fill="currentColor"/>
+                            <path d="M19.5 9 L21.5 9.5 L19.5 10.5" stroke-width="1.2"/>
+                            <path d="M6 11 Q3 9 2 11"/>
+                            <path d="M5.5 12.5 Q3 11 2 12.5"/>
+                            <path d="M4 15 L1 17 M4.5 16 L2 18.5 M5.5 16.5 L3.5 19"/>
+                            <rect x="6" y="14" width="3" height="2" rx="0.3" fill="currentColor" opacity="0.5" stroke="none"/>
+                        </svg>
+                    </div>
+                    <span>20px</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Option 2: Heraldic Style -->
+        <div class="option-card">
+            <h2>Option B: Heraldic Dove</h2>
+            <p class="description">Inspired by medieval heraldry and wax seals. Bold silhouette with stylized wing. More symbolic, less literal.</p>
+
+            <div class="icon-display">
+                <div class="size-demo">
+                    <div class="icon-wrapper size-48">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <!-- Stylized body -->
+                            <path d="M8 14 C5 14 4 12 4 10 C4 7 7 6 10 7 C13 8 15 10 15 13 C15 16 12 18 8 18 C5 18 4 17 4 15" fill="currentColor" opacity="0.12"/>
+                            <path d="M8 14 C5 14 4 12 4 10 C4 7 7 6 10 7 C13 8 15 10 15 13 C15 16 12 18 8 18 C5 18 4 17 4 15"/>
+                            <!-- Head -->
+                            <circle cx="17" cy="8" r="3" fill="currentColor" opacity="0.12"/>
+                            <circle cx="17" cy="8" r="3"/>
+                            <!-- Neck -->
+                            <path d="M14 9 C13 10 12 11 11 11" stroke-width="1.8"/>
+                            <!-- Eye -->
+                            <circle cx="18.2" cy="7.3" r="0.8" fill="currentColor"/>
+                            <!-- Beak -->
+                            <path d="M20 7.5 L22 8 L20 9" stroke-width="1.3"/>
+                            <!-- Wing flourish -->
+                            <path d="M7 10 C4 8 2 8 1 10 C2 11 4 11 6 12" fill="currentColor" opacity="0.1"/>
+                            <path d="M7 10 C4 8 2 8 1 10"/>
+                            <path d="M6 12 C4 11 2 11 1 12"/>
+                            <!-- Tail -->
+                            <path d="M4 16 L1 18 M5 17 L2.5 19.5"/>
+                            <!-- Scroll -->
+                            <ellipse cx="19" cy="11" rx="1.5" ry="0.8" fill="currentColor" opacity="0.4" stroke="none"/>
+                        </svg>
+                    </div>
+                    <span>40px</span>
+                </div>
+                <div class="size-demo">
+                    <div class="icon-wrapper size-24">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M8 14 C5 14 4 12 4 10 C4 7 7 6 10 7 C13 8 15 10 15 13 C15 16 12 18 8 18 C5 18 4 17 4 15" fill="currentColor" opacity="0.12"/>
+                            <path d="M8 14 C5 14 4 12 4 10 C4 7 7 6 10 7 C13 8 15 10 15 13 C15 16 12 18 8 18 C5 18 4 17 4 15"/>
+                            <circle cx="17" cy="8" r="3" fill="currentColor" opacity="0.12"/>
+                            <circle cx="17" cy="8" r="3"/>
+                            <path d="M14 9 C13 10 12 11 11 11" stroke-width="1.8"/>
+                            <circle cx="18.2" cy="7.3" r="0.8" fill="currentColor"/>
+                            <path d="M20 7.5 L22 8 L20 9" stroke-width="1.3"/>
+                            <path d="M7 10 C4 8 2 8 1 10"/>
+                            <path d="M6 12 C4 11 2 11 1 12"/>
+                            <path d="M4 16 L1 18 M5 17 L2.5 19.5"/>
+                        </svg>
+                    </div>
+                    <span>20px</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Option 3: Minimal Bold -->
+        <div class="option-card">
+            <h2>Option C: Minimal Bold</h2>
+            <p class="description">Maximum simplification. Just the essential curves that say "bird." Works at tiny sizes but loses some charm.</p>
+
+            <div class="icon-display">
+                <div class="size-demo">
+                    <div class="icon-wrapper size-48">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <!-- Single body curve -->
+                            <path d="M4 13 C4 9 8 7 12 8 C16 9 18 11 18 14 C18 17 14 19 10 19 C6 19 4 17 4 13" fill="currentColor" opacity="0.1"/>
+                            <path d="M4 13 C4 9 8 7 12 8 C16 9 18 11 18 14 C18 17 14 19 10 19 C6 19 4 17 4 13"/>
+                            <!-- Head blob -->
+                            <circle cx="18" cy="8" r="3" fill="currentColor" opacity="0.1"/>
+                            <circle cx="18" cy="8" r="3"/>
+                            <!-- Eye dot -->
+                            <circle cx="19" cy="7" r="1" fill="currentColor"/>
+                            <!-- Simple beak -->
+                            <path d="M21 8 L23 8.5 L21 9.5"/>
+                            <!-- One wing line -->
+                            <path d="M6 11 C3 9 1 10 1 12"/>
+                            <!-- Simple tail -->
+                            <path d="M4 16 L1 19"/>
+                        </svg>
+                    </div>
+                    <span>40px</span>
+                </div>
+                <div class="size-demo">
+                    <div class="icon-wrapper size-24">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 13 C4 9 8 7 12 8 C16 9 18 11 18 14 C18 17 14 19 10 19 C6 19 4 17 4 13" fill="currentColor" opacity="0.1"/>
+                            <path d="M4 13 C4 9 8 7 12 8 C16 9 18 11 18 14 C18 17 14 19 10 19 C6 19 4 17 4 13"/>
+                            <circle cx="18" cy="8" r="3" fill="currentColor" opacity="0.1"/>
+                            <circle cx="18" cy="8" r="3"/>
+                            <circle cx="19" cy="7" r="1" fill="currentColor"/>
+                            <path d="M21 8 L23 8.5 L21 9.5"/>
+                            <path d="M6 11 C3 9 1 10 1 12"/>
+                            <path d="M4 16 L1 19"/>
+                        </svg>
+                    </div>
+                    <span>20px</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Option 4: Flying Forward -->
+        <div class="option-card">
+            <h2>Option D: Dynamic Flight</h2>
+            <p class="description">Bird angled as if flying toward you. More energetic, conveys "incoming message" feeling. Wings spread wide.</p>
+
+            <div class="icon-display">
+                <div class="size-demo">
+                    <div class="icon-wrapper size-48">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <!-- Body - oval angled -->
+                            <ellipse cx="12" cy="14" rx="4" ry="5" fill="currentColor" opacity="0.12"/>
+                            <ellipse cx="12" cy="14" rx="4" ry="5"/>
+                            <!-- Head -->
+                            <circle cx="12" cy="7" r="2.5" fill="currentColor" opacity="0.12"/>
+                            <circle cx="12" cy="7" r="2.5"/>
+                            <!-- Eyes (both visible from front) -->
+                            <circle cx="10.8" cy="6.5" r="0.5" fill="currentColor"/>
+                            <circle cx="13.2" cy="6.5" r="0.5" fill="currentColor"/>
+                            <!-- Beak pointing down/forward -->
+                            <path d="M12 9 L12 10.5" stroke-width="1.5"/>
+                            <!-- Wings spread -->
+                            <path d="M8 13 C5 11 2 11 1 13 C2 14 4 14 7 14" fill="currentColor" opacity="0.08"/>
+                            <path d="M8 13 C5 11 2 11 1 13"/>
+                            <path d="M16 13 C19 11 22 11 23 13 C22 14 20 14 17 14" fill="currentColor" opacity="0.08"/>
+                            <path d="M16 13 C19 11 22 11 23 13"/>
+                            <!-- Tail -->
+                            <path d="M10 19 L9 22 M12 19 L12 22 M14 19 L15 22"/>
+                            <!-- Letter in talons -->
+                            <rect x="10" y="17" width="4" height="2.5" rx="0.3" fill="currentColor" opacity="0.4" stroke="none"/>
+                        </svg>
+                    </div>
+                    <span>40px</span>
+                </div>
+                <div class="size-demo">
+                    <div class="icon-wrapper size-24">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <ellipse cx="12" cy="14" rx="4" ry="5" fill="currentColor" opacity="0.12"/>
+                            <ellipse cx="12" cy="14" rx="4" ry="5"/>
+                            <circle cx="12" cy="7" r="2.5" fill="currentColor" opacity="0.12"/>
+                            <circle cx="12" cy="7" r="2.5"/>
+                            <circle cx="10.8" cy="6.5" r="0.5" fill="currentColor"/>
+                            <circle cx="13.2" cy="6.5" r="0.5" fill="currentColor"/>
+                            <path d="M12 9 L12 10.5" stroke-width="1.5"/>
+                            <path d="M8 13 C5 11 2 11 1 13"/>
+                            <path d="M16 13 C19 11 22 11 23 13"/>
+                            <path d="M10 19 L9 22 M12 19 L12 22 M14 19 L15 22"/>
+                        </svg>
+                    </div>
+                    <span>20px</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Side by side comparison -->
+    <div class="comparison">
+        <h2>Side-by-Side at Actual Size (20px in 28px button)</h2>
+        <div class="comparison-row">
+            <div class="comparison-item">
+                <div class="icon-wrapper size-20">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <ellipse cx="10" cy="13" rx="6" ry="5" fill="currentColor" opacity="0.12"/>
+                        <ellipse cx="10" cy="13" rx="6" ry="5"/>
+                        <circle cx="17" cy="9" r="2.5" fill="currentColor" opacity="0.12"/>
+                        <circle cx="17" cy="9" r="2.5"/>
+                        <path d="M14.5 10.5 Q13 11.5 12 12" stroke-width="2"/>
+                        <circle cx="18" cy="8.5" r="0.7" fill="currentColor"/>
+                        <path d="M19.5 9 L21.5 9.5 L19.5 10.5" stroke-width="1.2"/>
+                        <path d="M6 11 Q3 9 2 11"/>
+                        <path d="M5.5 12.5 Q3 11 2 12.5"/>
+                        <path d="M4 15 L1 17 M4.5 16 L2 18.5 M5.5 16.5 L3.5 19"/>
+                        <rect x="6" y="14" width="3" height="2" rx="0.3" fill="currentColor" opacity="0.5" stroke="none"/>
+                    </svg>
+                </div>
+                <div class="label">A: Classic</div>
+            </div>
+            <div class="comparison-item">
+                <div class="icon-wrapper size-20">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M8 14 C5 14 4 12 4 10 C4 7 7 6 10 7 C13 8 15 10 15 13 C15 16 12 18 8 18 C5 18 4 17 4 15" fill="currentColor" opacity="0.12"/>
+                        <path d="M8 14 C5 14 4 12 4 10 C4 7 7 6 10 7 C13 8 15 10 15 13 C15 16 12 18 8 18 C5 18 4 17 4 15"/>
+                        <circle cx="17" cy="8" r="3" fill="currentColor" opacity="0.12"/>
+                        <circle cx="17" cy="8" r="3"/>
+                        <path d="M14 9 C13 10 12 11 11 11" stroke-width="1.8"/>
+                        <circle cx="18.2" cy="7.3" r="0.8" fill="currentColor"/>
+                        <path d="M20 7.5 L22 8 L20 9" stroke-width="1.3"/>
+                        <path d="M7 10 C4 8 2 8 1 10"/>
+                        <path d="M6 12 C4 11 2 11 1 12"/>
+                        <path d="M4 16 L1 18 M5 17 L2.5 19.5"/>
+                    </svg>
+                </div>
+                <div class="label">B: Heraldic</div>
+            </div>
+            <div class="comparison-item">
+                <div class="icon-wrapper size-20">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 13 C4 9 8 7 12 8 C16 9 18 11 18 14 C18 17 14 19 10 19 C6 19 4 17 4 13" fill="currentColor" opacity="0.1"/>
+                        <path d="M4 13 C4 9 8 7 12 8 C16 9 18 11 18 14 C18 17 14 19 10 19 C6 19 4 17 4 13"/>
+                        <circle cx="18" cy="8" r="3" fill="currentColor" opacity="0.1"/>
+                        <circle cx="18" cy="8" r="3"/>
+                        <circle cx="19" cy="7" r="1" fill="currentColor"/>
+                        <path d="M21 8 L23 8.5 L21 9.5"/>
+                        <path d="M6 11 C3 9 1 10 1 12"/>
+                        <path d="M4 16 L1 19"/>
+                    </svg>
+                </div>
+                <div class="label">C: Minimal</div>
+            </div>
+            <div class="comparison-item">
+                <div class="icon-wrapper size-20">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <ellipse cx="12" cy="14" rx="4" ry="5" fill="currentColor" opacity="0.12"/>
+                        <ellipse cx="12" cy="14" rx="4" ry="5"/>
+                        <circle cx="12" cy="7" r="2.5" fill="currentColor" opacity="0.12"/>
+                        <circle cx="12" cy="7" r="2.5"/>
+                        <circle cx="10.8" cy="6.5" r="0.5" fill="currentColor"/>
+                        <circle cx="13.2" cy="6.5" r="0.5" fill="currentColor"/>
+                        <path d="M12 9 L12 10.5" stroke-width="1.5"/>
+                        <path d="M8 13 C5 11 2 11 1 13"/>
+                        <path d="M16 13 C19 11 22 11 23 13"/>
+                        <path d="M10 19 L9 22 M12 19 L12 22 M14 19 L15 22"/>
+                    </svg>
+                </div>
+                <div class="label">D: Dynamic</div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
