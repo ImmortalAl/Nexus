@@ -119,8 +119,9 @@
         font-size: 18px;
     }
 
-    /* User menu on mobile */
-    .user-menu {
+    /* User menu DROPDOWN on mobile - NOT the menu container itself */
+    .user-dropdown,
+    .user-menu-dropdown {
         position: fixed;
         top: 60px;
         right: 0;
