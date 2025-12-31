@@ -1,25 +1,19 @@
 /**
  * IMMORTAL NEXUS - MYSTICAL EFFECTS
- * Lightweight particle system for cosmic atmosphere
+ * DISABLED FOR SCROLL PERFORMANCE
+ * Static backgrounds now used instead
  */
 
 (function() {
     'use strict';
 
-    // ===== CONFIGURATION =====
-    const CONFIG = {
-        particles: {
-            count: window.innerWidth < 768 ? 8 : 15, // Reduced for performance
-            speed: 0.2, // Slower for smoother scroll
-            size: { min: 1, max: 2 },
-            opacity: { min: 0.3, max: 0.6 }
-        },
-        shootingStars: {
-            enabled: window.innerWidth >= 1024, // Only on larger screens
-            interval: 12000, // Less frequent
-            duration: 1500
-        }
-    };
+    // DISABLED: All particle effects removed for scroll performance
+    // The cosmic atmosphere is now achieved through static CSS gradients
+
+    console.log('✨ Mystical effects: Using static CSS backgrounds for optimal scroll performance');
+
+    // Exit early - no effects
+    return;
 
     // ===== FLOATING PARTICLES =====
 

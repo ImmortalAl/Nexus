@@ -448,7 +448,44 @@
 
     /* Add top padding to account for fixed header */
     main {
-        padding-top: calc(70px + 1rem);
+        padding-top: 70px;
+    }
+
+    /* ========================================
+       HEADER CONTROLS - FIX EMPTY CONTAINERS
+       ======================================== */
+
+    .header-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    /* Hide empty notification/user containers when not logged in */
+    .notification-icon-container:empty,
+    .user-menu:empty,
+    #notificationIconContainer:empty,
+    #userMenuContainer:empty {
+        display: none !important;
+    }
+
+    /* Style notification icon when present */
+    .notification-icon-container:not(:empty),
+    #notificationIconContainer:not(:empty) {
+        display: flex;
+        align-items: center;
+    }
+
+    /* Style user menu when present */
+    .user-menu:not(:empty),
+    #userMenuContainer:not(:empty) {
+        display: flex;
+        align-items: center;
+    }
+
+    /* Auth buttons container */
+    .header-auth-buttons {
+        display: none !important;
     }
 
     /* ========================================

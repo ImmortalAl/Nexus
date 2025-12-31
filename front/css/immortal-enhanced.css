@@ -5,7 +5,7 @@
  */
 
 /* ========================================
-   COSMIC BACKGROUND SYSTEM
+   COSMIC BACKGROUND SYSTEM (Performance Optimized)
    ======================================== */
 
 body {
@@ -14,7 +14,7 @@ body {
     background: radial-gradient(ellipse at bottom, #1a0d33 0%, #0a0515 100%);
 }
 
-/* Starfield Background */
+/* Static Starfield - NO ANIMATION for scroll performance */
 body::before {
     content: '';
     position: fixed;
@@ -23,74 +23,28 @@ body::before {
     width: 100%;
     height: 100%;
     background-image:
-        radial-gradient(2px 2px at 20% 30%, rgba(255, 255, 255, 0.8), transparent),
-        radial-gradient(2px 2px at 60% 70%, rgba(255, 255, 255, 0.6), transparent),
-        radial-gradient(1px 1px at 50% 50%, rgba(255, 255, 255, 0.9), transparent),
-        radial-gradient(1px 1px at 80% 10%, rgba(255, 255, 255, 0.7), transparent),
-        radial-gradient(2px 2px at 90% 60%, rgba(255, 255, 255, 0.5), transparent),
-        radial-gradient(1px 1px at 33% 75%, rgba(255, 255, 255, 0.8), transparent),
-        radial-gradient(1px 1px at 75% 25%, rgba(255, 255, 255, 0.6), transparent);
-    background-size: 200% 200%, 180% 180%, 220% 220%, 190% 190%, 210% 210%, 195% 195%, 185% 185%;
-    background-position: 0% 0%, 40% 60%, 100% 100%, 20% 80%, 80% 20%, 60% 40%, 30% 70%;
-    animation: twinkle 120s ease-in-out infinite;
+        radial-gradient(1px 1px at 20% 30%, rgba(255, 255, 255, 0.6), transparent),
+        radial-gradient(1px 1px at 60% 70%, rgba(255, 255, 255, 0.5), transparent),
+        radial-gradient(1px 1px at 80% 10%, rgba(255, 255, 255, 0.4), transparent),
+        radial-gradient(1px 1px at 40% 50%, rgba(255, 255, 255, 0.5), transparent),
+        radial-gradient(1px 1px at 90% 40%, rgba(255, 255, 255, 0.3), transparent);
     pointer-events: none;
     z-index: 0;
 }
 
-/* Nebula Aurora Effect */
+/* Static Nebula - NO ANIMATION for scroll performance */
 body::after {
     content: '';
     position: fixed;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background:
-        radial-gradient(ellipse at 30% 40%, rgba(255, 94, 120, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 70% 60%, rgba(74, 222, 128, 0.08) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
-    animation: aurora 60s ease-in-out infinite alternate;
+        radial-gradient(ellipse at 30% 40%, rgba(255, 94, 120, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 60%, rgba(74, 222, 128, 0.05) 0%, transparent 50%);
     pointer-events: none;
     z-index: 1;
-    mix-blend-mode: screen;
-}
-
-@keyframes twinkle {
-    0%, 100% {
-        opacity: 1;
-        background-position: 0% 0%, 40% 60%, 100% 100%, 20% 80%, 80% 20%, 60% 40%, 30% 70%;
-    }
-    25% {
-        opacity: 0.8;
-        background-position: 10% 10%, 50% 70%, 90% 90%, 30% 90%, 70% 30%, 50% 50%, 20% 80%;
-    }
-    50% {
-        opacity: 0.9;
-        background-position: 5% 5%, 45% 65%, 95% 95%, 25% 85%, 75% 25%, 55% 45%, 25% 75%;
-    }
-    75% {
-        opacity: 0.85;
-        background-position: 15% 15%, 55% 75%, 85% 85%, 35% 95%, 65% 35%, 45% 55%, 15% 85%;
-    }
-}
-
-@keyframes aurora {
-    0% {
-        transform: translate(0%, 0%) rotate(0deg) scale(1);
-        opacity: 0.6;
-    }
-    33% {
-        transform: translate(5%, 8%) rotate(2deg) scale(1.05);
-        opacity: 0.7;
-    }
-    66% {
-        transform: translate(-3%, 5%) rotate(-1deg) scale(0.98);
-        opacity: 0.65;
-    }
-    100% {
-        transform: translate(2%, -4%) rotate(1deg) scale(1.02);
-        opacity: 0.6;
-    }
 }
 
 /* Ensure content is above cosmic background */
