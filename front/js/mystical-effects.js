@@ -9,14 +9,14 @@
     // ===== CONFIGURATION =====
     const CONFIG = {
         particles: {
-            count: window.innerWidth < 768 ? 15 : 30, // Fewer on mobile
-            speed: 0.3,
-            size: { min: 1, max: 3 },
-            opacity: { min: 0.3, max: 0.8 }
+            count: window.innerWidth < 768 ? 8 : 15, // Reduced for performance
+            speed: 0.2, // Slower for smoother scroll
+            size: { min: 1, max: 2 },
+            opacity: { min: 0.3, max: 0.6 }
         },
         shootingStars: {
-            enabled: window.innerWidth >= 768, // Desktop only
-            interval: 8000, // Every 8 seconds
+            enabled: window.innerWidth >= 1024, // Only on larger screens
+            interval: 12000, // Less frequent
             duration: 1500
         }
     };
@@ -149,69 +149,12 @@
         requestAnimationFrame(animate);
     }
 
-    // ===== CONSTELLATION LINES (on scroll) =====
+    // ===== CONSTELLATION LINES (on scroll) - DISABLED FOR PERFORMANCE =====
 
     function addConstellationLines() {
-        // Find all soul cards or feature cards
-        const cards = document.querySelectorAll('.soul-card, .feature-card');
-
-        if (cards.length < 2) return; // Need at least 2 cards
-
-        // Create SVG overlay
-        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        svg.setAttribute('class', 'constellation-overlay');
-        svg.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        `;
-
-        document.body.appendChild(svg);
-
-        // Create lines between adjacent visible cards
-        function updateLines() {
-            svg.innerHTML = ''; // Clear existing lines
-
-            const visibleCards = Array.from(cards).filter(card => {
-                const rect = card.getBoundingClientRect();
-                return rect.top < window.innerHeight && rect.bottom > 0;
-            });
-
-            for (let i = 0; i < visibleCards.length - 1; i++) {
-                const card1 = visibleCards[i].getBoundingClientRect();
-                const card2 = visibleCards[i + 1].getBoundingClientRect();
-
-                const x1 = card1.left + card1.width / 2;
-                const y1 = card1.top + card1.height / 2;
-                const x2 = card2.left + card2.width / 2;
-                const y2 = card2.top + card2.height / 2;
-
-                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                line.setAttribute('x1', x1);
-                line.setAttribute('y1', y1);
-                line.setAttribute('x2', x2);
-                line.setAttribute('y2', y2);
-                line.setAttribute('stroke', 'rgba(255, 94, 120, 0.2)');
-                line.setAttribute('stroke-width', '1');
-                line.setAttribute('stroke-dasharray', '5,5');
-
-                svg.appendChild(line);
-            }
-        }
-
-        // Update on scroll (throttled)
-        let scrollTimeout;
-        window.addEventListener('scroll', function() {
-            clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(updateLines, 100);
-        });
-
-        // Initial update
-        updateLines();
+        // Disabled for better scroll performance
+        // Constellation lines caused scroll jank due to frequent DOM updates
+        return;
     }
 
     // ===== MYSTICAL CURSOR TRAIL (Desktop only) =====

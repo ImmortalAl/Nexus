@@ -150,8 +150,8 @@ h1.eternal,
     border-radius: 12px;
     padding: 2rem;
     overflow: hidden;
-    backdrop-filter: blur(10px);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    will-change: transform;
 }
 
 /* Ornate Corner Decorations */
@@ -308,10 +308,9 @@ button:not(.theme-toggle):not([class*="icon-"]) {
 }
 
 .btn-outline {
-    background: rgba(26, 13, 51, 0.6);
+    background: rgba(26, 13, 51, 0.9);
     border: 2px solid rgba(255, 94, 120, 0.5);
     color: var(--text);
-    backdrop-filter: blur(10px);
 }
 
 .btn-outline:hover {
@@ -331,9 +330,8 @@ header,
 .main-nav {
     position: relative;
     background: linear-gradient(135deg,
-        rgba(26, 27, 78, 0.95) 0%,
-        rgba(22, 33, 62, 0.95) 100%);
-    backdrop-filter: blur(20px);
+        rgba(26, 27, 78, 0.98) 0%,
+        rgba(22, 33, 62, 0.98) 100%);
     border-bottom: 1px solid rgba(255, 94, 120, 0.3);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
@@ -408,8 +406,7 @@ header,
    ======================================== */
 
 .modal-overlay {
-    background: rgba(10, 5, 21, 0.9);
-    backdrop-filter: blur(10px);
+    background: rgba(10, 5, 21, 0.95);
     animation: modalFadeIn 0.3s ease;
 }
 
@@ -452,14 +449,13 @@ input[type="email"],
 input[type="password"],
 textarea,
 select {
-    background: rgba(26, 13, 51, 0.6);
+    background: rgba(26, 13, 51, 0.8);
     border: 1px solid rgba(255, 94, 120, 0.3);
     border-radius: 8px;
     padding: 0.875rem 1rem;
     color: var(--text);
     font-family: inherit;
     transition: all 0.3s ease;
-    backdrop-filter: blur(5px);
 }
 
 input:focus,
