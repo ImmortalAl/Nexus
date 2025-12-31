@@ -1,0 +1,1391 @@
+/**
+ * IMMORTAL NEXUS - UNIFIED THEME SYSTEM
+ * Consolidated from: immortal-enhanced, mobile-immortal-enhanced, mobile-enhanced, mobile-ux-enhanced
+ * Mobile-first responsive design
+ *
+ * Structure:
+ * 1. Base Styles (Mobile-First)
+ * 2. Cosmic Background
+ * 3. Typography
+ * 4. Navigation & Header
+ * 5. Buttons
+ * 6. Cards & Containers
+ * 7. Forms
+ * 8. Modals
+ * 9. Scrollbar
+ * 10. Footer
+ * 11. Utilities
+ * 12. Tablet Styles (768px+)
+ * 13. Desktop Styles (1024px+)
+ * 14. Accessibility & Performance
+ */
+
+/* ============================================================================
+   1. BASE STYLES (MOBILE-FIRST)
+   ============================================================================ */
+
+body {
+    position: relative;
+    overflow-x: hidden;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Safe area insets for notched devices */
+@supports (padding: max(0px)) {
+    body {
+        padding-left: max(0px, env(safe-area-inset-left));
+        padding-right: max(0px, env(safe-area-inset-right));
+        padding-bottom: max(0px, env(safe-area-inset-bottom));
+    }
+}
+
+/* Word wrapping */
+body, p, div, article {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Content above cosmic background */
+main, header, footer, nav {
+    position: relative;
+    z-index: 10;
+}
+
+/* Main content spacing for fixed header */
+main {
+    padding-top: 70px;
+}
+
+/* Minimum touch targets (44x44px) */
+.btn,
+button,
+a.btn,
+input[type="button"],
+input[type="submit"] {
+    min-height: 44px;
+    min-width: 44px;
+}
+
+/* Icon buttons */
+button[class*="icon"],
+.theme-toggle,
+.icon-btn {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0.75rem;
+}
+
+/* Touch feedback */
+.btn:active,
+button:active,
+a:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+}
+
+/* ============================================================================
+   2. COSMIC BACKGROUND (Performance Optimized - Static)
+   ============================================================================ */
+
+body {
+    background: radial-gradient(ellipse at bottom, #1a0d33 0%, #0a0515 100%);
+}
+
+/* Static Starfield - NO ANIMATION for scroll performance */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        radial-gradient(1px 1px at 20% 30%, rgba(255, 255, 255, 0.6), transparent),
+        radial-gradient(1px 1px at 60% 70%, rgba(255, 255, 255, 0.5), transparent),
+        radial-gradient(1px 1px at 80% 10%, rgba(255, 255, 255, 0.4), transparent),
+        radial-gradient(1px 1px at 40% 50%, rgba(255, 255, 255, 0.5), transparent),
+        radial-gradient(1px 1px at 90% 40%, rgba(255, 255, 255, 0.3), transparent);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Static Nebula - NO ANIMATION for scroll performance */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(ellipse at 30% 40%, rgba(255, 94, 120, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 60%, rgba(74, 222, 128, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ============================================================================
+   3. TYPOGRAPHY
+   ============================================================================ */
+
+/* Mobile typography */
+h1, .hero h1, h1.eternal {
+    font-size: clamp(1.75rem, 8vw, 2.5rem);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+    line-height: 1.3;
+}
+
+h3 {
+    font-size: 1.25rem;
+    line-height: 1.4;
+}
+
+p {
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* Mystical text glow (reduced for mobile performance) */
+.eternal-glow,
+.text-immortal-glow,
+h1.eternal,
+.hero-content h1 {
+    text-shadow:
+        0 0 8px rgba(255, 94, 120, 0.4),
+        0 0 15px rgba(255, 94, 120, 0.2);
+}
+
+.ancient-text {
+    font-family: 'Cinzel', Georgia, serif;
+    letter-spacing: 0.05em;
+}
+
+/* ============================================================================
+   4. NAVIGATION & HEADER
+   ============================================================================ */
+
+header,
+.main-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(135deg,
+        rgba(26, 27, 78, 0.98) 0%,
+        rgba(22, 33, 62, 0.98) 100%);
+    border-bottom: 1px solid rgba(255, 94, 120, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+@supports (padding: max(0px)) {
+    header {
+        padding-top: max(1rem, env(safe-area-inset-top));
+        padding-left: max(1rem, env(safe-area-inset-left));
+        padding-right: max(1rem, env(safe-area-inset-right));
+    }
+}
+
+/* Header controls container */
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Hide empty notification/user containers when not logged in */
+.notification-icon-container:empty,
+.user-menu:empty,
+#notificationIconContainer:empty,
+#userMenuContainer:empty {
+    display: none;
+}
+
+/* Style containers when present */
+.notification-icon-container:not(:empty),
+.user-menu:not(:empty),
+#notificationIconContainer:not(:empty),
+#userMenuContainer:not(:empty) {
+    display: flex;
+    align-items: center;
+}
+
+/* Hide desktop main nav on mobile */
+.main-nav {
+    display: none;
+}
+
+/* Mobile nav toggle */
+.mobile-nav-toggle {
+    display: flex;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0.75rem;
+    background: rgba(255, 94, 120, 0.2);
+    border: 1px solid rgba(255, 94, 120, 0.4);
+    border-radius: 8px;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.mobile-nav-toggle:hover,
+.mobile-nav-toggle:active {
+    background: rgba(255, 94, 120, 0.3);
+    box-shadow: 0 0 15px rgba(255, 94, 120, 0.3);
+}
+
+/* Mobile navigation sidebar */
+.mobile-nav {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 85vw;
+    max-width: 320px;
+    height: 100vh;
+    background: linear-gradient(135deg,
+        rgba(26, 13, 51, 0.98) 0%,
+        rgba(16, 16, 33, 0.98) 100%);
+    border-right: 2px solid rgba(255, 94, 120, 0.4);
+    z-index: 1100;
+    padding: 1.5rem;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 4px 0 30px rgba(0, 0, 0, 0.5);
+}
+
+@supports (padding: max(0px)) {
+    .mobile-nav {
+        padding-top: max(1.5rem, env(safe-area-inset-top));
+        padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+    }
+}
+
+.mobile-nav.active {
+    left: 0;
+}
+
+/* Mobile nav overlay */
+.mobile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 5, 21, 0.8);
+    z-index: 1050;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.mobile-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Mobile nav list */
+.mobile-nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mobile-nav-list li {
+    margin-bottom: 0.5rem;
+}
+
+.mobile-nav-list a {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    color: var(--text);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
+}
+
+.mobile-nav-list a:hover,
+.mobile-nav-list a:active {
+    background: rgba(255, 94, 120, 0.2);
+    border-left-color: rgba(255, 94, 120, 0.8);
+    transform: translateX(5px);
+}
+
+.mobile-nav-list a i {
+    width: 24px;
+    text-align: center;
+    color: rgba(255, 94, 120, 0.8);
+}
+
+/* Prevent scroll when menu open */
+body.mobile-nav-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+}
+
+/* Notification icon */
+.notification-icon {
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 94, 120, 0.2);
+    border: 1px solid rgba(255, 94, 120, 0.4);
+    border-radius: 8px;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.notification-icon:hover,
+.notification-icon:active {
+    background: rgba(255, 94, 120, 0.3);
+    box-shadow: 0 0 15px rgba(255, 94, 120, 0.3);
+}
+
+.notification-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 20px;
+    height: 20px;
+    background: rgba(255, 94, 120, 0.9);
+    border: 2px solid rgba(26, 27, 78, 0.98);
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+}
+
+/* Notification dropdown on mobile */
+.notifications-dropdown,
+.notification-panel {
+    position: fixed;
+    top: 70px;
+    right: 1rem;
+    left: 1rem;
+    width: auto;
+    max-width: none;
+    max-height: calc(100vh - 90px);
+    background: linear-gradient(135deg,
+        rgba(26, 13, 51, 0.98) 0%,
+        rgba(16, 16, 33, 0.98) 100%);
+    border: 2px solid rgba(255, 94, 120, 0.4);
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    z-index: 1050;
+}
+
+/* User menu button */
+.user-menu-button,
+.user-avatar-button {
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: rgba(255, 94, 120, 0.2);
+    border: 1px solid rgba(255, 94, 120, 0.4);
+    border-radius: 8px;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.user-menu-button:hover,
+.user-menu-button:active,
+.user-avatar-button:hover,
+.user-avatar-button:active {
+    background: rgba(255, 94, 120, 0.3);
+    box-shadow: 0 0 15px rgba(255, 94, 120, 0.3);
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* User dropdown on mobile */
+.user-dropdown,
+.user-menu-dropdown {
+    position: fixed;
+    top: 70px;
+    right: 1rem;
+    width: calc(100vw - 2rem);
+    max-width: 320px;
+    background: linear-gradient(135deg,
+        rgba(26, 13, 51, 0.98) 0%,
+        rgba(16, 16, 33, 0.98) 100%);
+    border: 2px solid rgba(255, 94, 120, 0.4);
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    z-index: 1050;
+    overflow: hidden;
+}
+
+.user-dropdown a,
+.user-menu-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    color: var(--text);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
+    min-height: 44px;
+}
+
+.user-dropdown a:hover,
+.user-dropdown a:active,
+.user-menu-dropdown a:hover,
+.user-menu-dropdown a:active {
+    background: rgba(255, 94, 120, 0.2);
+    border-left-color: rgba(255, 94, 120, 0.8);
+}
+
+/* ============================================================================
+   5. BUTTONS
+   ============================================================================ */
+
+.btn,
+button:not(.theme-toggle):not([class*="icon-"]):not(.close-sidebar):not(.mobile-nav-toggle) {
+    position: relative;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-transform: uppercase;
+    font-size: 0.875rem;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg,
+        rgba(255, 94, 120, 0.9) 0%,
+        rgba(212, 175, 55, 0.9) 100%);
+    border: 1px solid rgba(255, 94, 120, 0.6);
+    color: #ffffff;
+    box-shadow:
+        0 4px 15px rgba(255, 94, 120, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Shimmer Effect */
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent);
+    transition: left 0.5s ease;
+}
+
+.btn-primary:hover::before {
+    left: 100%;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 6px 20px rgba(255, 94, 120, 0.4),
+        0 0 30px rgba(255, 94, 120, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.btn-outline {
+    background: rgba(26, 13, 51, 0.9);
+    border: 2px solid rgba(255, 94, 120, 0.5);
+    color: var(--text);
+}
+
+.btn-outline:hover {
+    background: rgba(255, 94, 120, 0.2);
+    border-color: rgba(255, 94, 120, 0.8);
+    box-shadow:
+        0 0 20px rgba(255, 94, 120, 0.3),
+        inset 0 0 20px rgba(255, 94, 120, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Hero buttons mobile */
+.hero-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+.hero-buttons .btn {
+    width: 100%;
+    justify-content: center;
+}
+
+/* ============================================================================
+   6. CARDS & CONTAINERS
+   ============================================================================ */
+
+/* Ornate Card Design */
+.feature-card,
+.soul-card,
+.debate-arena,
+.highlight,
+[class*="card"] {
+    position: relative;
+    background: linear-gradient(135deg,
+        rgba(26, 13, 51, 0.95) 0%,
+        rgba(16, 16, 33, 0.98) 50%,
+        rgba(26, 26, 46, 0.95) 100%);
+    border: 1px solid rgba(255, 94, 120, 0.3);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Ornate Corner Decorations */
+.feature-card::before,
+.soul-card::before,
+.debate-arena::before {
+    content: '\2726'; /* ✦ */
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    font-size: 0.875rem;
+    color: rgba(255, 94, 120, 0.6);
+}
+
+.feature-card::after,
+.soul-card::after,
+.debate-arena::after {
+    content: '\2726'; /* ✦ */
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    font-size: 0.875rem;
+    color: rgba(74, 222, 128, 0.6);
+}
+
+/* Mystical Border Glow on Hover */
+.feature-card:hover,
+.soul-card:hover,
+.debate-arena:hover {
+    border-color: rgba(255, 94, 120, 0.6);
+    box-shadow:
+        0 0 20px rgba(255, 94, 120, 0.2),
+        0 0 40px rgba(255, 94, 120, 0.1),
+        inset 0 0 60px rgba(255, 94, 120, 0.05);
+    transform: translateY(-4px);
+}
+
+/* Soul cards grid to single column on mobile */
+.souls-grid,
+.feature-grid,
+.features-grid,
+[class*="grid"]:not(.header-controls) {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Section spacing */
+section {
+    padding: 3rem 1.5rem;
+}
+
+.container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    max-width: 100%;
+}
+
+/* Hero section */
+.hero {
+    position: relative;
+    padding: 4rem 1.5rem;
+    text-align: center;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center,
+        rgba(255, 94, 120, 0.1) 0%,
+        transparent 70%);
+    pointer-events: none;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero p {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    color: var(--text-secondary);
+}
+
+/* ============================================================================
+   7. FORMS
+   ============================================================================ */
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+textarea,
+select {
+    width: 100%;
+    background: rgba(26, 13, 51, 0.8);
+    border: 1px solid rgba(255, 94, 120, 0.3);
+    border-radius: 8px;
+    padding: 1rem;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 16px; /* Prevents zoom on iOS */
+    min-height: 44px;
+    transition: all 0.3s ease;
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: rgba(255, 94, 120, 0.6);
+    box-shadow:
+        0 0 0 3px rgba(255, 94, 120, 0.1),
+        0 0 20px rgba(255, 94, 120, 0.2);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: rgba(201, 179, 224, 0.5);
+}
+
+.form-group,
+[class*="form-group"] {
+    margin-bottom: 1.25rem;
+}
+
+label {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+/* ============================================================================
+   8. MODALS
+   ============================================================================ */
+
+.modal-overlay {
+    background: rgba(10, 5, 21, 0.95);
+}
+
+.modal,
+[class*="modal"][class*="content"] {
+    width: 95vw;
+    max-width: 95vw;
+    max-height: 90vh;
+    margin: 5vh auto;
+    background: linear-gradient(135deg,
+        rgba(26, 13, 51, 0.98) 0%,
+        rgba(16, 16, 33, 0.98) 100%);
+    border: 2px solid rgba(255, 94, 120, 0.4);
+    border-radius: 12px;
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(255, 94, 120, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.modal-header,
+[class*="modal"] header {
+    padding: 1rem 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: inherit;
+}
+
+.modal-body,
+[class*="modal"] .body {
+    padding: 1.5rem;
+    max-height: calc(90vh - 140px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.modal-footer,
+[class*="modal"] footer {
+    padding: 1rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    position: sticky;
+    bottom: 0;
+    background: inherit;
+}
+
+.modal-footer button,
+[class*="modal"] footer button {
+    width: 100%;
+}
+
+/* Close button */
+.close-modal,
+.modal-close {
+    min-width: 44px;
+    min-height: 44px;
+    font-size: 24px;
+}
+
+/* ============================================================================
+   9. SCROLLBAR
+   ============================================================================ */
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(13, 13, 26, 0.5);
+    border-left: 1px solid rgba(255, 94, 120, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg,
+        rgba(255, 94, 120, 0.6) 0%,
+        rgba(212, 175, 55, 0.6) 100%);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg,
+        rgba(255, 94, 120, 0.8) 0%,
+        rgba(212, 175, 55, 0.8) 100%);
+}
+
+/* Firefox scrollbar */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 94, 120, 0.6) rgba(13, 13, 26, 0.5);
+}
+
+/* ============================================================================
+   10. FOOTER
+   ============================================================================ */
+
+footer {
+    background: linear-gradient(135deg,
+        rgba(16, 16, 33, 0.95) 0%,
+        rgba(26, 26, 46, 0.95) 100%);
+    border-top: 1px solid rgba(255, 94, 120, 0.3);
+    padding: 2rem 1.5rem 1.5rem;
+    margin-top: 4rem;
+    text-align: center;
+}
+
+footer nav {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+footer a {
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+footer a:hover {
+    color: rgba(255, 94, 120, 0.9);
+    text-shadow: 0 0 10px rgba(255, 94, 120, 0.3);
+}
+
+/* ============================================================================
+   11. UTILITIES
+   ============================================================================ */
+
+.mystical-glow {
+    box-shadow: 0 0 20px rgba(255, 94, 120, 0.4);
+}
+
+.constellation-border {
+    border: 1px solid rgba(255, 94, 120, 0.3);
+    box-shadow: 0 0 10px rgba(255, 94, 120, 0.2);
+}
+
+/* Constellation pattern dividers */
+.constellation-divider {
+    width: 100%;
+    height: 2px;
+    margin: 3rem 0;
+    position: relative;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(255, 94, 120, 0.4) 20%,
+        rgba(255, 94, 120, 0.6) 50%,
+        rgba(255, 94, 120, 0.4) 80%,
+        transparent 100%);
+}
+
+/* Loading spinner */
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(255, 94, 120, 0.2);
+    border-top-color: rgba(255, 94, 120, 0.8);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Skeleton Loading */
+.skeleton {
+    background: linear-gradient(90deg,
+        rgba(26, 13, 51, 0.6) 25%,
+        rgba(45, 27, 78, 0.8) 50%,
+        rgba(26, 13, 51, 0.6) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 8px;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Mobile utility classes */
+.mobile-center {
+    text-align: center;
+}
+
+.mobile-stack {
+    flex-direction: column;
+}
+
+.mobile-full-width {
+    width: 100%;
+}
+
+.hide-mobile {
+    display: none;
+}
+
+.show-mobile {
+    display: block;
+}
+
+/* ============================================================================
+   12. TABLET STYLES (768px+)
+   ============================================================================ */
+
+@media (min-width: 768px) {
+    main {
+        padding-top: 80px;
+    }
+
+    /* Show desktop nav */
+    .main-nav {
+        display: flex;
+        position: relative;
+        background: transparent;
+        border-bottom: none;
+        box-shadow: none;
+        padding: 0;
+    }
+
+    .main-nav a {
+        position: relative;
+        padding: 0.75rem 1.25rem;
+        color: var(--text);
+        transition: all 0.3s ease;
+        font-weight: 500;
+        letter-spacing: 0.3px;
+    }
+
+    .main-nav a::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 94, 120, 0.8),
+            transparent);
+        transform: translateX(-50%);
+        transition: width 0.3s ease;
+    }
+
+    .main-nav a:hover::before {
+        width: 80%;
+    }
+
+    .main-nav a:hover {
+        color: rgba(255, 94, 120, 0.9);
+        text-shadow: 0 0 10px rgba(255, 94, 120, 0.5);
+    }
+
+    /* Hide mobile nav toggle */
+    .mobile-nav-toggle {
+        display: none;
+    }
+
+    /* Typography */
+    h1, .hero h1, h1.eternal {
+        font-size: clamp(2rem, 6vw, 3.5rem);
+    }
+
+    h2 {
+        font-size: 1.75rem;
+    }
+
+    h3 {
+        font-size: 1.5rem;
+    }
+
+    /* Cards grid */
+    .souls-grid,
+    .feature-grid,
+    .features-grid,
+    [class*="grid"]:not(.header-controls) {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+
+    .feature-card,
+    .soul-card,
+    .debate-arena {
+        padding: 2rem;
+    }
+
+    /* Corner decorations larger */
+    .feature-card::before,
+    .soul-card::before,
+    .feature-card::after,
+    .soul-card::after {
+        font-size: 1rem;
+        top: 12px;
+        left: 12px;
+    }
+
+    .feature-card::after,
+    .soul-card::after {
+        bottom: 12px;
+        right: 12px;
+    }
+
+    /* Hero */
+    .hero {
+        padding: 5rem 2rem;
+    }
+
+    .hero-buttons {
+        flex-direction: row;
+        justify-content: center;
+        width: auto;
+    }
+
+    .hero-buttons .btn {
+        width: auto;
+    }
+
+    /* Modals */
+    .modal,
+    [class*="modal"][class*="content"] {
+        max-width: 600px;
+        border-radius: 16px;
+    }
+
+    .modal-footer,
+    [class*="modal"] footer {
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+
+    .modal-footer button,
+    [class*="modal"] footer button {
+        width: auto;
+    }
+
+    /* Notification/User dropdowns */
+    .notifications-dropdown,
+    .notification-panel {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        left: auto;
+        width: 350px;
+        max-width: 350px;
+    }
+
+    .user-dropdown,
+    .user-menu-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 280px;
+    }
+
+    /* Footer */
+    footer {
+        padding: 3rem 2rem 2rem;
+    }
+
+    footer nav {
+        flex-direction: row;
+        justify-content: center;
+        gap: 2rem;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+        width: 12px;
+        height: 12px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        border: 2px solid rgba(13, 13, 26, 0.5);
+        border-radius: 6px;
+    }
+
+    /* Utilities */
+    .hide-mobile {
+        display: block;
+    }
+
+    .show-mobile {
+        display: none;
+    }
+}
+
+/* ============================================================================
+   13. DESKTOP STYLES (1024px+)
+   ============================================================================ */
+
+@media (min-width: 1024px) {
+    /* Typography with enhanced glow */
+    .eternal-glow,
+    .text-immortal-glow,
+    h1.eternal,
+    .hero-content h1 {
+        text-shadow:
+            0 0 10px rgba(255, 94, 120, 0.5),
+            0 0 20px rgba(255, 94, 120, 0.3),
+            0 0 30px rgba(255, 94, 120, 0.2),
+            0 0 40px rgba(255, 94, 120, 0.1);
+        animation: textGlow 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes textGlow {
+        0% {
+            text-shadow:
+                0 0 10px rgba(255, 94, 120, 0.5),
+                0 0 20px rgba(255, 94, 120, 0.3),
+                0 0 30px rgba(255, 94, 120, 0.2);
+        }
+        100% {
+            text-shadow:
+                0 0 15px rgba(255, 94, 120, 0.7),
+                0 0 25px rgba(255, 94, 120, 0.5),
+                0 0 35px rgba(255, 94, 120, 0.3),
+                0 0 50px rgba(255, 94, 120, 0.2);
+        }
+    }
+
+    /* Corner decoration animations */
+    .feature-card::before,
+    .soul-card::before,
+    .debate-arena::before,
+    .feature-card::after,
+    .soul-card::after,
+    .debate-arena::after {
+        animation: cornerPulse 3s ease-in-out infinite;
+    }
+
+    .feature-card::after,
+    .soul-card::after,
+    .debate-arena::after {
+        animation-delay: 1.5s;
+    }
+
+    @keyframes cornerPulse {
+        0%, 100% {
+            opacity: 0.6;
+            transform: scale(1) rotate(0deg);
+        }
+        50% {
+            opacity: 1;
+            transform: scale(1.2) rotate(90deg);
+        }
+    }
+
+    /* Cards grid 3 columns */
+    .souls-grid,
+    .feature-grid,
+    .features-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .feature-card:hover,
+    .soul-card:hover,
+    .debate-arena:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow:
+            0 10px 30px rgba(0, 0, 0, 0.3),
+            0 0 40px rgba(255, 94, 120, 0.2),
+            inset 0 0 80px rgba(255, 94, 120, 0.05);
+    }
+
+    /* Hero */
+    .hero {
+        padding: 6rem 2rem;
+    }
+
+    .hero h1 {
+        font-size: clamp(2.5rem, 6vw, 5rem);
+        margin-bottom: 1.5rem;
+    }
+
+    .hero p {
+        font-size: clamp(1.125rem, 2vw, 1.5rem);
+        max-width: 700px;
+        margin: 0 auto 2.5rem;
+    }
+
+    /* Constellation divider stars */
+    .constellation-divider::before,
+    .constellation-divider::after {
+        content: '\22C6'; /* ⋆ */
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        color: rgba(255, 94, 120, 0.8);
+        font-size: 1.5rem;
+        animation: starTwinkle 2s ease-in-out infinite;
+    }
+
+    .constellation-divider::before {
+        left: 0;
+    }
+
+    .constellation-divider::after {
+        right: 0;
+        animation-delay: 1s;
+    }
+
+    @keyframes starTwinkle {
+        0%, 100% { opacity: 0.8; transform: translateY(-50%) scale(1); }
+        50% { opacity: 1; transform: translateY(-50%) scale(1.3); }
+    }
+
+    /* Buttons */
+    .btn,
+    button:not(.theme-toggle):not([class*="icon-"]) {
+        padding: 0.875rem 2rem;
+    }
+}
+
+/* ============================================================================
+   14. ACCESSIBILITY & PERFORMANCE
+   ============================================================================ */
+
+/* Focus indicators */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid rgba(255, 94, 120, 0.8);
+    outline-offset: 2px;
+}
+
+/* Skip to content link */
+.skip-to-content {
+    position: fixed;
+    top: -100px;
+    left: 10px;
+    z-index: 10000;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 94, 120, 0.9);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: top 0.3s ease;
+}
+
+.skip-to-content:focus {
+    top: 10px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    body::before,
+    body::after {
+        animation: none !important;
+    }
+
+    .loading-spinner,
+    .skeleton {
+        animation: none;
+    }
+}
+
+/* PWA optimizations */
+@media (display-mode: standalone) {
+    header {
+        padding-top: max(1rem, env(safe-area-inset-top));
+    }
+
+    .install-prompt {
+        display: none;
+    }
+
+    body {
+        background-attachment: fixed;
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2),
+       (min-resolution: 192dpi) {
+    .feature-card,
+    .soul-card,
+    .btn,
+    input,
+    textarea {
+        border-width: 0.5px;
+    }
+}
+
+/* Print styles */
+@media print {
+    body::before,
+    body::after,
+    .mobile-menu-toggle,
+    .theme-toggle,
+    .floating-theme-toggle {
+        display: none !important;
+    }
+
+    body {
+        background: white !important;
+        color: black !important;
+    }
+
+    .feature-card,
+    .soul-card {
+        border: 1px solid #333;
+        page-break-inside: avoid;
+    }
+}
+
+/* Landscape mobile */
+@media (max-width: 768px) and (orientation: landscape) and (max-height: 500px) {
+    .hero {
+        padding: 2rem 1.5rem;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .modal {
+        max-height: 85vh;
+    }
+
+    header {
+        padding: 0.75rem 1.5rem;
+    }
+}
+
+/* Small mobile (< 375px) */
+@media (max-width: 374px) {
+    body {
+        font-size: 14px;
+    }
+
+    .hero h1 {
+        font-size: 1.75rem;
+    }
+
+    .feature-card,
+    .soul-card {
+        padding: 1rem;
+    }
+
+    .btn {
+        font-size: 0.8125rem;
+        padding: 0.75rem 1rem;
+    }
+
+    section {
+        padding: 2rem 1rem;
+    }
+}
