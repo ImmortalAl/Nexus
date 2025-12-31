@@ -21,12 +21,14 @@
     border-radius: 50%;
     width: 40px;
     height: 40px;
+    padding: 0; /* Override button padding from theme CSS */
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
     color: var(--text-primary, #f0e6ff);
+    overflow: visible; /* Ensure SVG is not clipped */
 }
 
 .notification-icon:hover {
