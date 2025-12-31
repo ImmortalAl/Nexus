@@ -399,6 +399,21 @@ nav.main-nav a.active span::after {
     display: inline;
 }
 
+/* CONSISTENT header button styling across ALL pages */
+.header-auth-buttons .btn-primary {
+    background: linear-gradient(135deg, rgba(255, 94, 120, 0.95) 0%, rgba(255, 94, 120, 0.8) 100%);
+    border: 1px solid rgba(255, 94, 120, 0.6);
+    color: #ffffff;
+}
+.header-auth-buttons .btn-outline {
+    background: transparent;
+    border: 1px solid rgba(255, 94, 120, 0.6);
+    color: rgba(255, 94, 120, 0.95);
+}
+.header-auth-buttons .btn-outline:hover {
+    background: rgba(255, 94, 120, 0.15);
+}
+
 .header-auth-buttons .btn-primary:hover,
 .header-auth-buttons .btn-outline:hover {
     transform: translateY(-1px);
