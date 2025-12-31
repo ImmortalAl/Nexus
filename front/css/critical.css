@@ -370,11 +370,19 @@ nav.main-nav a.active span::after {
     display: flex;
     flex-wrap: nowrap; /* CRITICAL: Prevent wrapping of hamburger and user menu */
     align-items: center;
-    gap: 1rem;
-    padding-right: 1.5rem;
+    gap: 0.5rem;
+    padding-right: 1rem;
     overflow: visible;
-    flex-shrink: 0; /* Prevent controls from shrinking */
-    max-width: none; /* Override viewport-optimizations.css universal max-width */
+    flex-shrink: 1; /* Allow controls to shrink to fit */
+    min-width: 0; /* Allow flex item to shrink below content size */
+}
+
+/* User Menu in Header - ensure it stays in header row */
+.user-menu,
+#userMenuContainer {
+    flex-shrink: 1;
+    min-width: 0;
+    max-width: 150px; /* Constrain width on mobile */
 }
 
 /* Header Auth Buttons (for logged-out state) */
