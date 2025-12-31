@@ -162,30 +162,33 @@
     }
 
     /* ========================================
-       MOBILE NAVIGATION
+       MOBILE NAVIGATION & HEADER
        ======================================== */
 
+    /* Fixed header with safe area insets */
     header {
-        position: sticky;
+        position: fixed;
         top: 0;
-        z-index: 100;
+        left: 0;
+        right: 0;
+        z-index: 1000;
         padding: 1rem 1.5rem;
+        padding-top: max(1rem, env(safe-area-inset-top));
+        background: linear-gradient(135deg,
+            rgba(26, 27, 78, 0.98) 0%,
+            rgba(22, 33, 62, 0.98) 100%);
+        border-bottom: 1px solid rgba(255, 94, 120, 0.3);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     }
 
+    /* Hide desktop main nav on mobile */
     .main-nav {
-        flex-direction: column;
-        gap: 0.5rem;
+        display: none !important;
     }
 
-    .main-nav a {
-        display: flex;
-        align-items: center;
-        padding: 1rem;
-        border-bottom: 1px solid rgba(255, 94, 120, 0.1);
-    }
-
-    /* Mobile menu (if hamburger exists) */
-    .mobile-menu-toggle {
+    /* Show mobile nav toggle */
+    .mobile-nav-toggle {
+        display: flex !important;
         min-width: 44px;
         min-height: 44px;
         padding: 0.75rem;
@@ -197,39 +200,255 @@
         transition: all 0.3s ease;
     }
 
-    .mobile-menu-toggle:hover {
+    .mobile-nav-toggle:hover,
+    .mobile-nav-toggle:active {
         background: rgba(255, 94, 120, 0.3);
         box-shadow: 0 0 15px rgba(255, 94, 120, 0.3);
     }
 
-    .main-nav.active {
+    /* Mobile navigation sidebar */
+    .mobile-nav {
         position: fixed;
-        top: 70px;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(13, 13, 26, 0.98);
-        backdrop-filter: blur(20px);
-        padding: 1rem;
+        top: 0;
+        left: -100%;
+        width: 85vw;
+        max-width: 320px;
+        height: 100vh;
+        background: linear-gradient(135deg,
+            rgba(26, 13, 51, 0.98) 0%,
+            rgba(16, 16, 33, 0.98) 100%);
+        border-right: 2px solid rgba(255, 94, 120, 0.4);
+        z-index: 1100;
+        padding: 1.5rem;
+        padding-top: max(1.5rem, env(safe-area-inset-top));
+        padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
-        animation: mobileMenuSlide 0.3s ease-out;
+        transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 4px 0 30px rgba(0, 0, 0, 0.5);
     }
 
-    @keyframes mobileMenuSlide {
-        from {
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .mobile-nav.active {
+        left: 0;
+    }
+
+    /* Mobile nav overlay */
+    .mobile-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(10, 5, 21, 0.8);
+        z-index: 1050;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+
+    .mobile-overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* Mobile nav list */
+    .mobile-nav-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .mobile-nav-list li {
+        margin-bottom: 0.5rem;
+    }
+
+    .mobile-nav-list a {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        color: var(--text);
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        border-left: 3px solid transparent;
+    }
+
+    .mobile-nav-list a:hover,
+    .mobile-nav-list a:active {
+        background: rgba(255, 94, 120, 0.2);
+        border-left-color: rgba(255, 94, 120, 0.8);
+        transform: translateX(5px);
+    }
+
+    .mobile-nav-list a i {
+        width: 24px;
+        text-align: center;
+        color: rgba(255, 94, 120, 0.8);
     }
 
     /* Prevent scroll when menu open */
     body.mobile-nav-open {
         overflow: hidden;
+        position: fixed;
+        width: 100%;
+    }
+
+    /* ========================================
+       NOTIFICATION ICON & DROPDOWN
+       ======================================== */
+
+    .notification-icon-container {
+        position: relative;
+        z-index: 100;
+    }
+
+    .notification-icon {
+        min-width: 44px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 94, 120, 0.2);
+        border: 1px solid rgba(255, 94, 120, 0.4);
+        border-radius: 8px;
+        color: var(--text);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .notification-icon:hover,
+    .notification-icon:active {
+        background: rgba(255, 94, 120, 0.3);
+        box-shadow: 0 0 15px rgba(255, 94, 120, 0.3);
+    }
+
+    .notification-badge {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        min-width: 20px;
+        height: 20px;
+        background: rgba(255, 94, 120, 0.9);
+        border: 2px solid rgba(26, 27, 78, 0.98);
+        border-radius: 10px;
+        font-size: 0.75rem;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 4px;
+    }
+
+    /* Notification dropdown on mobile */
+    .notifications-dropdown,
+    .notification-panel {
+        position: fixed !important;
+        top: 70px !important;
+        right: 1rem !important;
+        left: 1rem !important;
+        width: auto !important;
+        max-width: none !important;
+        max-height: calc(100vh - 90px) !important;
+        background: linear-gradient(135deg,
+            rgba(26, 13, 51, 0.98) 0%,
+            rgba(16, 16, 33, 0.98) 100%);
+        border: 2px solid rgba(255, 94, 120, 0.4);
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        z-index: 1050 !important;
+    }
+
+    /* ========================================
+       USER MENU DROPDOWN
+       ======================================== */
+
+    .user-menu {
+        position: relative;
+        z-index: 100;
+    }
+
+    .user-menu-button,
+    .user-avatar-button {
+        min-width: 44px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        background: rgba(255, 94, 120, 0.2);
+        border: 1px solid rgba(255, 94, 120, 0.4);
+        border-radius: 8px;
+        color: var(--text);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .user-menu-button:hover,
+    .user-menu-button:active,
+    .user-avatar-button:hover,
+    .user-avatar-button:active {
+        background: rgba(255, 94, 120, 0.3);
+        box-shadow: 0 0 15px rgba(255, 94, 120, 0.3);
+    }
+
+    .user-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    /* User dropdown on mobile */
+    .user-dropdown,
+    .user-menu-dropdown {
+        position: fixed !important;
+        top: 70px !important;
+        right: 1rem !important;
+        left: auto !important;
+        width: calc(100vw - 2rem) !important;
+        max-width: 320px !important;
+        background: linear-gradient(135deg,
+            rgba(26, 13, 51, 0.98) 0%,
+            rgba(16, 16, 33, 0.98) 100%);
+        border: 2px solid rgba(255, 94, 120, 0.4);
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        z-index: 1050 !important;
+        overflow: hidden;
+    }
+
+    .user-dropdown a,
+    .user-menu-dropdown a {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 1rem;
+        color: var(--text);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border-left: 3px solid transparent;
+        min-height: 44px;
+    }
+
+    .user-dropdown a:hover,
+    .user-dropdown a:active,
+    .user-menu-dropdown a:hover,
+    .user-menu-dropdown a:active {
+        background: rgba(255, 94, 120, 0.2);
+        border-left-color: rgba(255, 94, 120, 0.8);
+    }
+
+    /* ========================================
+       MAIN CONTENT SPACING
+       ======================================== */
+
+    /* Add top padding to account for fixed header */
+    main {
+        padding-top: calc(70px + 1rem);
     }
 
     /* ========================================
