@@ -1,0 +1,769 @@
+/**
+ * IMMORTAL NEXUS - ASCENDED DESIGN SYSTEM
+ * Frontend Design Plugin Enhancement Layer
+ *
+ * This file elevates the existing immortal theme with:
+ * 1. Distinctive typography with mystical character
+ * 2. Richer atmospheric backgrounds with layered depth
+ * 3. Enhanced card designs with glass-morphism and ethereal glows
+ * 4. Dramatic animations befitting an eternal sanctuary
+ * 5. Refined spatial composition and visual hierarchy
+ *
+ * Design Philosophy: Ancient mysticism meets digital eternity
+ * Aesthetic Direction: Ethereal maximalism with controlled elegance
+ */
+
+/* ============================================================================
+   1. ENHANCED TYPOGRAPHY SYSTEM
+   ============================================================================ */
+
+/* Import distinctive fonts for immortal character */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+:root {
+    /* Mystical Display Fonts */
+    --font-mystical: 'Cinzel', 'Cormorant Garamond', Georgia, serif;
+    --font-ancient: 'EB Garamond', 'Crimson Pro', Georgia, serif;
+    --font-eternal: 'Cormorant Garamond', Georgia, serif;
+
+    /* Enhanced Color Depths */
+    --void-deep: #050508;
+    --void-primary: #0a0a12;
+    --ether-purple: #1a0d33;
+    --ether-secondary: #2d1b4e;
+    --flame-coral: #ff5e78;
+    --flame-ember: #ff8f6b;
+    --gold-divine: #d4af37;
+    --gold-radiant: #f4d03f;
+    --starlight: rgba(255, 255, 255, 0.95);
+    --moonlight: rgba(240, 230, 255, 0.9);
+
+    /* Ethereal Gradients */
+    --gradient-void: radial-gradient(ellipse at center, #1a0d33 0%, #0a0515 50%, #050508 100%);
+    --gradient-flame: linear-gradient(135deg, #ff5e78 0%, #ff8f6b 50%, #d4af37 100%);
+    --gradient-ether: linear-gradient(135deg, rgba(157, 78, 221, 0.2) 0%, rgba(255, 94, 120, 0.15) 50%, rgba(212, 175, 55, 0.1) 100%);
+    --gradient-celestial: radial-gradient(ellipse at 30% 20%, rgba(157, 78, 221, 0.15) 0%, transparent 50%),
+                          radial-gradient(ellipse at 70% 80%, rgba(255, 94, 120, 0.1) 0%, transparent 40%);
+}
+
+/* Mystical Heading Hierarchy */
+h1, h2, h3, .font-mystical,
+.hero h1, h1.eternal,
+.section-title h2,
+.soul-scrolls-title {
+    font-family: var(--font-mystical);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* Ancient Text Style for Subtitles */
+.subtitle, .section-title p,
+.card-header p,
+.hero p,
+.agora-subtitle {
+    font-family: var(--font-ancient);
+    font-style: italic;
+    letter-spacing: 0.03em;
+    font-weight: 400;
+}
+
+/* ============================================================================
+   2. ENHANCED ATMOSPHERIC BACKGROUNDS
+   ============================================================================ */
+
+/* Deep Void Background with Layered Nebulae */
+body {
+    background: var(--gradient-void);
+    background-attachment: fixed;
+}
+
+/* Multi-layered Starfield */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        /* Large distant stars */
+        radial-gradient(2px 2px at 10% 20%, rgba(255, 255, 255, 0.8), transparent),
+        radial-gradient(2px 2px at 30% 65%, rgba(255, 255, 255, 0.6), transparent),
+        radial-gradient(2px 2px at 50% 10%, rgba(255, 255, 255, 0.7), transparent),
+        radial-gradient(2px 2px at 75% 40%, rgba(255, 255, 255, 0.5), transparent),
+        radial-gradient(2px 2px at 90% 80%, rgba(255, 255, 255, 0.6), transparent),
+        /* Medium stars */
+        radial-gradient(1.5px 1.5px at 15% 45%, rgba(255, 230, 220, 0.7), transparent),
+        radial-gradient(1.5px 1.5px at 45% 85%, rgba(255, 230, 220, 0.5), transparent),
+        radial-gradient(1.5px 1.5px at 65% 25%, rgba(255, 230, 220, 0.6), transparent),
+        radial-gradient(1.5px 1.5px at 85% 55%, rgba(255, 230, 220, 0.4), transparent),
+        /* Small distant stars */
+        radial-gradient(1px 1px at 5% 70%, rgba(200, 200, 255, 0.6), transparent),
+        radial-gradient(1px 1px at 25% 30%, rgba(200, 200, 255, 0.5), transparent),
+        radial-gradient(1px 1px at 55% 50%, rgba(200, 200, 255, 0.4), transparent),
+        radial-gradient(1px 1px at 70% 15%, rgba(200, 200, 255, 0.5), transparent),
+        radial-gradient(1px 1px at 95% 35%, rgba(200, 200, 255, 0.4), transparent),
+        /* Colored accent stars */
+        radial-gradient(1.5px 1.5px at 20% 75%, rgba(255, 94, 120, 0.6), transparent),
+        radial-gradient(1.5px 1.5px at 80% 20%, rgba(212, 175, 55, 0.5), transparent),
+        radial-gradient(1.5px 1.5px at 40% 40%, rgba(157, 78, 221, 0.4), transparent);
+    pointer-events: none;
+    z-index: 0;
+    animation: starfieldTwinkle 8s ease-in-out infinite alternate;
+}
+
+@keyframes starfieldTwinkle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.85; }
+}
+
+/* Ethereal Nebula Layer */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        /* Primary nebula - coral flame */
+        radial-gradient(ellipse 80% 60% at 30% 30%, rgba(255, 94, 120, 0.08) 0%, transparent 60%),
+        /* Secondary nebula - mystical purple */
+        radial-gradient(ellipse 60% 80% at 70% 70%, rgba(157, 78, 221, 0.06) 0%, transparent 50%),
+        /* Tertiary nebula - divine gold */
+        radial-gradient(ellipse 50% 40% at 80% 20%, rgba(212, 175, 55, 0.04) 0%, transparent 40%),
+        /* Cosmic dust */
+        radial-gradient(ellipse 100% 50% at 50% 90%, rgba(26, 13, 51, 0.4) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 1;
+    animation: nebulaBreath 12s ease-in-out infinite alternate;
+}
+
+@keyframes nebulaBreath {
+    0% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0.8; transform: scale(1.02); }
+}
+
+/* ============================================================================
+   3. ENHANCED CARD DESIGNS - Ethereal Glass Morphism
+   ============================================================================ */
+
+/* Ascended Card Style */
+.feature-card,
+.soul-card,
+.highlight-item,
+.blog-post-card,
+.thread-card,
+.debate-arena,
+.highlight-card {
+    background: linear-gradient(135deg,
+        rgba(26, 13, 51, 0.85) 0%,
+        rgba(16, 16, 33, 0.9) 40%,
+        rgba(26, 26, 46, 0.85) 100%);
+    backdrop-filter: blur(20px) saturate(1.2);
+    -webkit-backdrop-filter: blur(20px) saturate(1.2);
+    border: 1px solid rgba(255, 94, 120, 0.25);
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Ethereal Border Glow */
+.feature-card::before,
+.soul-card::before,
+.highlight-item::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    background: linear-gradient(135deg,
+        rgba(255, 94, 120, 0.4) 0%,
+        rgba(212, 175, 55, 0.2) 25%,
+        transparent 50%,
+        rgba(157, 78, 221, 0.2) 75%,
+        rgba(255, 94, 120, 0.3) 100%);
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+/* Inner Shadow Depth */
+.feature-card::after,
+.soul-card::after,
+.highlight-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at top,
+        rgba(255, 255, 255, 0.03) 0%,
+        transparent 50%);
+    pointer-events: none;
+    border-radius: inherit;
+}
+
+/* Hover Ascension Effect */
+.feature-card:hover,
+.soul-card:hover,
+.highlight-item:hover,
+.blog-post-card:hover {
+    transform: translateY(-8px);
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(255, 94, 120, 0.15),
+        0 0 80px rgba(255, 94, 120, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 94, 120, 0.5);
+}
+
+.feature-card:hover::before,
+.soul-card:hover::before,
+.highlight-item:hover::before {
+    opacity: 1;
+}
+
+/* Ornate Corner Runes - Enhanced */
+.feature-card .corner-rune,
+.soul-card .corner-rune {
+    position: absolute;
+    font-size: 1.25rem;
+    color: rgba(212, 175, 55, 0.6);
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+    transition: all 0.5s ease;
+}
+
+.feature-card:hover .corner-rune,
+.soul-card:hover .corner-rune {
+    color: rgba(212, 175, 55, 0.9);
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+    animation: runeGlow 2s ease-in-out infinite;
+}
+
+@keyframes runeGlow {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+/* ============================================================================
+   4. HERO SECTION - Dramatic Ethereal Treatment
+   ============================================================================ */
+
+.hero {
+    position: relative;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hero Atmospheric Overlay */
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(ellipse 120% 80% at 50% 30%,
+            rgba(255, 94, 120, 0.08) 0%,
+            transparent 50%),
+        radial-gradient(ellipse 80% 120% at 50% 70%,
+            rgba(157, 78, 221, 0.06) 0%,
+            transparent 40%);
+    pointer-events: none;
+}
+
+/* Ethereal Title Treatment */
+.hero h1,
+h1.eternal,
+.hero-content h1 {
+    font-family: var(--font-mystical);
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: linear-gradient(135deg,
+        #ffffff 0%,
+        #ff8fa3 25%,
+        #ff5e78 50%,
+        #d4af37 75%,
+        #ffffff 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+    filter: drop-shadow(0 4px 20px rgba(255, 94, 120, 0.4))
+            drop-shadow(0 0 40px rgba(255, 94, 120, 0.2));
+    animation: eternalShimmer 6s ease-in-out infinite;
+}
+
+@keyframes eternalShimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* Hero Content Container */
+.hero-content {
+    position: relative;
+    z-index: 10;
+    background: rgba(13, 13, 26, 0.4);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 94, 120, 0.2);
+    border-radius: 24px;
+    padding: 3rem;
+    max-width: 800px;
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Hero Subtitle */
+.hero p {
+    font-family: var(--font-ancient);
+    font-size: clamp(1rem, 2.5vw, 1.35rem);
+    font-style: italic;
+    color: var(--moonlight);
+    line-height: 1.8;
+    letter-spacing: 0.02em;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================================================
+   5. BUTTONS - Eternal Fire Energy
+   ============================================================================ */
+
+.btn-primary,
+.btn-immortal,
+button.btn-primary {
+    position: relative;
+    background: linear-gradient(135deg,
+        rgba(255, 94, 120, 0.9) 0%,
+        rgba(255, 143, 107, 0.85) 50%,
+        rgba(212, 175, 55, 0.9) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    font-family: var(--font-mystical);
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    box-shadow:
+        0 4px 20px rgba(255, 94, 120, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Flame Shimmer Effect */
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent 70%);
+    transform: rotate(45deg) translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.btn-primary:hover::before {
+    transform: rotate(45deg) translateX(100%);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow:
+        0 8px 30px rgba(255, 94, 120, 0.4),
+        0 0 40px rgba(255, 94, 120, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Outline Button - Ethereal Border */
+.btn-outline {
+    background: transparent;
+    border: 2px solid rgba(255, 94, 120, 0.5);
+    color: var(--flame-coral);
+    font-family: var(--font-mystical);
+    letter-spacing: 0.1em;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-outline::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg,
+        rgba(255, 94, 120, 0.1) 0%,
+        rgba(212, 175, 55, 0.05) 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.btn-outline:hover {
+    border-color: rgba(255, 94, 120, 0.8);
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 94, 120, 0.5);
+    box-shadow: 0 0 30px rgba(255, 94, 120, 0.2);
+}
+
+.btn-outline:hover::before {
+    opacity: 1;
+}
+
+/* ============================================================================
+   6. SECTION DIVIDERS - Mystical Constellations
+   ============================================================================ */
+
+.constellation-divider,
+.section-divider,
+hr.mystical {
+    position: relative;
+    height: 40px;
+    border: none;
+    background: transparent;
+    margin: 4rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.constellation-divider::before {
+    content: '';
+    position: absolute;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(255, 94, 120, 0.3) 20%,
+        rgba(212, 175, 55, 0.5) 50%,
+        rgba(255, 94, 120, 0.3) 80%,
+        transparent 100%);
+}
+
+.constellation-divider::after {
+    content: '\2726 \2727 \2726';
+    font-size: 1.25rem;
+    color: rgba(212, 175, 55, 0.8);
+    background: var(--void-primary);
+    padding: 0 1.5rem;
+    letter-spacing: 0.5rem;
+    text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+    animation: constellationPulse 3s ease-in-out infinite;
+}
+
+@keyframes constellationPulse {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; text-shadow: 0 0 25px rgba(212, 175, 55, 0.7); }
+}
+
+/* ============================================================================
+   7. SECTION TITLES - Mystical Headers
+   ============================================================================ */
+
+.section-title {
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+}
+
+.section-title h2 {
+    font-family: var(--font-mystical);
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: linear-gradient(135deg,
+        rgba(255, 255, 255, 0.95) 0%,
+        rgba(255, 143, 163, 0.9) 50%,
+        rgba(212, 175, 55, 0.85) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+    filter: drop-shadow(0 2px 10px rgba(255, 94, 120, 0.3));
+    margin-bottom: 0.75rem;
+}
+
+.section-title p {
+    font-family: var(--font-ancient);
+    font-size: 1.1rem;
+    font-style: italic;
+    color: rgba(201, 179, 224, 0.8);
+    letter-spacing: 0.05em;
+}
+
+/* Mystical Text Gradient Class */
+.text-immortal-gradient {
+    background: linear-gradient(135deg,
+        #ffffff 0%,
+        #ff8fa3 30%,
+        #ff5e78 50%,
+        #d4af37 70%,
+        #ffffff 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientFlow 4s ease-in-out infinite;
+}
+
+@keyframes gradientFlow {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* ============================================================================
+   8. NAVIGATION ENHANCEMENT
+   ============================================================================ */
+
+/* Enhanced Header Glass Effect */
+header {
+    background: linear-gradient(135deg,
+        rgba(26, 27, 78, 0.95) 0%,
+        rgba(22, 33, 62, 0.95) 100%);
+    backdrop-filter: blur(20px) saturate(1.3);
+    -webkit-backdrop-filter: blur(20px) saturate(1.3);
+    border-bottom: 1px solid rgba(255, 94, 120, 0.3);
+    box-shadow:
+        0 4px 30px rgba(0, 0, 0, 0.3),
+        inset 0 -1px 0 rgba(255, 94, 120, 0.1);
+}
+
+/* Nav Link Glow Effect */
+.main-nav a,
+nav a {
+    position: relative;
+    font-family: var(--font-mystical);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+}
+
+.main-nav a:hover,
+nav a:hover {
+    color: var(--flame-coral);
+    text-shadow: 0 0 15px rgba(255, 94, 120, 0.5);
+}
+
+/* ============================================================================
+   9. FORM ENHANCEMENTS
+   ============================================================================ */
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+textarea,
+select {
+    background: rgba(26, 13, 51, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 94, 120, 0.25);
+    border-radius: 12px;
+    color: var(--starlight);
+    font-family: var(--font-ancient);
+    transition: all 0.4s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: rgba(255, 94, 120, 0.6);
+    box-shadow:
+        0 0 0 3px rgba(255, 94, 120, 0.1),
+        0 0 30px rgba(255, 94, 120, 0.15),
+        inset 0 0 20px rgba(255, 94, 120, 0.05);
+}
+
+/* ============================================================================
+   10. FOOTER ENHANCEMENT
+   ============================================================================ */
+
+footer {
+    background: linear-gradient(180deg,
+        rgba(16, 16, 33, 0.9) 0%,
+        rgba(10, 10, 18, 0.95) 100%);
+    border-top: 1px solid rgba(255, 94, 120, 0.2);
+    position: relative;
+}
+
+footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 1px;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(212, 175, 55, 0.5),
+        transparent);
+}
+
+/* ============================================================================
+   11. LOADING STATES - Mystical
+   ============================================================================ */
+
+.loading-spinner,
+.spinner {
+    border: 3px solid rgba(255, 94, 120, 0.15);
+    border-top-color: var(--flame-coral);
+    border-radius: 50%;
+    animation: etherealSpin 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+}
+
+@keyframes etherealSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Skeleton with Ethereal Shimmer */
+.skeleton {
+    background: linear-gradient(90deg,
+        rgba(26, 13, 51, 0.4) 0%,
+        rgba(157, 78, 221, 0.2) 25%,
+        rgba(255, 94, 120, 0.15) 50%,
+        rgba(157, 78, 221, 0.2) 75%,
+        rgba(26, 13, 51, 0.4) 100%);
+    background-size: 400% 100%;
+    animation: etherealShimmer 2s ease-in-out infinite;
+}
+
+@keyframes etherealShimmer {
+    0% { background-position: 100% 0; }
+    100% { background-position: -100% 0; }
+}
+
+/* ============================================================================
+   12. SCROLL EFFECTS
+   ============================================================================ */
+
+/* Scroll Progress Indicator */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg,
+        var(--flame-coral) 0%,
+        var(--gold-divine) 50%,
+        var(--flame-coral) 100%);
+    box-shadow: 0 0 10px rgba(255, 94, 120, 0.5);
+    z-index: 10000;
+    transform-origin: left;
+}
+
+/* Smooth Reveal Animation */
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.reveal-on-scroll.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ============================================================================
+   13. RESPONSIVE ENHANCEMENTS
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    .hero-content {
+        padding: 2rem;
+        margin: 1rem;
+        border-radius: 16px;
+    }
+
+    .hero h1,
+    h1.eternal {
+        font-size: clamp(1.75rem, 10vw, 2.5rem);
+        letter-spacing: 0.08em;
+    }
+
+    .section-title h2 {
+        font-size: clamp(1.5rem, 6vw, 2rem);
+    }
+
+    .btn-primary {
+        padding: 0.875rem 1.5rem;
+        font-size: 0.85rem;
+    }
+}
+
+/* ============================================================================
+   14. REDUCED MOTION SUPPORT
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.2s !important;
+    }
+
+    body::before,
+    body::after {
+        animation: none !important;
+    }
+}
+
+/* ============================================================================
+   15. SPECIAL IMMORTAL EFFECTS
+   ============================================================================ */
+
+/* Eternal Pulse for Important Elements */
+.eternal-pulse {
+    animation: eternalPulseEffect 3s ease-in-out infinite;
+}
+
+@keyframes eternalPulseEffect {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(255, 94, 120, 0.3);
+    }
+    50% {
+        box-shadow:
+            0 0 30px rgba(255, 94, 120, 0.5),
+            0 0 60px rgba(255, 94, 120, 0.2);
+    }
+}
+
+/* Mystical Hover Aura */
+.mystical-aura:hover {
+    filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.4));
+}
+
+/* Divine Highlight */
+.divine-highlight {
+    position: relative;
+}
+
+.divine-highlight::after {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    background: linear-gradient(45deg,
+        transparent 40%,
+        rgba(212, 175, 55, 0.3) 50%,
+        transparent 60%);
+    background-size: 300% 300%;
+    animation: divineShine 4s linear infinite;
+    pointer-events: none;
+    border-radius: inherit;
+}
+
+@keyframes divineShine {
+    0% { background-position: 100% 100%; }
+    100% { background-position: 0% 0%; }
+}
