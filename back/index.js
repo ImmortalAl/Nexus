@@ -35,7 +35,10 @@ const NotificationService = require('./services/notificationService');
 dotenv.config();
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://immortal:NexusDB2026SecurePass@mlnf-cluster.ctoehaf.mongodb.net/mlnf?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
+const dbUri = process.env.MONGODB_URI || "mongodb+srv://immortal:NexusDB2026SecurePass@mlnf-cluster.ctoehaf.mongodb.net/mlnf?retryWrites=true&w=majority";
+console.log("[DEBUG] MONGODB_URI env var set:", !!process.env.MONGODB_URI);
+console.log("[DEBUG] URI prefix:", dbUri.substring(0, 45) + "...");
+mongoose.connect(dbUri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected'))
   .catch(err => {
       console.error('MongoDB connection error:', err.message);
