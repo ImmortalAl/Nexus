@@ -780,7 +780,7 @@ router.post('/proposals/:id/second', auth, async (req, res) => {
             votingOpened,
             message: votingOpened 
                 ? 'Proposal has enough support! Voting is now open.'
-                : 
+                : 'Proposal seconded successfully'
         });
         
     } catch (error) {
