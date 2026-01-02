@@ -35,7 +35,7 @@ const NotificationService = require('./services/notificationService');
 dotenv.config();
 
 // Connect to MongoDB
-const dbUri = process.env.MONGODB_URI || "mongodb+srv://mlnfadmin:vkco8oBNU1iFK9R9bSExZf05@mlnf-cluster.ctoehaf.mongodb.net/mlnf?retryWrites=true&w=majority";
+const dbUri = process.env.MONGODB_URI || "mongodb://localhost:27017/nexus";
 mongoose.connect(dbUri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected'))
   .catch(err => {

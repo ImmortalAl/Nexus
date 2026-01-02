@@ -3,7 +3,7 @@ const MessageBoardSection = require('../models/MessageBoardSection');
 require('dotenv').config();
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://immortal:cN0VuntETXgV7xD1@mlnf-cluster.ctoehaf.mongodb.net/mlnf?retryWrites=true&w=majority', {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/mlnf', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
