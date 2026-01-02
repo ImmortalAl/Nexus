@@ -36,8 +36,6 @@ dotenv.config();
 
 // Connect to MongoDB
 const dbUri = process.env.MONGODB_URI || "mongodb+srv://mlnfadmin:vkco8oBNU1iFK9R9bSExZf05@mlnf-cluster.ctoehaf.mongodb.net/mlnf?retryWrites=true&w=majority";
-console.log("[DEBUG] MONGODB_URI env var set:", !!process.env.MONGODB_URI);
-console.log("[DEBUG] URI prefix:", dbUri.substring(0, 45) + "...");
 mongoose.connect(dbUri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected'))
   .catch(err => {
